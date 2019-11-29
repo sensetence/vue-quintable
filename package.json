@@ -2,10 +2,14 @@
   "name": "@quintet/vue-foo-table",
   "version": "0.1.0",
   "private": true,
+  "licence": "MIT",
+  "main": "./dist/vue-foo-table.common.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build-bundle": "vue-cli-service build --target lib ./src/index.js",
     "lint": "vue-cli-service lint"
+
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
@@ -31,5 +35,8 @@
     "sass-loader": "^8.0.0",
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.41.2"
-  }
+  },
+  "files": [
+    "dist/*"
+   ]
 }

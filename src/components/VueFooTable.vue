@@ -285,9 +285,6 @@ export default {
   				let match = false;
   				for (var j = 0; j < row.length; j++){
   					let col = row[j];
-
-  					console.log(col.html);
-
   					if(fuzzy((col.html + "").toLowerCase(), (this.query + "").toLowerCase()).score > 6){
   						match = true;
   						break;
@@ -371,8 +368,6 @@ export default {
 
   	sort(){
 
-  		console.log("SORTING...")
-
   		let index = this.currentSortIndex;
   		let asc = this.sortAscending;
 
@@ -380,12 +375,10 @@ export default {
 
 
   	 	for(let i = 0 ; i<rows.length;i++) {
-  	 		console.log("whaaat");
 			rows[i].index = i;
 		}
 
 	
-
 		function compare(a, b) {
 			let aValue = a[index].sortValue?a[index].sortValue:a[index].html;
 		  	let bValue = b[index].sortValue?b[index].sortValue:b[index].html;
@@ -399,7 +392,6 @@ export default {
 		rows.sort(compare);
 
 		for(let i = 0 ; i<rows.length;i++) {
-			console.log(rows[i]);
 			this.sortedIndexes[i] = rows[i].index;
 		}
 
