@@ -42,9 +42,9 @@
 				</tr>
 			</thead>
 			  <tbody>
-				<slot v-for="(rIndex) in sortedIndexes" name="row">
-					<template v-if="visibleRows[rIndex]">
+					<template  v-for="(rIndex) in sortedIndexes" v-show="visibleRows[rIndex]" >
 						<VueFooRow 
+							:key="'row-'+rIndex"
 							:pretty="configFinal.prettySelect" 
 							:selectPosition="configFinal.selectPosition" 
 							:select="configFinal.select" 
@@ -91,7 +91,6 @@
 							</tr>
 					</template>
 					</template>
-			    </slot> 
 			    
 			</tbody>
 		</table>
