@@ -105,17 +105,10 @@
 
 <script>
 
-import Vue from "vue";
 import VueFooRow from "./VueFooRow.vue"
 import VueFooCell from "./VueFooCell.vue"
-import BootstrapVue from "bootstrap-vue";
 
 import fuzzy from "fuzzy.js";
-
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-vue/dist/bootstrap-vue.css"
-
-Vue.use(BootstrapVue)
 
 export default {
   name: 'VueFooTable',

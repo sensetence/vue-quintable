@@ -1,6 +1,6 @@
-import Vue from 'vue'
-import App from './App.vue'
+/** COMMON START **/
 
+import Vue from 'vue'
 Vue.config.productionTip = false
 
 import PrettyCheck from 'pretty-checkbox-vue/check';
@@ -20,8 +20,18 @@ library.add(faSortAmountDownAlt)
 library.add(faSortAmountDown)
 
 
+import BootstrapVue from "bootstrap-vue";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-vue/dist/bootstrap-vue.css"
+Vue.use(BootstrapVue)
+
 Vue.component('p-check', PrettyCheck);
 Vue.component('font-awesome-icon', FontAwesomeIcon)
+
+/** COMMON END **/
+
+import App from './App.vue'
+
 
 new Vue({
   render: h => h(App),

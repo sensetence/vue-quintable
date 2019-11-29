@@ -1,5 +1,6 @@
-import Vue from 'vue'
+/** COMMON START **/
 
+import Vue from 'vue'
 Vue.config.productionTip = false
 
 import PrettyCheck from 'pretty-checkbox-vue/check';
@@ -19,13 +20,20 @@ library.add(faSortAmountDownAlt)
 library.add(faSortAmountDown)
 
 
+import BootstrapVue from "bootstrap-vue";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-vue/dist/bootstrap-vue.css"
+Vue.use(BootstrapVue)
+
 Vue.component('p-check', PrettyCheck);
 Vue.component('font-awesome-icon', FontAwesomeIcon)
+
+/** COMMON END **/
 
 import VueFooTable from './components/VueFooTable.vue'
 
 // Declare install function executed by Vue.use()
-export function install(Vue) {
+let install = function install(Vue) {
 	if (install.installed) return;
 	install.installed = true;
 	Vue.component('vue-foo-table', VueFooTable)
@@ -48,4 +56,7 @@ if (GlobalVue) {
 }
 
 // To allow use as module (npm/webpack/etc.) export component
-export default VueFooTable;
+export default {
+	VueFooTable:VueFooTable,
+	install:install
+}
