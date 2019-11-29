@@ -1,6 +1,9 @@
+import '@babel/polyfill'
+import 'mutationobserver-shim'
 /** COMMON START **/
 
 import Vue from 'vue'
+import './plugins/bootstrap-vue'
 Vue.config.productionTip = false
 
 import PrettyCheck from 'pretty-checkbox-vue/check';
@@ -18,12 +21,6 @@ library.add(faCheck)
 library.add(faSort)
 library.add(faSortAmountDownAlt)
 library.add(faSortAmountDown)
-
-
-import BootstrapVue from "bootstrap-vue";
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-vue/dist/bootstrap-vue.css"
-Vue.use(BootstrapVue)
 
 Vue.component('p-check', PrettyCheck);
 Vue.component('font-awesome-icon', FontAwesomeIcon)

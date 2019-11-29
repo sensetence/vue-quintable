@@ -2,15 +2,16 @@
   "name": "@quintet/vue-foo-table",
   "version": "0.1.0",
   "private": true,
-  "licence": "MIT",
-  "main": "./dist/vue-foo-table.common.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build-bundle": "vue-cli-service build --target lib ./src/index.js",
-    "lint": "vue-cli-service lint"
-
+    "lint": "vue-cli-service lint",
+    "build-bundle": "vue-cli-service build --target lib ./src/index.js"
   },
+  "main": "./dist/vue-foo-table.common.js",
+  "files": [
+    "dist/*"
+  ],
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
@@ -24,19 +25,23 @@
     "vue": "^2.6.10"
   },
   "devDependencies": {
+    "@babel/polyfill": "^7.6.0",
     "@vue/cli-plugin-babel": "^4.0.0",
     "@vue/cli-plugin-eslint": "^4.0.0",
     "@vue/cli-service": "^4.0.0",
     "babel-eslint": "^10.0.3",
+    "bootstrap": "^4.3.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "mutationobserver-shim": "^0.3.3",
     "node-sass": "^4.13.0",
+    "popper.js": "^1.15.0",
+    "portal-vue": "^2.1.4",
     "pretty-checkbox-vue": "^1.1.9",
     "sass-loader": "^8.0.0",
+    "vue-cli-plugin-bootstrap-vue": "^0.5.0",
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.41.2"
   },
-  "files": [
-    "dist/*"
-   ]
+  "licence": "MIT"
 }
