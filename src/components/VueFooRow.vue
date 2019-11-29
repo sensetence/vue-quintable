@@ -16,11 +16,8 @@
 			<input v-else type="checkbox" v-model="selected" @change="selectRow">
 		</td>
 		
-		<slot v-for="(cell, cIndex) in row" name="cells">
-			<VueFooCell :index="cIndex" :align="alignments[cIndex]" :sticky="stickyCols[cIndex]" :cell="cell" @toggle="onToggleCell" :breakpoint="breakpoints[cIndex]" />
-		</slot>
-		<slot name="content">
-		</slot>
+			<VueFooCell v-for="(cell, cIndex) in row" :key="'cell-'+index+'-'+cIndex" :index="cIndex" :align="alignments[cIndex]" :sticky="stickyCols[cIndex]" :cell="cell" @toggle="onToggleCell" :breakpoint="breakpoints[cIndex]" />
+
 		<td v-if="select && selectPosition == 'post'">
 
 			<p-check v-if="pretty" name="check" class="p-icon" v-model="selected">
