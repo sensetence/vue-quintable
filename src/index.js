@@ -1,8 +1,5 @@
 /** COMMON START **/
 
-import Vue from 'vue'
-Vue.config.productionTip = false
-
 import PrettyCheck from 'pretty-checkbox-vue/check';
 import 'pretty-checkbox/src/pretty-checkbox.scss';
 
@@ -14,29 +11,29 @@ import { faSort } from '@fortawesome/free-solid-svg-icons'
 import { faSortAmountDownAlt } from '@fortawesome/free-solid-svg-icons'
 import { faSortAmountDown } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faCheck)
-library.add(faSort)
-library.add(faSortAmountDownAlt)
-library.add(faSortAmountDown)
-
-
 import BootstrapVue from "bootstrap-vue";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css"
-Vue.use(BootstrapVue)
 
-Vue.component('p-check', PrettyCheck);
-Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 /** COMMON END **/
 
 import VueFooTable from './components/VueFooTable.vue'
 
 // Declare install function executed by Vue.use()
-let install = function install(Vue) {
+let install = function(Vue) {
 	if (install.installed) return;
 	install.installed = true;
+
+	Vue.use(BootstrapVue)
+	Vue.component('p-check', PrettyCheck);
+	Vue.component('font-awesome-icon', FontAwesomeIcon)
 	Vue.component('vue-foo-table', VueFooTable)
+
+	library.add(faCheck)
+	library.add(faSort)
+	library.add(faSortAmountDownAlt)
+	library.add(faSortAmountDown)
 }
 
 // Create module definition for Vue.use()

@@ -29692,24 +29692,21 @@ module.exports = function (name) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("8bbf");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var pretty_checkbox_vue_check__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("2624");
-/* harmony import */ var pretty_checkbox_vue_check__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(pretty_checkbox_vue_check__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var pretty_checkbox_src_pretty_checkbox_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("2dbe");
-/* harmony import */ var pretty_checkbox_src_pretty_checkbox_scss__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(pretty_checkbox_src_pretty_checkbox_scss__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("ecee");
-/* harmony import */ var _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("ad3d");
-/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("c074");
-/* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("5f5b");
-/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__("f9e3");
-/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__("2dd8");
-/* harmony import */ var bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var _components_VueFooTable_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__("1444");
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var pretty_checkbox_vue_check__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("2624");
+/* harmony import */ var pretty_checkbox_vue_check__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(pretty_checkbox_vue_check__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var pretty_checkbox_src_pretty_checkbox_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("2dbe");
+/* harmony import */ var pretty_checkbox_src_pretty_checkbox_scss__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(pretty_checkbox_src_pretty_checkbox_scss__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("ecee");
+/* harmony import */ var _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__("ad3d");
+/* harmony import */ var _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__("c074");
+/* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__("5f5b");
+/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__("f9e3");
+/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__("2dd8");
+/* harmony import */ var bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _components_VueFooTable_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__("1444");
 /** COMMON START **/
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.config.productionTip = false;
 
 
 
@@ -29718,16 +29715,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.config.productionTip = false;
 
 
 
-_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_3__[/* library */ "c"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__[/* faCheck */ "a"]);
-_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_3__[/* library */ "c"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__[/* faSort */ "b"]);
-_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_3__[/* library */ "c"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__[/* faSortAmountDownAlt */ "d"]);
-_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_3__[/* library */ "c"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__[/* faSortAmountDown */ "c"]);
 
 
-
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_6__[/* default */ "a"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('p-check', pretty_checkbox_vue_check__WEBPACK_IMPORTED_MODULE_1___default.a);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('font-awesome-icon', _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_4__[/* FontAwesomeIcon */ "a"]);
 /** COMMON END **/
 
  // Declare install function executed by Vue.use()
@@ -29735,7 +29724,14 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('font-awesome-icon', _forta
 var install = function install(Vue) {
   if (install.installed) return;
   install.installed = true;
-  Vue.component('vue-foo-table', _components_VueFooTable_vue__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"]);
+  Vue.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"]);
+  Vue.component('p-check', pretty_checkbox_vue_check__WEBPACK_IMPORTED_MODULE_0___default.a);
+  Vue.component('font-awesome-icon', _fortawesome_vue_fontawesome__WEBPACK_IMPORTED_MODULE_3__[/* FontAwesomeIcon */ "a"]);
+  Vue.component('vue-foo-table', _components_VueFooTable_vue__WEBPACK_IMPORTED_MODULE_8__[/* default */ "a"]);
+  _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_2__[/* library */ "c"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_4__[/* faCheck */ "a"]);
+  _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_2__[/* library */ "c"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_4__[/* faSort */ "b"]);
+  _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_2__[/* library */ "c"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_4__[/* faSortAmountDownAlt */ "d"]);
+  _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_2__[/* library */ "c"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_4__[/* faSortAmountDown */ "c"]);
 }; // Create module definition for Vue.use()
 
 
@@ -29757,7 +29753,7 @@ if (GlobalVue) {
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-  VueFooTable: _components_VueFooTable_vue__WEBPACK_IMPORTED_MODULE_9__[/* default */ "a"],
+  VueFooTable: _components_VueFooTable_vue__WEBPACK_IMPORTED_MODULE_8__[/* default */ "a"],
   install: install
 });
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("c8ba")))
