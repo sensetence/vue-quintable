@@ -22,7 +22,8 @@
     "core-js": "^3.3.2",
     "fuzzy.js": "^0.1.0",
     "node-gyp": "^6.0.1",
-    "vue": "^2.6.10"
+    "vue": "^2.6.10",
+    "vue-select": "^3.4.0"
   },
   "devDependencies": {
     "@babel/polyfill": "^7.6.0",

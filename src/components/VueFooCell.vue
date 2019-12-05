@@ -1,6 +1,6 @@
 <template>
 
-	<td v-show="cell && show" :class="classes">
+	<td v-show="cell && show" :class="classesParsed">
 			<div class="breakpoints">
                 <div ref="xs"></div>
                 <div ref="sm" class="d-none d-sm-block"></div>
@@ -29,16 +29,22 @@
 			}
 		},
 		computed:{
-			classes(){
-				let classes = this.cell.classes + " ";
+			classesParsed(){
+				let classes = [];
 				if( (this.align || this.cell.align) && !this.generated){
 					if(this.cell.align){
-						classes += "text-"+ this.cell.align;
+						classes.push ("text-"+ this.cell.align);
 					}else{
-						classes += this.align == true?"text-left":"text-"+ this.align;
+						classes.push (this.align == true?"text-left":"text-"+ this.align);
 					}
 				}
-				return classes;
+
+				if(this.cell.classes){
+					let splitted = this.cell.classes.split(" ");
+					Array.prototype.push.apply(classes,splitted);
+				}
+
+			 	return classes.join(" ");
 			},
 			show(){
 				return !this.hidden && this.hidden !== "sticky";

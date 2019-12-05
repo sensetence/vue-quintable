@@ -1,5 +1,6 @@
 import '@babel/polyfill'
 import 'mutationobserver-shim'
+
 /** COMMON START **/
 
 import Vue from 'vue'
@@ -12,16 +13,36 @@ import 'pretty-checkbox/src/pretty-checkbox.scss';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-import { faCheck } from '@fortawesome/free-solid-svg-icons'
-import { faSort } from '@fortawesome/free-solid-svg-icons'
-import { faSortAmountDownAlt } from '@fortawesome/free-solid-svg-icons'
-import { faSortAmountDown } from '@fortawesome/free-solid-svg-icons'
+import vueSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
+
+
+import { 
+	faCheck,
+	faSort,
+	faSortAmountDownAlt,
+	faSortAmountDown,
+	faAngleRight,
+	faAngleLeft,
+	faAngleDoubleRight,
+	faAngleDoubleLeft,
+	faCircleNotch
+} from '@fortawesome/free-solid-svg-icons'
+
 
 library.add(faCheck)
 library.add(faSort)
 library.add(faSortAmountDownAlt)
 library.add(faSortAmountDown)
+library.add(faAngleDoubleRight)
+library.add(faAngleDoubleLeft)
+library.add(faAngleRight)
+library.add(faAngleLeft)
+library.add(faCircleNotch)
 
+
+
+Vue.component('v-select', vueSelect);
 Vue.component('p-check', PrettyCheck);
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

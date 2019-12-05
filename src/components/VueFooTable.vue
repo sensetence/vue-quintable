@@ -1,11 +1,16 @@
 <template>
 	<div class="table-wrapper">
+
+		<div class="header">
+			<slot name="header"></slot>
+		</div>
+
 		<div v-if="configFinal.search" class="text-right">
 			<span class="text-left">
-				<input type="search" placeholder="Search..." v-model="query" class="form-control">
+				<input type="search" :placeholder="configFinal.searchPlaceholder" v-model="query" class="form-control">
 			</span>
 		</div>		
-		<table class="vue-foo-table table">
+		<table class="vue-foo-table table" v-show="!ajaxLoading">
 			<thead v-if="configFinal.headlines.length">
 				<tr>
 					<th class="placeholder" v-if="hasGeneratedRows && !configFinal.hideRowToggle">&nbsp;</th>
@@ -19,10 +24,9 @@
 						<input v-else type="checkbox" v-model="allSelected">
 						</template>
 					</th>
-
 					<th v-for="(headline,hIndex) in configFinal.headlines" v-show="visibleColumns[hIndex]" :class="headerClass[hIndex]" :title="'headline-'+hIndex" :key="'headline-'+hIndex" @click="setSortColumn(hIndex)">
 						<span class="headline" v-html="headline"></span> 
-						<span class="sorting-icon ml-2" v-if="configFinal.sorts[hIndex]">
+						<span class="sorting-icon ml-2" v-show="configFinal.sorts[hIndex]">
 							<font-awesome-icon v-show="currentSortIndex != hIndex" icon="sort" class="text-primary" />
 							<font-awesome-icon v-show="currentSortIndex == hIndex && sortAscending" icon="sort-amount-down-alt" class="text-primary" />
 							<font-awesome-icon v-show="currentSortIndex == hIndex && !sortAscending" icon="sort-amount-down" class="text-primary" />
@@ -42,23 +46,24 @@
 				</tr>
 			</thead>
 			  <tbody>
-					<template  v-for="(rIndex) in sortedIndexes" v-show="visibleRows[rIndex]" >
+					<template  v-for="(rIndex) in sortedIndexes" >
 						<VueFooRow 
 							:key="'row-'+rIndex"
 							:pretty="configFinal.prettySelect" 
 							:selectPosition="configFinal.selectPosition" 
 							:select="configFinal.select" 
 							:index="rIndex" 
+							:classes="rows[rIndex].classes"
 							:hideRowToggle="configFinal.hideRowToggle" 
 							:breakpoints="configFinal.breakpoints" 
-							:stickyCols="configFinal.stickyCols" 
+							:stickyCols="configFinal.stickyCols"
+							:expanded="configFinal.expandedAll||rows[rIndex].expanded"
 							:alignments="configFinal.alignments" 
-							:row="rows[rIndex]" 
+							:row="rows[rIndex].cells?rows[rIndex].cells:rows[rIndex]" 
 							@updateBreakpoints="generateRowsForCells" 
 							@toggle="onToggleRow" 
-							v-model="selected[rIndex]"/>
-
-						<template v-if="generatedRows[rIndex] || stickyRows[rIndex]">
+							v-model="selected[rIndex]" v-show="visibleRows[rIndex]" />
+						<template v-if="(generatedRows[rIndex] || stickyRows[rIndex]) && visibleRows[rIndex]">
 							<tr 
 								:key="'generated-row-'+rIndex"
 								class="generated-row" 
@@ -67,7 +72,7 @@
 									&& Object.keys(generatedRows[rIndex]).length 
 									|| Object.keys(stickyRows[rIndex]).length">
 								
-								<td :colspan="configFinal.number+1" >
+								<td :colspan="configFinal.number+1">
 									<table class="table">
 										<tbody>
 											<tr 
@@ -75,10 +80,9 @@
 												v-for="(cell,cIndex) in generatedRows[rIndex]">
 
 												<td>
-													<strong 
-														v-html="configFinal.headlines[cIndex]">
-														
-													</strong></td>
+													<strong v-html="configFinal.headlines[cIndex]">
+													</strong>
+												</td>
 												<VueFooCell :cell="generatedRows[rIndex][cIndex]" :generated="true" />
 											</tr>
 											<tr v-for="(cell,cIndex) in stickyRows[rIndex]" :key="'sticky-row-cell-'+rIndex+'-'+cIndex">
@@ -90,14 +94,62 @@
 								</td>
 							</tr>
 					</template>
-					</template>
+				</template>
 			    
 			</tbody>
 		</table>
-		<template v-if="noRows">
-			   <div class="text-center p-3"><em>No results!</em></div>
-			   <hr>
-		</template>
+		<nav v-if="configFinal.pagination && pages>1" class="float-left" v-show="!ajaxLoading">
+		  <ul class="pagination">
+		    <li class="page-item" v-if="pages>pageRange" :class="{disabled:currentPage<=1}" @click="gotoPage('first')">
+		      <span class="page-link">
+		        <font-awesome-icon icon="angle-double-left" />
+		      </span>
+		    </li>
+		    <li class="page-item" :class="{disabled:currentPage<=1}" @click="gotoPage('prev')">
+		      <span class="page-link">
+		        <font-awesome-icon icon="angle-left" />
+		      </span>
+		    </li>
+
+		    <li :key="'pagination-item-'+page" class="page-item"  :class="{active:page==currentPage}" v-for="page in visiblePages"  @click="gotoPage(page)">
+		      <span class="page-link">
+		        {{page}}
+		      </span>
+		    </li>
+
+		    <li class="page-item" :class="{disabled:pages==currentPage}" @click="gotoPage('next')">
+		      <span class="page-link">
+		        <font-awesome-icon icon="angle-right" />
+		      </span>
+		    </li>
+		    <li class="page-item" v-if="pages>pageRange" :class="{disabled:pages==currentPage}" @click="gotoPage('last')">
+		      <span class="page-link">
+		        <font-awesome-icon icon="angle-double-right" />
+		      </span>
+		    </li>
+		  </ul>
+		</nav>
+		
+		<div class="clearfix">
+
+			<div class="float-right" v-if="configFinal.pagination" v-show="!ajaxLoading">
+				<span class="d-inline-block align-middle mr-2" v-if="configFinal.rowsSelect" v-html="configFinal.rowsPlaceholder"></span> <v-select v-if="configFinal.rowsSelect" class="d-inline-block align-middle"  :options="paginationOptions" v-model="currentRowsPerPage" :clearable="false" />
+				<span class="d-inline-block align-middle px-3">{{firstVisibleRow}}-{{lastVisibleRow}} of {{onlyVisibleRows.length}}</span>
+			</div>
+
+			<template v-if="noRows &&!ajaxLoading">
+				   <div class="text-center p-3"><em v-html="configFinal.emptyPlaceholder"></em></div>
+				   <hr>
+			</template>
+
+			<div class="loader text-center py-4" v-if="ajaxLoading">
+				<font-awesome-icon icon="circle-notch" spin class="ajax-loader" />
+			</div>
+		</div>
+
+		<div class="footer">
+			<slot name="footer"></slot>
+		</div>	
 	</div>
 
 </template>
@@ -111,7 +163,26 @@ import fuzzy from "fuzzy.js";
 
 export default {
   name: 'VueFooTable',
-  props:["rows","config","value"],
+  props:{
+		rows:{
+			type:Array
+		},
+		config:{
+			type: Object
+		},
+		value:{
+			type:Array
+		},
+		loading:{
+			type:Boolean
+		},
+		filters:{
+			type:Object
+		},
+		filterGroups:{
+			type:Array
+		}
+	},
   components: {
     VueFooRow,
     VueFooCell,
@@ -129,17 +200,24 @@ export default {
   		sortAscending:true,
   		sortedIndexes:{},
   		query:"",
+      	currentPage:1,
+      	customRowsPerPage:null,
+      	paginationOptions:[1,2,3,4,5,6,7,8,9,10,15,20,25,30,50,100]
   	}
   },
   computed:{
   	configFinal(){
 
-
   		let pagination = false;
   		if(this.config.pagination === true){
   			pagination = 25;
   		}else if(this.config.pagination){
-  			pagination = this.config.pagination;
+
+  			let i = 0;
+  			while(this.paginationOptions[i] < this.config.pagination && i < this.paginationOptions.length){
+  				i++;
+  			}
+  			pagination = this.paginationOptions[Math.min(i,this.paginationOptions.length-1)];
   		}
 
   		let select = false;
@@ -152,9 +230,19 @@ export default {
   			selectPosition = this.config.selectPosition;
   		}
 
+  		let expandedAll = false;
+  		if(this.config.expandedAll){
+  			expandedAll = true;
+  		}
+
   		let prettySelect = false;
   		if(this.config.prettySelect){
   			prettySelect = true;
+  		}
+
+  		let rowsSelect = false;
+  		if(this.config.rowsSelect){
+  			rowsSelect = true;
   		}
 
   		let search = false;
@@ -162,6 +250,36 @@ export default {
   			search = true;
   		}
 
+	    let searchLength = 1;
+	    if(this.config.searchLength){
+	       searchLength = this.config.searchLength;
+	    }
+
+	    let searchPlaceholder = "Search...";
+	    if(this.config.searchPlaceholder){
+	       searchPlaceholder = this.config.searchPlaceholder;
+	    }
+
+	    let filterRelation = "AND";
+	    if(["AND","OR"].includes(this.config.filterRelation)){
+	       filterRelation = this.config.filterRelation;
+	    }
+
+	    let filterGroupRelation = "AND";
+	    if(["AND","OR"].includes(this.config.filterGroupRelation)){
+	       filterGroupRelation = this.config.filterGroupRelation;
+	    }
+
+	    let rowsPlaceholder = "Rows per page:";
+	    if(this.config.rowsPlaceholder){
+	       rowsPlaceholder = this.config.rowsPlaceholder;
+	    }
+
+	    let emptyPlaceholder = "No rows...";
+	    if(this.config.emptyPlaceholder){
+	       emptyPlaceholder = this.config.emptyPlaceholder;
+	    }
+	    
   		let selectAll = false;
   		if(this.config.selectAll){
   			selectAll = true;
@@ -171,6 +289,11 @@ export default {
   		if(this.config.hideRowToggle){
   			hideRowToggle = true;
   		}
+
+      let pageRange = 5;
+      if(this.config.pageRange){
+        pageRange = this.config.pageRange;
+      }
 
   		let number= 0;
   		let headlines = [];
@@ -203,7 +326,6 @@ export default {
 	  				sorts[i] = false;
 	  			}
 
-
 	  			if(this.config.columns[i] && this.config.columns[i].sticky){
 	  				stickyCols[i] = true;
 	  			}else{
@@ -222,13 +344,22 @@ export default {
   		return{
   			headlines:headlines,
   			sorts:sorts,
+  			filterGroupRelation:filterGroupRelation,
+  			filterRelation:filterRelation,
+        	rowsSelect:rowsSelect,
+        	searchLength:searchLength,
+        	search:search,
+        	searchPlaceholder:searchPlaceholder,
+        	rowsPlaceholder:rowsPlaceholder,
+        	emptyPlaceholder:emptyPlaceholder,
   			stickyCols:stickyCols,
   			alignments:alignments,
   			breakpoints:breakpoints,
   			pagination:pagination,
   			select:select,
   			selectAll:selectAll,
-  			search:search,
+  			expandedAll:expandedAll,
+  			pageRange:pageRange,
   			prettySelect:prettySelect,
   			number:number,
   			hideRowToggle:hideRowToggle,
@@ -256,56 +387,213 @@ export default {
 
 			classes.push(iClasses.join(" "));
   		}
-
   		return classes;
-
-  		
   	},
+
+  	currentRowsPerPage:{
+  		get(){
+	  		if(!this.customRowsPerPage){
+	  			return this.configFinal.pagination;
+	  		}
+	  		return this.customRowsPerPage;
+
+  		},
+  		set(val){
+			this.customRowsPerPage = val;
+  		}
+
+  	},
+  	pageRange(){
+      return Math.min(this.configFinal.pageRange,this.pages);
+    },
+    pages(){
+      if(!this.currentRowsPerPage){
+        return 1;
+      }
+
+      return Math.max(1,Math.ceil(this.onlyVisibleRows.length / this.currentRowsPerPage));
+    },
+    onlyVisibleRows(){
+ 		return this.filteredRows.filter((item)=>{
+	       return item;
+	    });
+    },
+
+    visiblePages(){
+
+      let pages = [];
+      let start = 0;
+
+      if(this.pages < this.pageRange){
+        start = 1;
+      }else if(this.currentPage === 1){
+        start = 1;
+      }else if(this.currentPage==this.pages){
+        start = this.currentPage - (this.pageRange-1);
+      }else{
+        let off;
+        if(this.pageRange % 2 == 0){
+           off = this.pageRange/2
+        }else{
+          off = (this.pageRange-1)/2
+          if(this.currentPage + off > this.pages){
+            off++;
+          }
+        }
+
+        start = this.currentPage - off; 
+
+      }
+
+      start = Math.max(start,1);
+
+      for(let i = 0; i<this.pageRange;i++){
+        if(i+start > this.pages){
+          break;
+        }
+        pages.push(i+start);
+      }
+  
+      return pages;
+
+    },
+
+
+    filterActive(){
+    	return this.filters && Object.keys(this.filters).length;
+    },
+
+    filteredRows(){
+       let visible = [];
+
+       for(let i = 0 ; i<this.rows.length;i++) {
+		      visible.push(true);
+		}
+
+	   if(
+	   		(!this.configFinal.search && !this.filterActive) ||
+	   		(!this.filterActive && this.configFinal.search && this.query.length <= this.configFinal.searchLength)
+	   	){
+	   		console.log("SKIP FILTERING");
+	      return visible;
+	    }
+
+        for(let i = 0 ; i<this.rows.length;i++) {
+
+	       	let row = this.rows[i].cells?this.rows[i].cells:this.rows[i];
+       	  	let match = false;
+       	  	let searched = false;
+
+       	  	if(this.configFinal.search && this.query.length > this.configFinal.searchLength){
+
+
+		        for (let j = 0; j < row.length; j++){
+		            let col = row[j];
+
+		            if(fuzzy((col.html + "").toLowerCase(), (this.query + "").toLowerCase()).score > 6){
+		              match = true;
+		              break;
+		            }
+
+			    }
+
+			     if(row.keywords){
+	            	 for(let k = 0;k<row.keywords.length;k++){
+	            	 	if(fuzzy((row.keywords[k] + "").toLowerCase(), (this.query + "").toLowerCase()).score > 6){
+			              match = true;
+			              break;
+			            }
+	            	 }
+	            }
+
+			    searched = true;
+		   	}
+
+		   	if((searched && match || !searched) && this.filterActive && this.rows[i].filters){
+		   		//now filtering
+
+		   		if(this.filterGroups){
+		   			match = this.doFiltering(this.rows[i].filters);
+
+		   		}else{
+
+		   			let group = {
+		   				items:[],
+		   				relation:this.configFinal.filterRelation,
+		   			};
+
+		   			for (let f in this.filters){
+		   				group.items.push({name:f});
+		   			}
+
+		   			match = this.doFilteringForGroup(this.filters,this.rows[i].filters,group,0);
+
+		   		}
+
+		   		console.log("\n");
+	   			console.log("ROW " + i,match,this.rows[i].filters);
+	   			console.log("\n");
+		   	}
+
+		    visible[i] = match;
+
+    	}
+
+      	return visible;
+    },
+
   	visibleRows(){
 
-  		let visible = [];
+      	let visible = this.filteredRows;
 
-  		for(let i = 0 ; i<this.rows.length;i++) {
-  			let row = this.rows[i];
+	    if(this.currentRowsPerPage && this.pages>1){
 
-  			if(!this.configFinal.search && !this.configFinal.filter){
-  				visible.push(true);
-  				continue;
-  			}
+	       let borderHigh = this.currentPage * this.currentRowsPerPage;
+	       let borderLow =  borderHigh - this.currentRowsPerPage;
 
-  			if(this.configFinal.search && this.query.length > 1){
-  				let match = false;
-  				for (var j = 0; j < row.length; j++){
-  					let col = row[j];
-  					if(fuzzy((col.html + "").toLowerCase(), (this.query + "").toLowerCase()).score > 6){
-  						match = true;
-  						break;
-  					}
-  				}
+	       visible = visible.map((item,index) =>{
+	          return visible[index] && index < borderHigh && index >= borderLow;
+	       });
 
-  				visible.push(match);
-  			}else if(this.configFinal.search && this.query.length <=1){
-
-  				visible.push(true);
-  			}
-
-  		}
+	    }
 
   		return visible;
   	},
   	noRows(){
-  		for (var i = 0; i < this.visibleRows.length; i++){
-  			if( this.visibleRows [i]){
-  				return false;
-  			}
-  		}
-  		return true;
+  		return !this.onlyVisibleRows.length;
+  	},
+
+  	firstVisibleRow(){
+  		return this.currentPage * this.currentRowsPerPage - this.currentRowsPerPage + 1;
+  	},
+  	lastVisibleRow(){
+  		return Math.min(this.firstVisibleRow + this.currentRowsPerPage-1,this.onlyVisibleRows.length);
+  	},
+  	ajaxLoading(){
+  		return this.loading || this.fetching;
   	}
 
-
   },
-  watch:{
 
+  watch:{
+  	filters:{
+    	handler(){
+ 			this.currentPage = 1;
+    	},
+    	deep:true,
+    },
+
+  	
+    query(val){
+        if(val.length > this.configFinal.searchLength){
+          this.currentPage = 1;
+        }
+    },
+
+    currentRowsPerPage(){
+ 		this.currentPage = 1;
+    },
+    
   	currentSortIndex(){
   		this.sortAscending = true;
   	},
@@ -334,6 +622,210 @@ export default {
  
   },
   methods:{
+
+
+  doFiltering(filterValues){
+
+  	var results = [];
+
+
+  	for (let i = 0; i<this.filterGroups.length;i++){
+
+  		results.push(this.doFilteringForGroup(this.filters,filterValues,this.filterGroups[i],0));
+
+  		if(i<this.filterGroups.length-1){
+  			console.log(this.configFinal.filterGroupRelation);
+  		}
+
+  	}
+
+  	console.log("RESULTS FOR GROUPS:",results,this.configFinal.filterGroupRelation);
+
+  	if(this.configFinal.filterGroupRelation === "AND"){
+  		if(results.indexOf(true) !== -1){
+  			return true;
+  		}
+  		return false;
+  		
+  	}else if(this.configFinal.filterGroupRelation === "OR"){
+		if(results.indexOf(true) === -1){
+  			return false;
+  		}
+  		return true;
+  	}else{
+  		return true;
+  	}
+  },
+
+  doFilteringForGroup(filters,filterValues,group,index){
+
+  	//######################################
+  	//DEBUG!
+
+  	let spaces = "   ";
+
+  	for (let i = 0;i<index;i++){
+  		spaces+= "   ";
+  	}
+
+  	if(group.items){
+
+	  	let str = spaces;
+
+	  	let tmp = group.items.slice();
+
+	  	let cmp = function(a,b){
+	  	
+	  		if(a.name === undefined){
+	  			return 1;
+	  		}
+	  		if(b.name === undefined){
+	  			return -1;
+	  		}
+	  		return 0;
+	  	}
+
+	  	tmp = tmp.sort(cmp);
+
+	  	for (let i = 0; i<tmp.length;i++){
+	  		if(tmp[i].name){
+		  		str += tmp[i].name;
+		  		if(i<tmp.length-1){
+		  			str +=" "+group.relation+" "
+		  		}
+	  		}
+	  	}
+
+	  	console.log(str);
+  	}
+
+  	//######################################
+
+  	let found = false;
+  	if(group.relation === "AND"){
+  		for(let key in filters){
+  			if(this.filterGroups && !this.findInFilterGroups(key,this.filterGroups)){
+  				continue;
+  			}
+
+  			let allIncluding = true;
+  			for (let i = 0; i<group.items.length;i++){
+  				let item = group.items[i];
+
+  				if(item.name && filterValues[item.name] === undefined){
+  					allIncluding = false;
+  					break;
+  				}
+  			}
+
+  			if(allIncluding){
+
+	  			for (let i = 0; i<group.items.length;i++){
+	  				let item = group.items[i];
+	  				found = true;
+	  				if(item.items){
+	  					found = this.doFilteringForGroup(filters,filterValues,item,index+1);
+	  				}
+
+	  				if(!found){
+	  					break;
+	  				}
+	  				
+	  				if(filterValues[item.name] !== filters[item.name]){
+	  					found =  false;
+	  					break;
+	  				}
+	  			}
+
+  			}
+
+  		}
+  		return found
+
+  	}else if(group.relation === "OR"){
+  		for(let key in filters){
+
+  			if(this.filterGroups && !this.findInFilterGroups(key,this.filterGroups)){
+  				continue;
+  			}
+
+  			for (let i = 0; i<group.items.length;i++){
+  				let item = group.items[i];
+  				if(item.items){
+  					found = this.doFilteringForGroup(filters,filterValues,item,index+1);
+  				}
+
+  				if(found){
+  					break;
+  				}
+
+  				if(filterValues[item.name] && filters[item.name] &&filterValues[item.name] === filters[item.name]){
+  					found =  true;
+  					break;
+  				}
+  			}
+
+  		}
+  		console.log(spaces,found);
+  	  	return found
+  	}else{
+  		return true;
+  	}
+
+  },
+
+  	findInFilterGroups(key,arr,index=0) {
+
+  		if(!arr){
+  			return false;
+  		}
+
+  		let found = false;
+
+  		for(var i = 0;i<arr.length;i++){
+  			let item = arr[i];
+  			if(item.items){
+  				found = this.findInFilterGroups(key,item.items,index+1);
+  				if(found){
+  					break;
+  				}
+  			}
+
+  			if(item.name == key){
+  				found = true;
+  				break;
+  			}
+  			
+  		}
+  		return found;
+
+	},
+
+    gotoPage(page){
+
+      if(page === "prev"){
+        if(this.currentPage -1 >0){
+          this.currentPage--;
+        }
+        return;
+      }else if(page === "next"){
+        if(this.currentPage +1 <= this.pages){
+          this.currentPage++;
+        }
+        return;
+      }else if(page === "first"){
+        this.currentPage = 1;
+        return;
+      }else if(page === "last"){
+        this.currentPage = this.pages;
+        return;
+      }else{
+        this.currentPage = page;
+        return;
+      }
+      
+    },
+
 
   	toggleSortDir(){
   		this.sortAscending = !this.sortAscending;
@@ -370,10 +862,14 @@ export default {
 			rows[i].index = i;
 		}
 
-	
 		function compare(a, b) {
-			let aValue = a[index].sortValue?a[index].sortValue:a[index].html;
-		  	let bValue = b[index].sortValue?b[index].sortValue:b[index].html;
+
+			let cellsA = a.cells?a.cells:a;
+			let cellsB = b.cells?b.cells:b;
+
+
+			let aValue = cellsA[index].sortValue?cellsA[index].sortValue:cellsA[index].html;
+		  	let bValue = cellsB[index].sortValue?cellsB[index].sortValue:cellsB[index].html;
 
 			if(asc){
 			  return aValue > bValue?1:-1;
@@ -386,6 +882,8 @@ export default {
 		for(let i = 0 ; i<rows.length;i++) {
 			this.sortedIndexes[i] = rows[i].index;
 		}
+
+		this.currentPage = 1;
 
   	},
   	
@@ -494,7 +992,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 	.icon-check{
 		padding: 3px;
 		position: absolute;
@@ -522,6 +1020,10 @@ export default {
 	.sort-header.active .sorting-icon,
 	.sort-header:hover .sorting-icon {
 		opacity: 1;
+	}
+
+	.ajax-loader{
+		font-size: 3em;
 	}
 
 </style>

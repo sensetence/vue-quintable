@@ -1,5 +1,5 @@
 <template>
-	<tr @click="onToggleShow" :class="{'cursor-pointer':hiddenCells.length}">
+	<tr @click="onToggleShow" :class="classesParsed">
 		<td class="toggle" v-show="hiddenCells.length && !hideRowToggle">
 			<span>
 				<span v-if="!open">+</span>
@@ -33,21 +33,53 @@
 <script>
 	import VueFooCell from './VueFooCell.vue'
 	export default{
-		props:["index","row","breakpoints","stickyCols","alignments","value","select","pretty","selectPosition","hideRowToggle"],
+		props:["index","row","breakpoints","stickyCols","alignments","value","select","pretty","selectPosition","hideRowToggle","expanded","classes"],
 		components: {
 		    VueFooCell,
 		},
 		data(){
 			return {
-				open:false,
+				triggered:null,
 				hiddenCells:[],
 				selected:false,
 			}
 		},
 
+		computed:{
+			open:{
+				get(){
+					if(this.triggered == null && (this.expanded || this.row.expanded)){
+						return true;
+					}
+					return this.triggered;
+				},
+				set(val){
+					this.triggered = val;
+				}
+				
+			},
+			classesParsed(){
+				let classes = [];
+				if(this.hiddenCells.length){
+					classes.push("cursor-pointer");
+				}
+
+				if(this.classes){
+					let splitted = this.classes.split(" ");
+					Array.prototype.push.apply(classes,splitted);
+				}
+
+				return classes.join(" ");
+
+			}
+			
+		},
 		watch:{
 			value(val){
 				this.selected = val;
+			},
+			open(val){
+				this.$emit("toggle",val,this.index);
 			}
 		},
 
@@ -72,10 +104,11 @@
 				if(!this.hiddenCells.length){
 					return;
 				}
-
 				this.open = !this.open;
-				this.$emit("toggle",this.open,this.index);
 			}
+		},
+		mounted(){
+			this.$emit("toggle",this.open,this.index);
 		}
   
 	}
