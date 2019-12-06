@@ -16,12 +16,12 @@
 					<th class="placeholder" v-if="hasGeneratedRows && !configFinal.hideRowToggle">&nbsp;</th>
 					<th v-if="configFinal.select &&  configFinal.selectPosition == 'pre'">
 						<template v-if="configFinal.selectAll">
-						<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelected">
+						<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelected" @change="checkAll()">
 							<template slot="extra" >
 								<span><font-awesome-icon v-show="allSelected" icon="check" class="text-success icon-check" /></span>
 							</template>
 						</p-check>
-						<input v-else type="checkbox" v-model="allSelected">
+						<input v-else type="checkbox" v-model="allSelected"  @change="checkAll()">
 						</template>
 					</th>
 					<th v-for="(headline,hIndex) in configFinal.headlines" v-show="visibleColumns[hIndex]" :class="headerClass[hIndex]" :title="'headline-'+hIndex" :key="'headline-'+hIndex" @click="setSortColumn(hIndex)">
@@ -35,12 +35,12 @@
 					</th>
 					<th v-if="configFinal.select && configFinal.selectPosition == 'post'">
 						<template v-if="configFinal.selectAll">
-							<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelected">
+							<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelected"  @change="checkAll()">
 								<template slot="extra" >
 									<span><font-awesome-icon v-show="allSelected" icon="check" class="text-success icon-check" /></span>
 								</template>
 							</p-check>
-							<input v-else type="checkbox" v-model="allSelected">
+							<input v-else type="checkbox" v-model="allSelected"  @click="checkAll()">
 						</template>
 					</th>
 				</tr>
@@ -59,10 +59,12 @@
 							:stickyCols="configFinal.stickyCols"
 							:expanded="configFinal.expandedAll||rows[rIndex].expanded"
 							:alignments="configFinal.alignments" 
-							:row="rows[rIndex].cells?rows[rIndex].cells:rows[rIndex]" 
+							:row="rows[rIndex].cells?rows[rIndex].cells:rows[rIndex]"
+							@toggleSelect="checkListener" 
 							@updateBreakpoints="generateRowsForCells" 
 							@toggle="onToggleRow" 
-							v-model="selected[rIndex]" v-show="visibleRows[rIndex]" />
+							v-model="selected[rIndex]"
+							v-show="visibleRows[rIndex]" />
 						<template v-if="(generatedRows[rIndex] || stickyRows[rIndex]) && visibleRows[rIndex]">
 							<tr 
 								:key="'generated-row-'+rIndex"
@@ -133,7 +135,7 @@
 		<div class="clearfix">
 
 			<div class="float-right" v-if="configFinal.pagination" v-show="!ajaxLoading">
-				<span class="d-inline-block align-middle mr-2" v-if="configFinal.rowsSelect" v-html="configFinal.rowsPlaceholder"></span> <v-select v-if="configFinal.rowsSelect" class="d-inline-block align-middle"  :options="paginationOptions" v-model="currentRowsPerPage" :clearable="false" />
+				<span class="d-inline-block align-middle mr-2" v-if="configFinal.rowsSelect" v-html="configFinal.rowsPlaceholder"></span> <v-select v-if="configFinal.rowsSelect" class="d-inline-block align-middle"  :options="paginationOptionsFilled" v-model="currentRowsPerPage" :clearable="false" />
 				<span class="d-inline-block align-middle px-3">{{firstVisibleRow}}-{{lastVisibleRow}} of {{onlyVisibleRows.length}}</span>
 			</div>
 
@@ -206,6 +208,18 @@ export default {
   	}
   },
   computed:{
+
+  	paginationOptionsFilled(){
+  		let options = ["All"];
+  		let i = 0;
+  		while(i<this.paginationOptions.length&&i<this.rows.length){
+  			options.push(this.paginationOptions[i]);
+  			i++;
+  		}
+
+  		return options;
+  	},
+
   	configFinal(){
 
   		let pagination = false;
@@ -407,7 +421,7 @@ export default {
       return Math.min(this.configFinal.pageRange,this.pages);
     },
     pages(){
-      if(!this.currentRowsPerPage){
+      if(!this.currentRowsPerPage || this.currentRowsPerPage == "All"){
         return 1;
       }
 
@@ -474,10 +488,11 @@ export default {
 	   		(!this.configFinal.search && !this.filterActive) ||
 	   		(!this.filterActive && this.configFinal.search && this.query.length <= this.configFinal.searchLength)
 	   	){
-	   		console.log("SKIP FILTERING");
+	   	  //Skip filtering, no search or filter is active
 	      return visible;
 	    }
 
+	    //search per row
         for(let i = 0 ; i<this.rows.length;i++) {
 
 	       	let row = this.rows[i].cells?this.rows[i].cells:this.rows[i];
@@ -509,12 +524,14 @@ export default {
 			    searched = true;
 		   	}
 
+		   	//filter will be applied
 		   	if((searched && match || !searched) && this.filterActive && this.rows[i].filters){
-		   		//now filtering
 
+		   		//filter groups are defined
 		   		if(this.filterGroups){
 		   			match = this.doFiltering(this.rows[i].filters);
 
+		   		//define dummy filter group with filters and relation set
 		   		}else{
 
 		   			let group = {
@@ -522,11 +539,11 @@ export default {
 		   				relation:this.configFinal.filterRelation,
 		   			};
 
-		   			for (let f in this.filters){
-		   				group.items.push({name:f});
+		   			for (let filter in this.filters){
+		   				group.items.push({name:filter});
 		   			}
 
-		   			match = this.doFilteringForGroup(this.filters,this.rows[i].filters,group,0);
+		   			match = this.doFilteringForGroup(this.filters,this.rows[i].filters,group);
 
 		   		}
 
@@ -564,9 +581,15 @@ export default {
   	},
 
   	firstVisibleRow(){
+  		if(this.currentRowsPerPage === "All"){
+  			return 1;
+  		}
   		return this.currentPage * this.currentRowsPerPage - this.currentRowsPerPage + 1;
   	},
   	lastVisibleRow(){
+  		if(this.currentRowsPerPage === "All"){
+  			return 1;
+  		}
   		return Math.min(this.firstVisibleRow + this.currentRowsPerPage-1,this.onlyVisibleRows.length);
   	},
   	ajaxLoading(){
@@ -609,29 +632,56 @@ export default {
 
 	  	this.initLists();
   	},
-  	allSelected(bool){
-  		
-		for(let i = 0 ; i<this.configFinal.number;i++) {
-			this.$set(this.selected,i,bool);
-		}
-  		
-  	},
+  
   	selected(val){
 		this.$emit("input",val);
 	 },
+	 currentPage(){
+	 	this.allSelected = false;
+	 	
+	 	for(let i = 0;i<this.visibleRows.length;i++){
+	 		this.selected[i] = false;
+	 	}
+	 }
  
   },
   methods:{
 
+  	checkAll: function(){
 
+      for(let i = 0 ; i<this.visibleRows.length;i++) {
+			if(this.visibleRows[i]){
+				this.$set(this.selected,i,this.allSelected);
+			}else{
+				this.$set(this.selected,i,false);
+			}
+		}
+      
+    },
+
+    checkListener(bool,index){
+
+    	let tmp = this.selected.slice();
+    	tmp[index] = bool;
+
+    	if(tmp.indexOf(false) !== -1){
+  			this.allSelected = false;
+  		}
+
+  		else if(tmp.indexOf(false) === -1){
+  			this.allSelected = true;
+  		}
+
+    },
+  
   doFiltering(filterValues){
 
-  	var results = [];
+  	let results = [];
 
 
   	for (let i = 0; i<this.filterGroups.length;i++){
 
-  		results.push(this.doFilteringForGroup(this.filters,filterValues,this.filterGroups[i],0));
+  		results.push(this.doFilteringForGroup(this.filters,filterValues,this.filterGroups[i]));
 
   		if(i<this.filterGroups.length-1){
   			console.log(this.configFinal.filterGroupRelation);
@@ -657,7 +707,8 @@ export default {
   	}
   },
 
-  doFilteringForGroup(filters,filterValues,group,index){
+  
+  doFilteringForGroup(filters,filterValues,group,index = 0){
 
   	//######################################
   	//DEBUG!
@@ -702,6 +753,9 @@ export default {
   	//######################################
 
   	let found = false;
+
+  	console.log(spaces,"GROUP:",group);
+
   	if(group.relation === "AND"){
   		for(let key in filters){
   			if(this.filterGroups && !this.findInFilterGroups(key,this.filterGroups)){
@@ -730,16 +784,23 @@ export default {
 	  				if(!found){
 	  					break;
 	  				}
-	  				
-	  				if(filterValues[item.name] !== filters[item.name]){
+
+	  				//actual checking for matching
+	  				if(typeof filters[item.name] === "object" && filters[item.name].length && filters[item.name].indexOf(filterValues[item.name]) === -1){
+	  					found =  false;
+	  					break;
+	  				}else if(typeof filters[item.name] !== "object" &&filterValues[item.name] !== filters[item.name]){
 	  					found =  false;
 	  					break;
 	  				}
 	  			}
 
+  		console.log(spaces,"FOUND:",found);
+
   			}
 
   		}
+  		console.log("FOUND:",found);
   		return found
 
   	}else if(group.relation === "OR"){
@@ -753,20 +814,23 @@ export default {
   				let item = group.items[i];
   				if(item.items){
   					found = this.doFilteringForGroup(filters,filterValues,item,index+1);
-  				}
 
-  				if(found){
+  					if(found){
+	  					break;
+	  				}
+  				}
+  				
+  				//actual checking for matching
+  				if(typeof filters[item.name] === "object" && filters[item.name].length && filters[item.name].indexOf(filterValues[item.name]) !== -1){
+  					found =  true;
   					break;
-  				}
-
-  				if(filterValues[item.name] && filters[item.name] &&filterValues[item.name] === filters[item.name]){
+	  			}else if(typeof filters[item.name] !== "object" && filterValues[item.name] && filters[item.name] && filterValues[item.name] === filters[item.name]){
   					found =  true;
   					break;
   				}
   			}
 
   		}
-  		console.log(spaces,found);
   	  	return found
   	}else{
   		return true;
@@ -782,7 +846,7 @@ export default {
 
   		let found = false;
 
-  		for(var i = 0;i<arr.length;i++){
+  		for(let i = 0;i<arr.length;i++){
   			let item = arr[i];
   			if(item.items){
   				found = this.findInFilterGroups(key,item.items,index+1);
@@ -992,7 +1056,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 	.icon-check{
 		padding: 3px;
 		position: absolute;
@@ -1000,6 +1064,10 @@ export default {
 		left: 50%;
 		transform: translateX(-50%) translateY(-50%);
 	}
+</style>
+
+<style scoped>
+	
 
 	.pretty{
 		margin-right: 0 !important;

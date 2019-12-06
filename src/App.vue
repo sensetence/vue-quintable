@@ -14,6 +14,9 @@
   	</div>
   	<div>
   	<label>Company: <input type="checkbox" v-model="company" value="true"></label>
+	
+	<label>Multiple Filter [names:ole,matt]: <input type="checkbox" v-model="filtering" value="true"></label>
+
   	</div>
     <VueFooTable v-model="selectedRows" :filters="filters"  :config="config" :rows="rows" key="table-3">
     	<template v-slot:footer>TEST</template>
@@ -42,6 +45,7 @@ export default {
   		name:"NICHTS",
   		active:false,
   		company:false,
+  		filtering:false,
 
   		selectedRows:[],
 
@@ -116,7 +120,7 @@ export default {
 		      //String [pre/post] position of the select checkboxes 
 		      selectPosition:"pre",
 		      //Boolean if there should be a select all checkbox
-		      selectAll:false,
+		      selectAll:true,
 		      //Boolean if there shall be a search input filter 
 		      search:true,
 		      //Integer displayed page range of pagination
@@ -136,7 +140,7 @@ export default {
 		      //String text for rows per page select
 		      rowsPlaceholder:"Rows:",
 		      //String ["AND"/"OR"] default filter relation, if no filter group affected
-		      filterRelation:"AND",
+		      filterRelation:"OR",
 		       //String ["AND"/"OR"] default relation filter groups to each other
 		      filterGroupRelation:"OR",
 
@@ -188,6 +192,7 @@ export default {
 	         	filters:{
 	         		name:"UND",
 	         		company:true,
+	         		names:"Matt"
 	         	}
 		      },
 		      {
@@ -195,6 +200,7 @@ export default {
 		          filters:{
 	         		name:"UND",
 	         		active:true,
+	         		names:"Ole",
 	         	}
 		      },
 		      [ 
@@ -242,6 +248,13 @@ export default {
   			this.$set(this.filters,"company",true); 
   		}else{
   			this.$delete(this.filters,"company");
+  		}
+  	},
+  	filtering(val){
+  		if(val){
+  			this.$set(this.filters,"names",["Matt","Ole"]); 
+  		}else{
+  			this.$delete(this.filters,"names");
   		}
   	}
   },
