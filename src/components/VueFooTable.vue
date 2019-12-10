@@ -46,7 +46,7 @@
 				</tr>
 			</thead>
 			  <tbody>
-					<template  v-for="(rIndex) in sortedIndexes" >
+					<template  v-for="(rIndex,index) in sortedIndexes" >
 						<VueFooRow 
 							:key="'row-'+rIndex"
 							:pretty="configFinal.prettySelect" 
@@ -63,7 +63,7 @@
 							@toggleSelect="checkListener" 
 							@updateBreakpoints="generateRowsForCells" 
 							@toggle="onToggleRow" 
-							v-model="selected[rIndex]"
+							v-model="selected[index]"
 							v-show="visibleRows[rIndex]" />
 						<template v-if="(generatedRows[rIndex] || stickyRows[rIndex]) && visibleRows[rIndex]">
 							<tr 
@@ -524,8 +524,13 @@ export default {
 			    searched = true;
 		   	}
 
+		   	//filter are active but no filter values on row!
+		   	if(this.filterActive && !this.rows[i].filters){
+	   			match = false;
+	   		}
+
 		   	//filter will be applied
-		   	if((searched && match || !searched) && this.filterActive && this.rows[i].filters){
+		   	else if((searched && match || !searched) && this.filterActive){
 
 		   		//filter groups are defined
 		   		if(this.filterGroups){
@@ -602,6 +607,7 @@ export default {
   	filters:{
     	handler(){
  			this.currentPage = 1;
+ 			this.resetSelect();
     	},
     	deep:true,
     },
@@ -610,11 +616,13 @@ export default {
     query(val){
         if(val.length > this.configFinal.searchLength){
           this.currentPage = 1;
+          this.resetSelect();
         }
     },
 
     currentRowsPerPage(){
  		this.currentPage = 1;
+ 		this.resetSelect();
     },
     
   	currentSortIndex(){
@@ -633,15 +641,21 @@ export default {
 	  	this.initLists();
   	},
   
-  	selected(val){
-		this.$emit("input",val);
-	 },
+  	selected(){
+
+  		let selected = [];
+
+  		for (let index in this.sortedIndexes){
+  			if(this.selected[index]){
+  				selected.push(this.rows[this.sortedIndexes[index]]);
+  			}
+  		}
+
+		this.$emit("input",selected);
+	},
+
 	 currentPage(){
-	 	this.allSelected = false;
-	 	
-	 	for(let i = 0;i<this.visibleRows.length;i++){
-	 		this.selected[i] = false;
-	 	}
+	 	this.resetSelect();
 	 }
  
   },
@@ -649,11 +663,11 @@ export default {
 
   	checkAll: function(){
 
-      for(let i = 0 ; i<this.visibleRows.length;i++) {
-			if(this.visibleRows[i]){
-				this.$set(this.selected,i,this.allSelected);
+      for (let index in this.sortedIndexes){
+			if(this.visibleRows[this.sortedIndexes[index]]){
+				this.$set(this.selected,index,this.allSelected);
 			}else{
-				this.$set(this.selected,i,false);
+				this.$set(this.selected,index,false);
 			}
 		}
       
@@ -948,6 +962,7 @@ export default {
 		}
 
 		this.currentPage = 1;
+		this.resetSelect();
 
   	},
   	
@@ -1046,6 +1061,12 @@ export default {
 	 	}
 
   		
+  	},
+  	resetSelect(){
+  		this.allSelected = false;
+  		for(let i = 0 ; i<this.rows.length;i++) {
+  			this.selected[i] = false;
+	 	}
   	}
   },
   created(){
