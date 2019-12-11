@@ -18,7 +18,7 @@
 	<label>Multiple Filter [names:ole,matt]: <input type="checkbox" v-model="filtering" value="true"></label>
 
   	</div>
-    <VueFooTable v-model="selectedRows" :filters="filters"  :config="config" :rows="rows" key="table-3">
+    <VueFooTable v-model="selectedRows" :filters="filters" :config="config" :rows="rows" key="table-3">
     	<template v-slot:footer>TEST</template>
     </VueFooTable>
     <!-- <VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" /> -->
@@ -36,8 +36,6 @@ export default {
     VueFooTable,
     // VueFooRow,
   },
-
-  
 
   data(){
   	return {
@@ -80,7 +78,7 @@ export default {
 		],
 		//Object Table config
   		config:{ 
-		   	  //String[] or false, default false
+		   	  //Object[] columns with headline, sticky, breakpoint, align
 		      columns:[ 
 		         {
 		         	headline:"Test",
@@ -143,12 +141,9 @@ export default {
 		      filterRelation:"OR",
 		       //String ["AND"/"OR"] default relation filter groups to each other
 		      filterGroupRelation:"OR",
-
-
-		      //String/Boolean search per ajax
-		      ajaxSearchUrl:false,
-		      //String/Boolean pagination per ajax
-		      ajaxPaginationUrl:false,
+		      //String/Boolean search/filter/sort/pagination per ajax
+		      ajaxUrl:"http://192.168.188.56/test/data.php",
+		     
 		    
 			},
 			//Array of Array and/or Object
@@ -265,7 +260,7 @@ export default {
   },
   mounted(){
   	this.loading = true;
-  	axios.get("http://192.168.188.56/test/data.php").then((response)=>{
+  	axios.get("http://192.168.188.56/test/data.php?fetch=true").then((response)=>{
   		this.remoteRows = response.data.rows;
   		this.remoteConfig = response.data.config;
   		this.loading = false;

@@ -53,13 +53,13 @@
 							:selectPosition="configFinal.selectPosition" 
 							:select="configFinal.select" 
 							:index="rIndex" 
-							:classes="rows[rIndex].classes"
+							:classes="rowsFinal[rIndex].classes"
 							:hideRowToggle="configFinal.hideRowToggle" 
 							:breakpoints="configFinal.breakpoints" 
 							:stickyCols="configFinal.stickyCols"
-							:expanded="configFinal.expandedAll||rows[rIndex].expanded"
+							:expanded="configFinal.expandedAll||rowsFinal[rIndex].expanded"
 							:alignments="configFinal.alignments" 
-							:row="rows[rIndex].cells?rows[rIndex].cells:rows[rIndex]"
+							:row="rowsFinal[rIndex].cells?rowsFinal[rIndex].cells:rowsFinal[rIndex]"
 							@toggleSelect="checkListener" 
 							@updateBreakpoints="generateRowsForCells" 
 							@toggle="onToggleRow" 
@@ -100,50 +100,52 @@
 			    
 			</tbody>
 		</table>
-		<nav v-if="configFinal.pagination && pages>1" class="float-left" v-show="!ajaxLoading">
-		  <ul class="pagination">
-		    <li class="page-item" v-if="pages>pageRange" :class="{disabled:currentPage<=1}" @click="gotoPage('first')">
-		      <span class="page-link">
-		        <font-awesome-icon icon="angle-double-left" />
-		      </span>
-		    </li>
-		    <li class="page-item" :class="{disabled:currentPage<=1}" @click="gotoPage('prev')">
-		      <span class="page-link">
-		        <font-awesome-icon icon="angle-left" />
-		      </span>
-		    </li>
-
-		    <li :key="'pagination-item-'+page" class="page-item"  :class="{active:page==currentPage}" v-for="page in visiblePages"  @click="gotoPage(page)">
-		      <span class="page-link">
-		        {{page}}
-		      </span>
-		    </li>
-
-		    <li class="page-item" :class="{disabled:pages==currentPage}" @click="gotoPage('next')">
-		      <span class="page-link">
-		        <font-awesome-icon icon="angle-right" />
-		      </span>
-		    </li>
-		    <li class="page-item" v-if="pages>pageRange" :class="{disabled:pages==currentPage}" @click="gotoPage('last')">
-		      <span class="page-link">
-		        <font-awesome-icon icon="angle-double-right" />
-		      </span>
-		    </li>
-		  </ul>
-		</nav>
+		
 		
 		<div class="clearfix">
 
-			<div class="float-right" v-if="configFinal.pagination" v-show="!ajaxLoading">
+			<div class="float-right mr-3 pagination-container" v-if="configFinal.pagination" v-show="!ajaxLoading">
 				<span class="d-inline-block align-middle mr-2" v-if="configFinal.rowsSelect" v-html="configFinal.rowsPlaceholder"></span> <v-select v-if="configFinal.rowsSelect" class="d-inline-block align-middle"  :options="paginationOptionsFilled" v-model="currentRowsPerPage" :clearable="false" />
-				<span class="d-inline-block align-middle px-3">{{firstVisibleRow}}-{{lastVisibleRow}} of {{onlyVisibleRows.length}}</span>
+
+				<nav v-if="configFinal.pagination && pages>1" class="d-inline-block align-middle ml-3" v-show="!ajaxLoading">
+				  <ul class="pagination mb-0">
+				    <li class="page-item" v-if="pages>pageRange" :class="{disabled:currentPage<=1}" @click="gotoPage('first')">
+				      <span class="page-link">
+				        <font-awesome-icon icon="angle-double-left" />
+				      </span>
+				    </li>
+				    <li class="page-item" :class="{disabled:currentPage<=1}" @click="gotoPage('prev')">
+				      <span class="page-link">
+				        <font-awesome-icon icon="angle-left" />
+				      </span>
+				    </li>
+
+				    <li :key="'pagination-item-'+page" class="page-item"  :class="{active:page==currentPage}" v-for="page in visiblePages"  @click="gotoPage(page)">
+				      <span class="page-link">
+				        {{page}}
+				      </span>
+				    </li>
+
+				    <li class="page-item" :class="{disabled:pages==currentPage}" @click="gotoPage('next')">
+				      <span class="page-link">
+				        <font-awesome-icon icon="angle-right" />
+				      </span>
+				    </li>
+				    <li class="page-item" v-if="pages>pageRange" :class="{disabled:pages==currentPage}" @click="gotoPage('last')">
+				      <span class="page-link">
+				        <font-awesome-icon icon="angle-double-right" />
+				      </span>
+				    </li>
+				  </ul>
+				</nav>
+
+				<span class="d-inline-block align-middle ml-3">{{firstVisibleRow}}-{{lastVisibleRow}} of {{onlyVisibleRows.length}}</span>
 			</div>
 
-			<template v-if="noRows &&!ajaxLoading">
+			<template v-if="noRows && !ajaxLoading">
 				   <div class="text-center p-3"><em v-html="configFinal.emptyPlaceholder"></em></div>
 				   <hr>
 			</template>
-
 			<div class="loader text-center py-4" v-if="ajaxLoading">
 				<font-awesome-icon icon="circle-notch" spin class="ajax-loader" />
 			</div>
@@ -162,6 +164,7 @@ import VueFooRow from "./VueFooRow.vue"
 import VueFooCell from "./VueFooCell.vue"
 
 import fuzzy from "fuzzy.js";
+import axios from 'axios'
 
 export default {
   name: 'VueFooTable',
@@ -191,28 +194,43 @@ export default {
   },
   data(){
   	return {
-  		selected:[],
   		allSelected:false,
+  		selected:[],
   		stickyRows:{},
   		generatedRows:{},
   		openRows:{},
   		visibleColumns:{},
+  		sortedIndexes:{},
   		hasGeneratedRows:false,
   		currentSortIndex:null,
   		sortAscending:true,
-  		sortedIndexes:{},
   		query:"",
       	currentPage:1,
       	customRowsPerPage:null,
-      	paginationOptions:[1,2,3,4,5,6,7,8,9,10,15,20,25,30,50,100]
+      	paginationOptions:[1,2,3,4,5,6,7,8,9,10,15,20,25,30,50,100],
+      	fetching:false,
+      	ajaxRows:[],
+      	ajaxPages:0,
+      	ajaxAll:0,
   	}
   },
   computed:{
 
+  	rowsFinal(){
+  		return this.configFinal.ajaxUrl?this.ajaxRows:this.rows;
+  	},
+
   	paginationOptionsFilled(){
+
+  		let all = this.rowsFinal.length
+
+  		if(this.configFinal.ajaxUrl){
+  			all = this.ajaxAll;
+  		}
+
   		let options = ["All"];
   		let i = 0;
-  		while(i<this.paginationOptions.length&&i<this.rows.length){
+  		while(i<this.paginationOptions.length&&i<all){
   			options.push(this.paginationOptions[i]);
   			i++;
   		}
@@ -237,6 +255,11 @@ export default {
   		let select = false;
   		if(this.config.select){
   			select = true;
+  		}
+
+  		let ajaxUrl = false;
+  		if(this.config.ajaxUrl){
+  			ajaxUrl = this.config.ajaxUrl;
   		}
 
   		let selectPosition = "post";
@@ -316,6 +339,7 @@ export default {
   		let stickyCols = [];
   		let alignments = [];
 
+  		let columns = null;
   		if(this.config.columns){
 
   			number = this.config.columns.length;
@@ -353,6 +377,8 @@ export default {
 	  			}
 	  		}
 
+	  		columns = this.config.columns;
+
   		}
 
   		return{
@@ -363,6 +389,7 @@ export default {
         	rowsSelect:rowsSelect,
         	searchLength:searchLength,
         	search:search,
+        	ajaxUrl:ajaxUrl,
         	searchPlaceholder:searchPlaceholder,
         	rowsPlaceholder:rowsPlaceholder,
         	emptyPlaceholder:emptyPlaceholder,
@@ -376,6 +403,7 @@ export default {
   			pageRange:pageRange,
   			prettySelect:prettySelect,
   			number:number,
+  			columns:columns,
   			hideRowToggle:hideRowToggle,
   			selectPosition:selectPosition,
   		}
@@ -421,6 +449,11 @@ export default {
       return Math.min(this.configFinal.pageRange,this.pages);
     },
     pages(){
+
+     if(this.ajaxPages){
+     	return this.ajaxPages;
+     }
+
       if(!this.currentRowsPerPage || this.currentRowsPerPage == "All"){
         return 1;
       }
@@ -428,6 +461,15 @@ export default {
       return Math.max(1,Math.ceil(this.onlyVisibleRows.length / this.currentRowsPerPage));
     },
     onlyVisibleRows(){
+
+    	if(this.configFinal.ajaxUrl){
+    		let rows = [];
+    		for (let i = 0;i<this.ajaxAll; i++){
+    			rows.push(true);
+    		}
+    		return rows; 
+    	}
+
  		return this.filteredRows.filter((item)=>{
 	       return item;
 	    });
@@ -480,9 +522,13 @@ export default {
     filteredRows(){
        let visible = [];
 
-       for(let i = 0 ; i<this.rows.length;i++) {
-		      visible.push(true);
-		}
+       if(this.configFinal.ajaxUrl){
+  			return this.rowsFinal;
+  		}
+
+       for(let i = 0 ; i<this.rowsFinal.length;i++) {
+		   visible.push(true);
+	   }
 
 	   if(
 	   		(!this.configFinal.search && !this.filterActive) ||
@@ -493,9 +539,9 @@ export default {
 	    }
 
 	    //search per row
-        for(let i = 0 ; i<this.rows.length;i++) {
+        for(let i = 0 ; i<this.rowsFinal.length;i++) {
 
-	       	let row = this.rows[i].cells?this.rows[i].cells:this.rows[i];
+	       	let row = this.rowsFinal[i].cells?this.rowsFinal[i].cells:this.rowsFinal[i];
        	  	let match = false;
        	  	let searched = false;
 
@@ -525,7 +571,7 @@ export default {
 		   	}
 
 		   	//filter are active but no filter values on row!
-		   	if(this.filterActive && !this.rows[i].filters){
+		   	if(this.filterActive && !this.rowsFinal[i].filters){
 	   			match = false;
 	   		}
 
@@ -534,7 +580,7 @@ export default {
 
 		   		//filter groups are defined
 		   		if(this.filterGroups){
-		   			match = this.doFiltering(this.rows[i].filters);
+		   			match = this.doFiltering(this.rowsFinal[i].filters);
 
 		   		//define dummy filter group with filters and relation set
 		   		}else{
@@ -548,12 +594,12 @@ export default {
 		   				group.items.push({name:filter});
 		   			}
 
-		   			match = this.doFilteringForGroup(this.filters,this.rows[i].filters,group);
+		   			match = this.doFilteringForGroup(this.filters,this.rowsFinal[i].filters,group);
 
 		   		}
 
 		   		console.log("\n");
-	   			console.log("ROW " + i,match,this.rows[i].filters);
+	   			console.log("ROW " + i,match,this.rowsFinal[i].filters);
 	   			console.log("\n");
 		   	}
 
@@ -568,7 +614,7 @@ export default {
 
       	let visible = this.filteredRows;
 
-	    if(this.currentRowsPerPage && this.pages>1){
+	    if(this.currentRowsPerPage && this.pages>1 && !this.configFinal.ajaxUrl){
 
 	       let borderHigh = this.currentPage * this.currentRowsPerPage;
 	       let borderLow =  borderHigh - this.currentRowsPerPage;
@@ -606,6 +652,12 @@ export default {
   watch:{
   	filters:{
     	handler(){
+
+    		if(this.configFinal.ajaxUrl){
+	 			this.loadViaAjax(true);
+	 			return;
+	 		}
+
  			this.currentPage = 1;
  			this.resetSelect();
     	},
@@ -615,12 +667,23 @@ export default {
   	
     query(val){
         if(val.length > this.configFinal.searchLength){
+	    	if(this.configFinal.ajaxUrl){
+	 			this.loadViaAjax(true);
+	 			return;
+	 		}
+
           this.currentPage = 1;
           this.resetSelect();
         }
     },
 
     currentRowsPerPage(){
+
+    	if(this.configFinal.ajaxUrl){
+ 			this.loadViaAjax(true);
+ 			return;
+ 		}
+    
  		this.currentPage = 1;
  		this.resetSelect();
     },
@@ -647,7 +710,7 @@ export default {
 
   		for (let index in this.sortedIndexes){
   			if(this.selected[index]){
-  				selected.push(this.rows[this.sortedIndexes[index]]);
+  				selected.push(this.rowsFinal[this.sortedIndexes[index]]);
   			}
   		}
 
@@ -655,8 +718,14 @@ export default {
 	},
 
 	 currentPage(){
+
+	 	if(this.configFinal.ajaxUrl){
+	 		this.loadViaAjax();
+	 	}
+
 	 	this.resetSelect();
-	 }
+	 },
+	
  
   },
   methods:{
@@ -930,10 +999,15 @@ export default {
 
   	sort(){
 
+  		if(this.configFinal.ajaxUrl){
+  			this.loadViaAjax(true);
+  			return;
+  		}
+
   		let index = this.currentSortIndex;
   		let asc = this.sortAscending;
 
-  	 	let rows = this.rows.slice();
+  	 	let rows = this.rowsFinal.slice();
 
 
   	 	for(let i = 0 ; i<rows.length;i++) {
@@ -981,7 +1055,6 @@ export default {
   	},
   	generateRowsForCells(rowIndex,cellIndex,cell,hide){
 
-
   		this.initLists();
   		let cells = null;
   		if(hide && hide !== "sticky"){
@@ -1004,7 +1077,7 @@ export default {
   		}else{
   			cells = this.generatedRows[rowIndex];
   			delete cells[cellIndex];
-  			if(this.visibleColumns[cellIndex]<this.rows.length){
+  			if(this.visibleColumns[cellIndex]<this.rowsFinal.length){
 	  			this.$set(this.visibleColumns,cellIndex,this.visibleColumns[cellIndex]+1)
 	  		}
 	  		this.$set(this.generatedRows,rowIndex,cells);
@@ -1026,11 +1099,11 @@ export default {
   	},
   	initLists(){
 
-  		if(!this.rows){
+  		if(!this.rowsFinal){
   			return;
   		}
 
- 		for(let i = 0 ; i<this.rows.length;i++) {
+ 		for(let i = 0 ; i<this.rowsFinal.length;i++) {
  			if(typeof this.generatedRows[i] !== "object"){
   				this.generatedRows[i] = {};
   			}
@@ -1050,7 +1123,7 @@ export default {
 
 	 	for(let i = 0 ; i<this.configFinal.number;i++) {
  			if(typeof this.visibleColumns[i] !== "number"){
-  				this.visibleColumns[i] = this.rows.length;
+  				this.visibleColumns[i] = this.rowsFinal.length;
   			}
 	 	}
 
@@ -1062,15 +1135,60 @@ export default {
 
   		
   	},
+  	clearLists(){
+  		this.selected = [];
+  		this.stickyRows = {};
+  		this.generatedRows = {};
+  		this.openRows = {};
+  		this.visibleColumns = {};
+  		this.sortedIndexes = {};
+  	},
   	resetSelect(){
   		this.allSelected = false;
-  		for(let i = 0 ; i<this.rows.length;i++) {
+  		for(let i = 0 ; i<this.rowsFinal.length;i++) {
   			this.selected[i] = false;
 	 	}
+  	},
+  	loadViaAjax(clear = false){
+  		this.fetching = true;
+  		this.clearLists();
+  		this.ajaxRows = [];
+
+  		if(clear){
+  			this.currentPage = 1;
+			this.resetSelect();
+  		}
+
+  		let params = {
+  			search:this.query,
+  			filters:this.filters,
+  			perPage:this.currentRowsPerPage,
+  			page:this.currentPage,
+  			sort:this.currentSortIndex?{
+  				asc:this.sortAscending,
+  				index:this.currentSortIndex,
+  				column:this.configFinal.columns[this.currentSortIndex],
+  			}:null
+
+  		};
+
+  		axios.get(this.configFinal.ajaxUrl,{params}).then((response)=>{
+	  		this.ajaxRows = response.data.rows;
+	  		this.ajaxPages = Math.ceil(response.data.all / this.currentRowsPerPage);
+	  		this.ajaxAll = response.data.all;
+	  		this.fetching = false;
+	  		this.initLists();
+	  	});
+
   	}
   },
   created(){
   	 this.initLists();
+ },
+ mounted(){
+ 	if(this.configFinal.ajaxUrl){
+ 		this.loadViaAjax();
+ 	}
  }
  
   
