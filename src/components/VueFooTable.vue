@@ -67,6 +67,7 @@
 							:stickyCols="configFinal.stickyCols"
 							:expanded="configFinal.expandedAll||rowsFinal[rIndex].expanded"
 							:alignments="configFinal.alignments" 
+							:tooltip="rowsFinal[rIndex].tooltip" 
 							:row="rowsFinal[rIndex].cells?rowsFinal[rIndex].cells:rowsFinal[rIndex]"
 							@toggleSelect="checkListener" 
 							@updateBreakpoints="generateRowsForCells" 
@@ -803,7 +804,6 @@ export default {
   },
   methods:{
   	onMouseenterRow(index){
-  		console.log(index);
   		this.hoveredRow = index;
   	},
 

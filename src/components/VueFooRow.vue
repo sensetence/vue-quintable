@@ -1,6 +1,9 @@
 <template>
-	<tr @click="onToggleShow" :class="classesParsed" @mouseover="onMouseenter(index)" @mouseleave="onMouseleave(index)">
+	<tr @click="onToggleShow" :class="classesParsed" @mouseover="onMouseenter(index)" @mouseleave="onMouseleave(index)" :id="uuid">
 		<td class="toggle" v-show="hiddenCells.length && !hideRowToggle">
+			<b-tooltip :target="uuid" triggers="hover" v-if="tooltip" placement ="top">
+			    <span v-html="tooltip"></span>
+			</b-tooltip>
 			<span>
 				<span v-if="!open">+</span>
 				<span v-else>-</span>
@@ -32,8 +35,10 @@
 
 <script>
 	import VueFooCell from './VueFooCell.vue'
+	import {v4 as uuid} from 'uuid';
+
 	export default{
-		props:["index","row","breakpoints","stickyCols","alignments","value","select","pretty","selectPosition","hideRowToggle","expanded","classes"],
+		props:["index","row","tooltip","breakpoints","stickyCols","alignments","value","select","pretty","selectPosition","hideRowToggle","expanded","classes"],
 		components: {
 		    VueFooCell,
 		},
@@ -42,6 +47,7 @@
 				triggered:null,
 				hiddenCells:[],
 				selected:false,
+				uuid:uuid()
 			}
 		},
 

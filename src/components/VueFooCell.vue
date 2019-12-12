@@ -1,6 +1,9 @@
 <template>
 
-	<td v-show="cell && show" :class="classesParsed">
+	<td v-show="cell && show" :class="classesParsed" :id="uuid">
+		<b-tooltip :target="uuid" triggers="hover" v-if="cell.tooltip" placement ="left">
+			    <span v-html="cell.tooltip"></span>
+			</b-tooltip>
 			<div class="breakpoints">
                 <div ref="xs"></div>
                 <div ref="sm" class="d-none d-sm-block"></div>
@@ -13,6 +16,9 @@
 </template>
 
 <script>
+	
+	import {v4 as uuid} from 'uuid';
+
 	export default{
 		props:[
 			"cell",
@@ -26,6 +32,7 @@
 		data(){
 			return {
 				hidden:null,
+				uuid:uuid()
 			}
 		},
 		computed:{

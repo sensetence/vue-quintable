@@ -192,7 +192,9 @@ export default {
 	         		name:"UND",
 	         		company:true,
 	         		names:"Matt"
-	         	}
+	         	},
+	         	tooltip:"HAHAHAHA"
+
 		      },
 		      {
 		          cells:[{html:"LOL 1"},{html:"LOL 2"},{html:"LOL 3"},{html:"LOL 4"},{html:"LOL 5"},{html:"LOL 6"}],
@@ -203,7 +205,7 @@ export default {
 	         	}
 		      },
 		      [ 
-		         {html:"WOW 1"},{html:"WOW 2"},{html:"WOW 3"},{html:"WOW 4"},{html:"WOW 5"},{html:"WOW 6"}
+		         {html:"WOW 1",tooltip:"HAHAHAHA"},{html:"WOW 2"},{html:"WOW 3"},{html:"WOW 4"},{html:"WOW 5"},{html:"WOW 6"}
 		      ],
 		      [ 
 		         {html:"WOW 1"},{html:"WOW 2"},{html:"WOW 3"},{html:"WOW 4"},{html:"WOW 5"},{html:"WOW 6"}
