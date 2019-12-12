@@ -1,5 +1,5 @@
 <template>
-	<tr @click="onToggleShow" :class="classesParsed">
+	<tr @click="onToggleShow" :class="classesParsed" @mouseover="onMouseenter(index)" @mouseleave="onMouseleave(index)">
 		<td class="toggle" v-show="hiddenCells.length && !hideRowToggle">
 			<span>
 				<span v-if="!open">+</span>
@@ -84,6 +84,12 @@
 		},
 
 		methods:{
+			onMouseenter(e){
+				this.$emit("mouseenter",e);
+			},
+			onMouseleave(e){
+				this.$emit("mouseleave",e);
+			},
 			onToggleCell(cellIndex,cell,hidden){
 				
 				if(hidden && hidden !== "sticky"){

@@ -20,6 +20,7 @@ import 'vue-select/dist/vue-select.css';
 import { 
 	faCheck,
 	faSort,
+	faTimes,
 	faSortAmountDownAlt,
 	faSortAmountDown,
 	faAngleRight,
@@ -31,6 +32,7 @@ import {
 
 
 library.add(faCheck)
+library.add(faTimes)
 library.add(faSort)
 library.add(faSortAmountDownAlt)
 library.add(faSortAmountDown)

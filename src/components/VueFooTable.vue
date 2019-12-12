@@ -27,15 +27,22 @@
 					<th v-for="(headline,hIndex) in configFinal.headlines" v-show="visibleColumns[hIndex]" :class="headerClass[hIndex]" :title="'headline-'+hIndex" :key="'headline-'+hIndex" @click="setSortColumn(hIndex)">
 						<span class="headline" v-html="headline"></span> 
 						<span class="sorting-icon ml-2" v-show="configFinal.sorts[hIndex]">
-							<font-awesome-icon v-show="currentSortIndex != hIndex" icon="sort" class="text-primary" />
-							<font-awesome-icon v-show="currentSortIndex == hIndex && sortAscending" icon="sort-amount-down-alt" class="text-primary" />
-							<font-awesome-icon v-show="currentSortIndex == hIndex && !sortAscending" icon="sort-amount-down" class="text-primary" />
+							<font-awesome-icon v-show="!currentSortIndexes[hIndex]" icon="sort" class="text-primary" />
+							<font-awesome-icon v-show="currentSortIndexes[hIndex] && currentSortIndexes[hIndex].asc" icon="sort-amount-down-alt" class="text-primary" />
+							<font-awesome-icon v-show="currentSortIndexes[hIndex] && !currentSortIndexes[hIndex].asc" icon="sort-amount-down" class="text-primary" />
+							<span v-if="currentSortIndexes[hIndex]" @click.stop.prevent="removeSort(hIndex)" class="ml-1 text-muted">
+								<span class="badge bg-info text-white" v-if="numberOfSorts>1" >
+									{{currentSortIndexes[hIndex].order+1}}
+								</span>
+								<small v-else>
+									<font-awesome-icon icon="times"/>
+								</small>
+							</span>
 						</span>
-						
 					</th>
 					<th v-if="configFinal.select && configFinal.selectPosition == 'post'">
 						<template v-if="configFinal.selectAll">
-							<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelected"  @change="checkAll()">
+							<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelected" @change="checkAll()">
 								<template slot="extra" >
 									<span><font-awesome-icon v-show="allSelected" icon="check" class="text-success icon-check" /></span>
 								</template>
@@ -53,6 +60,7 @@
 							:selectPosition="configFinal.selectPosition" 
 							:select="configFinal.select" 
 							:index="rIndex" 
+							:ref="'row-highlighted-on-hover-'+rIndex"
 							:classes="rowsFinal[rIndex].classes"
 							:hideRowToggle="configFinal.hideRowToggle" 
 							:breakpoints="configFinal.breakpoints" 
@@ -63,10 +71,15 @@
 							@toggleSelect="checkListener" 
 							@updateBreakpoints="generateRowsForCells" 
 							@toggle="onToggleRow" 
+							@mouseenter="onMouseenterRow"
+							@mouseleave="onMouseleaveRow"
 							v-model="selected[index]"
 							v-show="visibleRows[rIndex]" />
 						<template v-if="(generatedRows[rIndex] || stickyRows[rIndex]) && visibleRows[rIndex]">
 							<tr 
+								@mouseenter="onMouseenterRow(rIndex)"
+								@mouseleave="onMouseleaveRow(rIndex)"
+								:ref="'generated-row-highlighted-on-hover-'+rIndex"
 								:key="'generated-row-'+rIndex"
 								class="generated-row" 
 								v-show=
@@ -164,6 +177,7 @@ import VueFooRow from "./VueFooRow.vue"
 import VueFooCell from "./VueFooCell.vue"
 
 import fuzzy from "fuzzy.js";
+import {firstBy} from "thenby";
 import axios from 'axios'
 
 export default {
@@ -194,6 +208,7 @@ export default {
   },
   data(){
   	return {
+  		hoveredRow:null,
   		allSelected:false,
   		selected:[],
   		stickyRows:{},
@@ -202,19 +217,38 @@ export default {
   		visibleColumns:{},
   		sortedIndexes:{},
   		hasGeneratedRows:false,
-  		currentSortIndex:null,
+  		currentSortIndexes:{},
   		sortAscending:true,
   		query:"",
       	currentPage:1,
-      	customRowsPerPage:null,
       	paginationOptions:[1,2,3,4,5,6,7,8,9,10,15,20,25,30,50,100],
       	fetching:false,
       	ajaxRows:[],
       	ajaxPages:0,
       	ajaxAll:0,
+      	customRowsPerPage:null,
+      	customMultiSort:null,
   	}
   },
   computed:{
+
+  	numberOfSorts(){
+  		return Object.keys(this.currentSortIndexes).length;
+  	},
+
+  	multiSort:{
+  		get(){
+	  		if(!this.customMultiSort){
+	  			return this.configFinal.multiSort;
+	  		}
+	  		return this.customMultiSort;
+
+  		},
+  		set(val){
+			this.customMultiSort = val;
+  		}
+
+  	},
 
   	rowsFinal(){
   		return this.configFinal.ajaxUrl?this.ajaxRows:this.rows;
@@ -238,6 +272,17 @@ export default {
   		return options;
   	},
 
+  	sortingColumns(){
+  		let columns = {};
+
+  		for(let index in this.currentSortIndexes){
+  			columns[index] = this.configFinal.columns[index];
+  		}
+
+  		return columns
+
+  	},
+
   	configFinal(){
 
   		let pagination = false;
@@ -255,6 +300,18 @@ export default {
   		let select = false;
   		if(this.config.select){
   			select = true;
+  		}
+
+  		let highlightHover = "rgba(0,0,0,0.1)";
+  		if(this.config.highlightHover === false){
+  			highlightHover = false;
+  		}else if(this.config.highlightHover && this.config.highlightHover !== true){
+  			highlightHover = this.config.highlightHover
+  		}
+
+  		let multiSort = false;
+  		if(this.config.multiSort){
+  			multiSort = true;
   		}
 
   		let ajaxUrl = false;
@@ -384,6 +441,7 @@ export default {
   		return{
   			headlines:headlines,
   			sorts:sorts,
+  			multiSort:multiSort,
   			filterGroupRelation:filterGroupRelation,
   			filterRelation:filterRelation,
         	rowsSelect:rowsSelect,
@@ -399,6 +457,7 @@ export default {
   			pagination:pagination,
   			select:select,
   			selectAll:selectAll,
+  			highlightHover:highlightHover,
   			expandedAll:expandedAll,
   			pageRange:pageRange,
   			prettySelect:prettySelect,
@@ -421,7 +480,7 @@ export default {
 			if(this.configFinal.sorts[i]){
 				iClasses.push("sort-header");
 
-				if(this.currentSortIndex === i){
+				if(this.currentSortIndexes[i]){
 					iClasses.push("active")
 				}
 			}
@@ -650,6 +709,20 @@ export default {
   },
 
   watch:{
+
+  	hoveredRow(val,old){
+
+  		if(old !== null){
+	  		this.$refs['row-highlighted-on-hover-'+old][0].$el.style.background = "none";
+	  		this.$refs['generated-row-highlighted-on-hover-'+old][0].style.background = "none";
+  		}
+
+  		if(val !== null){
+	  		this.$refs['row-highlighted-on-hover-'+val][0].$el.style.background = this.configFinal.highlightHover;
+	  		this.$refs['generated-row-highlighted-on-hover-'+val][0].style.background = this.configFinal.highlightHover;
+	  	}
+  	},
+
   	filters:{
     	handler(){
 
@@ -688,9 +761,9 @@ export default {
  		this.resetSelect();
     },
     
-  	currentSortIndex(){
-  		this.sortAscending = true;
-  	},
+  	// currentSortIndexes(){
+  	// 	this.sortAscending = true;
+  	// },
 
   	sortAscending(){
   		this.sort();
@@ -729,6 +802,36 @@ export default {
  
   },
   methods:{
+  	onMouseenterRow(index){
+  		console.log(index);
+  		this.hoveredRow = index;
+  	},
+
+  	onMouseleaveRow(){
+  		this.hoveredRow = null;
+  	},
+
+  	removeSort(index){
+
+  		for(var i in this.currentSortIndexes){
+  			let item = this.currentSortIndexes[i];
+  			if(item.order > this.currentSortIndexes[index].order){
+  				item.order--;
+  			}
+  			this.$set(this.currentSortIndexes,i,item);
+  		}
+  		this.$delete(this.currentSortIndexes,index);
+
+
+  		if(this.numberOfSorts === 0){
+
+	 		for(let i = 0 ; i<this.rowsFinal.length;i++) {
+	  			this.sortedIndexes[i] = i;
+		 	}
+  		}else{
+  			this.sort();
+  		}
+  	},
 
   	checkAll: function(){
 
@@ -974,9 +1077,9 @@ export default {
     },
 
 
-  	toggleSortDir(){
-  		this.sortAscending = !this.sortAscending;
-  	},
+  	// toggleSortDir(){
+  	// 	this.sortAscending = !this.sortAscending;
+  	// },
 
   	setSortColumn(index){
 
@@ -984,51 +1087,76 @@ export default {
   			return;
   		}
 
-  		if(this.currentSortIndex !== index){
-  			if(this.sortAscending){
-				this.currentSortIndex = index;
-				this.sort();
-  			}else{
-  				this.currentSortIndex = index;
+  		let item;
+
+  		if(!this.currentSortIndexes[index]){
+
+  			item = {
+  				index:index,
+  				asc:true,
+  				order:this.numberOfSorts,
+  			};
+
+  			if(!this.multiSort){
+  				this.currentSortIndexes  = {};
   			}
   		}else{
-  			this.toggleSortDir();
+
+  			item = this.currentSortIndexes[index];
+  			item.asc = !item.asc;
   		}
+
+  		this.$set(this.currentSortIndexes,index,item);
+  		this.sort();
+
 
   	},
 
   	sort(){
+
 
   		if(this.configFinal.ajaxUrl){
   			this.loadViaAjax(true);
   			return;
   		}
 
-  		let index = this.currentSortIndex;
-  		let asc = this.sortAscending;
+  		let rows = this.rowsFinal.slice();
 
-  	 	let rows = this.rowsFinal.slice();
-
-
-  	 	for(let i = 0 ; i<rows.length;i++) {
+  		for(let i = 0 ; i<rows.length;i++) {
 			rows[i].index = i;
 		}
 
-		function compare(a, b) {
+  		let sortStack;
 
-			let cellsA = a.cells?a.cells:a;
-			let cellsB = b.cells?b.cells:b;
+  		let counter = 0;
+
+  		for (let index in this.currentSortIndexes) {
+  			
+			var compare = (a, b) => {
+
+				let cellsA = a.cells?a.cells:a;
+				let cellsB = b.cells?b.cells:b;
 
 
-			let aValue = cellsA[index].sortValue?cellsA[index].sortValue:cellsA[index].html;
-		  	let bValue = cellsB[index].sortValue?cellsB[index].sortValue:cellsB[index].html;
+				let aValue = cellsA[index].sortValue?cellsA[index].sortValue:cellsA[index].html;
+			  	let bValue = cellsB[index].sortValue?cellsB[index].sortValue:cellsB[index].html;
 
-			if(asc){
-			  return aValue > bValue?1:-1;
+				if(this.currentSortIndexes[index].asc){
+				  return aValue > bValue?1:-1;
+				}
+			  	return aValue < bValue?1:-1;
+			};
+
+			if(counter === 0){
+				sortStack = firstBy(compare);
+			}else{
+				sortStack = sortStack.thenBy(compare);
 			}
-		  	return aValue < bValue?1:-1;
-		}
 
+			counter++;
+  		}
+
+  		
 		rows.sort(compare);
 
 		for(let i = 0 ; i<rows.length;i++) {
@@ -1164,10 +1292,10 @@ export default {
   			filters:this.filters,
   			perPage:this.currentRowsPerPage,
   			page:this.currentPage,
-  			sort:this.currentSortIndex?{
+  			sort:this.numberOfSorts>0?{
   				asc:this.sortAscending,
-  				index:this.currentSortIndex,
-  				column:this.configFinal.columns[this.currentSortIndex],
+  				indexes:this.currentSortIndexes,
+  				columns:this.sortingColumns,
   			}:null
 
   		};
@@ -1203,6 +1331,7 @@ export default {
 		left: 50%;
 		transform: translateX(-50%) translateY(-50%);
 	}
+
 </style>
 
 <style scoped>

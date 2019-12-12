@@ -109,6 +109,8 @@ export default {
 		         	align:"right",
 		         }
 		      ],
+		      //Boolean if rows should be highlighted on hover
+		      highlightHover:true,
 		      //Number or false/true, default false, if true => 25
 		      pagination:5,
 		      //Boolean if cells can be selected
@@ -141,8 +143,10 @@ export default {
 		      filterRelation:"OR",
 		       //String ["AND"/"OR"] default relation filter groups to each other
 		      filterGroupRelation:"OR",
+		      //Boolean if multi-key sorting is enabled in case that more than one column has a sort flag
+		      multiSort:false,
 		      //String/Boolean search/filter/sort/pagination per ajax
-		      ajaxUrl:"http://192.168.188.56/test/data.php",
+		      // ajaxUrl:"http://192.168.188.56/test/data.php",
 		     
 		    
 			},
