@@ -25,6 +25,7 @@
 			"index",
 			"breakpoint",
 			"align",
+			"classes",
 			"sticky",
 			"generated",
 		
@@ -37,7 +38,7 @@
 		},
 		computed:{
 			classesParsed(){
-				let classes = [];
+				let classes = this.classes?this.classes.split(" "):[];
 				if( (this.align || this.cell.align) && !this.generated){
 					if(this.cell.align){
 						classes.push ("text-"+ this.cell.align);

@@ -5,10 +5,8 @@
 			<slot name="header"></slot>
 		</div>
 
-		<div v-if="configFinal.search" class="text-right">
-			<span class="text-left">
-				<input type="search" :placeholder="configFinal.searchPlaceholder" v-model="query" class="form-control">
-			</span>
+		<div v-if="configFinal.search" class="mb-3">
+			<input type="search" :placeholder="configFinal.searchPlaceholder" v-model="query" class="form-control">
 		</div>		
 		<table class="vue-foo-table table" v-show="!ajaxLoading">
 			<thead v-if="configFinal.headlines.length">
@@ -100,7 +98,7 @@
 													<strong v-html="configFinal.headlines[cIndex]">
 													</strong>
 												</td>
-												<VueFooCell :cell="generatedRows[rIndex][cIndex]" :generated="true" />
+												<VueFooCell :cell="generatedRows[rIndex][cIndex]" :generated="true" classes="text-right" />
 											</tr>
 											<tr v-for="(cell,cIndex) in stickyRows[rIndex]" :key="'sticky-row-cell-'+rIndex+'-'+cIndex">
 												<td><strong v-html="configFinal.headlines[cIndex]"></strong></td>
@@ -1338,10 +1336,17 @@ export default {
 		background:rgba(0,0,0,0.1);
 	}
 
+	.table-wrapper .pretty{
+		background:#fff;
+	}
+
 </style>
 
 <style scoped>
-	
+
+	.table th{
+		border-top: none;
+	}
 
 	.pretty{
 		margin-right: 0 !important;
@@ -1366,6 +1371,14 @@ export default {
 
 	.ajax-loader{
 		font-size: 3em;
+	}
+
+	.generated-row{
+		background:rgba(255,255,0,0.1);
+	}
+
+	.generated-row table tr:first-child td{
+		border-top:none;
 	}
 
 </style>

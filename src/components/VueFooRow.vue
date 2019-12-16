@@ -9,7 +9,7 @@
 				<span v-else>-</span>
 			</span>
 		</td>
-		<td v-if="select && selectPosition == 'pre'">
+		<td v-if="select && selectPosition === 'pre'">
 
 			<p-check v-if="pretty" name="check" class="p-icon" v-model="selected" @change="selectRow">
 				<template slot="extra" >
@@ -21,7 +21,7 @@
 		
 			<VueFooCell v-for="(cell, cIndex) in row" :key="'cell-'+index+'-'+cIndex" :index="cIndex" :align="alignments[cIndex]" :sticky="stickyCols[cIndex]" :cell="cell" @toggle="onToggleCell" :breakpoint="breakpoints[cIndex]" />
 
-		<td v-if="select && selectPosition == 'post'">
+		<td v-if="select && selectPosition === 'post'">
 
 			<p-check v-if="pretty" name="check" class="p-icon" v-model="selected" @change="selectRow">
 				<template slot="extra" >
@@ -54,7 +54,7 @@
 		computed:{
 			open:{
 				get(){
-					if(this.triggered == null && (this.expanded || this.row.expanded)){
+					if(this.triggered === null && (this.expanded || this.row.expanded)){
 						return true;
 					}
 					return this.triggered;
@@ -113,8 +113,9 @@
 				this.$emit("toggleSelect",this.selected,this.index);
 				this.$emit("input",this.selected);
 			},
-			onToggleShow(){
-				if(!this.hiddenCells.length){
+			onToggleShow(e){
+			
+				if(!this.hiddenCells.length || e.target.type === "checkbox"){
 					return;
 				}
 				this.open = !this.open;

@@ -4,7 +4,7 @@
   		<div class="row">
   			<div class="col-12">
   				<h1 class="mb-4">
-  					Foo Table Demo
+  					Vue Foo Table Demo
   				</h1>
   			</div>
   		</div>
@@ -151,7 +151,7 @@ export default {
 		      //Integer displayed page range of pagination
 		      pageRange:5,
 		      //Boolean show plus for row toggle or not
-		      hideRowToggle:false,
+		      hideRowToggle:true,
 		      //Integer minimum length of query that triggers search
 		      searchLength:1,
 		      //String Placeholder for search input
@@ -211,7 +211,7 @@ export default {
 		      { 
 		      	cells:[
 		         {html:1,sortValue:"Mist 1"},{html:"Mist 2"},{html:"Mist 3"},{html:"Mist 4"},{html:"Mist 5"},{html:"Mist 6"}],
-		         classes:"tester",
+		         classes:"bg-danger",
 		         //Custom filter values
 	         	filters:{
 	         		name:"UND",
