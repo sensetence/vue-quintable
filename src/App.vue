@@ -1,28 +1,52 @@
 <template>
   <div id="app">
-  	<div>
-  	<label>Name: </label>
-  	<select v-model="name">
-  		<option>NICHTS</option>
-  		<option>TEST</option>
-  		<option>JA</option>
-  		<option>UND</option>
-  	</select>
-  	</div>
-  	<div>
-  	<label>Active: <input type="checkbox" v-model="active" value="true"></label>
-  	</div>
-  	<div>
-  	<label>Company: <input type="checkbox" v-model="company" value="true"></label>
-	
-	<label>Multiple Filter [names:ole,matt]: <input type="checkbox" v-model="filtering" value="true"></label>
+  	<div class="container py-5">
+  		<div class="row">
+  			<div class="col-12">
+  				<h1 class="mb-4">
+  					Foo Table Demo
+  				</h1>
+  			</div>
+  		</div>
+  		<div class="row">
+  			<div class="col-12">
+  				
+			
+			    <VueFooTable v-model="selectedRows" :filters="filters" :config="config" :rows="rows" key="table-3">
+			    	<template v-slot:header>
+			    		<div class="clearfix">
+					  	<label>Name: </label>
+						  	<select v-model="name" class="form-control">
+						  		<option>NICHTS</option>
+						  		<option>TEST</option>
+						  		<option>JA</option>
+						  		<option>UND</option>
+						  	</select>
+						</div>
+					  	<div class="clearfix py-2">
+					  		<p-check class="p-switch" v-model="active" value="true">Active</p-check>
+					  	</div>
+					  	<div class="clearfix py-2">
+					  		<p-check class="p-switch" v-model="company" value="true">Company</p-check>
+					  	</div>
+					  	<div class="clearfix py-2">
+					  		<p-check class="p-switch" v-model="filtering" value="true">Multiple Filter [names:ole,matt]</p-check>
+					  	</div>
+					  	<hr>
 
+			    	</template>
+			    	<template v-slot:footer>
+			    		<div class="text-center py-3 mt-3 bg-info text-white">
+			    			Copyright © 2019 by Quintet Consulting UG (haftungsbeschränkt)
+			    		</div>
+			    	</template>
+			    </VueFooTable>
+			    <!-- <VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" /> -->
+  			</div>
+  		</div>
   	</div>
-    <VueFooTable v-model="selectedRows" :filters="filters" :config="config" :rows="rows" key="table-3">
-    	<template v-slot:footer>TEST</template>
-    </VueFooTable>
-    <!-- <VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" /> -->
   </div>
+
 </template>
 
 <script>
@@ -109,8 +133,9 @@ export default {
 		         	align:"right",
 		         }
 		      ],
-		      //Boolean if rows should be highlighted on hover
-		      highlightHover:true,
+
+		      //Boolean String of class rows are set to on hover, default class bg-muted
+		      hoverClass:"bg-success text-white",	
 		      //Number or false/true, default false, if true => 25
 		      pagination:5,
 		      //Boolean if cells can be selected

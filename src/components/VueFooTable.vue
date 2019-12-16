@@ -61,7 +61,7 @@
 							:select="configFinal.select" 
 							:index="rIndex" 
 							:ref="'row-highlighted-on-hover-'+rIndex"
-							:classes="rowsFinal[rIndex].classes"
+							:classes="(rowsFinal[rIndex].classes?rowsFinal[rIndex].classes:'') + ' ' +hoverClasses[rIndex]"
 							:hideRowToggle="configFinal.hideRowToggle" 
 							:breakpoints="configFinal.breakpoints" 
 							:stickyCols="configFinal.stickyCols"
@@ -83,13 +83,14 @@
 								:ref="'generated-row-highlighted-on-hover-'+rIndex"
 								:key="'generated-row-'+rIndex"
 								class="generated-row" 
+								:class="hoverClasses[rIndex]"
 								v-show=
 									"openRows[rIndex] 
 									&& Object.keys(generatedRows[rIndex]).length 
 									|| Object.keys(stickyRows[rIndex]).length">
 								
 								<td :colspan="configFinal.number+1">
-									<table class="table">
+									<table class="table" :class="hoverClasses[rIndex]">
 										<tbody>
 											<tr 
 												:key="'generated-row-cell-'+rIndex+'-'+cIndex" 
@@ -303,11 +304,11 @@ export default {
   			select = true;
   		}
 
-  		let highlightHover = "rgba(0,0,0,0.1)";
-  		if(this.config.highlightHover === false){
-  			highlightHover = false;
-  		}else if(this.config.highlightHover && this.config.highlightHover !== true){
-  			highlightHover = this.config.highlightHover
+  		let hoverClass = "bg-muted";
+  		if(this.config.hoverClass === false){
+  			hoverClass = false;
+  		}else if(this.config.hoverClass && this.config.hoverClass !== true){
+  			hoverClass = this.config.hoverClass
   		}
 
   		let multiSort = false;
@@ -458,7 +459,7 @@ export default {
   			pagination:pagination,
   			select:select,
   			selectAll:selectAll,
-  			highlightHover:highlightHover,
+  			hoverClass:hoverClass,
   			expandedAll:expandedAll,
   			pageRange:pageRange,
   			prettySelect:prettySelect,
@@ -705,25 +706,26 @@ export default {
   	},
   	ajaxLoading(){
   		return this.loading || this.fetching;
+  	},
+  	hoverClasses(){
+
+  		let classes = [];
+
+  		for (let i = 0; i<this.rowsFinal.length; i++){
+  			if(!this.configFinal.hoverClass || i !== this.hoveredRow){
+  				classes.push("");
+  			}else{
+  				classes.push(this.configFinal.hoverClass);
+  			}
+
+  		}
+
+  		return classes;
   	}
 
   },
 
   watch:{
-
-  	hoveredRow(val,old){
-
-  		if(old !== null){
-	  		this.$refs['row-highlighted-on-hover-'+old][0].$el.style.background = "none";
-	  		this.$refs['generated-row-highlighted-on-hover-'+old][0].style.background = "none";
-  		}
-
-  		if(val !== null){
-	  		this.$refs['row-highlighted-on-hover-'+val][0].$el.style.background = this.configFinal.highlightHover;
-	  		this.$refs['generated-row-highlighted-on-hover-'+val][0].style.background = this.configFinal.highlightHover;
-	  	}
-  	},
-
   	filters:{
     	handler(){
 
@@ -1330,6 +1332,10 @@ export default {
 		top: 50%;
 		left: 50%;
 		transform: translateX(-50%) translateY(-50%);
+	}
+
+	.table-wrapper .bg-muted{
+		background:rgba(0,0,0,0.1);
 	}
 
 </style>
