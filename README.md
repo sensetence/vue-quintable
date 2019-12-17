@@ -1,18 +1,30 @@
 # foo-table
 
-## Project setup
-```
-npm install
+## Slots
+
+- header
+- footer
+- no-results
+- loading
+
+```html
+<template v-slot:header>HEADER</template>
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### Events
 
-### Compiles and minifies for production
+- click:row | passing row 
+- click:cell | passing cell
+- expand:row | passing row 
+- collapse:row | passing row 
+- update:perPage | passing integer
+- update:page | passing integer
+- update:search | passing string
+- update:sort | passing object of sort group
+
+### v-model
 ```
-npm run build
+rows that are selected
 ```
 
 ### Run your tests

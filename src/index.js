@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { 
 	faCheck,
 	faSort,
+	faSquare,
 	faTimes,
 	faSortAmountDownAlt,
 	faSortAmountDown,
@@ -27,6 +28,7 @@ import {
 library.add(faCheck)
 library.add(faTimes)
 library.add(faSort)
+library.add(faSquare)
 library.add(faSortAmountDownAlt)
 library.add(faSortAmountDown)
 library.add(faAngleDoubleRight)

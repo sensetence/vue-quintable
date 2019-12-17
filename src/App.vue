@@ -12,7 +12,7 @@
   			<div class="col-12">
   				
 			
-			    <VueFooTable v-model="selectedRows" :filters="filters" :config="config" :rows="rows" key="table-3">
+			    <VueFooTable v-model="selectedRows" :filterGroups="filterGroups" :filters="filters" :config="config" :rows="rows" key="table-3">
 			    	<template v-slot:header>
 			    		<div class="clearfix">
 					  	<label>Name: </label>
@@ -40,8 +40,16 @@
 			    			Copyright © 2019 by Quintet Consulting UG (haftungsbeschränkt)
 			    		</div>
 			    	</template>
+			    	<template v-slot:no-results>
+			    		<div class="text-center">TEST</div>
+			    	</template>
+			    	
 			    </VueFooTable>
-			    <!-- <VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" /> -->
+			    <VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" >
+			    	<template v-slot:loading>
+			    		<div class="text-center">JOJOJO</div>
+			    	</template>
+			    </VueFooTable>
   			</div>
   		</div>
   	</div>
@@ -87,7 +95,11 @@ export default {
 						relation:"OR",
 					},
 					{
-						name:"company"
+						items:[
+							{
+								name:"company"
+							}
+						],
 					}
 				],
 				relation:"AND"
@@ -98,6 +110,13 @@ export default {
 					{name:"active"}
 				],
 				relation:"AND"
+			},
+			{
+				items:[
+					{
+						name:"names"
+					}
+				],
 			}
 		],
 		//Object Table config

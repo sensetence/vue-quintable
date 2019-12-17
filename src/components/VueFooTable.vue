@@ -14,12 +14,13 @@
 					<th class="placeholder" v-if="hasGeneratedRows && !configFinal.hideRowToggle">&nbsp;</th>
 					<th v-if="configFinal.select &&  configFinal.selectPosition == 'pre'">
 						<template v-if="configFinal.selectAll">
-						<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelected" @change="checkAll()">
-							<template slot="extra" >
-								<span><font-awesome-icon v-show="allSelected" icon="check" class="text-success icon-check" /></span>
-							</template>
-						</p-check>
-						<input v-else type="checkbox" v-model="allSelected"  @change="checkAll()">
+							<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelected" @change="checkAll()">
+								<template slot="extra" >
+									<span><font-awesome-icon v-show="allSelected" icon="check" class="text-success icon-check" /></span>
+									<span><font-awesome-icon v-show="someSelected && !allSelected" icon="square" class="text-success icon-check" /></span>
+								</template>
+							</p-check>
+							<input v-else type="checkbox" v-model="allSelected"  @change="checkAll()">
 						</template>
 					</th>
 					<th v-for="(headline,hIndex) in configFinal.headlines" v-show="visibleColumns[hIndex]" :class="headerClass[hIndex]" :title="'headline-'+hIndex" :key="'headline-'+hIndex" @click="setSortColumn(hIndex)">
@@ -43,6 +44,7 @@
 							<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelected" @change="checkAll()">
 								<template slot="extra" >
 									<span><font-awesome-icon v-show="allSelected" icon="check" class="text-success icon-check" /></span>
+									<span><font-awesome-icon v-show="someSelected && !allSelected" icon="square" class="text-success icon-check" /></span>
 								</template>
 							</p-check>
 							<input v-else type="checkbox" v-model="allSelected"  @click="checkAll()">
@@ -115,7 +117,28 @@
 		</table>
 		
 		
-		<div class="clearfix">
+	
+
+			<template v-if="noRows && !ajaxLoading">
+				<div class="clearfix">
+					<slot name="no-results">
+					   <div class="text-center p-3">
+					   		<em v-html="configFinal.emptyPlaceholder"></em>
+					   </div>
+					</slot>
+				   <hr>
+				</div>
+			</template>
+			<div v-if="ajaxLoading">
+				<slot name="loading">
+					
+						<div  class="loader text-center py-4" >
+							<font-awesome-icon icon="circle-notch" spin class="ajax-loader" />
+						</div>
+				</slot>
+			</div>
+
+				<div class="clearfix">
 
 			<div class="float-right mr-3 pagination-container" v-if="configFinal.pagination" v-show="!ajaxLoading">
 				<span class="d-inline-block align-middle mr-2" v-if="configFinal.rowsSelect" v-html="configFinal.rowsPlaceholder"></span> <v-select v-if="configFinal.rowsSelect" class="d-inline-block align-middle"  :options="paginationOptionsFilled" v-model="currentRowsPerPage" :clearable="false" />
@@ -153,14 +176,6 @@
 				</nav>
 
 				<span class="d-inline-block align-middle ml-3">{{firstVisibleRow}}-{{lastVisibleRow}} of {{onlyVisibleRows.length}}</span>
-			</div>
-
-			<template v-if="noRows && !ajaxLoading">
-				   <div class="text-center p-3"><em v-html="configFinal.emptyPlaceholder"></em></div>
-				   <hr>
-			</template>
-			<div class="loader text-center py-4" v-if="ajaxLoading">
-				<font-awesome-icon icon="circle-notch" spin class="ajax-loader" />
 			</div>
 		</div>
 
@@ -231,6 +246,15 @@ export default {
   	}
   },
   computed:{
+
+  	someSelected(){
+  		for (let i = 0; i<this.selected.length;i++){
+  			if(this.selected[i]){
+  				return true;
+  			}
+  		}
+  		return false;
+  	},
 
   	numberOfSorts(){
   		return Object.keys(this.currentSortIndexes).length;
@@ -534,6 +558,22 @@ export default {
 	    });
     },
 
+    onlyVisiblePagedRows(){
+
+    	if(this.configFinal.ajaxUrl){
+    		let rows = [];
+    		for (let i = 0;i<this.ajaxAll; i++){
+    			rows.push(true);
+    		}
+    		return rows; 
+    	}
+
+ 		return this.visibleRows.filter((item)=>{
+	       return item;
+	    });
+    },
+
+
     visiblePages(){
 
       let pages = [];
@@ -778,20 +818,26 @@ export default {
 	  	this.initLists();
   	},
   
-  	selected(){
+  	selected(val){
+  		console.log("SELECTED:",val);
 
   		let selected = [];
 
   		for (let index in this.sortedIndexes){
-  			if(this.selected[index]){
+  			if(val[index]){
   				selected.push(this.rowsFinal[this.sortedIndexes[index]]);
   			}
   		}
 
+  		if(selected.length === this.onlyVisiblePagedRows.length){
+  			this.allSelected = true;
+  		}
+		
 		this.$emit("input",selected);
+
 	},
 
-	 currentPage(){
+	currentPage(){
 
 	 	if(this.configFinal.ajaxUrl){
 	 		this.loadViaAjax();
@@ -981,15 +1027,12 @@ export default {
 	  				}
 	  			}
 
-  		console.log(spaces,"FOUND:",found);
-
   			}
 
   		}
-  		console.log("FOUND:",found);
   		return found
 
-  	}else if(group.relation === "OR"){
+  	}else if(group.relation === "OR" || group.items){
   		for(let key in filters){
 
   			if(this.filterGroups && !this.findInFilterGroups(key,this.filterGroups)){
@@ -1005,7 +1048,7 @@ export default {
 	  					break;
 	  				}
   				}
-  				
+
   				//actual checking for matching
   				if(typeof filters[item.name] === "object" && filters[item.name].length && filters[item.name].indexOf(filterValues[item.name]) !== -1){
   					found =  true;
@@ -1274,7 +1317,7 @@ export default {
   	resetSelect(){
   		this.allSelected = false;
   		for(let i = 0 ; i<this.rowsFinal.length;i++) {
-  			this.selected[i] = false;
+  			this.$set(this.selected,i,false);
 	 	}
   	},
   	loadViaAjax(clear = false){
@@ -1354,9 +1397,18 @@ export default {
 
 	.sort-header{
 	  cursor: pointer;
-	  padding-right: 30px !important;
 	  position: relative;
 	}
+
+	.sort-header:hover{
+		padding-right: 20px !important;
+	}
+
+	.sort-header.active{
+		padding-right: 40px !important;
+	}
+
+
 	.sort-header .sorting-icon {
 		position: absolute;
 		right: 5px;
