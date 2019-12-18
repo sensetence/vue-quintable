@@ -1,16 +1,9 @@
 <template>
 
-	<td v-show="cell && show" :class="classesParsed" :id="uuid">
+	<td v-show="cell && show" :class="classesParsed" :id="uuid" @click="onClick">
 		<b-tooltip :target="uuid" triggers="hover" v-if="cell.tooltip" placement ="left">
 			    <span v-html="cell.tooltip"></span>
 			</b-tooltip>
-			<div class="breakpoints">
-                <div ref="xs"></div>
-                <div ref="sm" class="d-none d-sm-block"></div>
-                <div ref="md" class="d-none d-md-block"></div>
-                <div ref="lg" class="d-none d-lg-block"></div>
-                <div ref="xl" class="d-none d-xl-block"></div>
-            </div>
            <div class="cell-inner" v-html="cell.html"></div>
 	</td>
 </template>
@@ -28,6 +21,7 @@
 			"classes",
 			"sticky",
 			"generated",
+			"hiddenBreakpoints",
 		
 		],
 		data(){
@@ -60,33 +54,22 @@
 		},
 		watch:{
 			hidden(val){
-				this.$emit("toggle",this.index,this.cell,val);
+				if(this.index !== undefined){
+					this.$emit("toggle",this.index,this.cell,val);
+				}
+			},
+			hiddenBreakpoints:{
+				handler(){
+					this.checkBreakpoints();
+				},
+				depp:true
 			}
 		},
 		methods:{
 
-			breakpoints() {
-
-				let breakpoints = [];
-		        if (!this.isVisible(this.$refs.xl)) {
-		            breakpoints.push("xl");
-		        }     
-
-		        if (!this.isVisible(this.$refs.lg)) {
-		            breakpoints.push("lg");
-		        }
-
-		        if (!this.isVisible(this.$refs.md)) {
-		            breakpoints.push("md");
-		        }
-
-		        if (!this.isVisible(this.$refs.sm)) {
-		            breakpoints.push("sm");
-		        }
-
-		        return breakpoints;
-
-		    },
+			onClick(){
+				this.$emit("click",this.cell);
+			},
 
 		  	checkBreakpoints(){
 		  		if(this.sticky){
@@ -99,24 +82,12 @@
 		  			return;
 		  		}
 
-		  		this.hidden = this.breakpoints().indexOf(this.breakpoint) !== -1;
+		  		this.hidden = this.hiddenBreakpoints.indexOf(this.breakpoint) !== -1;
 		  	},
-		    isVisible(el) {
-		        if (el) {
-		            let computedStyle = window.getComputedStyle(el);
-		            return computedStyle.display !== "none";
-		        }
-		        return false;
-		    },
+
 		},
 		mounted(){
 			this.checkBreakpoints();
-
-			window.addEventListener("resize",this.checkBreakpoints);
-		
-		},
-		beforeDestroy(){
-			window.removeEventListener("resize",this.checkBreakpoints);
 		}
 	
 	}

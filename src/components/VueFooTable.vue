@@ -1,6 +1,14 @@
 <template>
 	<div class="table-wrapper">
 
+		<div class="breakpoints">
+            <div ref="xs"></div>
+            <div ref="sm" class="d-none d-sm-block"></div>
+            <div ref="md" class="d-none d-md-block"></div>
+            <div ref="lg" class="d-none d-lg-block"></div>
+            <div ref="xl" class="d-none d-xl-block"></div>
+        </div>
+
 		<div class="header">
 			<slot name="header"></slot>
 		</div>
@@ -68,18 +76,22 @@
 							:expanded="configFinal.expandedAll||rowsFinal[rIndex].expanded"
 							:alignments="configFinal.alignments" 
 							:tooltip="rowsFinal[rIndex].tooltip" 
+							:hiddenBreakpoints="hiddenBreakpoints" 
 							:row="rowsFinal[rIndex].cells?rowsFinal[rIndex].cells:rowsFinal[rIndex]"
 							@toggleSelect="checkListener" 
 							@updateBreakpoints="generateRowsForCells" 
-							@toggle="onToggleRow" 
 							@mouseenter="onMouseenterRow"
 							@mouseleave="onMouseleaveRow"
+							@toggle="onRowToggle" 
+							@click="onRowClick"
+							@cell:click="onCellClick"
 							v-model="selected[index]"
 							v-show="visibleRows[rIndex]" />
 						<template v-if="(generatedRows[rIndex] || stickyRows[rIndex]) && visibleRows[rIndex]">
 							<tr 
 								@mouseenter="onMouseenterRow(rIndex)"
 								@mouseleave="onMouseleaveRow(rIndex)"
+								@click="onRowClick(rowsFinal[rIndex])"
 								:ref="'generated-row-highlighted-on-hover-'+rIndex"
 								:key="'generated-row-'+rIndex"
 								class="generated-row" 
@@ -100,11 +112,11 @@
 													<strong v-html="configFinal.headlines[cIndex]">
 													</strong>
 												</td>
-												<VueFooCell :cell="generatedRows[rIndex][cIndex]" :generated="true" classes="text-right" />
+												<VueFooCell :hiddenBreakpoints="hiddenBreakpoints" :cell="generatedRows[rIndex][cIndex]" :generated="true" classes="text-right" />
 											</tr>
 											<tr v-for="(cell,cIndex) in stickyRows[rIndex]" :key="'sticky-row-cell-'+rIndex+'-'+cIndex">
 												<td><strong v-html="configFinal.headlines[cIndex]"></strong></td>
-												<VueFooCell :cell="stickyRows[rIndex][cIndex]"  :generated="true" />
+												<VueFooCell :hiddenBreakpoints="hiddenBreakpoints" :cell="stickyRows[rIndex][cIndex]"  :generated="true" />
 											</tr>
 										</tbody>
 									</table>
@@ -115,9 +127,6 @@
 			    
 			</tbody>
 		</table>
-		
-		
-	
 
 			<template v-if="noRows && !ajaxLoading">
 				<div class="clearfix">
@@ -192,7 +201,6 @@ import VueFooRow from "./VueFooRow.vue"
 import VueFooCell from "./VueFooCell.vue"
 
 import fuzzy from "fuzzy.js";
-import {firstBy} from "thenby";
 import axios from 'axios'
 
 export default {
@@ -233,7 +241,6 @@ export default {
   		sortedIndexes:{},
   		hasGeneratedRows:false,
   		currentSortIndexes:{},
-  		sortAscending:true,
   		query:"",
       	currentPage:1,
       	paginationOptions:[1,2,3,4,5,6,7,8,9,10,15,20,25,30,50,100],
@@ -243,6 +250,9 @@ export default {
       	ajaxAll:0,
       	customRowsPerPage:null,
       	customMultiSort:null,
+      	hiddenBreakpoints:[],
+      	initBreakpoints:true,
+      	lastSelected:[],
   	}
   },
   computed:{
@@ -778,7 +788,19 @@ export default {
     	deep:true,
     },
 
-  	
+    hiddenBreakpoints(val){
+    	if(!this.initBreakpoints){
+    		this.$emit("change:breakpoints",val,"change:breakpoints");
+    	}
+    	this.initBreakpoints = false;
+    },
+
+    hoveredRow(val){
+    	if(val){
+    		this.$emit("hover:row",this.rowsFinal[val],"hover:row");
+    	}
+    },
+
     query(val){
         if(val.length > this.configFinal.searchLength){
 	    	if(this.configFinal.ajaxUrl){
@@ -786,29 +808,27 @@ export default {
 	 			return;
 	 		}
 
+          this.$emit("update:search",val,"update:search");
+
           this.currentPage = 1;
           this.resetSelect();
+
         }
     },
 
-    currentRowsPerPage(){
+    currentRowsPerPage(val){
+
+    	this.$emit("update:rows-per-page",val,"update:rows-per-page");
 
     	if(this.configFinal.ajaxUrl){
  			this.loadViaAjax(true);
  			return;
  		}
-    
+    	
  		this.currentPage = 1;
  		this.resetSelect();
     },
     
-  	// currentSortIndexes(){
-  	// 	this.sortAscending = true;
-  	// },
-
-  	sortAscending(){
-  		this.sort();
-  	},
 
   	config(val){
   		if(typeof val !== "object"){
@@ -819,7 +839,6 @@ export default {
   	},
   
   	selected(val){
-  		console.log("SELECTED:",val);
 
   		let selected = [];
 
@@ -832,15 +851,22 @@ export default {
   		if(selected.length === this.onlyVisiblePagedRows.length){
   			this.allSelected = true;
   		}
+
+  		if(JSON.stringify(this.lastSelected) !== JSON.stringify(selected)){
+			this.$emit("input",selected);
+			this.lastSelected = selected;
+  		}
 		
-		this.$emit("input",selected);
 
 	},
 
-	currentPage(){
+	currentPage(val){
+
+		this.$emit("update:page",val,"update:page");
 
 	 	if(this.configFinal.ajaxUrl){
-	 		this.loadViaAjax();
+	 		this.loadViaAjax(true);
+	 		return;
 	 	}
 
 	 	this.resetSelect();
@@ -849,6 +875,33 @@ export default {
  
   },
   methods:{
+
+  	onRowClick(row){
+  		this.$emit("click:row",row,"click:row");
+  	},
+
+  	onRowToggle(show,rowIndex){
+	  	if(show){
+	  		if(this.openRows[rowIndex] !== undefined){
+	  			this.$emit("expand:row",this.rowsFinal[this.sortedIndexes[rowIndex]],"expand:row");
+	  		}
+	  		this.$set(this.openRows,rowIndex,true);
+
+		}else{
+			if(this.openRows[rowIndex] !== undefined){
+	  			this.$emit("collapse:row",this.rowsFinal[this.sortedIndexes[rowIndex]],"collapse:row");
+	  		}
+	  		this.$set(this.openRows,rowIndex,false);
+		}
+
+		this.openRows = Object.assign({},this.openRows);
+
+	},
+
+  	onCellClick(cell){
+  		this.$emit("click:cell",cell,"click:cell");
+  	},
+
   	onMouseenterRow(index){
   		this.hoveredRow = index;
   	},
@@ -1120,10 +1173,6 @@ export default {
     },
 
 
-  	// toggleSortDir(){
-  	// 	this.sortAscending = !this.sortAscending;
-  	// },
-
   	setSortColumn(index){
 
   		if(!this.configFinal.sorts[index]){
@@ -1135,6 +1184,7 @@ export default {
   		if(!this.currentSortIndexes[index]){
 
   			item = {
+  				headline:this.configFinal.headlines[index],
   				index:index,
   				asc:true,
   				order:this.numberOfSorts,
@@ -1150,13 +1200,15 @@ export default {
   		}
 
   		this.$set(this.currentSortIndexes,index,item);
+
+  		this.$emit("update:sort",this.currentSortIndexes,"update:sort");
+
   		this.sort();
 
 
   	},
 
   	sort(){
-
 
   		if(this.configFinal.ajaxUrl){
   			this.loadViaAjax(true);
@@ -1169,38 +1221,41 @@ export default {
 			rows[i].index = i;
 		}
 
-  		let sortStack;
+		let sortableIndexes = [];
+		for (let index in this.currentSortIndexes) {
+			let data = this.currentSortIndexes[index];
+			data.index = index;
+		    sortableIndexes.push(data);
+		}
 
-  		let counter = 0;
+		sortableIndexes.sort(function(a, b) {
+		    return a.order - b.order;
+		});
 
-  		for (let index in this.currentSortIndexes) {
-  			
-			var compare = (a, b) => {
+		let compare =(a, b, keys, index) => {
+		    index = index || 0;
 
-				let cellsA = a.cells?a.cells:a;
-				let cellsB = b.cells?b.cells:b;
+		    let currentKey = keys[index];
 
+		    let i = currentKey.index;
 
-				let aValue = cellsA[index].sortValue?cellsA[index].sortValue:cellsA[index].html;
-			  	let bValue = cellsB[index].sortValue?cellsB[index].sortValue:cellsB[index].html;
+  			let cellsA = a.cells?a.cells:a;
+			let cellsB = b.cells?b.cells:b;
 
-				if(this.currentSortIndexes[index].asc){
-				  return aValue > bValue?1:-1;
-				}
-			  	return aValue < bValue?1:-1;
-			};
+			let aValue = cellsA[i].sortValue?cellsA[i].sortValue:cellsA[i].html;
+		  	let bValue = cellsB[i].sortValue?cellsB[i].sortValue:cellsB[i].html;
 
-			if(counter === 0){
-				sortStack = firstBy(compare);
-			}else{
-				sortStack = sortStack.thenBy(compare);
-			}
+		  	if(currentKey.asc){
+		    	return aValue > bValue ? 1 : (aValue < bValue ? -1 : ( keys[index+1] ? compare(a, b, keys, index + 1):1));
+		  	}else{
+		    	return aValue < bValue ? 1 : (aValue > bValue ? -1 : ( keys[index+1] ? compare(a, b, keys, index + 1):-1));
+		  	}
+		  
+		} 
 
-			counter++;
-  		}
-
-  		
-		rows.sort(compare);
+		rows.sort(function(a, b){
+			return compare(a, b, sortableIndexes);
+		});
 
 		for(let i = 0 ; i<rows.length;i++) {
 			this.sortedIndexes[i] = rows[i].index;
@@ -1210,17 +1265,8 @@ export default {
 		this.resetSelect();
 
   	},
-  	
-  	 onToggleRow(show,rowIndex){
-	  	if(show){
-	  		this.$set(this.openRows,rowIndex,true);
-		}else{
-	  		this.$set(this.openRows,rowIndex,false);
-		}
-		this.openRows = Object.assign({},this.openRows);
 
-	  },
-	  
+  
   	checkOpenRow(index){
   		return this.openRows[index];
   	},
@@ -1255,7 +1301,6 @@ export default {
   		}
 
   		this.visibleColumns = Object.assign({},this.visibleColumns);
-
 
   		for(let row in this.generatedRows){
   			if(Object.keys(this.generatedRows[row]).length){
@@ -1294,7 +1339,7 @@ export default {
 
 	 	for(let i = 0 ; i<this.configFinal.number;i++) {
  			if(typeof this.visibleColumns[i] !== "number"){
-  				this.visibleColumns[i] = this.rowsFinal.length;
+  				this.visibleColumns[i] = 0;
   			}
 	 	}
 
@@ -1336,7 +1381,6 @@ export default {
   			perPage:this.currentRowsPerPage,
   			page:this.currentPage,
   			sort:this.numberOfSorts>0?{
-  				asc:this.sortAscending,
   				indexes:this.currentSortIndexes,
   				columns:this.sortingColumns,
   			}:null
@@ -1351,7 +1395,42 @@ export default {
 	  		this.initLists();
 	  	});
 
-  	}
+  	},
+
+  	elementVisible(el) {
+		        if (el) {
+		            let computedStyle = window.getComputedStyle(el);
+		            return computedStyle.display !== "none";
+		        }
+		        return false;
+		    },
+
+  	generateHiddenBreakpoints() {
+
+		let breakpoints = [];
+        if (!this.elementVisible(this.$refs.xl)) {
+            breakpoints.push("xl");
+        }     
+
+        if (!this.elementVisible(this.$refs.lg)) {
+            breakpoints.push("lg");
+        }
+
+        if (!this.elementVisible(this.$refs.md)) {
+            breakpoints.push("md");
+        }
+
+        if (!this.elementVisible(this.$refs.sm)) {
+            breakpoints.push("sm");
+        }
+
+        if(JSON.stringify(this.hiddenBreakpoints) !== JSON.stringify(breakpoints)){
+        	this.hiddenBreakpoints = breakpoints;
+        }
+
+
+    },
+  	
   },
   created(){
   	 this.initLists();
@@ -1360,8 +1439,16 @@ export default {
  	if(this.configFinal.ajaxUrl){
  		this.loadViaAjax();
  	}
- }
- 
+
+ 	this.generateHiddenBreakpoints();
+
+	window.addEventListener("resize",this.generateHiddenBreakpoints);
+
+},
+beforeDestroy(){
+	window.removeEventListener("resize",this.generateHiddenBreakpoints);
+}
+
   
 }
 </script>

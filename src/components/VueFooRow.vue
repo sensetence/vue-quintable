@@ -19,7 +19,7 @@
 			<input v-else type="checkbox" v-model="selected" @change="selectRow" value>
 		</td>
 		
-			<VueFooCell v-for="(cell, cIndex) in row" :key="'cell-'+index+'-'+cIndex" :index="cIndex" :align="alignments[cIndex]" :sticky="stickyCols[cIndex]" :cell="cell" @toggle="onToggleCell" :breakpoint="breakpoints[cIndex]" />
+			<VueFooCell v-for="(cell, cIndex) in row" :hiddenBreakpoints="hiddenBreakpoints" :key="'cell-'+index+'-'+cIndex" :index="cIndex" :align="alignments[cIndex]" :sticky="stickyCols[cIndex]" :cell="cell" @toggle="onCellToggle" @click="onCellClick" :breakpoint="breakpoints[cIndex]" />
 
 		<td v-if="select && selectPosition === 'post'">
 
@@ -38,7 +38,7 @@
 	import {v4 as uuid} from 'uuid';
 
 	export default{
-		props:["index","row","tooltip","breakpoints","stickyCols","alignments","value","select","pretty","selectPosition","hideRowToggle","expanded","classes"],
+		props:["index","row","tooltip","breakpoints","stickyCols","alignments","value","select","pretty","selectPosition","hideRowToggle","expanded","classes","hiddenBreakpoints"],
 		components: {
 		    VueFooCell,
 		},
@@ -96,7 +96,10 @@
 			onMouseleave(e){
 				this.$emit("mouseleave",e);
 			},
-			onToggleCell(cellIndex,cell,hidden){
+			onCellClick(cell){
+				this.$emit("cell:click",cell);
+			},
+			onCellToggle(cellIndex,cell,hidden){
 				
 				if(hidden && hidden !== "sticky"){
 					this.hiddenCells.push(cellIndex);
@@ -114,6 +117,8 @@
 				this.$emit("input",this.selected);
 			},
 			onToggleShow(e){
+
+				this.$emit("click",this.row);
 			
 				if(!this.hiddenCells.length || e.target.type === "checkbox"){
 					return;

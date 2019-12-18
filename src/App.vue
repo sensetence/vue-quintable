@@ -12,7 +12,23 @@
   			<div class="col-12">
   				
 			
-			    <VueFooTable v-model="selectedRows" :filterGroups="filterGroups" :filters="filters" :config="config" :rows="rows" key="table-3">
+			    <VueFooTable 
+			    	v-model="selectedRows" 
+			    	:filterGroups="filterGroups" 
+			    	:filters="filters" 
+			    	:config="config" 
+			    	:rows="rows" 
+			    	key="table-3" 
+			    	@update:sort="eventListener"
+			    	@update:page="eventListener"
+			    	@update:search="eventListener"
+			    	@update:rows-per-page="eventListener"
+			    	@click:row="eventListener" 
+			    	@click:cell="eventListener" 
+			    	@expand:row="eventListener" 
+			    	@hover:row="eventListener" 
+			    	@collapse:row="eventListener" 
+			    	@change:breakpoints="eventListener">
 			    	<template v-slot:header>
 			    		<div class="clearfix">
 					  	<label>Name: </label>
@@ -45,11 +61,11 @@
 			    	</template>
 			    	
 			    </VueFooTable>
-			    <VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" >
+			    <!-- <VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" >
 			    	<template v-slot:loading>
 			    		<div class="text-center">JOJOJO</div>
 			    	</template>
-			    </VueFooTable>
+			    </VueFooTable> -->
   			</div>
   		</div>
   	</div>
@@ -188,7 +204,7 @@ export default {
 		       //String ["AND"/"OR"] default relation filter groups to each other
 		      filterGroupRelation:"OR",
 		      //Boolean if multi-key sorting is enabled in case that more than one column has a sort flag
-		      multiSort:false,
+		      multiSort:true,
 		      //String/Boolean search/filter/sort/pagination per ajax
 		      // ajaxUrl:"http://192.168.188.56/test/data.php",
 		     
@@ -241,7 +257,7 @@ export default {
 
 		      },
 		      {
-		          cells:[{html:"LOL 1"},{html:"LOL 2"},{html:"LOL 3"},{html:"LOL 4"},{html:"LOL 5"},{html:"LOL 6"}],
+		          cells:[{html:"LOL 1"},{html:"WOW 2"},{html:"WOW 3"},{html:"LOL 4"},{html:"LOL 5"},{html:"LOL 6"}],
 		          filters:{
 	         		name:"UND",
 	         		active:true,
@@ -252,7 +268,7 @@ export default {
 		         {html:"WOW 1",tooltip:"HAHAHAHA"},{html:"WOW 2"},{html:"WOW 3"},{html:"WOW 4"},{html:"WOW 5"},{html:"WOW 6"}
 		      ],
 		      [ 
-		         {html:"WOW 1"},{html:"WOW 2"},{html:"WOW 3"},{html:"WOW 4"},{html:"WOW 5"},{html:"WOW 6"}
+		         {html:"WOW 1"},{html:"LOL 2"},{html:"LOL 3"},{html:"WOW 4"},{html:"WOW 5"},{html:"WOW 6"}
 		      ],
 		      [ 
 		         {html:"WOW 1"},{html:"WOW 2"},{html:"WOW 3"},{html:"WOW 4"},{html:"WOW 5"},{html:"WOW 6"}
@@ -304,8 +320,11 @@ export default {
   	}
   },
   methods:{
-  	test(a,b){
-  		console.log(a,b)
+  	
+  	eventListener(data,event){
+  		data;
+  		event;
+  		// console.log(event,data);
   	}
   },
   mounted(){
@@ -318,9 +337,9 @@ export default {
 
   	setInterval(()=>{
 
-  		// var rows = Object.assign({},this.rows);
-  		// rows[1].cells[0].html++;
-  		// this.$set(this.rows,1,rows[1]);
+  		var rows = Object.assign({},this.rows);
+  		rows[1].cells[0].html++;
+  		this.$set(this.rows,1,rows[1]);
 
 
   	},1000);
