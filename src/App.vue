@@ -190,6 +190,8 @@ export default {
 		      //Integer minimum length of query that triggers search
 		      searchLength:1,
 		      //String Placeholder for search input
+		      multiSortPlaceholder:"Multiple sort",
+		      //String Placeholder for search input
 		      searchPlaceholder:"Search rows...",
 		      //String Placeholder for no searching/filtered resulting rows
 		      emptyPlaceholder:"No results!",
@@ -205,6 +207,8 @@ export default {
 		      filterGroupRelation:"OR",
 		      //Boolean if multi-key sorting is enabled in case that more than one column has a sort flag
 		      multiSort:true,
+		      //Boolean if user should be allowed to set multisort
+		      multiSortSelect:false,
 		      //String/Boolean search/filter/sort/pagination per ajax
 		      // ajaxUrl:"http://192.168.188.56/test/data.php",
 		     

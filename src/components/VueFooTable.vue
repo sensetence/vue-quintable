@@ -147,10 +147,14 @@
 				</slot>
 			</div>
 
-				<div class="clearfix">
+			<div class="clearfix">
+				<div class="float-left" v-if="configFinal.multiSortSelect">
+					<p-check class="p-switch" v-model="multiSort" value="true">{{configFinal.multiSortPlaceholder}}</p-check>
+				</div>
 
 			<div class="float-right mr-3 pagination-container" v-if="configFinal.pagination" v-show="!ajaxLoading">
-				<span class="d-inline-block align-middle mr-2" v-if="configFinal.rowsSelect" v-html="configFinal.rowsPlaceholder"></span> <v-select v-if="configFinal.rowsSelect" class="d-inline-block align-middle"  :options="paginationOptionsFilled" v-model="currentRowsPerPage" :clearable="false" />
+				<span class="d-inline-block align-middle mr-2" v-if="configFinal.rowsSelect" v-html="configFinal.rowsPlaceholder"></span> 
+				<v-select v-if="configFinal.rowsSelect" class="d-inline-block align-middle"  :options="paginationOptionsFilled" v-model="currentRowsPerPage" :clearable="false" />
 
 				<nav v-if="configFinal.pagination && pages>1" class="d-inline-block align-middle ml-3" v-show="!ajaxLoading">
 				  <ul class="pagination mb-0">
@@ -270,9 +274,11 @@ export default {
   		return Object.keys(this.currentSortIndexes).length;
   	},
 
+
   	multiSort:{
   		get(){
-	  		if(!this.customMultiSort){
+
+	  		if(this.customMultiSort === null){
 	  			return this.configFinal.multiSort;
 	  		}
 	  		return this.customMultiSort;
@@ -348,6 +354,11 @@ export default {
   			multiSort = true;
   		}
 
+  		let multiSortSelect = false;
+  		if(this.config.multiSortSelect){
+  			multiSortSelect = true;
+  		}
+
   		let ajaxUrl = false;
   		if(this.config.ajaxUrl){
   			ajaxUrl = this.config.ajaxUrl;
@@ -386,6 +397,11 @@ export default {
 	    let searchPlaceholder = "Search...";
 	    if(this.config.searchPlaceholder){
 	       searchPlaceholder = this.config.searchPlaceholder;
+	    }
+
+	    let multiSortPlaceholder = "Multiple sort";
+	    if(this.config.multiSortPlaceholder){
+	       multiSortPlaceholder = this.config.multiSortPlaceholder;
 	    }
 
 	    let filterRelation = "AND";
@@ -476,12 +492,14 @@ export default {
   			headlines:headlines,
   			sorts:sorts,
   			multiSort:multiSort,
+  			multiSortSelect:multiSortSelect,
   			filterGroupRelation:filterGroupRelation,
   			filterRelation:filterRelation,
         	rowsSelect:rowsSelect,
         	searchLength:searchLength,
         	search:search,
         	ajaxUrl:ajaxUrl,
+        	multiSortPlaceholder:multiSortPlaceholder,
         	searchPlaceholder:searchPlaceholder,
         	rowsPlaceholder:rowsPlaceholder,
         	emptyPlaceholder:emptyPlaceholder,
@@ -871,6 +889,27 @@ export default {
 
 	 	this.resetSelect();
 	 },
+
+	 customMultiSort(val){
+  		if(!val && Object.keys(this.currentSortIndexes).length > 1){
+
+  			let currentItem;
+  			let currentIndex;
+  			for(let index in this.currentSortIndexes ){
+  				if(this.currentSortIndexes[index].order === 0){
+  					currentItem = this.currentSortIndexes[index];
+  					currentIndex = index;
+  					break;
+  				}
+  			}
+
+  			this.currentSortIndexes = {};
+  			this.$set(this.currentSortIndexes,currentIndex,currentItem);
+
+  			this.sort();
+
+  		}
+  	},
 	
  
   },
@@ -1183,6 +1222,10 @@ export default {
 
   		if(!this.currentSortIndexes[index]){
 
+  			if(!this.multiSort){
+  				this.currentSortIndexes  = {};
+  			}
+
   			item = {
   				headline:this.configFinal.headlines[index],
   				index:index,
@@ -1190,9 +1233,6 @@ export default {
   				order:this.numberOfSorts,
   			};
 
-  			if(!this.multiSort){
-  				this.currentSortIndexes  = {};
-  			}
   		}else{
 
   			item = this.currentSortIndexes[index];
