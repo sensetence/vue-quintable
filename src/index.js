@@ -1,10 +1,14 @@
 /** COMMON START **/
 
+import Vue from 'vue'
+import BootstrapVue from 'bootstrap-vue'
 import PrettyCheck from 'pretty-checkbox-vue/check';
 import 'pretty-checkbox/src/pretty-checkbox.scss';
 
 import vueSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
+
+import './plugins/bootstrap-vue'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'

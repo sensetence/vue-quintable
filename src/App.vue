@@ -10,9 +10,9 @@
   		</div>
   		<div class="row">
   			<div class="col-12">
-  				
 			    <VueFooTable 
 			    	v-model="selectedRows" 
+			    	:verbose="verbose"
 			    	:filterGroups="filterGroups" 
 			    	:filters="filters" 
 			    	:config="config" 
@@ -84,6 +84,7 @@ export default {
         	loading:false,
         	remoteRows:[],
         	remoteConfig:{},
+        	verbose:false,
             //filters
             active:false,
             name:"",
@@ -294,7 +295,9 @@ export default {
   },
   watch:{
 	selectedRows(val){
-		console.log("SELECTED ROWS",val);
+		if(this.verbose){
+			console.log("SELECTED ROWS",val);
+		}
 	},
 	name(val){
   		if(val !== ""){
@@ -322,7 +325,9 @@ export default {
   methods:{
   	
   	eventListener(data,event){
-  		console.log(event,data);
+  		if(this.verbose){
+	  		console.log(event,data);
+	  	}
   	}
   },
   mounted(){

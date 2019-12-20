@@ -31,6 +31,10 @@ coverage
 # Bower dependency directory (https://bower.io/)
 bower_components
 
+# php storm
+.idea
+.idea/*
+
 # node-waf configuration
 .lock-wscript
 
