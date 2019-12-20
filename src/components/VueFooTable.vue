@@ -19,7 +19,6 @@
 		<table class="vue-foo-table table" v-show="!ajaxLoading">
 
 			<thead v-if="configFinal.headlines.length">
-				{{visibleRows}}
 				<tr>
 					<th class="placeholder" v-if="hasGeneratedRows && !configFinal.hideRowToggle">&nbsp;</th>
 					<th v-if="configFinal.select &&  configFinal.selectPosition == 'pre'">
@@ -229,6 +228,9 @@ export default {
 		},
 		filterGroups:{
 			type:Array
+		},
+		verbose:{
+			type:Boolean
 		}
 	},
   components: {
@@ -305,6 +307,10 @@ export default {
   },
 
   computed:{
+
+  	DEBUG(){
+  		return this.verbose;
+  	},
 
   	someSelected(){
   		for (let i = 0; i<this.selected.length;i++){
@@ -769,13 +775,14 @@ export default {
 		   			match = this.doFilteringForGroup(this.filters,this.rowsFinal[i].filters,group);
 
 		   		}
-
-		   		console.log("\n");
-	   			console.log("ROW " + i,match,this.rowsFinal[i].filters);
-	   			console.log("\n");
+				//######################################
+				if(this.DEBUG){
+			   		console.log("\n");
+		   			console.log("ROW " + i,match,this.rowsFinal[i].filters);
+		   			console.log("\n");
+	   			}
+	   			//######################################
 		   	}
-
-
 
 		    visible[i] = match;
 
@@ -1049,8 +1056,11 @@ export default {
   		}
 
   	}
-
-  	console.log("RESULTS FOR GROUPS:",results,this.configFinal.filterGroupRelation);
+  	//######################################
+  	if(this.DEBUG){
+  		console.log("RESULTS FOR GROUPS:",results,this.configFinal.filterGroupRelation);
+  	}
+  	//######################################
 
   	if(this.configFinal.filterGroupRelation === "AND"){
   		if(results.indexOf(true) !== -1){
@@ -1072,7 +1082,6 @@ export default {
   doFilteringForGroup(filters,filterValues,group,index = 0){
 
   	//######################################
-  	//DEBUG!
 
   	let spaces = "   ";
 
@@ -1080,42 +1089,51 @@ export default {
   		spaces+= "   ";
   	}
 
-  	if(group.items){
+  	if(this.DEBUG){
 
-	  	let str = spaces;
-
-	  	let tmp = group.items.slice();
-
-	  	let cmp = function(a,b){
 	  	
-	  		if(a.name === undefined){
-	  			return 1;
-	  		}
-	  		if(b.name === undefined){
-	  			return -1;
-	  		}
-	  		return 0;
-	  	}
 
-	  	tmp = tmp.sort(cmp);
+	  	if(group.items){
 
-	  	for (let i = 0; i<tmp.length;i++){
-	  		if(tmp[i].name){
-		  		str += tmp[i].name;
-		  		if(i<tmp.length-1){
-		  			str +=" "+group.relation+" "
+		  	let str = spaces;
+
+		  	let tmp = group.items.slice();
+
+		  	let cmp = function(a,b){
+		  	
+		  		if(a.name === undefined){
+		  			return 1;
 		  		}
-	  		}
-	  	}
+		  		if(b.name === undefined){
+		  			return -1;
+		  		}
+		  		return 0;
+		  	}
 
-	  	console.log(str);
+		  	tmp = tmp.sort(cmp);
+
+		  	for (let i = 0; i<tmp.length;i++){
+		  		if(tmp[i].name){
+			  		str += tmp[i].name;
+			  		if(i<tmp.length-1){
+			  			str +=" "+group.relation+" "
+			  		}
+		  		}
+		  	}
+
+		  	console.log(str);
+	  	}
   	}
 
   	//######################################
 
   	let found = false;
 
-  	console.log(spaces,"GROUP:",group);
+  	//######################################
+  	if(this.DEBUG){
+  		console.log(spaces,"GROUP:",group);
+  	}
+  	//######################################
 
   	if(group.relation === "AND"){
   		for(let key in filters){
