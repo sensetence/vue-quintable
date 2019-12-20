@@ -2,6 +2,8 @@
 
 VueFooTable is a table wrapper for Vue.js. It is build with bootstrap 4.0. High configurable, easy to use, flexible and responsive.
 
+
+
 ## Features:
 
 - Responsive columns which will be rendered as additional rows
@@ -14,6 +16,8 @@ VueFooTable is a table wrapper for Vue.js. It is build with bootstrap 4.0. High 
 - Custom search keywords and filter values for rows
 - Vue-binded values for columns and rows
 
+
+
 ## Slots
 
 - header
@@ -25,29 +29,45 @@ VueFooTable is a table wrapper for Vue.js. It is build with bootstrap 4.0. High 
 <template v-slot:header>HEADER</template>
 ```
 
-### Events
+
+
+## Events
 
 - click:row | passing row as second parameter
+
 - click:cell | passing cell as second parameter
+
 - expand:row | passing row as second parameter
+
 - collapse:row | passing row as second parameter
+
 - update:perPage | passing integer as second parameter
+
 - update:page | passing integer as second parameter
+
 - update:search | passing string as second parameter
+
 - update:sort | passing object of sort group as second parameter
 
-### Selection of Rows
+  
+
+## Selection of Rows
 
 VueFooTable uses v-model for selected rows
 
-### Run build
+
+
+## Run build
+
 ```shell
 npm install && npm run build-bundle
 ```
 
-### Usage
 
-##### Install
+
+## Usage
+
+#### Install
 
 ```shell
 npm install --save https://zeitler-quintet@bitbucket.org/zeitler-quintet/vuefootable.git
@@ -55,7 +75,7 @@ npm install --save https://zeitler-quintet@bitbucket.org/zeitler-quintet/vuefoot
 
 
 
-##### Integration
+#### Integration
 
 ```js
 import Vue from 'vue'
@@ -67,7 +87,7 @@ Vue.use(VueTable);
 
 
 
-##### Basic Example
+#### Basic Example
 
 ```vue
 <template>
@@ -381,7 +401,7 @@ Vue.use(VueTable);
 
 
 
-##### AJAX data example
+#### AJAX data example
 
 ```vue
 <template>
