@@ -11,14 +11,13 @@
   		<div class="row">
   			<div class="col-12">
   				
-			
 			    <VueFooTable 
 			    	v-model="selectedRows" 
 			    	:filterGroups="filterGroups" 
 			    	:filters="filters" 
 			    	:config="config" 
 			    	:rows="rows" 
-			    	key="table-3" 
+			    	key="table-1" 
 			    	@update:sort="eventListener"
 			    	@update:page="eventListener"
 			    	@update:search="eventListener"
@@ -30,26 +29,20 @@
 			    	@collapse:row="eventListener" 
 			    	@change:breakpoints="eventListener">
 			    	<template v-slot:header>
-			    		<div class="clearfix">
-					  	<label>Name: </label>
-						  	<select v-model="name" class="form-control">
-						  		<option>NICHTS</option>
-						  		<option>TEST</option>
-						  		<option>JA</option>
-						  		<option>UND</option>
-						  	</select>
-						</div>
+					  	<div class="clearfix py-2">
+			                <label>
+			                    Name: 
+			                    <input class="form-control" v-model="name" placeholder="Name"/>						
+			                </label>
+			            </div>
 					  	<div class="clearfix py-2">
 					  		<p-check class="p-switch" v-model="active" value="true">Active</p-check>
 					  	</div>
 					  	<div class="clearfix py-2">
-					  		<p-check class="p-switch" v-model="company" value="true">Company</p-check>
+					  		<p-check class="p-switch" v-model="printable" value="true">Printable</p-check>
 					  	</div>
-					  	<div class="clearfix py-2">
-					  		<p-check class="p-switch" v-model="filtering" value="true">Multiple Filter [names:ole,matt]</p-check>
-					  	</div>
+					  	
 					  	<hr>
-
 			    	</template>
 			    	<template v-slot:footer>
 			    		<div class="text-center py-3 mt-3 bg-info text-white">
@@ -57,15 +50,14 @@
 			    		</div>
 			    	</template>
 			    	<template v-slot:no-results>
-			    		<div class="text-center">TEST</div>
+			    		<div class="text-center">No Results...</div>
 			    	</template>
 			    	
 			    </VueFooTable>
-			    <!-- <VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" >
-			    	<template v-slot:loading>
-			    		<div class="text-center">JOJOJO</div>
-			    	</template>
-			    </VueFooTable> -->
+
+			    <!-- Remote Loading Data -->
+			    <!-- <VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" /> -->
+
   			</div>
   		</div>
   	</div>
@@ -85,216 +77,227 @@ export default {
     // VueFooRow,
   },
 
-  data(){
-  	return {
-  		//filters
-  		name:"NICHTS",
-  		active:false,
-  		company:false,
-  		filtering:false,
+ data(){
+        return {
 
-  		selectedRows:[],
+        	//loading
+        	loading:false,
+        	remoteRows:[],
+        	remoteConfig:{},
+            //filters
+            active:false,
+            name:"",
+            printable:false,
+			//selected rows for v-model
+            selectedRows:[],
 
-  		//Boolean table loading
-  		loading:false,
-  		//Object active filter criterias
-		filters:{},
-		//Object[] filter groups with relations, recursive.
-		filterGroups:[
-			{
-				items:[
-					{
-						items:[
-							{name:"name"},
-							{name:"active"}
-						],
-						relation:"OR",
-					},
-					{
-						items:[
-							{
-								name:"company"
-							}
-						],
-					}
-				],
-				relation:"AND"
-			},
-			{
-				items:[
-					{name:"name"},
-					{name:"active"}
-				],
-				relation:"AND"
-			},
-			{
-				items:[
-					{
-						name:"names"
-					}
-				],
-			}
-		],
-		//Object Table config
-  		config:{ 
-		   	  //Object[] columns with headline, sticky, breakpoint, align
-		      columns:[ 
-		         {
-		         	headline:"Test",
-		         	sticky:false,
-		         	breakpoint:"md",
-		         },{
-		         	headline:"Test 1",
-		         	sort:true,
-		         	sticky:false,
-		         	breakpoint:"md"
-		         },{
-		         	headline:"Test 2",
-		         	sticky:false,
-		         	breakpoint:"md"
-		         },{
-		         	headline:"Test 3",
-		         	sort:true,
-		         	sticky:false,
-		         	breakpoint:"sm"
-		         },{
-		         	headline:"Test 4",
-		         	sort:true,
-		         	sticky:false,
-		         },{
-		         	headline:"Test 5",
-		         	sort:true,
-		         	sticky:false,
-		         	align:"right",
-		         }
-		      ],
+            //Object active filter criterias
+            filters:{},
+            
+            //Object[] filter groups with relations, recursive.
+            filterGroups:[
+                {
+                    items:[
+                        {
+                            items:[
+                                {name:"name"},
+                                {name:"active"}
+                            ],
+                            relation:"OR",
+                        },
+                        {
+                            items:[
+                                {
+                                    name:"printable"
+                                }
+                            ],
+                        }
+                    ],
+                    relation:"AND"
+                }
+            ],
+            
+            //Object Table config
+            config:{ 
+                  //Object[] columns with headline, sticky, breakpoint, align, sort
+                  columns:[ 
+                     {
+                        headline:"Name",
+                        sort:true,
+                     },{
+                        headline:"Age",
+                        breakpoint:"sm",
+                        sort:true,
+                     },{
+                        headline:"Birthplace",
+                        breakpoint:"md",
+                        align:"right"
+                     },{
+                        headline:"Job",
+                        sticky:false,
+                     }
+                  ],
 
-		      //Boolean String of class rows are set to on hover, default class bg-muted
-		      hoverClass:"bg-success text-white",	
-		      //Number or false/true, default false, if true => 25
-		      pagination:5,
-		      //Boolean if cells can be selected
-		      select:true,
-		      //Boolean if use pretty checkboxes library
-		      prettySelect:true,
-		      //String [pre/post] position of the select checkboxes 
-		      selectPosition:"pre",
-		      //Boolean if there should be a select all checkbox
-		      selectAll:true,
-		      //Boolean if there shall be a search input filter 
-		      search:true,
-		      //Integer displayed page range of pagination
-		      pageRange:5,
-		      //Boolean show plus for row toggle or not
-		      hideRowToggle:true,
-		      //Integer minimum length of query that triggers search
-		      searchLength:1,
-		      //String Placeholder for search input
-		      multiSortPlaceholder:"Multiple sort",
-		      //String Placeholder for search input
-		      searchPlaceholder:"Search rows...",
-		      //String Placeholder for no searching/filtered resulting rows
-		      emptyPlaceholder:"No results!",
-		      //Boolean if all columns should be expanded by default
-		      expandedAll:false,
-		      //Boolean if user should be allowed to set rows per page
-		      rowsSelect:true,
-		      //String text for rows per page select
-		      rowsPlaceholder:"Rows:",
-		      //String ["AND"/"OR"] default filter relation, if no filter group affected
-		      filterRelation:"OR",
-		       //String ["AND"/"OR"] default relation filter groups to each other
-		      filterGroupRelation:"OR",
-		      //Boolean if multi-key sorting is enabled in case that more than one column has a sort flag
-		      multiSort:true,
-		      //Boolean if user should be allowed to set multisort
-		      multiSortSelect:false,
-		      //String/Boolean search/filter/sort/pagination per ajax
-		      // ajaxUrl:"http://192.168.188.56/test/data.php",
-		     
-		    
-			},
-			//Array of Array and/or Object
-		   rows:[ 
-		   	  //Object, if options apart from cell content will be set 
-		      { 
-		      	 //Array with cell content/options
-		      	 cells:[
-		         {
-		         	//HTML string
-		         	html:"TEST 1",
-		         	//String space separated classes
-		         	classes:"special-td",
-		         	//String alignment
-		         	align:"right",
+                  //Boolean String of class rows on hover, default class bg-muted
+                  hoverClass:"bg-success text-white",	
+                  //Number or false/true, default false, if true => 25
+                  pagination:5,
+                  //Boolean if cells can be selected
+                  select:true,
+                  //Boolean if use pretty checkboxes library
+                  prettySelect:true,
+                  //String [pre/post] position of the select checkboxes 
+                  selectPosition:"pre",
+                  //Boolean if there should be a select all checkbox
+                  selectAll:true,
+                  //Boolean if there shall be a search input 
+                  search:true,
+                  //Integer displayed page range of pagination
+                  pageRange:5,
+                  //Boolean show plus for row toggle or not
+                  hideRowToggle:true,
+                  //Integer minimum length of query that triggers search
+                  searchLength:1,
+                  //String Placeholder for search input
+                  searchPlaceholder:"Search rows...",
+                  //String Placeholder for no searching/filtered resulting rows
+                  emptyPlaceholder:"No results!",
+                  //Boolean if all columns should be expanded by default
+                  expandedAll:false,
+                  //Boolean if user should be allowed to set rows per page
+                  rowsSelect:true,
+                  //String text for rows per page select
+                  rowsPlaceholder:"Rows:",
+                  //String ["AND"/"OR"] filter relation, if no filter group affected
+                  filterRelation:"OR",
+                   //String ["AND"/"OR"] default relation filter groups to each other
+                  filterGroupRelation:"OR",
+                  //Boolean if multi-key sorting is enabled
+                  multiSort:true,
+                  //Boolean if user should be allowed to set multisort
+                  multiSortSelect:true,
+                  //String Placeholder for multiple sort description
+                  multiSortPlaceholder:"Multiple sort",
+                  //String/Boolean search/filter/sort/pagination per ajax
+                  ajaxUrl:false,
 
-		         },
-		         	//Option[] or string
-		         {html:"hmmmm"},{html:"TEST 3"},{html:"TEST 4"},{html:"TEST 5"},{html:"TEST 6"},
-		         ],
 
-		         //expanded on default
-		         expanded:true,
-		         //Keywords for search
-	         	keywords:[
-	         		"Rambo"
-	         	],
+                },
+                //Array of Array and/or Object
+               rows:[ 
+                  //Object, if options apart from cell content will be set 
+                  { 
+                     //Array with cell content/options
+                     cells:[
+                         {
+                            //HTML string
+                            html:"Max Mustermann",
+                            //String space separated classes
+                            classes:"special-td",
+                            //String alignment
+                            align:"right",
 
-	         	//Custom filter values
-	         	filters:{
-	         		company:true,
-	         		active:true,
+                         },
+                     	{html:20},
+                        {html:"Berlin"},
+                        {html:"Software Developer"},
+                     ],
 
-	         	}
-		      },
-		      { 
-		      	cells:[
-		         {html:1,sortValue:"Mist 1"},{html:"Mist 2"},{html:"Mist 3"},{html:"Mist 4"},{html:"Mist 5"},{html:"Mist 6"}],
-		         classes:"bg-danger",
-		         //Custom filter values
-	         	filters:{
-	         		name:"UND",
-	         		company:true,
-	         		names:"Matt"
-	         	},
-	         	tooltip:"HAHAHAHA"
+                      //expanded on default
+                      expanded:true,
+                      //Keywords for search
+                      keywords:[
+                          "Web Developer"
+                      ],
 
-		      },
-		      {
-		          cells:[{html:"LOL 1"},{html:"WOW 2"},{html:"WOW 3"},{html:"LOL 4"},{html:"LOL 5"},{html:"LOL 6"}],
-		          filters:{
-	         		name:"UND",
-	         		active:true,
-	         		names:"Ole",
-	         	}
-		      },
-		      [ 
-		         {html:"WOW 1",tooltip:"HAHAHAHA"},{html:"WOW 2"},{html:"WOW 3"},{html:"WOW 4"},{html:"WOW 5"},{html:"WOW 6"}
-		      ],
-		      [ 
-		         {html:"WOW 1"},{html:"LOL 2"},{html:"LOL 3"},{html:"WOW 4"},{html:"WOW 5"},{html:"WOW 6"}
-		      ],
-		      [ 
-		         {html:"WOW 1"},{html:"WOW 2"},{html:"WOW 3"},{html:"WOW 4"},{html:"WOW 5"},{html:"WOW 6"}
-		      ],
-		      [ 
-		         {html:"WOW 1"},{html:"WOW 2"},{html:"WOW 3"},{html:"WOW 4"},{html:"WOW 5"},{html:"WOW 6"}
-		      ],
-		      [ 
-		         {html:"WOW 1"},{html:"WOW 2"},{html:"WOW 3"},{html:"WOW 4"},{html:"WOW 5"},{html:"WOW 6"}
-		      ]
-		   ],
-		
-  		remoteConfig:{},
-  		remoteRows:[]
-  	}
+                    //Custom filter values
+                    filters:{
+                        printable:true,
+                        active:true,
+                    }
+                  },
+                  { 
+                    cells:[
+                     	{
+                            html:"John Doe",
+                         	sortValue:"#1"
+                        },
+                        {html:25},
+                        {html:"New York"},
+                        {html:"CEO"}
+                    ],
+                    //String space separated classes
+                    classes:"text-danger",
+                    //Custom filter values
+                    filters:{
+                        name:"John Doe",
+                        printable:true,
+                        active:false
+                    },
+                    tooltip:"John Doe (CEO)"
+
+                  },
+                  {
+                      cells:[
+                          {html:"John Stone"},
+                          {html:22},
+                          {html:"Boston"},
+                          {html:"CFO"},
+                      ],
+                      filters:{
+                          active:true,
+                          printable:true
+                      }
+                  },
+                  [ 
+                     {
+                         html:"Ponnappa Priya",
+                         tooltip:"Name: Ponnappa Priya"
+                     },
+                      {html:28},
+                      {html:"San Fransisco"},
+                      {html:"Trainee"},
+
+                  ],
+                  [ 
+                      {html:"Mia Wong"},
+                      {html:50},
+                      {html:"Pejing"},
+                      {html:"Trainee"},
+                  ],
+                  [ 
+                      {html:"Peter Stanbridge"},
+                      {html:18},
+                      {html:"London"},
+                      {html:"Trainee"},
+                  ],
+                  [ 
+                      {html:"Natalie Lee-Walsh"},
+                      {html:25},
+                      {html:"Dublin"},
+                      {html:"Trainee"},
+                  ],
+                  [ 
+                      {html:"Eugenia Anders"},
+                      {html:65},
+                      {html:"Jerusalem"},
+                      {html:"Trainee"},
+                  ],
+                  [ 
+                      {html:"Desiree Burch"},
+                      {html:27},
+                      {html:"Kopenhaven"},
+                      {html:"Trainee"},
+                  ],
+               ],
+        }
   },
   watch:{
 	selectedRows(val){
 		console.log("SELECTED ROWS",val);
 	},
 	name(val){
-  		if(val !== "NICHTS"){
+  		if(val !== ""){
   			this.$set(this.filters,"name",val); 
   		}else{
   			this.$delete(this.filters,"name");
@@ -308,27 +311,18 @@ export default {
   			this.$delete(this.filters,"active");
   		}
   	},
-  	company(val){
+  	printable(val){
   		if(val){
-  			this.$set(this.filters,"company",true); 
+  			this.$set(this.filters,"printable",true); 
   		}else{
-  			this.$delete(this.filters,"company");
+  			this.$delete(this.filters,"printable");
   		}
   	},
-  	filtering(val){
-  		if(val){
-  			this.$set(this.filters,"names",["Matt","Ole"]); 
-  		}else{
-  			this.$delete(this.filters,"names");
-  		}
-  	}
-  },
+	},
   methods:{
   	
   	eventListener(data,event){
-  		data;
-  		event;
-  		// console.log(event,data);
+  		console.log(event,data);
   	}
   },
   mounted(){
@@ -338,15 +332,6 @@ export default {
   		this.remoteConfig = response.data.config;
   		this.loading = false;
   	});
-
-  	setInterval(()=>{
-
-  		var rows = Object.assign({},this.rows);
-  		rows[1].cells[0].html++;
-  		this.$set(this.rows,1,rows[1]);
-
-
-  	},1000);
   }
 }
 </script>

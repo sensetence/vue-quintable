@@ -17,7 +17,9 @@
 			<input type="search" :placeholder="configFinal.searchPlaceholder" v-model="query" class="form-control">
 		</div>		
 		<table class="vue-foo-table table" v-show="!ajaxLoading">
+
 			<thead v-if="configFinal.headlines.length">
+				{{visibleRows}}
 				<tr>
 					<th class="placeholder" v-if="hasGeneratedRows && !configFinal.hideRowToggle">&nbsp;</th>
 					<th v-if="configFinal.select &&  configFinal.selectPosition == 'pre'">
@@ -85,9 +87,9 @@
 							@toggle="onRowToggle" 
 							@click="onRowClick"
 							@cell:click="onCellClick"
-							v-model="selected[index]"
+							v-model="selected[rIndex]"
 							v-show="visibleRows[rIndex]" />
-						<template v-if="(generatedRows[rIndex] || stickyRows[rIndex]) && visibleRows[rIndex]">
+						<template v-if="(generatedRows[rIndex] || stickyRows[rIndex]) && visibleRows[index]">
 							<tr 
 								@mouseenter="onMouseenterRow(rIndex)"
 								@mouseleave="onMouseleaveRow(rIndex)"
@@ -259,6 +261,49 @@ export default {
       	lastSelected:[],
   	}
   },
+
+  recomputed: {
+    visibleRows(){
+
+	    if(!this.configFinal.ajaxUrl && this.currentRowsPerPage != "All"){
+
+	       let visible = [];
+
+	       for(let i = 0;i<this.rowsFinal.length;i++){
+	       		visible.push(false);
+	       }
+
+	       var onlyVisibleSortedRows = {};
+
+	       for(let index in this.sortedIndexes){
+	       		index = parseInt(index);
+	       		if(this.filteredRows[this.sortedIndexes[index]]){
+	       			onlyVisibleSortedRows[index] = this.sortedIndexes[index];
+	       		}
+	       }
+
+
+	       let borderHigh = this.currentPage * this.currentRowsPerPage;
+	       let borderLow =  borderHigh - this.currentRowsPerPage;
+
+	       let counter = 0;
+	       for(let index in onlyVisibleSortedRows){
+	       		index = parseInt(index);
+	       		if(counter < borderHigh && counter >= borderLow){
+	       			visible[onlyVisibleSortedRows[index]] = true;
+		       	}
+		       	counter++;
+	       }
+
+	       return visible;
+
+	    }else{
+	    	return this.filteredRows;
+	    }
+
+  	},
+  },
+
   computed:{
 
   	someSelected(){
@@ -730,6 +775,8 @@ export default {
 	   			console.log("\n");
 		   	}
 
+
+
 		    visible[i] = match;
 
     	}
@@ -737,23 +784,7 @@ export default {
       	return visible;
     },
 
-  	visibleRows(){
-
-      	let visible = this.filteredRows;
-
-	    if(this.currentRowsPerPage && this.pages>1 && !this.configFinal.ajaxUrl){
-
-	       let borderHigh = this.currentPage * this.currentRowsPerPage;
-	       let borderLow =  borderHigh - this.currentRowsPerPage;
-
-	       visible = visible.map((item,index) =>{
-	          return visible[index] && index < borderHigh && index >= borderLow;
-	       });
-
-	    }
-
-  		return visible;
-  	},
+  	
   	noRows(){
   		return !this.onlyVisibleRows.length;
   	},
@@ -861,12 +892,13 @@ export default {
   		let selected = [];
 
   		for (let index in this.sortedIndexes){
+  			index = parseInt(index);
   			if(val[index]){
   				selected.push(this.rowsFinal[this.sortedIndexes[index]]);
   			}
   		}
 
-  		if(selected.length === this.onlyVisiblePagedRows.length){
+  		if(selected.length && selected.length === this.onlyVisiblePagedRows.length){
   			this.allSelected = true;
   		}
 
@@ -888,6 +920,8 @@ export default {
 	 	}
 
 	 	this.resetSelect();
+
+	 	this.updateVisibleRows();
 	 },
 
 	 customMultiSort(val){
@@ -964,8 +998,10 @@ export default {
   		if(this.numberOfSorts === 0){
 
 	 		for(let i = 0 ; i<this.rowsFinal.length;i++) {
-	  			this.sortedIndexes[i] = i;
+	  			this.sortedIndexes[i] = parseInt(i);
 		 	}
+		 	this.updateVisibleRows();
+
   		}else{
   			this.sort();
   		}
@@ -974,10 +1010,11 @@ export default {
   	checkAll: function(){
 
       for (let index in this.sortedIndexes){
+      		index = parseInt(index);
 			if(this.visibleRows[this.sortedIndexes[index]]){
-				this.$set(this.selected,index,this.allSelected);
+				this.$set(this.selected,this.sortedIndexes[index],this.allSelected);
 			}else{
-				this.$set(this.selected,index,false);
+				this.$set(this.selected,this.sortedIndexes[index],false);
 			}
 		}
       
@@ -1255,6 +1292,7 @@ export default {
   			return;
   		}
 
+
   		let rows = this.rowsFinal.slice();
 
   		for(let i = 0 ; i<rows.length;i++) {
@@ -1297,12 +1335,16 @@ export default {
 			return compare(a, b, sortableIndexes);
 		});
 
+
 		for(let i = 0 ; i<rows.length;i++) {
-			this.sortedIndexes[i] = rows[i].index;
+			this.sortedIndexes[i] = parseInt(rows[i].index);
 		}
 
 		this.currentPage = 1;
 		this.resetSelect();
+
+		this.updateVisibleRows();
+
 
   	},
 
@@ -1369,7 +1411,7 @@ export default {
   			}
 
   			if(typeof this.sortedIndexes[i] === "undefined"){
-  				this.sortedIndexes[i] = i;
+  				this.sortedIndexes[i] = parseInt(i);
   			}
 	 	}
 
@@ -1469,6 +1511,10 @@ export default {
         }
 
 
+    },
+
+    updateVisibleRows() {
+      this.$recompute('visibleRows')
     },
   	
   },

@@ -16,6 +16,9 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import vueSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
 
+import VueRecomputed from 'vue-recomputed'
+Vue.use(VueRecomputed);
+
 
 import { 
 	faCheck,
