@@ -45,7 +45,7 @@
 					  	<hr>
 			    	</template>
 			    	<template v-slot:footer>
-			    		<div class="text-center py-3 mt-3 bg-info text-white">
+			    		<div class="text-center py-3 px-3 mt-3 bg-info text-white">
 			    			Copyright © 2019 by Quintet Consulting UG (haftungsbeschränkt)
 			    		</div>
 			    	</template>
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-// import VueFooRow from './components/VueFooRow.vue'
+
 import VueFooTable from './components/VueFooTable.vue'
 import axios from 'axios'
 
@@ -74,7 +74,6 @@ export default {
   name: 'app',
   components: {
     VueFooTable,
-    // VueFooRow,
   },
 
  data(){
@@ -89,7 +88,7 @@ export default {
             active:false,
             name:"",
             printable:false,
-			//selected rows for v-model
+			      //selected rows for v-model
             selectedRows:[],
 
             //Object active filter criterias

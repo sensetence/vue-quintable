@@ -102,18 +102,20 @@
 									&& Object.keys(generatedRows[rIndex]).length 
 									|| Object.keys(stickyRows[rIndex]).length">
 								
-								<td :colspan="configFinal.number+1">
+								<td :colspan="configFinal.number+1" class="p-0">
 									<table class="table" :class="hoverClasses[rIndex]">
 										<tbody>
 											<tr 
+												class="generated-row-cell"
+												:class="{hovered:hoverClasses[rIndex]}"
 												:key="'generated-row-cell-'+rIndex+'-'+cIndex" 
 												v-for="(cell,cIndex) in generatedRows[rIndex]">
 
-												<td>
+												<td class="pl-4">
 													<strong v-html="configFinal.headlines[cIndex]">
 													</strong>
 												</td>
-												<VueFooCell :hiddenBreakpoints="hiddenBreakpoints" :cell="generatedRows[rIndex][cIndex]" :generated="true" classes="text-right" />
+												<VueFooCell :hiddenBreakpoints="hiddenBreakpoints" :cell="generatedRows[rIndex][cIndex]" :generated="true" classes="text-right pr-4" />
 											</tr>
 											<tr v-for="(cell,cIndex) in stickyRows[rIndex]" :key="'sticky-row-cell-'+rIndex+'-'+cIndex">
 												<td><strong v-html="configFinal.headlines[cIndex]"></strong></td>
@@ -149,49 +151,54 @@
 			</div>
 
 			<div class="clearfix">
-				<div class="float-left" v-if="configFinal.multiSortSelect">
-					<p-check class="p-switch" v-model="multiSort" value="true">{{configFinal.multiSortPlaceholder}}</p-check>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="float-left" v-if="configFinal.multiSortSelect">
+							<p-check class="p-switch" v-model="multiSort" value="true">{{configFinal.multiSortPlaceholder}}</p-check>
+						</div>
+					</div>
+					<div class="col-md-8">
+						<div class="pt-md-0 pt-3 float-md-right mr-3 pagination-container" v-if="configFinal.pagination" v-show="!ajaxLoading">
+							<span class="d-inline-block align-middle mr-2" v-if="configFinal.rowsSelect" v-html="configFinal.rowsPlaceholder"></span> 
+							<v-select v-if="configFinal.rowsSelect" class="d-inline-block align-middle"  :options="paginationOptionsFilled" v-model="currentRowsPerPage" :clearable="false" />
+
+							<nav v-if="configFinal.pagination && pages>1" class="d-inline-block align-middle ml-3" v-show="!ajaxLoading">
+							  <ul class="pagination mb-0">
+							    <li class="page-item" v-if="pages>pageRange" :class="{disabled:currentPage<=1}" @click="gotoPage('first')">
+							      <span class="page-link">
+							        <font-awesome-icon icon="angle-double-left" />
+							      </span>
+							    </li>
+							    <li class="page-item" :class="{disabled:currentPage<=1}" @click="gotoPage('prev')">
+							      <span class="page-link">
+							        <font-awesome-icon icon="angle-left" />
+							      </span>
+							    </li>
+
+							    <li :key="'pagination-item-'+page" class="page-item"  :class="{active:page==currentPage}" v-for="page in visiblePages"  @click="gotoPage(page)">
+							      <span class="page-link">
+							        {{page}}
+							      </span>
+							    </li>
+
+							    <li class="page-item" :class="{disabled:pages==currentPage}" @click="gotoPage('next')">
+							      <span class="page-link">
+							        <font-awesome-icon icon="angle-right" />
+							      </span>
+							    </li>
+							    <li class="page-item" v-if="pages>pageRange" :class="{disabled:pages==currentPage}" @click="gotoPage('last')">
+							      <span class="page-link">
+							        <font-awesome-icon icon="angle-double-right" />
+							      </span>
+							    </li>
+							  </ul>
+							</nav>
+
+							<span class="d-inline-block align-middle ml-3" v-if="onlyVisibleRows.length" >{{firstVisibleRow}}-{{lastVisibleRow}} of {{onlyVisibleRows.length}}</span>
+						</div>
+					</div>
 				</div>
-
-			<div class="float-right mr-3 pagination-container" v-if="configFinal.pagination" v-show="!ajaxLoading">
-				<span class="d-inline-block align-middle mr-2" v-if="configFinal.rowsSelect" v-html="configFinal.rowsPlaceholder"></span> 
-				<v-select v-if="configFinal.rowsSelect" class="d-inline-block align-middle"  :options="paginationOptionsFilled" v-model="currentRowsPerPage" :clearable="false" />
-
-				<nav v-if="configFinal.pagination && pages>1" class="d-inline-block align-middle ml-3" v-show="!ajaxLoading">
-				  <ul class="pagination mb-0">
-				    <li class="page-item" v-if="pages>pageRange" :class="{disabled:currentPage<=1}" @click="gotoPage('first')">
-				      <span class="page-link">
-				        <font-awesome-icon icon="angle-double-left" />
-				      </span>
-				    </li>
-				    <li class="page-item" :class="{disabled:currentPage<=1}" @click="gotoPage('prev')">
-				      <span class="page-link">
-				        <font-awesome-icon icon="angle-left" />
-				      </span>
-				    </li>
-
-				    <li :key="'pagination-item-'+page" class="page-item"  :class="{active:page==currentPage}" v-for="page in visiblePages"  @click="gotoPage(page)">
-				      <span class="page-link">
-				        {{page}}
-				      </span>
-				    </li>
-
-				    <li class="page-item" :class="{disabled:pages==currentPage}" @click="gotoPage('next')">
-				      <span class="page-link">
-				        <font-awesome-icon icon="angle-right" />
-				      </span>
-				    </li>
-				    <li class="page-item" v-if="pages>pageRange" :class="{disabled:pages==currentPage}" @click="gotoPage('last')">
-				      <span class="page-link">
-				        <font-awesome-icon icon="angle-double-right" />
-				      </span>
-				    </li>
-				  </ul>
-				</nav>
-
-				<span class="d-inline-block align-middle ml-3">{{firstVisibleRow}}-{{lastVisibleRow}} of {{onlyVisibleRows.length}}</span>
 			</div>
-		</div>
 
 		<div class="footer">
 			<slot name="footer"></slot>
@@ -1616,8 +1623,17 @@ beforeDestroy(){
 		font-size: 3em;
 	}
 
-	.generated-row{
+	.generated-row-cell:nth-child(odd){
 		background:rgba(255,255,0,0.1);
+	}
+
+	.generated-row-cell:nth-child(even){
+		background:rgba(100,100,0,0.1);
+	}
+
+	.generated-row-cell:nth-child(odd).hovered,
+	.generated-row-cell:nth-child(even).hovered{
+		background:none;
 	}
 
 	.generated-row table tr:first-child td{
