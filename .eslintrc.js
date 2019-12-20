@@ -8,7 +8,7 @@ module.exports = {
     'eslint:recommended'
   ],
   rules: {
-    'no-console': false,
+    'no-console': 0,
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
       "no-mixed-spaces-and-tabs": 0, // disable rule
 

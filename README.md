@@ -42,7 +42,7 @@ VueFooTable uses v-model for selected rows
 
 ### Run build
 ```shell
-npm install && npm run build
+npm install && npm run build-bundle
 ```
 
 ### Usage
