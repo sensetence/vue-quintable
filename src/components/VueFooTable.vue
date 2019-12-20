@@ -17,7 +17,6 @@
 			<input type="search" :placeholder="configFinal.searchPlaceholder" v-model="query" class="form-control">
 		</div>		
 		<table class="vue-foo-table table" v-show="!ajaxLoading">
-
 			<thead v-if="configFinal.headlines.length">
 				<tr>
 					<th class="placeholder" v-if="hasGeneratedRows && !configFinal.hideRowToggle">&nbsp;</th>
@@ -62,8 +61,8 @@
 				</tr>
 			</thead>
 			  <tbody>
-					<template  v-for="(rIndex,index) in sortedIndexes" >
-						<VueFooRow 
+					<template  v-for="(rIndex) in sortedIndexes" >
+						<VueFooRow
 							:key="'row-'+rIndex"
 							:pretty="configFinal.prettySelect" 
 							:selectPosition="configFinal.selectPosition" 
@@ -88,7 +87,7 @@
 							@cell:click="onCellClick"
 							v-model="selected[rIndex]"
 							v-show="visibleRows[rIndex]" />
-						<template v-if="(generatedRows[rIndex] || stickyRows[rIndex]) && visibleRows[index]">
+						<template v-if="(generatedRows[rIndex] || stickyRows[rIndex]) && visibleRows[rIndex]">
 							<tr 
 								@mouseenter="onMouseenterRow(rIndex)"
 								@mouseleave="onMouseleaveRow(rIndex)"
@@ -158,11 +157,11 @@
 						</div>
 					</div>
 					<div class="col-md-8">
-						<div class="pt-md-0 pt-3 float-md-right mr-3 pagination-container" v-if="configFinal.pagination" v-show="!ajaxLoading">
+						<div class="pt-md-0 pt-3 float-md-right mr-3 pagination-container" v-if="configFinal && configFinal.pagination" v-show="!ajaxLoading">
 							<span class="d-inline-block align-middle mr-2" v-if="configFinal.rowsSelect" v-html="configFinal.rowsPlaceholder"></span> 
-							<v-select v-if="configFinal.rowsSelect" class="d-inline-block align-middle"  :options="paginationOptionsFilled" v-model="currentRowsPerPage" :clearable="false" />
+							<v-select v-if="configFinal.rowsSelect" class="d-inline-block align-middle"  :options="paginationOptionsFilled" v-model="currentRowsPerPageProperty" :clearable="false" />
 
-							<nav v-if="configFinal.pagination && pages>1" class="d-inline-block align-middle ml-3" v-show="!ajaxLoading">
+							<nav v-if="configFinal && configFinal.pagination && pages>1" class="d-inline-block align-middle ml-3" v-show="!ajaxLoading">
 							  <ul class="pagination mb-0">
 							    <li class="page-item" v-if="pages>pageRange" :class="{disabled:currentPage<=1}" @click="gotoPage('first')">
 							      <span class="page-link">
@@ -272,9 +271,20 @@ export default {
   },
 
   recomputed: {
+
+  	currentRowsPerPage(){
+	  if(!this.customRowsPerPage){
+		return this.configFinal.pagination?this.configFinal.pagination:"All";
+	}
+	return this.customRowsPerPage;
+
+  },
+
+
     visibleRows(){
 
-	    if(!this.configFinal.ajaxUrl && this.currentRowsPerPage != "All"){
+
+	    if(!this.configFinal.ajaxUrl && this.currentRowsPerPage !== "All"){
 
 	       let visible = [];
 
@@ -309,16 +319,33 @@ export default {
 	    }else{
 	    	return this.filteredRows;
 	    }
-
   	},
   },
 
   computed:{
 
+
   	DEBUG(){
   		return this.verbose;
   	},
 
+	  currentRowsPerPageProperty:{
+		  get(){
+			  if(!this.customRowsPerPage){
+				  return this.configFinal.pagination;
+			  }
+			  return this.customRowsPerPage;
+
+		  },
+		  set(val){
+			  this.customRowsPerPage = val;
+		  }
+
+	  },
+
+  	rowsFinal(){
+	  return this.configFinal.ajaxUrl?this.ajaxRows:this.rows?this.rows:[];
+  	},
   	someSelected(){
   		for (let i = 0; i<this.selected.length;i++){
   			if(this.selected[i]){
@@ -348,9 +375,7 @@ export default {
 
   	},
 
-  	rowsFinal(){
-  		return this.configFinal.ajaxUrl?this.ajaxRows:this.rows;
-  	},
+
 
   	paginationOptionsFilled(){
 
@@ -383,6 +408,10 @@ export default {
 
   	configFinal(){
 
+  		if(!this.config){
+  			return {};
+		}
+
   		let pagination = false;
   		if(this.config.pagination === true){
   			pagination = 25;
@@ -392,8 +421,9 @@ export default {
   			while(this.paginationOptions[i] < this.config.pagination && i < this.paginationOptions.length){
   				i++;
   			}
-  			pagination = this.paginationOptions[Math.min(i,this.paginationOptions.length-1)];
+  			pagination = this.paginationOptions[Math.min(i-1,this.paginationOptions.length-1)];
   		}
+
 
   		let select = false;
   		if(this.config.select){
@@ -601,19 +631,7 @@ export default {
   		return classes;
   	},
 
-  	currentRowsPerPage:{
-  		get(){
-	  		if(!this.customRowsPerPage){
-	  			return this.configFinal.pagination;
-	  		}
-	  		return this.customRowsPerPage;
 
-  		},
-  		set(val){
-			this.customRowsPerPage = val;
-  		}
-
-  	},
   	pageRange(){
       return Math.min(this.configFinal.pageRange,this.pages);
     },
@@ -851,6 +869,8 @@ export default {
     	deep:true,
     },
 
+
+
     hiddenBreakpoints(val){
     	if(!this.initBreakpoints){
     		this.$emit("change:breakpoints",val,"change:breakpoints");
@@ -899,6 +919,8 @@ export default {
 	  	}
 
 	  	this.initLists();
+
+		this.updateVisibleRows()
   	},
   
   	selected(val){
@@ -958,6 +980,11 @@ export default {
 
   		}
   	},
+
+	  rows(){
+  		this.updateVisibleRows()
+
+	  }
 	
  
   },
@@ -1539,7 +1566,8 @@ export default {
     },
 
     updateVisibleRows() {
-      this.$recompute('visibleRows')
+  		this.$recompute('currentRowsPerPage');
+      	this.$recompute('visibleRows')
     },
   	
   },

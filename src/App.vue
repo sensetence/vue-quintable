@@ -10,53 +10,53 @@
   		</div>
   		<div class="row">
   			<div class="col-12">
-			    <VueFooTable 
-			    	v-model="selectedRows" 
-			    	:verbose="verbose"
-			    	:filterGroups="filterGroups" 
-			    	:filters="filters" 
-			    	:config="config" 
-			    	:rows="rows" 
-			    	key="table-1" 
-			    	@update:sort="eventListener"
-			    	@update:page="eventListener"
-			    	@update:search="eventListener"
-			    	@update:rows-per-page="eventListener"
-			    	@click:row="eventListener" 
-			    	@click:cell="eventListener" 
-			    	@expand:row="eventListener" 
-			    	@hover:row="eventListener" 
-			    	@collapse:row="eventListener" 
-			    	@change:breakpoints="eventListener">
-			    	<template v-slot:header>
-					  	<div class="clearfix py-2">
-			                <label>
-			                    Name: 
-			                    <input class="form-control" v-model="name" placeholder="Name"/>						
-			                </label>
-			            </div>
-					  	<div class="clearfix py-2">
-					  		<p-check class="p-switch" v-model="active" value="true">Active</p-check>
-					  	</div>
-					  	<div class="clearfix py-2">
-					  		<p-check class="p-switch" v-model="printable" value="true">Printable</p-check>
-					  	</div>
-					  	
-					  	<hr>
-			    	</template>
-			    	<template v-slot:footer>
-			    		<div class="text-center py-3 px-3 mt-3 bg-info text-white">
-			    			Copyright © 2019 by Quintet Consulting UG (haftungsbeschränkt)
-			    		</div>
-			    	</template>
-			    	<template v-slot:no-results>
-			    		<div class="text-center">No Results...</div>
-			    	</template>
-			    	
-			    </VueFooTable>
+<!--			    <VueFooTable -->
+<!--			    	v-model="selectedRows" -->
+<!--			    	:verbose="verbose"-->
+<!--			    	:filterGroups="filterGroups" -->
+<!--			    	:filters="filters" -->
+<!--			    	:config="config" -->
+<!--			    	:rows="rows" -->
+<!--			    	key="table-1" -->
+<!--			    	@update:sort="eventListener"-->
+<!--			    	@update:page="eventListener"-->
+<!--			    	@update:search="eventListener"-->
+<!--			    	@update:rows-per-page="eventListener"-->
+<!--			    	@click:row="eventListener" -->
+<!--			    	@click:cell="eventListener" -->
+<!--			    	@expand:row="eventListener" -->
+<!--			    	@hover:row="eventListener" -->
+<!--			    	@collapse:row="eventListener" -->
+<!--			    	@change:breakpoints="eventListener">-->
+<!--			    	<template v-slot:header>-->
+<!--					  	<div class="clearfix py-2">-->
+<!--			                <label>-->
+<!--			                    Name: -->
+<!--			                    <input class="form-control" v-model="name" placeholder="Name"/>						-->
+<!--			                </label>-->
+<!--			            </div>-->
+<!--					  	<div class="clearfix py-2">-->
+<!--					  		<p-check class="p-switch" v-model="active" value="true">Active</p-check>-->
+<!--					  	</div>-->
+<!--					  	<div class="clearfix py-2">-->
+<!--					  		<p-check class="p-switch" v-model="printable" value="true">Printable</p-check>-->
+<!--					  	</div>-->
+<!--					  	-->
+<!--					  	<hr>-->
+<!--			    	</template>-->
+<!--			    	<template v-slot:footer>-->
+<!--			    		<div class="text-center py-3 px-3 mt-3 bg-info text-white">-->
+<!--			    			Copyright © 2019 by Quintet Consulting UG (haftungsbeschränkt)-->
+<!--			    		</div>-->
+<!--			    	</template>-->
+<!--			    	<template v-slot:no-results>-->
+<!--			    		<div class="text-center">No Results...</div>-->
+<!--			    	</template>-->
+<!--			    	-->
+<!--			    </VueFooTable>-->
 
 			    <!-- Remote Loading Data -->
-			    <!-- <VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" /> -->
+			     <VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" />
 
   			</div>
   		</div>
@@ -332,6 +332,7 @@ export default {
   mounted(){
   	this.loading = true;
   	axios.get("http://192.168.188.56/test/data.php?fetch=true").then((response)=>{
+  		console.log(response);
   		this.remoteRows = response.data.rows;
   		this.remoteConfig = response.data.config;
   		this.loading = false;
