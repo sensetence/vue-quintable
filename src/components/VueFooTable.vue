@@ -1463,9 +1463,7 @@ export default {
   		let cells = null;
   		if(hide && hide !== "sticky"){
   			cells = this.generatedRows[rowIndex];
-
   			cells[cellIndex] = cell;
-  			
   			this.$set(this.generatedRows,rowIndex,cells);
 
   		}else if(hide === "sticky"){
@@ -1519,12 +1517,6 @@ export default {
   			return;
   		}
 
-	 	// for(let i = 0 ; i<this.configFinal.number;i++) {
- 		// 	if(typeof this.visibleColumnsProperty[i] !== "number"){
-  	// 			this.visibleColumnsProperty[i] = 0;
-  	// 		}
-	 	// }
-
 	 	for(let i = 0 ; i<this.configFinal.number;i++) {
  			if(typeof this.selected[i] === "undefined"){
   				this.selected[i] = false;
@@ -1538,7 +1530,6 @@ export default {
   		this.stickyRows = {};
   		this.generatedRows = {};
   		this.openRows = {};
-  		// this.visibleColumnsProperty = {};
   		this.sortedIndexes = {};
   	},
   	resetSelect(){
