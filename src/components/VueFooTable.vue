@@ -31,7 +31,8 @@
 							<input v-else type="checkbox" v-model="allSelected"  @change="checkAll()">
 						</template>
 					</th>
-					<th v-for="(headline,hIndex) in configFinal.headlines" v-show="visibleColumns[hIndex]" :class="headerClass[hIndex]" :title="'headline-'+hIndex" :key="'headline-'+hIndex" @click="setSortColumn(hIndex)">
+
+					<th v-for="(headline,hIndex) in configFinal.headlines" v-show="!configFinal.columns[hIndex].breakpoint || !breakpoints[configFinal.columns[hIndex].breakpoint]" :class="headerClass[hIndex]" :title="'headline-'+hIndex" :key="'headline-'+hIndex" @click="setSortColumn(hIndex)">
 						<span class="headline" v-html="headline"></span> 
 						<span class="sorting-icon ml-2" v-show="configFinal.sorts[hIndex]">
 							<font-awesome-icon v-show="!currentSortIndexes[hIndex]" icon="sort" class="text-primary" />
@@ -86,7 +87,7 @@
 							@click="onRowClick"
 							@cell:click="onCellClick"
 							v-model="selected[rIndex]"
-							v-show="visibleRows[rIndex]" />
+							v-if="visibleRows[rIndex]" />
 						<template v-if="(generatedRows[rIndex] || stickyRows[rIndex]) && visibleRows[rIndex]">
 							<tr 
 								@mouseenter="onMouseenterRow(rIndex)"
@@ -96,13 +97,13 @@
 								:key="'generated-row-'+rIndex"
 								class="generated-row" 
 								:class="hoverClasses[rIndex]"
-								v-show=
+								v-if=
 									"openRows[rIndex] 
 									&& Object.keys(generatedRows[rIndex]).length 
 									|| Object.keys(stickyRows[rIndex]).length">
 								
 								<td :colspan="configFinal.number+1" class="p-0">
-									<table class="table" :class="hoverClasses[rIndex]">
+									<table class="table mb-0" :class="hoverClasses[rIndex]">
 										<tbody>
 											<tr 
 												class="generated-row-cell"
@@ -251,7 +252,7 @@ export default {
   		stickyRows:{},
   		generatedRows:{},
   		openRows:{},
-  		visibleColumns:{},
+  		// visibleColumnsProperty:{},
   		sortedIndexes:{},
   		hasGeneratedRows:false,
   		currentSortIndexes:{},
@@ -272,11 +273,29 @@ export default {
 
   recomputed: {
 
+  	visibleColumns(){
+
+  		let visisbleColumns = {};
+
+  		for (let n = 0;n<this.configFinal.number;n++){
+  			let visible = 0;
+
+  			for(let i = 0;i<this.visibleRowIndexes.length;i++){
+  			 visible += Object.keys(this.generatedRows[this.visibleRowIndexes[i]]).length?-1:1;
+       		}
+
+       		visisbleColumns[n] = visible
+
+  		}  		
+
+  		return visisbleColumns;
+  	},
+
   	currentRowsPerPage(){
 	  if(!this.customRowsPerPage){
 		return this.configFinal.pagination?this.configFinal.pagination:"All";
-	}
-	return this.customRowsPerPage;
+		}
+		return this.customRowsPerPage;
 
   },
 
@@ -323,6 +342,15 @@ export default {
   },
 
   computed:{
+
+  	breakpoints(){
+  		let bp = {};
+  		for (let i = 0;i<this.hiddenBreakpoints.length;i++){
+  			bp[this.hiddenBreakpoints[i]] = true;
+  		}
+
+  		return bp;
+  	},
 
 
   	DEBUG(){
@@ -662,6 +690,24 @@ export default {
 	    });
     },
 
+    visibleRowIndexes(){
+
+		let rows = [];
+    	if(this.configFinal.ajaxUrl){
+    		for (let i = 0;i<this.ajaxAll; i++){
+    			rows.push(i);
+    		}
+    	}else{
+	    	for (let i = 0;i<this.visibleRows.length; i++){
+				if(this.visibleRows[i]){
+					rows.push(this.sortedIndexes[i]);
+				}
+			}
+		}
+
+ 		return rows;
+    },
+
     onlyVisiblePagedRows(){
 
     	if(this.configFinal.ajaxUrl){
@@ -868,8 +914,6 @@ export default {
     	},
     	deep:true,
     },
-
-
 
     hiddenBreakpoints(val){
     	if(!this.initBreakpoints){
@@ -1406,47 +1450,51 @@ export default {
   	},
   	generateRowsForCells(rowIndex,cellIndex,cell,hide){
 
-  		this.initLists();
+
+  		if(!this.generatedRows){
+  			this.generatedRows = {};
+  		}
+
+  		if(!this.generatedRows[rowIndex]){
+  			this.$set(this.generatedRows,rowIndex,{});
+  		}
+
+
   		let cells = null;
   		if(hide && hide !== "sticky"){
   			cells = this.generatedRows[rowIndex];
-  			cells[cellIndex] = cell;
-  			if(this.visibleColumns[cellIndex]>0){
-  				this.$set(this.visibleColumns,cellIndex,this.visibleColumns[cellIndex]-1)
-  			}
 
+  			cells[cellIndex] = cell;
+  			
   			this.$set(this.generatedRows,rowIndex,cells);
 
   		}else if(hide === "sticky"){
   			cells = this.stickyRows[rowIndex];
   			cells[cellIndex] = cell;
-  			if(this.visibleColumns[cellIndex]>0){
-  				this.$set(this.visibleColumns,cellIndex,this.visibleColumns[cellIndex]-1)
-  			}
+  			
   			this.$set(this.stickyRows,rowIndex,cells);
 
   		}else{
   			cells = this.generatedRows[rowIndex];
   			delete cells[cellIndex];
-  			if(this.visibleColumns[cellIndex]<this.rowsFinal.length){
-	  			this.$set(this.visibleColumns,cellIndex,this.visibleColumns[cellIndex]+1)
-	  		}
+  			
 	  		this.$set(this.generatedRows,rowIndex,cells);
   		}
 
-  		this.visibleColumns = Object.assign({},this.visibleColumns);
+  		this.$recompute("visibleRows");
 
-  		for(let row in this.generatedRows){
-  			if(Object.keys(this.generatedRows[row]).length){
+  		for(let i = 0;i<this.visibleRowIndexes.length;i++){
+
+  			if(Object.keys(this.generatedRows[this.visibleRowIndexes[i]]).length){
   				this.hasGeneratedRows = true;
   				return;
   			}
-  		} 
+  		}
 
   		this.hasGeneratedRows = false;
 
-
   	},
+
   	initLists(){
 
   		if(!this.rowsFinal){
@@ -1471,11 +1519,11 @@ export default {
   			return;
   		}
 
-	 	for(let i = 0 ; i<this.configFinal.number;i++) {
- 			if(typeof this.visibleColumns[i] !== "number"){
-  				this.visibleColumns[i] = 0;
-  			}
-	 	}
+	 	// for(let i = 0 ; i<this.configFinal.number;i++) {
+ 		// 	if(typeof this.visibleColumnsProperty[i] !== "number"){
+  	// 			this.visibleColumnsProperty[i] = 0;
+  	// 		}
+	 	// }
 
 	 	for(let i = 0 ; i<this.configFinal.number;i++) {
  			if(typeof this.selected[i] === "undefined"){
@@ -1490,7 +1538,7 @@ export default {
   		this.stickyRows = {};
   		this.generatedRows = {};
   		this.openRows = {};
-  		this.visibleColumns = {};
+  		// this.visibleColumnsProperty = {};
   		this.sortedIndexes = {};
   	},
   	resetSelect(){
@@ -1567,7 +1615,7 @@ export default {
 
     updateVisibleRows() {
   		this.$recompute('currentRowsPerPage');
-      	this.$recompute('visibleRows')
+      	this.$recompute('visibleRows');
     },
   	
   },
