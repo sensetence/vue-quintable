@@ -32,7 +32,16 @@
 						</template>
 					</th>
 
-					<th v-for="(headline,hIndex) in configFinal.headlines" v-show="!configFinal.columns[hIndex].breakpoint || !breakpoints[configFinal.columns[hIndex].breakpoint]" :class="headerClass[hIndex]" :title="'headline-'+hIndex" :key="'headline-'+hIndex" @click="setSortColumn(hIndex)">
+					<th 
+						v-for="(headline,hIndex) in configFinal.headlines" 
+						v-show="(
+							!configFinal.columns[hIndex].breakpoint || !breakpoints[configFinal.columns[hIndex].breakpoint]
+						) && 
+						!configFinal.columns[hIndex].sticky" 
+						:class="headerClass[hIndex]" 
+						:title="'headline-'+hIndex" 
+						:key="'headline-'+hIndex" 
+						@click="setSortColumn(hIndex)">
 						<span class="headline" v-html="headline"></span> 
 						<span class="sorting-icon ml-2" v-show="configFinal.sorts[hIndex]">
 							<font-awesome-icon v-show="!currentSortIndexes[hIndex]" icon="sort" class="text-primary" />
@@ -109,6 +118,7 @@
 												class="generated-row-cell"
 												:class="{hovered:hoverClasses[rIndex]}"
 												:key="'generated-row-cell-'+rIndex+'-'+cIndex" 
+												v-show="openRows[rIndex]"
 												v-for="(cell,cIndex) in generatedRows[rIndex]">
 
 												<td class="pl-4">
@@ -117,7 +127,7 @@
 												</td>
 												<VueFooCell :hiddenBreakpoints="hiddenBreakpoints" :cell="generatedRows[rIndex][cIndex]" :generated="true" classes="text-right pr-4" />
 											</tr>
-											<tr v-for="(cell,cIndex) in stickyRows[rIndex]" :key="'sticky-row-cell-'+rIndex+'-'+cIndex">
+											<tr v-for="(cell,cIndex) in stickyRows[rIndex]" :key="'sticky-row-cell-'+rIndex+'-'+cIndex" :class="{hovered:hoverClasses[rIndex]}" class="generated-row-cell">
 												<td><strong v-html="configFinal.headlines[cIndex]"></strong></td>
 												<VueFooCell :hiddenBreakpoints="hiddenBreakpoints" :cell="stickyRows[rIndex][cIndex]"  :generated="true" />
 											</tr>
@@ -252,7 +262,6 @@ export default {
   		stickyRows:{},
   		generatedRows:{},
   		openRows:{},
-  		// visibleColumnsProperty:{},
   		sortedIndexes:{},
   		hasGeneratedRows:false,
   		currentSortIndexes:{},
@@ -268,28 +277,11 @@ export default {
       	hiddenBreakpoints:[],
       	initBreakpoints:true,
       	lastSelected:[],
+      	generationDate:new Date(),
   	}
   },
 
   recomputed: {
-
-  	visibleColumns(){
-
-  		let visisbleColumns = {};
-
-  		for (let n = 0;n<this.configFinal.number;n++){
-  			let visible = 0;
-
-  			for(let i = 0;i<this.visibleRowIndexes.length;i++){
-  			 visible += Object.keys(this.generatedRows[this.visibleRowIndexes[i]]).length?-1:1;
-       		}
-
-       		visisbleColumns[n] = visible
-
-  		}  		
-
-  		return visisbleColumns;
-  	},
 
   	currentRowsPerPage(){
 	  if(!this.customRowsPerPage){
@@ -884,10 +876,14 @@ export default {
   	},
   	hoverClasses(){
 
+  		if(!this.configFinal.hoverClass){
+  			return {};
+  		}
+
   		let classes = [];
 
   		for (let i = 0; i<this.rowsFinal.length; i++){
-  			if(!this.configFinal.hoverClass || i !== this.hoveredRow){
+  			if(i !== this.hoveredRow){
   				classes.push("");
   			}else{
   				classes.push(this.configFinal.hoverClass);
@@ -913,6 +909,17 @@ export default {
  			this.resetSelect();
     	},
     	deep:true,
+    },
+
+    hasGeneratedRows(){
+
+    	let date =  new Date();
+
+    	if(date - this.generationDate > 1000){
+    		this.updateVisibleRows();
+    		this.generationDate = new Date();
+    	}
+
     },
 
     hiddenBreakpoints(val){
@@ -1026,8 +1033,8 @@ export default {
   	},
 
 	  rows(){
-  		this.updateVisibleRows()
-
+	  	
+	  	this.updateVisibleRows();
 	  }
 	
  
@@ -1052,7 +1059,7 @@ export default {
 	  		this.$set(this.openRows,rowIndex,false);
 		}
 
-		this.openRows = Object.assign({},this.openRows);
+		// this.openRows = Object.assign({},this.openRows);
 
 	},
 
@@ -1450,7 +1457,6 @@ export default {
   	},
   	generateRowsForCells(rowIndex,cellIndex,cell,hide){
 
-
   		if(!this.generatedRows){
   			this.generatedRows = {};
   		}
@@ -1458,7 +1464,6 @@ export default {
   		if(!this.generatedRows[rowIndex]){
   			this.$set(this.generatedRows,rowIndex,{});
   		}
-
 
   		let cells = null;
   		if(hide && hide !== "sticky"){
@@ -1479,17 +1484,16 @@ export default {
 	  		this.$set(this.generatedRows,rowIndex,cells);
   		}
 
-  		this.$recompute("visibleRows");
-
+  		let generatedRows = 0;
   		for(let i = 0;i<this.visibleRowIndexes.length;i++){
 
   			if(Object.keys(this.generatedRows[this.visibleRowIndexes[i]]).length){
-  				this.hasGeneratedRows = true;
-  				return;
+  				generatedRows++;
   			}
   		}
 
-  		this.hasGeneratedRows = false;
+
+  		this.hasGeneratedRows = generatedRows;
 
   	},
 
@@ -1605,8 +1609,10 @@ export default {
     },
 
     updateVisibleRows() {
-  		this.$recompute('currentRowsPerPage');
-      	this.$recompute('visibleRows');
+    	this.$nextTick(()=>{
+	  		this.$recompute('currentRowsPerPage');
+	      	this.$recompute('visibleRows');
+	      });
     },
   	
   },

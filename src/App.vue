@@ -10,7 +10,7 @@
   		</div>
   		<div class="row">
   			<div class="col-12">
-			    <VueFooTable 
+			  <!--   <VueFooTable 
 			    	v-model="selectedRows" 
 			    	:verbose="verbose"
 			    	:filterGroups="filterGroups" 
@@ -53,7 +53,7 @@
 			    		<div class="text-center">No Results...</div>
 			    	</template>
 			    	
-			    </VueFooTable>
+			    </VueFooTable> -->
 
 			    <!-- Remote Loading Data -->
 			     <VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" />
@@ -132,7 +132,8 @@ export default {
                      },{
                         headline:"Birthplace",
                         breakpoint:"md",
-                        align:"right"
+                        align:"right",
+                        sticky:true
                      },{
                         headline:"Job",
                         sticky:false,
@@ -333,7 +334,6 @@ export default {
   mounted(){
   	this.loading = true;
   	axios.get("http://localhost/test/data.php?fetch=true").then((response)=>{
-  		console.log(response);
   		this.remoteRows = response.data.rows;
   		this.remoteConfig = response.data.config;
   		this.loading = false;
