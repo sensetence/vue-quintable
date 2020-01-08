@@ -10,7 +10,7 @@
   		</div>
   		<div class="row">
   			<div class="col-12">
-			  <!--   <VueFooTable 
+			    <VueFooTable 
 			    	v-model="selectedRows" 
 			    	:verbose="verbose"
 			    	:filterGroups="filterGroups" 
@@ -53,10 +53,10 @@
 			    		<div class="text-center">No Results...</div>
 			    	</template>
 			    	
-			    </VueFooTable> -->
+			    </VueFooTable>
 
 			    <!-- Remote Loading Data -->
-			     <VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" />
+			     <!-- <VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" /> -->
 
 
   			</div>

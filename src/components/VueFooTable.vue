@@ -1625,6 +1625,7 @@ export default {
  	}
 
  	this.generateHiddenBreakpoints();
+ 	this.updateVisibleRows();
 
 	window.addEventListener("resize",this.generateHiddenBreakpoints);
 

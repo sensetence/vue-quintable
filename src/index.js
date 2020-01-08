@@ -1,21 +1,18 @@
 /** COMMON START **/
 
 import Vue from 'vue'
-import BootstrapVue from 'bootstrap-vue'
+
 import PrettyCheck from 'pretty-checkbox-vue/check';
 import 'pretty-checkbox/src/pretty-checkbox.scss';
 
 import vueSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
 
-import './plugins/bootstrap-vue'
-
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import VueRecomputed from 'vue-recomputed'
 Vue.use(VueRecomputed);
-
 
 import { 
 	faCheck,
@@ -54,7 +51,6 @@ let install = function(Vue) {
 	if (install.installed) return;
 	
 	install.installed = true;
-	Vue.use(BootstrapVue)
 	Vue.component('v-select', vueSelect)
 	Vue.component('p-check', PrettyCheck);
 	Vue.component('font-awesome-icon', FontAwesomeIcon)
