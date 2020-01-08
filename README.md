@@ -79,9 +79,16 @@ npm install --save https://zeitler-quintet@bitbucket.org/zeitler-quintet/vuefoot
 
 ```js
 import Vue from 'vue'
+
+//use bootstrap
+import BootstrapVue from 'bootstrap-vue'
+Vue.use(BootstrapVue)
+//use bootstrap css
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
 import "@quintet/vue-foo-table/dist/vue-foo-table.css"
 import VueTable from '@quintet/vue-foo-table'
-
 Vue.use(VueTable);
 ```
 

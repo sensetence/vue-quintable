@@ -5,6 +5,7 @@ import Vue from 'vue'
 import PrettyCheck from 'pretty-checkbox-vue/check';
 import 'pretty-checkbox/src/pretty-checkbox.scss';
 
+
 import vueSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
 
