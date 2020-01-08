@@ -129,10 +129,10 @@
 		mounted(){
 			this.$emit("toggle",this.open,this.index);
 
-			if(this.preSelected){
+			if(this.preSelected || this.select){
 				this.selected = true;
-				this.$emit("toggleSelect",this.selected,this.index);
 				this.$emit("input",this.selected);
+				this.$emit("toggleSelect",this.selected,this.index);
 			}
 		}
   

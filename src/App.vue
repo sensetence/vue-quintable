@@ -10,7 +10,7 @@
   		</div>
   		<div class="row">
   			<div class="col-12">
-			    <VueFooTable 
+			    <!-- <VueFooTable 
 			    	v-model="selectedRows" 
 			    	:verbose="verbose"
 			    	:filterGroups="filterGroups" 
@@ -53,7 +53,7 @@
 			    		<div class="text-center">No Results...</div>
 			    	</template>
 			    	
-			    </VueFooTable>
+			    </VueFooTable> -->
 
 			    <!-- Remote Loading Data -->
 			     <VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" />
@@ -83,7 +83,30 @@ export default {
         	//loading
         	loading:false,
         	remoteRows:[],
-        	remoteConfig:{},
+        	remoteConfig: {
+                    //Object[] columns with headline, sticky, breakpoint, align, sort
+                    columns: [
+                        {
+                            headline: "Name",
+                            sort: true,
+                        }, {
+                            headline: "Email",
+                            breakpoint: "sm",
+                            sort: true,
+                        }, {
+                            headline: "Phone",
+                            breakpoint: "md",
+                        }, {
+                            headline: "Job Title",
+                            breakpoint: "md",
+                            sort: true,
+                        }
+                    ],
+                    select: true,
+                    prettySelect: true,
+                    selectAll: true,
+                    defaultSelected: true,
+                },
         	verbose:false,
             //filters
             active:false,
@@ -338,8 +361,10 @@ export default {
   mounted(){
   	this.loading = true;
   	axios.get("http://localhost/test/data.php?fetch=true").then((response)=>{
-  		this.remoteRows = response.data.rows;
-  		this.remoteConfig = response.data.config;
+  		// this.remoteRows = response.data.rows;
+  		// this.remoteConfig = response.data.config;
+      console.log(response.data);
+      this.remoteRows = JSON.parse(response.data.rows);
   		this.loading = false;
   	});
   }

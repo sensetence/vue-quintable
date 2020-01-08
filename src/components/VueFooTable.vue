@@ -1082,9 +1082,8 @@ export default {
 	  	this.initLists();
 	  	this.$forceUpdate();
 
-
 	  	if(this.configFinal.defaultSelected){
-	  	this.allSelectedCustom = null;
+	  		this.allSelectedCustom = null;
 	 		this.checkAll();
 	 	}
 	  });
@@ -1157,16 +1156,13 @@ export default {
       for (let index in this.sortedIndexes){
       		index = parseInt(index);
 
-      		console.log(this.visibleRows[this.sortedIndexes[index]]);
-
 			if(this.visibleRows[this.sortedIndexes[index]]){
-
 				this.$set(this.selected,this.sortedIndexes[index],this.allSelected);
 			}else{
 				this.$set(this.selected,this.sortedIndexes[index],false);
 			}
-		}
-      
+
+		}      
     },
 
     checkListener(bool,index){
