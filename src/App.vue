@@ -152,6 +152,8 @@ export default {
                   selectPosition:"pre",
                   //Boolean if there should be a select all checkbox
                   selectAll:true,
+                  //Boolean if all rows are selected on init
+                  defaultSelected:false,
                   //Boolean if there shall be a search input 
                   search:true,
                   //Integer displayed page range of pagination
@@ -205,6 +207,8 @@ export default {
                         {html:"Software Developer"},
                      ],
 
+                      //selected on default
+                      selected:true,
                       //expanded on default
                       expanded:true,
                       //Keywords for search

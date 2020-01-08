@@ -86,6 +86,7 @@
 							:expanded="configFinal.expandedAll||rowsFinal[rIndex].expanded"
 							:alignments="configFinal.alignments" 
 							:tooltip="rowsFinal[rIndex].tooltip" 
+							:preSelected="rowsFinal[rIndex].selected" 
 							:hiddenBreakpoints="hiddenBreakpoints" 
 							:row="rowsFinal[rIndex].cells?rowsFinal[rIndex].cells:rowsFinal[rIndex]"
 							@toggleSelect="checkListener" 
@@ -257,7 +258,7 @@ export default {
   data(){
   	return {
   		hoveredRow:null,
-  		allSelected:false,
+  		allSelectedCustom:null,
   		selected:[],
   		stickyRows:{},
   		generatedRows:{},
@@ -339,6 +340,25 @@ export default {
 
   computed:{
 
+  	DEBUG(){
+  		return this.verbose;
+  	},
+
+  	allSelected:{
+  		get(){
+
+	  		if(this.allSelectedCustom === null){
+	  			return this.configFinal.defaultSelected;
+	  		}
+	  		return this.allSelectedCustom;
+
+  		},
+  		set(val){
+			this.allSelectedCustom = val;
+  		}
+
+  	},
+
   	breakpoints(){
   		let bp = {};
   		for (let i = 0;i<this.hiddenBreakpoints.length;i++){
@@ -348,28 +368,24 @@ export default {
   		return bp;
   	},
 
-
-  	DEBUG(){
-  		return this.verbose;
-  	},
-
-	  currentRowsPerPageProperty:{
-		  get(){
+	currentRowsPerPageProperty:{
+		get(){
 			  if(!this.customRowsPerPage){
 				  return this.currentRowsPerPage;
 			  }
 			  return this.customRowsPerPage;
 
-		  },
-		  set(val){
-			  this.customRowsPerPage = val;
-		  }
+		},
+		set(val){
+			this.customRowsPerPage = val;
+		}
 
-	  },
+	},
 
   	rowsFinal(){
 	  return this.configFinal.ajaxUrl?this.ajaxRows:this.rows?this.rows:[];
   	},
+
   	someSelected(){
   		for (let i = 0; i<this.selected.length;i++){
   			if(this.selected[i]){
@@ -541,6 +557,11 @@ export default {
   			selectAll = true;
   		}
 
+  		let defaultSelected = false;
+		if(this.config.defaultSelected){
+		  	defaultSelected = true;
+		}
+
   		let hideRowToggle = false;
   		if(this.config.hideRowToggle){
   			hideRowToggle = true;
@@ -608,6 +629,7 @@ export default {
   			filterGroupRelation:filterGroupRelation,
   			filterRelation:filterRelation,
         	rowsSelect:rowsSelect,
+        	defaultSelected:defaultSelected,
         	searchLength:searchLength,
         	search:search,
         	ajaxUrl:ajaxUrl,
@@ -974,8 +996,15 @@ export default {
 	  	}
 
 	  	this.initLists();
+		this.updateVisibleRows();
 
-		this.updateVisibleRows()
+		if(this.configFinal.ajaxUrl){
+ 			this.loadViaAjax();
+	 	}
+
+	 	if(this.configFinal.defaultSelected){
+	 		this.checkAll();
+	 	}
   	},
   
   	selected(val){
@@ -1635,6 +1664,10 @@ export default {
  mounted(){
  	if(this.configFinal.ajaxUrl){
  		this.loadViaAjax();
+ 	}
+
+ 	if(this.configFinal.defaultSelected){
+ 		this.checkAll();
  	}
 
  	this.generateHiddenBreakpoints();

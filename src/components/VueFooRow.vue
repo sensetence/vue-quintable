@@ -38,7 +38,7 @@
 	import {v4 as uuid} from 'uuid';
 
 	export default{
-		props:["index","row","tooltip","breakpoints","stickyCols","alignments","value","select","pretty","selectPosition","hideRowToggle","expanded","classes","hiddenBreakpoints"],
+		props:["index","row","preSelected","tooltip","breakpoints","stickyCols","alignments","value","select","pretty","selectPosition","hideRowToggle","expanded","classes","hiddenBreakpoints"],
 		components: {
 		    VueFooCell,
 		},
@@ -128,6 +128,12 @@
 		},
 		mounted(){
 			this.$emit("toggle",this.open,this.index);
+
+			if(this.preSelected){
+				this.selected = true;
+				this.$emit("toggleSelect",this.selected,this.index);
+				this.$emit("input",this.selected);
+			}
 		}
   
 	}
