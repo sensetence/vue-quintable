@@ -97,7 +97,7 @@
 							@cell:click="onCellClick"
 							v-model="selected[rIndex]"
 							v-if="visibleRows[rIndex]" />
-						<template v-if="(generatedRows[rIndex] || stickyRows[rIndex]) && visibleRows[rIndex]">
+						<template v-if="(generatedRows[rIndex] || stickyRowsFinal[rIndex]) && visibleRows[rIndex]">
 							<tr 
 								@mouseenter="onMouseenterRow(rIndex)"
 								@mouseleave="onMouseleaveRow(rIndex)"
@@ -109,7 +109,7 @@
 								v-if=
 									"openRows[rIndex] 
 									&& Object.keys(generatedRows[rIndex]).length 
-									|| Object.keys(stickyRows[rIndex]).length">
+									|| Object.keys(stickyRowsFinal[rIndex]).length">
 								
 								<td :colspan="configFinal.number+1" class="p-0">
 									<table class="table mb-0" :class="hoverClasses[rIndex]">
@@ -127,9 +127,9 @@
 												</td>
 												<VueFooCell :hiddenBreakpoints="hiddenBreakpoints" :cell="generatedRows[rIndex][cIndex]" :generated="true" classes="text-right pr-4" />
 											</tr>
-											<tr v-for="(cell,cIndex) in stickyRows[rIndex]" :key="'sticky-row-cell-'+rIndex+'-'+cIndex" :class="{hovered:hoverClasses[rIndex]}" class="generated-row-cell">
+											<tr v-for="(cell,cIndex) in stickyRowsFinal[rIndex]" :key="'sticky-row-cell-'+rIndex+'-'+cIndex" :class="{hovered:hoverClasses[rIndex]}" class="generated-row-cell">
 												<td><strong v-html="configFinal.headlines[cIndex]"></strong></td>
-												<VueFooCell :hiddenBreakpoints="hiddenBreakpoints" :cell="stickyRows[rIndex][cIndex]"  :generated="true" />
+												<VueFooCell :hiddenBreakpoints="hiddenBreakpoints" :cell="stickyRowsFinal[rIndex][cIndex]"  :generated="true" />
 											</tr>
 										</tbody>
 									</table>
@@ -284,6 +284,7 @@ export default {
   recomputed: {
 
   	currentRowsPerPage(){
+
 	  if(!this.customRowsPerPage){
 		return this.configFinal.pagination?this.configFinal.pagination:"All";
 		}
@@ -291,9 +292,12 @@ export default {
 
   },
 
+  stickyRowsFinal(){
+  	 return this.stickyRows;
+  },
+
 
     visibleRows(){
-
 
 	    if(!this.configFinal.ajaxUrl && this.currentRowsPerPage !== "All"){
 
@@ -352,7 +356,7 @@ export default {
 	  currentRowsPerPageProperty:{
 		  get(){
 			  if(!this.customRowsPerPage){
-				  return this.configFinal.pagination;
+				  return this.currentRowsPerPage;
 			  }
 			  return this.customRowsPerPage;
 
@@ -1032,10 +1036,14 @@ export default {
   		}
   	},
 
-	  rows(){
-	  	
-	  	this.updateVisibleRows();
-	  }
+	rows(){
+	  this.updateVisibleRows();
+
+	  this.$nextTick(()=>{
+	  	this.initLists();
+	  	this.$forceUpdate();
+	  });
+	}
 	
  
   },
@@ -1448,7 +1456,6 @@ export default {
 
 		this.updateVisibleRows();
 
-
   	},
 
   
@@ -1474,13 +1481,11 @@ export default {
   		}else if(hide === "sticky"){
   			cells = this.stickyRows[rowIndex];
   			cells[cellIndex] = cell;
-  			
   			this.$set(this.stickyRows,rowIndex,cells);
 
   		}else{
   			cells = this.generatedRows[rowIndex];
   			delete cells[cellIndex];
-  			
 	  		this.$set(this.generatedRows,rowIndex,cells);
   		}
 
@@ -1492,8 +1497,9 @@ export default {
   			}
   		}
 
-
   		this.hasGeneratedRows = generatedRows;
+
+  		this.updateVisibleRows();
 
   	},
 
@@ -1582,7 +1588,11 @@ export default {
 		        return false;
 		    },
 
-  	generateHiddenBreakpoints() {
+  	generateHiddenBreakpoints(regenerate = false) {
+
+  		if(regenerate){
+  			this.hiddenBreakpoints = [];
+  		}
 
 		let breakpoints = [];
         if (!this.elementVisible(this.$refs.xl)) {
@@ -1601,7 +1611,7 @@ export default {
             breakpoints.push("sm");
         }
 
-        if(JSON.stringify(this.hiddenBreakpoints) !== JSON.stringify(breakpoints)){
+        if((JSON.stringify(this.hiddenBreakpoints) !== JSON.stringify(breakpoints))){
         	this.hiddenBreakpoints = breakpoints;
         }
 
@@ -1609,10 +1619,13 @@ export default {
     },
 
     updateVisibleRows() {
-    	this.$nextTick(()=>{
-	  		this.$recompute('currentRowsPerPage');
+		this.generateHiddenBreakpoints(true);
+		this.$nextTick(()=>{
+			this.$recompute('currentRowsPerPage');
 	      	this.$recompute('visibleRows');
-	      });
+	      	this.$recompute('stickyRowsFinal');
+		});
+	     
     },
   	
   },
