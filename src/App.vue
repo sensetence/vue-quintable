@@ -56,7 +56,7 @@
 			    </VueFooTable>
 
 			    <!-- Remote Loading Data -->
-			     <!-- <VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" /> -->
+			     <VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" />
 
 
   			</div>

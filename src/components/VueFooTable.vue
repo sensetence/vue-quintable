@@ -22,13 +22,13 @@
 					<th class="placeholder" v-if="hasGeneratedRows && !configFinal.hideRowToggle">&nbsp;</th>
 					<th v-if="configFinal.select &&  configFinal.selectPosition == 'pre'">
 						<template v-if="configFinal.selectAll">
-							<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelected" @change="checkAll()">
+							<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelectedProperty" @change="checkAll()">
 								<template slot="extra" >
 									<span><font-awesome-icon v-show="allSelected" icon="check" class="text-success icon-check" /></span>
 									<span><font-awesome-icon v-show="someSelected && !allSelected" icon="square" class="text-success icon-check" /></span>
 								</template>
 							</p-check>
-							<input v-else type="checkbox" v-model="allSelected"  @change="checkAll()">
+							<input v-else type="checkbox" v-model="allSelectedProperty"  @change="checkAll()">
 						</template>
 					</th>
 
@@ -59,13 +59,13 @@
 					</th>
 					<th v-if="configFinal.select && configFinal.selectPosition == 'post'">
 						<template v-if="configFinal.selectAll">
-							<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelected" @change="checkAll()">
+							<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelectedProperty" @change="checkAll()">
 								<template slot="extra" >
 									<span><font-awesome-icon v-show="allSelected" icon="check" class="text-success icon-check" /></span>
 									<span><font-awesome-icon v-show="someSelected && !allSelected" icon="square" class="text-success icon-check" /></span>
 								</template>
 							</p-check>
-							<input v-else type="checkbox" v-model="allSelected"  @click="checkAll()">
+							<input v-else type="checkbox" v-model="allSelectedProperty"  @click="checkAll()">
 						</template>
 					</th>
 				</tr>
@@ -297,6 +297,16 @@ export default {
   	 return this.stickyRows;
   },
 
+  allSelected(){
+
+
+  		if(this.allSelectedCustom === null){
+	  			return this.configFinal.defaultSelected;
+	  		}
+	  		return this.allSelectedCustom;
+
+  },
+
 
     visibleRows(){
 
@@ -344,7 +354,7 @@ export default {
   		return this.verbose;
   	},
 
-  	allSelected:{
+  	allSelectedProperty:{
   		get(){
 
 	  		if(this.allSelectedCustom === null){
@@ -1019,7 +1029,7 @@ export default {
   		}
 
   		if(selected.length && selected.length === this.onlyVisiblePagedRows.length){
-  			this.allSelected = true;
+  			this.allSelectedProperty = true;
   		}
 
   		if(JSON.stringify(this.lastSelected) !== JSON.stringify(selected)){
@@ -1071,6 +1081,12 @@ export default {
 	  this.$nextTick(()=>{
 	  	this.initLists();
 	  	this.$forceUpdate();
+
+
+	  	if(this.configFinal.defaultSelected){
+	  	this.allSelectedCustom = null;
+	 		this.checkAll();
+	 	}
 	  });
 	}
 	
@@ -1136,11 +1152,15 @@ export default {
   		}
   	},
 
-  	checkAll: function(){
+  	checkAll(){
 
       for (let index in this.sortedIndexes){
       		index = parseInt(index);
+
+      		console.log(this.visibleRows[this.sortedIndexes[index]]);
+
 			if(this.visibleRows[this.sortedIndexes[index]]){
+
 				this.$set(this.selected,this.sortedIndexes[index],this.allSelected);
 			}else{
 				this.$set(this.selected,this.sortedIndexes[index],false);
@@ -1155,11 +1175,11 @@ export default {
     	tmp[index] = bool;
 
     	if(tmp.indexOf(false) !== -1){
-  			this.allSelected = false;
+  			this.allSelectedProperty = false;
   		}
 
   		else if(tmp.indexOf(false) === -1){
-  			this.allSelected = true;
+  			this.allSelectedProperty = true;
   		}
 
     },
@@ -1572,7 +1592,7 @@ export default {
   		this.sortedIndexes = {};
   	},
   	resetSelect(){
-  		this.allSelected = false;
+  		this.allSelectedProperty = false;
   		for(let i = 0 ; i<this.rowsFinal.length;i++) {
   			this.$set(this.selected,i,false);
 	 	}
@@ -1651,6 +1671,7 @@ export default {
 		this.generateHiddenBreakpoints(true);
 		this.$nextTick(()=>{
 			this.$recompute('currentRowsPerPage');
+			this.$recompute('allSelected');
 	      	this.$recompute('visibleRows');
 	      	this.$recompute('stickyRowsFinal');
 		});
