@@ -1009,7 +1009,10 @@ export default {
  		}
     	
  		this.currentPage = 1;
- 		this.resetSelect();
+
+		if(!this.configFinal.selectAllRows){
+			this.resetSelect();
+		}
     },
     
 
@@ -1481,6 +1484,8 @@ export default {
   			return;
   		}
 
+  		this.initPage = false;
+
 
   		let rows = this.rowsFinal.slice();
 
@@ -1530,7 +1535,11 @@ export default {
 		}
 
 		this.currentPage = 1;
-		this.resetSelect();
+
+
+		if(!this.configFinal.selectAllRows){
+			this.resetSelect();
+		}
 
 		this.updateVisibleRows();
 
