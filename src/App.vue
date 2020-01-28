@@ -10,29 +10,29 @@
   		</div>
   		<div class="row">
   			<div class="col-12">
-			    <!-- <VueFooTable 
-			    	v-model="selectedRows" 
+			     <VueFooTable
+			    	v-model="selectedRows"
 			    	:verbose="verbose"
-			    	:filterGroups="filterGroups" 
-			    	:filters="filters" 
-			    	:config="config" 
-			    	:rows="rows" 
-			    	key="table-1" 
+			    	:filterGroups="filterGroups"
+			    	:filters="filters"
+			    	:config="config"
+			    	:rows="rows"
+			    	key="table-1"
 			    	@update:sort="eventListener"
 			    	@update:page="eventListener"
 			    	@update:search="eventListener"
 			    	@update:rows-per-page="eventListener"
-			    	@click:row="eventListener" 
-			    	@click:cell="eventListener" 
-			    	@expand:row="eventListener" 
-			    	@hover:row="eventListener" 
-			    	@collapse:row="eventListener" 
+			    	@click:row="eventListener"
+			    	@click:cell="eventListener"
+			    	@expand:row="eventListener"
+			    	@hover:row="eventListener"
+			    	@collapse:row="eventListener"
 			    	@change:breakpoints="eventListener">
 			    	<template v-slot:header>
 					  	<div class="clearfix py-2">
 			                <label>
-			                    Name: 
-			                    <input class="form-control" v-model="name" placeholder="Name"/>						
+			                    Name:
+			                    <input class="form-control" v-model="name" placeholder="Name"/>
 			                </label>
 			            </div>
 					  	<div class="clearfix py-2">
@@ -41,7 +41,7 @@
 					  	<div class="clearfix py-2">
 					  		<p-check class="p-switch" v-model="printable" value="true">Printable</p-check>
 					  	</div>
-					  	
+
 					  	<hr>
 			    	</template>
 			    	<template v-slot:footer>
@@ -52,11 +52,11 @@
 			    	<template v-slot:no-results>
 			    		<div class="text-center">No Results...</div>
 			    	</template>
-			    	
-			    </VueFooTable> -->
+
+			    </VueFooTable>
 
 			    <!-- Remote Loading Data -->
-			     <VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" />
+<!--			     <VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" />-->
 
 
   			</div>
@@ -158,8 +158,8 @@ export default {
                         align:"right",
                         sticky:true
                      },{
-                        headline:"Job",
-                        sticky:false,
+						  headline:"Job",
+						  breakpoint:"all",
                      }
                   ],
 
@@ -175,6 +175,8 @@ export default {
                   selectPosition:"pre",
                   //Boolean if there should be a select all checkbox
                   selectAll:true,
+				  //Boolean if "select all" selects all rows allover the pages
+                  selectAllRows:true,
                   //Boolean if all rows are selected on init
                   defaultSelected:false,
                   //Boolean if there shall be a search input 
@@ -263,7 +265,8 @@ export default {
                         printable:true,
                         active:false
                     },
-                    tooltip:"John Doe (CEO)"
+                    tooltip:"John Doe (CEO)",
+					  selected:true,
 
                   },
                   {
@@ -276,9 +279,10 @@ export default {
                       filters:{
                           active:true,
                           printable:true
-                      }
+                      },
+					  selected:true,
                   },
-                  [ 
+                  [
                      {
                          html:"Ponnappa Priya",
                          tooltip:"Name: Ponnappa Priya"
@@ -287,32 +291,33 @@ export default {
                       {html:"San Fransisco"},
                       {html:"Trainee"},
 
+
                   ],
-                  [ 
+                  [
                       {html:"Mia Wong"},
                       {html:50},
                       {html:"Pejing"},
                       {html:"Trainee"},
                   ],
-                  [ 
+                  [
                       {html:"Peter Stanbridge"},
                       {html:18},
                       {html:"London"},
                       {html:"Trainee"},
                   ],
-                  [ 
+                  [
                       {html:"Natalie Lee-Walsh"},
                       {html:25},
                       {html:"Dublin"},
                       {html:"Trainee"},
                   ],
-                  [ 
+                  [
                       {html:"Eugenia Anders"},
                       {html:65},
                       {html:"Jerusalem"},
                       {html:"Trainee"},
                   ],
-                  [ 
+                  [
                       {html:"Desiree Burch"},
                       {html:27},
                       {html:"Kopenhaven"},
@@ -361,10 +366,9 @@ export default {
   mounted(){
   	this.loading = true;
   	axios.get("http://localhost/test/data.php?fetch=true").then((response)=>{
-  		// this.remoteRows = response.data.rows;
-  		// this.remoteConfig = response.data.config;
-      console.log(response.data);
-      this.remoteRows = JSON.parse(response.data.rows);
+  		this.remoteRows = response.data.rows;
+  		this.remoteConfig = response.data.config;
+      // this.remoteRows = JSON.parse(response.data.rows);
   		this.loading = false;
   	});
   }

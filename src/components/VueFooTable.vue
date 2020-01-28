@@ -71,12 +71,14 @@
 				</tr>
 			</thead>
 			  <tbody>
-					<template  v-for="(rIndex) in sortedIndexes" >
+			  <!--  -->
+
+			  <template  v-for="(rIndex) in sortedIndexes" >
 						<VueFooRow
 							:key="'row-'+rIndex"
 							:pretty="configFinal.prettySelect" 
 							:selectPosition="configFinal.selectPosition" 
-							:select="configFinal.select" 
+							:select="configFinal.select"
 							:index="rIndex" 
 							:ref="'row-highlighted-on-hover-'+rIndex"
 							:classes="(rowsFinal[rIndex].classes?rowsFinal[rIndex].classes:'') + ' ' +hoverClasses[rIndex]"
@@ -86,8 +88,9 @@
 							:expanded="configFinal.expandedAll||rowsFinal[rIndex].expanded"
 							:alignments="configFinal.alignments" 
 							:tooltip="rowsFinal[rIndex].tooltip" 
-							:preSelected="rowsFinal[rIndex].selected" 
-							:hiddenBreakpoints="hiddenBreakpoints" 
+							:preSelected="(rowsFinal[rIndex].selected && initPage) || (configFinal.selectAllRows && selected[rIndex])"
+							:lockSelect="lockSelect && !configFinal.selectAllRows"
+							:hiddenBreakpoints="hiddenBreakpoints"
 							:row="rowsFinal[rIndex].cells?rowsFinal[rIndex].cells:rowsFinal[rIndex]"
 							@toggleSelect="checkListener" 
 							@updateBreakpoints="generateRowsForCells" 
@@ -130,7 +133,7 @@
 											</tr>
 											<tr v-for="(cell,cIndex) in stickyRowsFinal[rIndex]" :key="'sticky-row-cell-'+rIndex+'-'+cIndex" :class="{hovered:hoverClasses[rIndex]}" class="generated-row-cell">
 												<td><strong v-html="configFinal.headlines[cIndex]"></strong></td>
-												<VueFooCell :hiddenBreakpoints="hiddenBreakpoints" :cell="stickyRowsFinal[rIndex][cIndex]"  :generated="true" />
+												<VueFooCell  :hiddenBreakpoints="hiddenBreakpoints" :cell="stickyRowsFinal[rIndex][cIndex]"  :generated="true" />
 											</tr>
 										</tbody>
 									</table>
@@ -279,6 +282,8 @@ export default {
       	initBreakpoints:true,
       	lastSelected:[],
       	generationDate:new Date(),
+		lockSelect:false,
+		initPage:true,
   	}
   },
 
@@ -356,10 +361,11 @@ export default {
 
   	allSelectedProperty:{
   		get(){
+			if(this.allSelectedCustom === null){
+				return this.configFinal.defaultSelected;
 
-	  		if(this.allSelectedCustom === null){
-	  			return this.configFinal.defaultSelected;
 	  		}
+
 	  		return this.allSelectedCustom;
 
   		},
@@ -567,6 +573,11 @@ export default {
   			selectAll = true;
   		}
 
+		let selectAllRows = false;
+		if(this.config.selectAll && this.config.selectAllRows){
+			selectAllRows = true;
+		}
+
   		let defaultSelected = false;
 		if(this.config.defaultSelected){
 		  	defaultSelected = true;
@@ -577,10 +588,10 @@ export default {
   			hideRowToggle = true;
   		}
 
-      let pageRange = 5;
-      if(this.config.pageRange){
-        pageRange = this.config.pageRange;
-      }
+		let pageRange = 5;
+		if(this.config.pageRange){
+			pageRange = this.config.pageRange;
+		}
 
   		let number= 0;
   		let headlines = [];
@@ -653,6 +664,7 @@ export default {
   			pagination:pagination,
   			select:select,
   			selectAll:selectAll,
+  			selectAllRows:selectAllRows,
   			hoverClass:hoverClass,
   			expandedAll:expandedAll,
   			pageRange:pageRange,
@@ -703,6 +715,7 @@ export default {
 
       return Math.max(1,Math.ceil(this.onlyVisibleRows.length / this.currentRowsPerPage));
     },
+
     onlyVisibleRows(){
 
     	if(this.configFinal.ajaxUrl){
@@ -1028,9 +1041,14 @@ export default {
   			}
   		}
 
-  		if(selected.length && selected.length === this.onlyVisiblePagedRows.length){
+  		if(!this.configFinal.selectAllRows && selected.length && selected.length === this.onlyVisiblePagedRows.length){
   			this.allSelectedProperty = true;
   		}
+
+
+		if(this.configFinal.selectAllRows && selected.length && selected.length === this.onlyVisibleRows.length){
+			this.allSelectedProperty = true;
+		}
 
   		if(JSON.stringify(this.lastSelected) !== JSON.stringify(selected)){
 			this.$emit("input",selected);
@@ -1042,6 +1060,8 @@ export default {
 
 	currentPage(val){
 
+  		this.initPage = false;
+
 		this.$emit("update:page",val,"update:page");
 
 	 	if(this.configFinal.ajaxUrl){
@@ -1049,9 +1069,17 @@ export default {
 	 		return;
 	 	}
 
-	 	this.resetSelect();
+	 	this.lockSelect = true;
+
+		if(!this.configFinal.selectAllRows){
+			this.resetSelect();
+		}
 
 	 	this.updateVisibleRows();
+		this.$nextTick(()=>{
+	 		this.lockSelect = false;
+		});
+
 	 },
 
 	 customMultiSort(val){
@@ -1152,22 +1180,32 @@ export default {
   	},
 
   	checkAll(){
+  		let value = this.allSelected;
 
-      for (let index in this.sortedIndexes){
-      		index = parseInt(index);
+		for (let index in this.sortedIndexes){
+			index = parseInt(index);
 
-			if(this.visibleRows[this.sortedIndexes[index]]){
-				this.$set(this.selected,this.sortedIndexes[index],this.allSelected);
+			if((!this.configFinal.selectAllRows && this.visibleRows[this.sortedIndexes[index]]) || (this.configFinal.selectAllRows && this.filteredRows[this.sortedIndexes[index]])){
+				this.$set(this.selected,this.sortedIndexes[index],value);
 			}else{
 				this.$set(this.selected,this.sortedIndexes[index],false);
 			}
 
-		}      
+		}
+
+
+
+
     },
 
     checkListener(bool,index){
 
+		if(this.lockSelect){
+			return;
+		}
+
     	let tmp = this.selected.slice();
+
     	tmp[index] = bool;
 
     	if(tmp.indexOf(false) !== -1){
@@ -1385,21 +1423,16 @@ export default {
         if(this.currentPage -1 >0){
           this.currentPage--;
         }
-        return;
       }else if(page === "next"){
         if(this.currentPage +1 <= this.pages){
           this.currentPage++;
         }
-        return;
       }else if(page === "first"){
         this.currentPage = 1;
-        return;
       }else if(page === "last"){
         this.currentPage = this.pages;
-        return;
       }else{
         this.currentPage = page;
-        return;
       }
       
     },
@@ -1507,6 +1540,7 @@ export default {
   	checkOpenRow(index){
   		return this.openRows[index];
   	},
+
   	generateRowsForCells(rowIndex,cellIndex,cell,hide){
 
   		if(!this.generatedRows){
@@ -1566,17 +1600,13 @@ export default {
   			if(typeof this.sortedIndexes[i] === "undefined"){
   				this.sortedIndexes[i] = parseInt(i);
   			}
+
+			if(typeof this.selected[i] === "undefined"){
+				this.selected[i] = false;
+			}
 	 	}
 
-	 	if(!this.config || !this.configFinal.number){
-  			return;
-  		}
 
-	 	for(let i = 0 ; i<this.configFinal.number;i++) {
- 			if(typeof this.selected[i] === "undefined"){
-  				this.selected[i] = false;
-  			}
-	 	}
 
   		
   	},
@@ -1588,10 +1618,13 @@ export default {
   		this.sortedIndexes = {};
   	},
   	resetSelect(){
-  		this.allSelectedProperty = false;
+
+		this.allSelectedProperty = false;
+
   		for(let i = 0 ; i<this.rowsFinal.length;i++) {
-  			this.$set(this.selected,i,false);
-	 	}
+			this.$set(this.selected,i,false);
+		}
+
   	},
   	loadViaAjax(clear = false){
   		this.fetching = true;
@@ -1655,6 +1688,9 @@ export default {
         if (!this.elementVisible(this.$refs.sm)) {
             breakpoints.push("sm");
         }
+
+		breakpoints.push("all");
+
 
         if((JSON.stringify(this.hiddenBreakpoints) !== JSON.stringify(breakpoints))){
         	this.hiddenBreakpoints = breakpoints;
@@ -1721,6 +1757,14 @@ beforeDestroy(){
 </style>
 
 <style scoped>
+
+
+
+
+.footer {
+ 	height: auto;
+    background-color: transparent;
+}
 
 	.table th{
 		border-top: none;
