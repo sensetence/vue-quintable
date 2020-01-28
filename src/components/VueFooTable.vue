@@ -125,15 +125,44 @@
 												v-show="openRows[rIndex]"
 												v-for="(cell,cIndex) in generatedRows[rIndex]">
 
-												<td class="pl-4">
+												<td @click="setSortColumn(cIndex)">
 													<strong v-html="configFinal.headlines[cIndex]">
 													</strong>
+													<span class="sorting-icon ml-2" v-show="configFinal.sorts[cIndex] && hoverClasses[rIndex]">
+														<font-awesome-icon v-show="!currentSortIndexes[cIndex]" icon="sort" class="text-primary" />
+														<font-awesome-icon v-show="currentSortIndexes[cIndex] && currentSortIndexes[cIndex].asc" icon="sort-amount-down-alt" class="text-primary" />
+														<font-awesome-icon v-show="currentSortIndexes[cIndex] && !currentSortIndexes[cIndex].asc" icon="sort-amount-down" class="text-primary" />
+														<span v-if="currentSortIndexes[cIndex]" @click.stop.prevent="removeSort(cIndex)" class="ml-1 text-muted">
+															<span class="badge bg-info text-white" v-if="numberOfSorts>1" >
+																{{currentSortIndexes[cIndex].order+1}}
+															</span>
+															<small v-else>
+																<font-awesome-icon icon="times"/>
+															</small>
+														</span>
+													</span>
 												</td>
-												<VueFooCell :hiddenBreakpoints="hiddenBreakpoints" :cell="generatedRows[rIndex][cIndex]" :generated="true" classes="text-right pr-4" />
+												<VueFooCell :hiddenBreakpoints="hiddenBreakpoints" :cell="generatedRows[rIndex][cIndex]" :generated="true" classes="text-right" />
 											</tr>
 											<tr v-for="(cell,cIndex) in stickyRowsFinal[rIndex]" :key="'sticky-row-cell-'+rIndex+'-'+cIndex" :class="{hovered:hoverClasses[rIndex]}" class="generated-row-cell">
-												<td><strong v-html="configFinal.headlines[cIndex]"></strong></td>
-												<VueFooCell  :hiddenBreakpoints="hiddenBreakpoints" :cell="stickyRowsFinal[rIndex][cIndex]"  :generated="true" />
+												<td @click="setSortColumn(cIndex)">
+													<strong v-html="configFinal.headlines[cIndex]"></strong>
+
+													<span class="sorting-icon ml-2" v-show="configFinal.sorts[cIndex] && hoverClasses[rIndex]">
+														<font-awesome-icon v-show="!currentSortIndexes[cIndex]" icon="sort" class="text-primary" />
+														<font-awesome-icon v-show="currentSortIndexes[cIndex] && currentSortIndexes[cIndex].asc" icon="sort-amount-down-alt" class="text-primary" />
+														<font-awesome-icon v-show="currentSortIndexes[cIndex] && !currentSortIndexes[cIndex].asc" icon="sort-amount-down" class="text-primary" />
+														<span v-if="currentSortIndexes[cIndex]" @click.stop.prevent="removeSort(cIndex)" class="ml-1 text-muted">
+															<span class="badge bg-info text-white" v-if="numberOfSorts>1" >
+																{{currentSortIndexes[cIndex].order+1}}
+															</span>
+															<small v-else>
+																<font-awesome-icon icon="times"/>
+															</small>
+														</span>
+													</span>
+												</td>
+												<VueFooCell  :hiddenBreakpoints="hiddenBreakpoints" :cell="stickyRowsFinal[rIndex][cIndex]"  :generated="true"  classes="text-right"/>
 											</tr>
 										</tbody>
 									</table>
@@ -1770,10 +1799,10 @@ beforeDestroy(){
 
 
 
-.footer {
- 	height: auto;
-    background-color: transparent;
-}
+	.footer {
+		height: auto;
+		background-color: transparent;
+	}
 
 	.table th{
 		border-top: none;
