@@ -83,12 +83,12 @@
 					  </td>
 					  <td v-if="configFinal.select && configFinal.selectPosition === 'pre'">
 
-						  <p-check v-if="configFinal.prettySelect" name="check" class="p-icon" v-model="selected[rIndex]" >
+						  <p-check v-if="configFinal.prettySelect" name="check" class="p-icon" v-model="selected[rIndex]" @change="checkListener($event,rIndex)" >
 							  <template slot="extra" >
 								  <span><font-awesome-icon v-if="selected[rIndex]" icon="check" class="text-success icon-check" /></span>
 							  </template>
 						  </p-check>
-						  <input v-else type="checkbox" v-model="selected[rIndex]" >
+						  <input v-else type="checkbox" v-model="selected[rIndex]" @change="checkListener($event,rIndex)" >
 					  </td>
 
 
@@ -112,12 +112,12 @@
 
 					  <td v-if="configFinal.select && configFinal.selectPosition === 'post'">
 
-						  <p-check v-if="configFinal.prettySelect" name="check" class="p-icon" v-model="selected[rIndex]" >
+						  <p-check v-if="configFinal.prettySelect" name="check" class="p-icon" v-model="selected[rIndex]" @change="checkListener($event,rIndex)" >
 							  <template slot="extra" >
 								  <span><font-awesome-icon v-if="selected[rIndex]" icon="check" class="text-success icon-check" /></span>
 							  </template>
 						  </p-check>
-						  <input v-else type="checkbox" v-model="selected[rIndex]">
+						  <input v-else type="checkbox" v-model="selected[rIndex]" @change="checkListener($event,rIndex)">
 					  </td>
 				  </tr>
 					  <template v-if="(generatedRows[rIndex] || stickyRows[rIndex]) && visibleRows[rIndex]">
@@ -1256,6 +1256,23 @@ export default {
 
   },
   methods:{
+
+
+	  checkListener(bool,index){
+
+		  let tmp = this.selected.slice();
+
+		  tmp[index] = bool;
+
+		  if(tmp.indexOf(false) !== -1){
+			  this.allSelectedProperty = false;
+		  }
+
+		  else if(tmp.indexOf(false) === -1){
+			  this.allSelectedProperty = true;
+		  }
+
+	  },
 
 
   	onRowClick(e,rowIndex){
