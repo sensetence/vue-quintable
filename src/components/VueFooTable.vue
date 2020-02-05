@@ -1207,11 +1207,7 @@ export default {
 			this.resetSelect();
 		}
 
-		this.$nextTick(()=>{
-			this.$recompute('visibleRows');
-			this.$recompute('visibleRowIndexes');
-			this.$recompute('generatedRows');
-		});
+		this.recomputeEssentials()
 
 
 	 },
@@ -1243,8 +1239,7 @@ export default {
 	  	this.initLists();
 	  	this.$forceUpdate();
 
-	  	this.$recompute('visibleRows');
-	  	this.$recompute('visibleRowIndexes');
+	  	this.recomputeEssentials();
 
 	  	if(this.configFinal.defaultSelected){
 	  		this.allSelectedCustom = null;
@@ -1256,7 +1251,6 @@ export default {
 
   },
   methods:{
-
 
 	  checkListener(bool,index){
 
@@ -1330,9 +1324,13 @@ export default {
 	  			this.sortedIndexes[i] = parseInt(i);
 		 	}
 
-  		}else{
+			this.recomputeEssentials();
+
+		}else{
   			this.sort();
   		}
+
+
   	},
 
   	checkAll(){
@@ -1670,16 +1668,19 @@ export default {
 			this.resetSelect();
 		}
 
-		this.$nextTick(()=>{
-			this.$recompute('visibleRows');
-			this.$recompute('visibleRowIndexes');
-			this.$recompute('generatedRows');
-		});
+		this.recomputeEssentials();
 
 
 
   	},
 
+	  recomputeEssentials(){
+		  this.$nextTick(()=>{
+			  this.$recompute('visibleRows');
+			  this.$recompute('visibleRowIndexes');
+			  this.$recompute('generatedRows');
+		  });
+	  },
 
 
   	initLists(){
