@@ -219,8 +219,10 @@ export default {
                      //Array with cell content/options
                      cells:[
                          {
-                            //HTML string
-                            html:"Max Mustermann",
+                            //text string
+                            text:"Max Mustermann",
+							 //html string
+							 html:"Max Mustermann html",
                             //String space separated classes
                             classes:"special-td",
                             //String alignment
@@ -228,8 +230,8 @@ export default {
 
                          },
                      	{html:20},
-                        {html:"Berlin"},
-                        {html:"Software Developer"},
+                        {text:"Berlin"},
+                        {text:"Software Developer"},
                      ],
 
                       //selected on default

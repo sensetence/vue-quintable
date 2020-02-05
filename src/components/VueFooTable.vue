@@ -104,7 +104,8 @@
 								  <span v-html="cell.tooltip"></span>
 							  </b-tooltip>
 
-							  <div class="cell-inner" v-html="cell.html"></div>
+							  <div class="cell-inner" v-if="cell.html" v-html="cell.html"></div>
+							  <div class="cell-inner" v-if="cell.text">{{cell.text}}</div>
 						  </template>
 
 					  </td>
@@ -169,7 +170,8 @@
 														<span v-html="cell.tooltip"></span>
 													</b-tooltip>
 
-													<div class="cell-inner" v-html="generatedRows[rIndex][cIndex].html"></div>
+													<div class="cell-inner" v-if="generatedRows[rIndex][cIndex].html" v-html="generatedRows[rIndex][cIndex].html"></div>
+													<div class="cell-inner" v-if="generatedRows[rIndex][cIndex].text">{{generatedRows[rIndex][cIndex].text}}</div>
 
 												</td>
 
@@ -199,7 +201,8 @@
 														<span v-html="cell.tooltip"></span>
 													</b-tooltip>
 
-													<div class="cell-inner" v-html="stickyRows[rIndex][cIndex].html"></div>
+													<div class="cell-inner" v-if="stickyRows[rIndex][cIndex].html" v-html="stickyRows[rIndex][cIndex].html"></div>
+													<div class="cell-inner" v-if="stickyRows[rIndex][cIndex].text">{{stickyRows[rIndex][cIndex].text}}</div>
 
 												</td>
 											</tr>
@@ -1003,7 +1006,9 @@ export default {
 		        for (let j = 0; j < row.length; j++){
 		            let col = row[j];
 
-		            if(fuzzy((col.html + "").toLowerCase(), (this.query + "").toLowerCase()).score > 6){
+		            let textVal = col.html?col.html:col.text;
+
+		            if(fuzzy((textVal + "").toLowerCase(), (this.query + "").toLowerCase()).score > 6){
 		              match = true;
 		              break;
 		            }
@@ -1641,8 +1646,8 @@ export default {
   			let cellsA = a.cells?a.cells:a;
 			let cellsB = b.cells?b.cells:b;
 
-			let aValue = cellsA[i].sortValue?cellsA[i].sortValue:cellsA[i].html;
-		  	let bValue = cellsB[i].sortValue?cellsB[i].sortValue:cellsB[i].html;
+			let aValue = cellsA[i].sortValue?cellsA[i].sortValue:cellsA[i].html?cellsA[i].html:cellsA[i].text;
+		  	let bValue = cellsB[i].sortValue?cellsB[i].sortValue:cellsB[i].html?cellsB[i].html:cellsB[i].text;
 
 		  	if(currentKey.asc){
 		    	return aValue > bValue ? 1 : (aValue < bValue ? -1 : ( keys[index+1] ? compare(a, b, keys, index + 1):1));
