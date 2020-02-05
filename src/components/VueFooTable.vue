@@ -16,16 +16,16 @@
 		<div v-if="configFinal.search" class="mb-3">
 			<input type="search" :placeholder="configFinal.searchPlaceholder" v-model="query" class="form-control">
 		</div>		
-		<table class="vue-foo-table table" v-show="!ajaxLoading">
+		<table class="vue-foo-table table" v-if="!ajaxLoading" @mouseleave="onMouseleaveTable">
 			<thead v-if="configFinal.headlines.length">
 				<tr>
 					<th class="placeholder" v-if="hasGeneratedRows && !configFinal.hideRowToggle">&nbsp;</th>
-					<th v-if="configFinal.select &&  configFinal.selectPosition == 'pre'">
+					<th v-if="configFinal.select &&  configFinal.selectPosition === 'pre'">
 						<template v-if="configFinal.selectAll">
 							<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelectedProperty" @change="checkAll()">
 								<template slot="extra" >
-									<span><font-awesome-icon v-show="allSelected" icon="check" class="text-success icon-check" /></span>
-									<span><font-awesome-icon v-show="someSelected && !allSelected" icon="square" class="text-success icon-check" /></span>
+									<span><font-awesome-icon v-if="allSelected" icon="check" class="text-success icon-check" /></span>
+									<span><font-awesome-icon v-if="someSelected && !allSelected" icon="square" class="text-success icon-check" /></span>
 								</template>
 							</p-check>
 							<input v-else type="checkbox" v-model="allSelectedProperty"  @change="checkAll()">
@@ -43,10 +43,10 @@
 						:key="'headline-'+hIndex" 
 						@click="setSortColumn(hIndex)">
 						<span class="headline" v-html="headline"></span> 
-						<span class="sorting-icon ml-2" v-show="configFinal.sorts[hIndex]">
-							<font-awesome-icon v-show="!currentSortIndexes[hIndex]" icon="sort" class="text-primary" />
-							<font-awesome-icon v-show="currentSortIndexes[hIndex] && currentSortIndexes[hIndex].asc" icon="sort-amount-down-alt" class="text-primary" />
-							<font-awesome-icon v-show="currentSortIndexes[hIndex] && !currentSortIndexes[hIndex].asc" icon="sort-amount-down" class="text-primary" />
+						<span class="sorting-icon ml-2" v-if="configFinal.sorts[hIndex]">
+							<font-awesome-icon v-if="!currentSortIndexes[hIndex]" icon="sort" class="text-primary" />
+							<font-awesome-icon v-if="currentSortIndexes[hIndex] && currentSortIndexes[hIndex].asc" icon="sort-amount-down-alt" class="text-primary" />
+							<font-awesome-icon v-if="currentSortIndexes[hIndex] && !currentSortIndexes[hIndex].asc" icon="sort-amount-down" class="text-primary" />
 							<span v-if="currentSortIndexes[hIndex]" @click.stop.prevent="removeSort(hIndex)" class="ml-1 text-muted">
 								<span class="badge bg-info text-white" v-if="numberOfSorts>1" >
 									{{currentSortIndexes[hIndex].order+1}}
@@ -57,81 +57,100 @@
 							</span>
 						</span>
 					</th>
-					<th v-if="configFinal.select && configFinal.selectPosition == 'post'">
+					<th v-if="configFinal.select && configFinal.selectPosition === 'post'">
 						<template v-if="configFinal.selectAll">
 							<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelectedProperty" @change="checkAll()">
 								<template slot="extra" >
-									<span><font-awesome-icon v-show="allSelected" icon="check" class="text-success icon-check" /></span>
-									<span><font-awesome-icon v-show="someSelected && !allSelected" icon="square" class="text-success icon-check" /></span>
+									<span><font-awesome-icon v-if="allSelected" icon="check" class="text-success icon-check" /></span>
+									<span><font-awesome-icon v-if="someSelected && !allSelected" icon="square" class="text-success icon-check" /></span>
 								</template>
 							</p-check>
-							<input v-else type="checkbox" v-model="allSelectedProperty"  @click="checkAll()">
+							<input v-else type="checkbox" v-model="allSelectedProperty"  @change="checkAll()">
 						</template>
 					</th>
 				</tr>
 			</thead>
 			  <tbody>
 			  <!--  -->
+			  <template  v-for="(rIndex) in visibleRowIndexes" >
 
-			  <template  v-for="(rIndex) in sortedIndexes" >
-						<VueFooRow
-							:key="'row-'+rIndex"
-							:pretty="configFinal.prettySelect" 
-							:selectPosition="configFinal.selectPosition" 
-							:select="configFinal.select"
-							:index="rIndex" 
-							:ref="'row-highlighted-on-hover-'+rIndex"
-							:classes="(rowsFinal[rIndex].classes?rowsFinal[rIndex].classes:'') + ' ' +hoverClasses[rIndex]"
-							:hideRowToggle="configFinal.hideRowToggle" 
-							:breakpoints="configFinal.breakpoints" 
-							:stickyCols="configFinal.stickyCols"
-							:expanded="configFinal.expandedAll||rowsFinal[rIndex].expanded"
-							:alignments="configFinal.alignments" 
-							:tooltip="rowsFinal[rIndex].tooltip" 
-							:preSelected="(rowsFinal[rIndex].selected && initPage) || (configFinal.selectAllRows && selected[rIndex])"
-							:lockSelect="lockSelect && !configFinal.selectAllRows"
-							:hiddenBreakpoints="hiddenBreakpoints"
-							:row="rowsFinal[rIndex].cells?rowsFinal[rIndex].cells:rowsFinal[rIndex]"
-							@toggleSelect="checkListener" 
-							@updateBreakpoints="generateRowsForCells" 
-							@mouseenter="onMouseenterRow"
-							@mouseleave="onMouseleaveRow"
-							@toggle="onRowToggle" 
-							@click="onRowClick"
-							@cell:click="onCellClick"
-							v-model="selected[rIndex]"
-							v-if="visibleRows[rIndex]" />
-						<template v-if="(generatedRows[rIndex] || stickyRowsFinal[rIndex]) && visibleRows[rIndex]">
+				  <tr  :style="hiddenColumns>0?'cursor:pointer;':''" :ref="'row-highlighted-on-hover-'+rIndex" :key="'vue-foo-table-row-'+rIndex" @click="onRowClick($event,rIndex)" :class="hoveredRow === rIndex ? configFinal.hoverClass + ' ' +rowsFinal[rIndex].classes : rowsFinal[rIndex].classes"  :id="'vue-foo-table-row-'+rIndex" @mouseenter="onMouseenterRow(rIndex)" >
+					  <td class="toggle" v-if="hasGeneratedRows && !configFinal.hideRowToggle">
+						  <span>
+							  <span v-if="!openRows[rIndex]">+</span>
+							  <span v-else>-</span>
+						  </span>
+					  </td>
+					  <td v-if="configFinal.select && configFinal.selectPosition === 'pre'">
+
+						  <p-check v-if="configFinal.prettySelect" name="check" class="p-icon" v-model="selected[rIndex]" >
+							  <template slot="extra" >
+								  <span><font-awesome-icon v-if="selected[rIndex]" icon="check" class="text-success icon-check" /></span>
+							  </template>
+						  </p-check>
+						  <input v-else type="checkbox" v-model="selected[rIndex]" >
+					  </td>
+
+
+
+					  <td :class="cellClassesParsed[rIndex][cIndex]" v-show="cell && hiddenBreakpoints.findIndex(x => x === configFinal.columns[cIndex].breakpoint) === -1 && configFinal.columns[cIndex].breakpoint !== 'all' && !configFinal.stickyCols[cIndex]" @click="onCellClick(cell)" :key="'vue-foo-table-cell-'+rIndex+'-'+cIndex" :id="'vue-foo-table-cell-'+rIndex+'-'+cIndex" v-for="(cell, cIndex) in rowsFinal[rIndex].cells?rowsFinal[rIndex].cells:rowsFinal[rIndex]">
+
+						  <template v-if="cell && hiddenBreakpoints.findIndex(x => x === configFinal.columns[cIndex].breakpoint) === -1 && configFinal.columns[cIndex].breakpoint !== 'all' && !configFinal.stickyCols[cIndex]">
+							  <b-tooltip :target="'vue-foo-table-row-'+rIndex" triggers="hover" v-if="rowsFinal[rIndex].tooltip && cIndex === 0" placement ="top">
+								  <span v-html="rowsFinal[rIndex].tooltip"></span>
+							  </b-tooltip>
+
+							  <b-tooltip :target="'vue-foo-table-cell-'+rIndex+'-'+cIndex" triggers="hover" v-if="cell.tooltip" placement ="left">
+								  <span v-html="cell.tooltip"></span>
+							  </b-tooltip>
+
+							  <div class="cell-inner" v-html="cell.html"></div>
+						  </template>
+
+					  </td>
+
+
+					  <td v-if="configFinal.select && configFinal.selectPosition === 'post'">
+
+						  <p-check v-if="configFinal.prettySelect" name="check" class="p-icon" v-model="selected[rIndex]" >
+							  <template slot="extra" >
+								  <span><font-awesome-icon v-if="selected[rIndex]" icon="check" class="text-success icon-check" /></span>
+							  </template>
+						  </p-check>
+						  <input v-else type="checkbox" v-model="selected[rIndex]">
+					  </td>
+				  </tr>
+					  <template v-if="(generatedRows[rIndex] || stickyRows[rIndex]) && visibleRows[rIndex]">
 							<tr 
 								@mouseenter="onMouseenterRow(rIndex)"
-								@mouseleave="onMouseleaveRow(rIndex)"
-								@click="onRowClick(rowsFinal[rIndex])"
+
+								@click="onRowClick($event,rIndex)"
 								:ref="'generated-row-highlighted-on-hover-'+rIndex"
 								:key="'generated-row-'+rIndex"
-								class="generated-row" 
-								:class="hoverClasses[rIndex]"
+								class="generated-row"
+								:class="hoveredRow === rIndex ? configFinal.hoverClass : ''"
 								v-if=
 									"openRows[rIndex] 
 									&& Object.keys(generatedRows[rIndex]).length 
-									|| Object.keys(stickyRowsFinal[rIndex]).length">
+									|| Object.keys(stickyRows[rIndex]).length">
 								
 								<td :colspan="configFinal.number+1" class="p-0">
-									<table class="table mb-0" :class="hoverClasses[rIndex]">
+									<table class="table mb-0">
 										<tbody>
 											<tr 
 												class="generated-row-cell"
-												:class="{hovered:hoverClasses[rIndex]}"
-												:key="'generated-row-cell-'+rIndex+'-'+cIndex" 
+												:class="hoveredRow === rIndex ? configFinal.hoverClass : ''"
+												:key="'vue-foo-table-generated-cell-'+rIndex+'-'+cIndex"
 												v-show="openRows[rIndex]"
 												v-for="(cell,cIndex) in generatedRows[rIndex]">
 
-												<td @click="setSortColumn(cIndex)">
+												<td @click="setSortColumn(cIndex)" v-if="openRows[rIndex]">
 													<strong v-html="configFinal.headlines[cIndex]">
 													</strong>
-													<span class="sorting-icon ml-2" v-show="configFinal.sorts[cIndex] && hoverClasses[rIndex]">
-														<font-awesome-icon v-show="!currentSortIndexes[cIndex]" icon="sort" class="text-primary" />
-														<font-awesome-icon v-show="currentSortIndexes[cIndex] && currentSortIndexes[cIndex].asc" icon="sort-amount-down-alt" class="text-primary" />
-														<font-awesome-icon v-show="currentSortIndexes[cIndex] && !currentSortIndexes[cIndex].asc" icon="sort-amount-down" class="text-primary" />
+													<span class="sorting-icon ml-2" v-if="configFinal.sorts[cIndex] && hoveredRow === rIndex">
+														<font-awesome-icon v-if="!currentSortIndexes[cIndex]" icon="sort" class="text-primary" />
+														<font-awesome-icon v-if="currentSortIndexes[cIndex] && currentSortIndexes[cIndex].asc" icon="sort-amount-down-alt" class="text-primary" />
+														<font-awesome-icon v-if="currentSortIndexes[cIndex] && !currentSortIndexes[cIndex].asc" icon="sort-amount-down" class="text-primary" />
 														<span v-if="currentSortIndexes[cIndex]" @click.stop.prevent="removeSort(cIndex)" class="ml-1 text-muted">
 															<span class="badge bg-info text-white" v-if="numberOfSorts>1" >
 																{{currentSortIndexes[cIndex].order+1}}
@@ -142,16 +161,28 @@
 														</span>
 													</span>
 												</td>
-												<VueFooCell :hiddenBreakpoints="hiddenBreakpoints" :cell="generatedRows[rIndex][cIndex]" :generated="true" classes="text-right" />
+
+
+												<td class="text-right" @click="onCellClick(generatedRows[rIndex][cIndex])" :key="'vue-foo-table-generated-cell-'+rIndex+'-'+cIndex" :id="'vue-foo-table-cell-'+rIndex+'-'+cIndex">
+
+													<b-tooltip :target="'vue-foo-table-cell-'+rIndex+'-'+cIndex" triggers="hover" v-if="cell.tooltip" placement ="left">
+														<span v-html="cell.tooltip"></span>
+													</b-tooltip>
+
+													<div class="cell-inner" v-html="generatedRows[rIndex][cIndex].html"></div>
+
+												</td>
+
+
 											</tr>
-											<tr v-for="(cell,cIndex) in stickyRowsFinal[rIndex]" :key="'sticky-row-cell-'+rIndex+'-'+cIndex" :class="{hovered:hoverClasses[rIndex]}" class="generated-row-cell">
+											<tr v-for="(cell,cIndex) in stickyRows[rIndex]" :key="'sticky-row-cell-'+rIndex+'-'+cIndex" :class="hoveredRow === rIndex ? configFinal.hoverClass : ''" class="generated-row-cell">
 												<td @click="setSortColumn(cIndex)">
 													<strong v-html="configFinal.headlines[cIndex]"></strong>
 
-													<span class="sorting-icon ml-2" v-show="configFinal.sorts[cIndex] && hoverClasses[rIndex]">
-														<font-awesome-icon v-show="!currentSortIndexes[cIndex]" icon="sort" class="text-primary" />
-														<font-awesome-icon v-show="currentSortIndexes[cIndex] && currentSortIndexes[cIndex].asc" icon="sort-amount-down-alt" class="text-primary" />
-														<font-awesome-icon v-show="currentSortIndexes[cIndex] && !currentSortIndexes[cIndex].asc" icon="sort-amount-down" class="text-primary" />
+													<span class="sorting-icon ml-2" v-if="configFinal.sorts[cIndex] && hoveredRow === rIndex">
+														<font-awesome-icon v-if="!currentSortIndexes[cIndex]" icon="sort" class="text-primary" />
+														<font-awesome-icon v-if="currentSortIndexes[cIndex] && currentSortIndexes[cIndex].asc" icon="sort-amount-down-alt" class="text-primary" />
+														<font-awesome-icon v-if="currentSortIndexes[cIndex] && !currentSortIndexes[cIndex].asc" icon="sort-amount-down" class="text-primary" />
 														<span v-if="currentSortIndexes[cIndex]" @click.stop.prevent="removeSort(cIndex)" class="ml-1 text-muted">
 															<span class="badge bg-info text-white" v-if="numberOfSorts>1" >
 																{{currentSortIndexes[cIndex].order+1}}
@@ -162,7 +193,15 @@
 														</span>
 													</span>
 												</td>
-												<VueFooCell  :hiddenBreakpoints="hiddenBreakpoints" :cell="stickyRowsFinal[rIndex][cIndex]"  :generated="true"  classes="text-right"/>
+												<td class="text-right" @click="onCellClick(stickyRows[rIndex][cIndex])" :key="'vue-foo-table-sticky-cell-'+rIndex+'-'+cIndex" :id="'vue-foo-table-cell-'+rIndex+'-'+cIndex">
+
+													<b-tooltip :target="'vue-foo-table-cell-'+rIndex+'-'+cIndex" triggers="hover" v-if="cell.tooltip" placement="left">
+														<span v-html="cell.tooltip"></span>
+													</b-tooltip>
+
+													<div class="cell-inner" v-html="stickyRows[rIndex][cIndex].html"></div>
+
+												</td>
 											</tr>
 										</tbody>
 									</table>
@@ -201,11 +240,11 @@
 						</div>
 					</div>
 					<div class="col-md-8">
-						<div class="pt-md-0 pt-3 float-md-right mr-3 pagination-container" v-if="configFinal && configFinal.pagination" v-show="!ajaxLoading">
+						<div class="pt-md-0 pt-3 float-md-right mr-3 pagination-container" v-if="configFinal && configFinal.pagination && !ajaxLoading" >
 							<span class="d-inline-block align-middle mr-2" v-if="configFinal.rowsSelect" v-html="configFinal.rowsPlaceholder"></span> 
 							<v-select v-if="configFinal.rowsSelect" class="d-inline-block align-middle"  :options="paginationOptionsFilled" v-model="currentRowsPerPageProperty" :clearable="false" />
 
-							<nav v-if="configFinal && configFinal.pagination && pages>1" class="d-inline-block align-middle ml-3" v-show="!ajaxLoading">
+							<nav v-if="configFinal && configFinal.pagination && pages>1 && !ajaxLoading" class="d-inline-block align-middle ml-3" >
 							  <ul class="pagination mb-0">
 							    <li class="page-item" v-if="pages>pageRange" :class="{disabled:currentPage<=1}" @click="gotoPage('first')">
 							      <span class="page-link">
@@ -218,18 +257,18 @@
 							      </span>
 							    </li>
 
-							    <li :key="'pagination-item-'+page" class="page-item"  :class="{active:page==currentPage}" v-for="page in visiblePages"  @click="gotoPage(page)">
+							    <li :key="'pagination-item-'+page" class="page-item"  :class="{active:page === currentPage}" v-for="page in visiblePages"  @click="gotoPage(page)">
 							      <span class="page-link">
 							        {{page}}
 							      </span>
 							    </li>
 
-							    <li class="page-item" :class="{disabled:pages==currentPage}" @click="gotoPage('next')">
+							    <li class="page-item" :class="{disabled:pages === currentPage}" @click="gotoPage('next')">
 							      <span class="page-link">
 							        <font-awesome-icon icon="angle-right" />
 							      </span>
 							    </li>
-							    <li class="page-item" v-if="pages>pageRange" :class="{disabled:pages==currentPage}" @click="gotoPage('last')">
+							    <li class="page-item" v-if="pages>pageRange" :class="{disabled:pages === currentPage}" @click="gotoPage('last')">
 							      <span class="page-link">
 							        <font-awesome-icon icon="angle-double-right" />
 							      </span>
@@ -251,9 +290,6 @@
 </template>
 
 <script>
-
-import VueFooRow from "./VueFooRow.vue"
-import VueFooCell from "./VueFooCell.vue"
 
 import fuzzy from "fuzzy.js";
 import axios from 'axios'
@@ -283,20 +319,15 @@ export default {
 			type:Boolean
 		}
 	},
-  components: {
-    VueFooRow,
-    VueFooCell,
-  },
   data(){
   	return {
   		hoveredRow:null,
   		allSelectedCustom:null,
   		selected:[],
   		stickyRows:{},
-  		generatedRows:{},
   		openRows:{},
   		sortedIndexes:{},
-  		hasGeneratedRows:false,
+  		// hasGeneratedRows:false,
   		currentSortIndexes:{},
   		query:"",
       	currentPage:1,
@@ -311,75 +342,110 @@ export default {
       	initBreakpoints:true,
       	lastSelected:[],
       	generationDate:new Date(),
-		lockSelect:false,
-		initPage:true,
   	}
   },
 
   recomputed: {
 
-  	currentRowsPerPage(){
+	  visibleRows(){
 
-	  if(!this.customRowsPerPage){
-		return this.configFinal.pagination?this.configFinal.pagination:"All";
-		}
-		return this.customRowsPerPage;
+		  if(!this.configFinal.ajaxUrl && this.currentRowsPerPage !== "All"){
 
-  },
+			  let visible = [];
 
-  stickyRowsFinal(){
-  	 return this.stickyRows;
-  },
+			  for(let i = 0;i<this.rowsFinal.length;i++){
+				  visible.push(false);
+			  }
 
-  allSelected(){
+			  let onlyVisibleSortedRows = {};
 
-
-  		if(this.allSelectedCustom === null){
-	  			return this.configFinal.defaultSelected;
-	  		}
-	  		return this.allSelectedCustom;
-
-  },
+			  for(let index in this.sortedIndexes){
+				  index = parseInt(index);
+				  if(this.filteredRows[this.sortedIndexes[index]]){
+					  onlyVisibleSortedRows[index] = this.sortedIndexes[index];
+				  }
+			  }
 
 
-    visibleRows(){
+			  let borderHigh = this.currentPage * this.currentRowsPerPage;
+			  let borderLow =  borderHigh - this.currentRowsPerPage;
 
-	    if(!this.configFinal.ajaxUrl && this.currentRowsPerPage !== "All"){
+			  let counter = 0;
+			  for(let index in onlyVisibleSortedRows){
+				  index = parseInt(index);
+				  if(counter < borderHigh && counter >= borderLow){
+					  visible[onlyVisibleSortedRows[index]] = true;
+				  }
+				  counter++;
+			  }
 
-	       let visible = [];
+			  return visible;
 
-	       for(let i = 0;i<this.rowsFinal.length;i++){
-	       		visible.push(false);
-	       }
+		  }else{
+			  return this.filteredRows;
+		  }
+	  },
 
-	       var onlyVisibleSortedRows = {};
-
-	       for(let index in this.sortedIndexes){
-	       		index = parseInt(index);
-	       		if(this.filteredRows[this.sortedIndexes[index]]){
-	       			onlyVisibleSortedRows[index] = this.sortedIndexes[index];
-	       		}
-	       }
+	  generatedRows(){
 
 
-	       let borderHigh = this.currentPage * this.currentRowsPerPage;
-	       let borderLow =  borderHigh - this.currentRowsPerPage;
+		  let generatedRows = {};
 
-	       let counter = 0;
-	       for(let index in onlyVisibleSortedRows){
-	       		index = parseInt(index);
-	       		if(counter < borderHigh && counter >= borderLow){
-	       			visible[onlyVisibleSortedRows[index]] = true;
-		       	}
-		       	counter++;
-	       }
+		  for(let x = 0;x<this.rowsFinal.length;x++) {
+			  let cells = this.rowsFinal[x].cells?this.rowsFinal[x].cells:this.rowsFinal[x];
+			  let generatedCells = {};
+			  let stickyCells = {};
 
-	       return visible;
+			  for (let i = 0; i < this.hiddenBreakpoints.length; i++) {
 
-	    }else{
-	    	return this.filteredRows;
-	    }
-  	},
+				  let bp = this.hiddenBreakpoints[i];
+				  for (let j = 0; j < this.configFinal.columns.length; j++) {
+					  let col = this.configFinal.columns[j];
+					  if (col.breakpoint && (col.breakpoint.toLocaleLowerCase() === "all" || col.breakpoint.toLocaleLowerCase() === bp)) {
+						  if(!col.sticky){
+							  generatedCells[j] = cells[j];
+						  }
+					  }
+
+					  if(col.sticky){
+					  	stickyCells[j] = cells[j];
+					  }
+				  }
+			  }
+
+			  this.$set(this.stickyRows,x,stickyCells);
+			  generatedRows[x] = generatedCells;
+		  }
+
+
+		  return generatedRows;
+
+
+	  },
+
+	  visibleRowIndexes(){
+
+		  let rows = [];
+		  if(this.configFinal.ajaxUrl){
+			  for (let i = 0;i<this.ajaxAll; i++){
+				  rows.push(i);
+			  }
+		  }else{
+
+		  	for (let i in this.sortedIndexes){
+				if(this.visibleRows[this.sortedIndexes[i]]){
+					rows.push(this.sortedIndexes[i]);
+				}
+			}
+
+
+
+		  }
+		  return rows;
+	  },
+
+
+
   },
 
   computed:{
@@ -387,6 +453,8 @@ export default {
   	DEBUG(){
   		return this.verbose;
   	},
+
+
 
   	allSelectedProperty:{
   		get(){
@@ -403,6 +471,88 @@ export default {
   		}
 
   	},
+
+
+	  currentRowsPerPage(){
+
+		  if(!this.customRowsPerPage){
+			  return this.configFinal.pagination?this.configFinal.pagination:"All";
+		  }
+		  return this.customRowsPerPage;
+
+	  },
+
+
+	  allSelected(){
+
+		  if(this.allSelectedCustom === null){
+			  return this.configFinal.defaultSelected;
+		  }
+		  return this.allSelectedCustom;
+	  },
+
+
+
+
+
+
+
+	  hasGeneratedRows(){
+  		for (let row in this.generatedRows){
+  			if(Object.keys(this.generatedRows[row]).length){
+  				return true;
+			}
+		}
+  		return false;
+	  },
+
+	  cellClassesParsed(){
+
+		   let cellClasses = [];
+
+		   for(let i = 0;i<this.rowsFinal.length;i++){
+		   		cellClasses.push([]);
+		   		let rAlign = this.rowsFinal[i].align;
+		   		let cells = this.rowsFinal[i].cells?this.rowsFinal[i].cells:this.rowsFinal[i];
+		   		for (let j =0;j<cells.length;j++){
+					let classes = [];
+
+					if(cells[j].align || rAlign){
+						if(cells[j].align){
+							classes.push ("text-"+ cells[j].align);
+						}else{
+							classes.push ("text-"+ rAlign);
+						}
+					}
+
+					if(cells[j].classes){
+						let splitted = cells[j].classes.split(" ");
+						Array.prototype.push.apply(classes,splitted);
+					}
+
+					cellClasses[i].push(classes.join(" "));
+				}
+		   }
+
+		  return cellClasses;
+	  },
+
+	  hiddenColumns(){
+  		let hidden = 0;
+
+		  for (let i = 0;i<this.hiddenBreakpoints.length;i++){
+				let bp = this.hiddenBreakpoints[i];
+				for (let j = 0; j<this.configFinal.columns.length;j++){
+				  let col = this.configFinal.columns[j];
+				  if(col.breakpoint && (col.breakpoint.toLocaleLowerCase() === "all" || col.breakpoint.toLocaleLowerCase() === bp)){
+				  	 hidden++;
+				  	 break;
+				  }
+			  }
+		  }
+
+		return hidden;
+	  },
 
   	breakpoints(){
   		let bp = {};
@@ -596,7 +746,7 @@ export default {
 	    if(this.config.emptyPlaceholder){
 	       emptyPlaceholder = this.config.emptyPlaceholder;
 	    }
-	    
+
   		let selectAll = false;
   		if(this.config.selectAll){
   			selectAll = true;
@@ -752,7 +902,7 @@ export default {
     		for (let i = 0;i<this.ajaxAll; i++){
     			rows.push(true);
     		}
-    		return rows; 
+    		return rows;
     	}
 
  		return this.filteredRows.filter((item)=>{
@@ -760,23 +910,6 @@ export default {
 	    });
     },
 
-    visibleRowIndexes(){
-
-		let rows = [];
-    	if(this.configFinal.ajaxUrl){
-    		for (let i = 0;i<this.ajaxAll; i++){
-    			rows.push(i);
-    		}
-    	}else{
-	    	for (let i = 0;i<this.visibleRows.length; i++){
-				if(this.visibleRows[i]){
-					rows.push(this.sortedIndexes[i]);
-				}
-			}
-		}
-
- 		return rows;
-    },
 
     onlyVisiblePagedRows(){
 
@@ -785,7 +918,7 @@ export default {
     		for (let i = 0;i<this.ajaxAll; i++){
     			rows.push(true);
     		}
-    		return rows; 
+    		return rows;
     	}
 
  		return this.visibleRows.filter((item)=>{
@@ -816,7 +949,7 @@ export default {
           }
         }
 
-        start = this.currentPage - off; 
+        start = this.currentPage - off;
 
       }
 
@@ -828,7 +961,7 @@ export default {
         }
         pages.push(i+start);
       }
-  
+
       return pages;
 
     },
@@ -932,7 +1065,7 @@ export default {
       	return visible;
     },
 
-  	
+
   	noRows(){
   		return !this.onlyVisibleRows.length;
   	},
@@ -952,25 +1085,7 @@ export default {
   	ajaxLoading(){
   		return this.loading || this.fetching;
   	},
-  	hoverClasses(){
 
-  		if(!this.configFinal.hoverClass){
-  			return {};
-  		}
-
-  		let classes = [];
-
-  		for (let i = 0; i<this.rowsFinal.length; i++){
-  			if(i !== this.hoveredRow){
-  				classes.push("");
-  			}else{
-  				classes.push(this.configFinal.hoverClass);
-  			}
-
-  		}
-
-  		return classes;
-  	}
 
   },
 
@@ -989,16 +1104,6 @@ export default {
     	deep:true,
     },
 
-    hasGeneratedRows(){
-
-    	let date =  new Date();
-
-    	if(date - this.generationDate > 1000){
-    		this.updateVisibleRows();
-    		this.generationDate = new Date();
-    	}
-
-    },
 
     hiddenBreakpoints(val){
     	if(!this.initBreakpoints){
@@ -1036,14 +1141,14 @@ export default {
  			this.loadViaAjax(true);
  			return;
  		}
-    	
+
  		this.currentPage = 1;
 
 		if(!this.configFinal.selectAllRows){
 			this.resetSelect();
 		}
     },
-    
+
 
   	config(val){
   		if(typeof val !== "object"){
@@ -1051,7 +1156,6 @@ export default {
 	  	}
 
 	  	this.initLists();
-		this.updateVisibleRows();
 
 		if(this.configFinal.ajaxUrl){
  			this.loadViaAjax();
@@ -1061,7 +1165,7 @@ export default {
 	 		this.checkAll();
 	 	}
   	},
-  
+
   	selected(val){
 
   		let selected = [];
@@ -1086,13 +1190,11 @@ export default {
 			this.$emit("input",selected);
 			this.lastSelected = selected;
   		}
-		
+
 
 	},
 
 	currentPage(val){
-
-  		this.initPage = false;
 
 		this.$emit("update:page",val,"update:page");
 
@@ -1101,16 +1203,16 @@ export default {
 	 		return;
 	 	}
 
-	 	this.lockSelect = true;
-
 		if(!this.configFinal.selectAllRows){
 			this.resetSelect();
 		}
 
-	 	this.updateVisibleRows();
 		this.$nextTick(()=>{
-	 		this.lockSelect = false;
+			this.$recompute('visibleRows');
+			this.$recompute('visibleRowIndexes');
+			this.$recompute('generatedRows');
 		});
+
 
 	 },
 
@@ -1136,11 +1238,13 @@ export default {
   	},
 
 	rows(){
-	  this.updateVisibleRows();
 
 	  this.$nextTick(()=>{
 	  	this.initLists();
 	  	this.$forceUpdate();
+
+	  	this.$recompute('visibleRows');
+	  	this.$recompute('visibleRowIndexes');
 
 	  	if(this.configFinal.defaultSelected){
 	  		this.allSelectedCustom = null;
@@ -1148,31 +1252,32 @@ export default {
 	 	}
 	  });
 	}
-	
- 
+
+
   },
   methods:{
 
-  	onRowClick(row){
-  		this.$emit("click:row",row,"click:row");
-  	},
 
-  	onRowToggle(show,rowIndex){
-	  	if(show){
-	  		if(this.openRows[rowIndex] !== undefined){
-	  			this.$emit("expand:row",this.rowsFinal[this.sortedIndexes[rowIndex]],"expand:row");
-	  		}
-	  		this.$set(this.openRows,rowIndex,true);
+  	onRowClick(e,rowIndex){
 
-		}else{
-			if(this.openRows[rowIndex] !== undefined){
-	  			this.$emit("collapse:row",this.rowsFinal[this.sortedIndexes[rowIndex]],"collapse:row");
-	  		}
-	  		this.$set(this.openRows,rowIndex,false);
+		if ((e.target || {}).type === 'checkbox') {
+			return;
 		}
 
-		// this.openRows = Object.assign({},this.openRows);
+  		if(this.hiddenColumns){
+			if(!this.openRows[rowIndex]){
+				this.$set(this.openRows,rowIndex,true);
+				this.$emit("expand:row",this.rowsFinal[this.sortedIndexes[rowIndex]],"expand:row");
+			}else{
+				this.$set(this.openRows,rowIndex,false);
+				this.$emit("expand:row",this.rowsFinal[this.sortedIndexes[rowIndex]],"collapse:row");
+			}
 
+			this.$recompute('generatedRows');
+
+		}
+
+		this.$emit("click:row",this.rowsFinal[rowIndex],"click:row");
 	},
 
   	onCellClick(cell){
@@ -1180,16 +1285,19 @@ export default {
   	},
 
   	onMouseenterRow(index){
-  		this.hoveredRow = index;
-  	},
+  		if(this.hoveredRow !== index){
+			this.hoveredRow = index;
+		}
+	},
 
-  	onMouseleaveRow(){
-  		this.hoveredRow = null;
+  	onMouseleaveTable(){
+
+		this.hoveredRow = null;
   	},
 
   	removeSort(index){
 
-  		for(var i in this.currentSortIndexes){
+  		for(let i in this.currentSortIndexes){
   			let item = this.currentSortIndexes[i];
   			if(item.order > this.currentSortIndexes[index].order){
   				item.order--;
@@ -1204,7 +1312,6 @@ export default {
 	 		for(let i = 0 ; i<this.rowsFinal.length;i++) {
 	  			this.sortedIndexes[i] = parseInt(i);
 		 	}
-		 	this.updateVisibleRows();
 
   		}else{
   			this.sort();
@@ -1226,30 +1333,9 @@ export default {
 		}
 
 
-
-
     },
 
-    checkListener(bool,index){
 
-		if(this.lockSelect){
-			return;
-		}
-
-    	let tmp = this.selected.slice();
-
-    	tmp[index] = bool;
-
-    	if(tmp.indexOf(false) !== -1){
-  			this.allSelectedProperty = false;
-  		}
-
-  		else if(tmp.indexOf(false) === -1){
-  			this.allSelectedProperty = true;
-  		}
-
-    },
-  
   doFiltering(filterValues){
 
   	let results = [];
@@ -1513,9 +1599,6 @@ export default {
   			return;
   		}
 
-  		this.initPage = false;
-
-
   		let rows = this.rowsFinal.slice();
 
   		for(let i = 0 ; i<rows.length;i++) {
@@ -1552,7 +1635,7 @@ export default {
 		    	return aValue < bValue ? 1 : (aValue > bValue ? -1 : ( keys[index+1] ? compare(a, b, keys, index + 1):-1));
 		  	}
 		  
-		} 
+		};
 
 		rows.sort(function(a, b){
 			return compare(a, b, sortableIndexes);
@@ -1570,55 +1653,17 @@ export default {
 			this.resetSelect();
 		}
 
-		this.updateVisibleRows();
+		this.$nextTick(()=>{
+			this.$recompute('visibleRows');
+			this.$recompute('visibleRowIndexes');
+			this.$recompute('generatedRows');
+		});
+
+
 
   	},
 
-  
-  	checkOpenRow(index){
-  		return this.openRows[index];
-  	},
 
-  	generateRowsForCells(rowIndex,cellIndex,cell,hide){
-
-  		if(!this.generatedRows){
-  			this.generatedRows = {};
-  		}
-
-  		if(!this.generatedRows[rowIndex]){
-  			this.$set(this.generatedRows,rowIndex,{});
-  		}
-
-  		let cells = null;
-  		if(hide && hide !== "sticky"){
-  			cells = this.generatedRows[rowIndex];
-  			cells[cellIndex] = cell;
-  			this.$set(this.generatedRows,rowIndex,cells);
-
-  		}else if(hide === "sticky"){
-  			cells = this.stickyRows[rowIndex];
-  			cells[cellIndex] = cell;
-  			this.$set(this.stickyRows,rowIndex,cells);
-
-  		}else{
-  			cells = this.generatedRows[rowIndex];
-  			delete cells[cellIndex];
-	  		this.$set(this.generatedRows,rowIndex,cells);
-  		}
-
-  		let generatedRows = 0;
-  		for(let i = 0;i<this.visibleRowIndexes.length;i++){
-
-  			if(Object.keys(this.generatedRows[this.visibleRowIndexes[i]]).length){
-  				generatedRows++;
-  			}
-  		}
-
-  		this.hasGeneratedRows = generatedRows;
-
-  		this.updateVisibleRows();
-
-  	},
 
   	initLists(){
 
@@ -1642,6 +1687,15 @@ export default {
 			if(typeof this.selected[i] === "undefined"){
 				this.selected[i] = false;
 			}
+
+			if(this.configFinal.expandedAll || this.rowsFinal[i].expanded){
+				this.openRows[i] = true;
+			}else{
+				this.openRows[i] = false;
+			}
+
+
+
 	 	}
 
 
@@ -1651,7 +1705,7 @@ export default {
   	clearLists(){
   		this.selected = [];
   		this.stickyRows = {};
-  		this.generatedRows = {};
+
   		this.openRows = {};
   		this.sortedIndexes = {};
   	},
@@ -1734,23 +1788,18 @@ export default {
         	this.hiddenBreakpoints = breakpoints;
         }
 
-
     },
 
-    updateVisibleRows() {
-		this.generateHiddenBreakpoints(true);
-		this.$nextTick(()=>{
-			this.$recompute('currentRowsPerPage');
-			this.$recompute('allSelected');
-	      	this.$recompute('visibleRows');
-	      	this.$recompute('stickyRowsFinal');
-		});
-	     
-    },
   	
   },
   created(){
   	 this.initLists();
+	  for (let i = 0; i < this.rowsFinal.length; i++) {
+		  let row = this.rowsFinal[i];
+		  if(row.selected){
+			  this.$set(this.selected,i,true);
+		  }
+	  }
  },
  mounted(){
  	if(this.configFinal.ajaxUrl){
@@ -1762,7 +1811,7 @@ export default {
  	}
 
  	this.generateHiddenBreakpoints();
- 	this.updateVisibleRows();
+
 
 	window.addEventListener("resize",this.generateHiddenBreakpoints);
 
@@ -1850,10 +1899,10 @@ beforeDestroy(){
 		background:rgba(100,100,0,0.1);
 	}
 
-	.generated-row-cell:nth-child(odd).hovered,
-	.generated-row-cell:nth-child(even).hovered{
-		background:none;
-	}
+	/*.generated-row-cell:nth-child(odd).hovered,*/
+	/*.generated-row-cell:nth-child(even).hovered{*/
+	/*	background:none;*/
+	/*}*/
 
 	.generated-row table tr:first-child td{
 		border-top:none;
