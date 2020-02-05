@@ -8,7 +8,6 @@
             <div ref="lg" class="d-none d-lg-block"></div>
             <div ref="xl" class="d-none d-xl-block"></div>
         </div>
-
 		<div class="header">
 			<slot name="header"></slot>
 		</div>
