@@ -341,6 +341,8 @@ export default {
   			this.$delete(this.filters,"name");
   		}
 
+  		console.log(this.filters);
+
   	},
 	active(val){
   		if(val){

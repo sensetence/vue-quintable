@@ -1177,17 +1177,28 @@ export default {
 
 				if(this.configFinal.ajaxUrl){
 					this.loadViaAjax(true);
-					return;
 				}
 
-				if(this.currentPage !== 1){
-					this.currentPage = 1;
-				}else{
-					this.resetSelect();
-				}
 			},
 			deep:true,
 		},
+
+	  filteredRows:{
+		  handler(val,old){
+
+		  	  if(JSON.stringify(val) === JSON.stringify(old)){
+		  	  	return;
+			  }
+
+			  if(this.currentPage !== 1){
+			  	this.currentPage = 1;
+			  }else{
+			  	this.resetSelect();
+			  }
+
+		  },
+		  deep:true,
+	  },
 
 	  /**
 	   * Emits an event if breakpoints are changed
@@ -1222,12 +1233,6 @@ export default {
 				}
 
 			    this.$emit("update:search",val,"update:search");
-
-				if(this.currentPage !== 1){
-					this.currentPage = 1;
-				}else{
-					this.resetSelect();
-				}
 
 			}
 		},
