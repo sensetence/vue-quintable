@@ -143,7 +143,7 @@
 									&& Object.keys(generatedRows[rIndex]).length 
 									|| Object.keys(stickyRows[rIndex]).length">
 								
-								<td :colspan="configFinal.number+1" class="p-0">
+								<td :colspan="configFinal.number+1" class="">
 									<table class="table mb-0">
 										<tbody>
 											<tr 
@@ -1338,7 +1338,7 @@ export default {
 				this.resetSelect();
 			}
 
-			this.recomputeEssentials()
+			this.recomputeEssentials();
 
 
 		 },
@@ -1473,7 +1473,13 @@ export default {
 				for(let i = 0 ; i<this.rowsFinal.length;i++) {
 					this.sortedIndexes[i] = parseInt(i);
 				}
-				this.currentPage = 1;
+
+				if(this.currentPage !== 1){
+					this.currentPage = 1;
+				}else{
+					this.recomputeEssentials();
+				}
+
 
 			}else{
 				this.sort();
