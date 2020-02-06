@@ -107,7 +107,7 @@ export default {
                     selectAll: true,
                     defaultSelected: true,
                 },
-        	verbose:false,
+        	verbose:true,
             //filters
             active:false,
             name:"",

@@ -16,7 +16,7 @@
 		<div v-if="configFinal.search" class="mb-3">
 			<input type="search" :placeholder="configFinal.searchPlaceholder" v-model="query" class="form-control">
 		</div>		
-		<table class="vue-quintable table" v-if="!ajaxLoading" @mouseleave="onMouseleaveTable">
+		<table class="vue-quintable table" v-if="!ajaxLoading" >
 			<thead v-if="configFinal.headlines.length">
 				<tr>
 					<th class="placeholder" v-if="hasGeneratedRows && !configFinal.hideRowToggle">&nbsp;</th>
@@ -24,8 +24,8 @@
 						<template v-if="configFinal.selectAll">
 							<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelectedProperty" @change="checkAll()">
 								<template slot="extra" >
-									<span><font-awesome-icon v-if="allSelected" icon="check" class="text-success icon-check" /></span>
-									<span><font-awesome-icon v-if="someSelected && !allSelected" icon="square" class="text-success icon-check" /></span>
+									<span><font-awesome-icon v-if="allSelectedProperty" icon="check" class="text-success icon-check" /></span>
+									<span><font-awesome-icon v-if="someSelected && !allSelectedProperty" icon="square" class="text-success icon-check" /></span>
 								</template>
 							</p-check>
 							<input v-else type="checkbox" v-model="allSelectedProperty"  @change="checkAll()">
@@ -35,7 +35,7 @@
 					<th 
 						v-for="(headline,hIndex) in configFinal.headlines" 
 						v-show="(
-							!configFinal.columns[hIndex].breakpoint || !breakpoints[configFinal.columns[hIndex].breakpoint]
+							!configFinal.columns[hIndex].breakpoint || hiddenBreakpoints.findIndex(x => x === configFinal.columns[hIndex].breakpoint) === -1
 						) && 
 						!configFinal.columns[hIndex].sticky" 
 						:class="headerClass[hIndex]" 
@@ -61,8 +61,8 @@
 						<template v-if="configFinal.selectAll">
 							<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelectedProperty" @change="checkAll()">
 								<template slot="extra" >
-									<span><font-awesome-icon v-if="allSelected" icon="check" class="text-success icon-check" /></span>
-									<span><font-awesome-icon v-if="someSelected && !allSelected" icon="square" class="text-success icon-check" /></span>
+									<span><font-awesome-icon v-if="allSelectedProperty" icon="check" class="text-success icon-check" /></span>
+									<span><font-awesome-icon v-if="someSelected && !allSelectedProperty" icon="square" class="text-success icon-check" /></span>
 								</template>
 							</p-check>
 							<input v-else type="checkbox" v-model="allSelectedProperty"  @change="checkAll()">
@@ -70,7 +70,7 @@
 					</th>
 				</tr>
 			</thead>
-			  <tbody>
+			  <tbody @mouseleave="onMouseleaveTable">
 			  <!--  -->
 			  <template  v-for="(rIndex) in visibleRowIndexes" >
 
@@ -279,7 +279,7 @@
 							  </ul>
 							</nav>
 
-							<span class="d-inline-block align-middle ml-3" v-if="onlyVisibleRows.length" >{{firstVisibleRow}}-{{lastVisibleRow}} of {{onlyVisibleRows.length}}</span>
+							<span class="d-inline-block align-middle ml-3" v-if="numberOfVisibleRows" >{{firstVisibleRow}}-{{lastVisibleRow}} of {{numberOfVisibleRows}}</span>
 						</div>
 					</div>
 				</div>
@@ -330,7 +330,6 @@ export default {
   		stickyRows:{},
   		openRows:{},
   		sortedIndexes:{},
-  		// hasGeneratedRows:false,
   		currentSortIndexes:{},
   		query:"",
       	currentPage:1,
@@ -343,15 +342,17 @@ export default {
       	customMultiSort:null,
       	hiddenBreakpoints:[],
       	initBreakpoints:true,
-      	lastSelected:[],
       	generationDate:new Date(),
   	}
   },
 
   recomputed: {
-
+	  /**
+	   * Checks which rows shall be shown
+	   *
+	   * @returns {Array} a boolean array which represents all indexes of the rows
+	   */
 	  visibleRows(){
-
 		  if(!this.configFinal.ajaxUrl && this.currentRowsPerPage !== "All"){
 
 			  let visible = [];
@@ -363,10 +364,12 @@ export default {
 			  let onlyVisibleSortedRows = {};
 
 			  for(let index in this.sortedIndexes){
+			  	if(this.sortedIndexes.hasOwnProperty(index)){
 				  index = parseInt(index);
 				  if(this.filteredRows[this.sortedIndexes[index]]){
 					  onlyVisibleSortedRows[index] = this.sortedIndexes[index];
 				  }
+				}
 			  }
 
 
@@ -375,11 +378,13 @@ export default {
 
 			  let counter = 0;
 			  for(let index in onlyVisibleSortedRows){
-				  index = parseInt(index);
-				  if(counter < borderHigh && counter >= borderLow){
-					  visible[onlyVisibleSortedRows[index]] = true;
+				  if(onlyVisibleSortedRows.hasOwnProperty(index)){
+					  index = parseInt(index);
+					  if(counter < borderHigh && counter >= borderLow){
+						  visible[onlyVisibleSortedRows[index]] = true;
+					  }
+					  counter++;
 				  }
-				  counter++;
 			  }
 
 			  return visible;
@@ -389,8 +394,12 @@ export default {
 		  }
 	  },
 
+	  /**
+	   * Checks which cells are hidden and shall be displayed as additional generated rows.
+	   *
+	   * @returns {Object} an object with sorted index as key and generated row array of cells as value
+	   */
 	  generatedRows(){
-
 
 		  let generatedRows = {};
 
@@ -426,6 +435,11 @@ export default {
 
 	  },
 
+	  /**
+	   * Checks which indexes belongs to the current visible rows
+	   *
+	   * @returns {Array} an array of all visible indexes
+	   */
 	  visibleRowIndexes(){
 
 		  let rows = [];
@@ -436,46 +450,304 @@ export default {
 		  }else{
 
 		  	for (let i in this.sortedIndexes){
-				if(this.visibleRows[this.sortedIndexes[i]]){
-					rows.push(this.sortedIndexes[i]);
+		  		if(this.sortedIndexes.hasOwnProperty(i)){
+					if(this.visibleRows[this.sortedIndexes[i]]){
+						rows.push(this.sortedIndexes[i]);
+					}
 				}
 			}
-
-
 
 		  }
 		  return rows;
 	  },
 
-
-
   },
 
   computed:{
 
-  	DEBUG(){
-  		return this.verbose;
-  	},
+	  /**
+	   * Just a debug flag
+	   *
+	   */
+		DEBUG(){
+			return this.verbose;
+		},
 
+	  /**
+	   * Set default values for all possible config values
+	   *
+	   */
+	  configFinal(){
 
+		  if(!this.config){
+			  return {};
+		  }
 
-  	allSelectedProperty:{
-  		get(){
-			if(this.allSelectedCustom === null){
-				return this.configFinal.defaultSelected;
+		  let pagination = false;
+		  if(this.config.pagination === true){
+			  pagination = 25;
+		  }else if(this.config.pagination){
+			  let i = 0;
+			  while(this.paginationOptions[i] <= this.config.pagination && i < this.paginationOptions.length){
+				  i++;
+			  }
+			  pagination = this.paginationOptions[Math.min(i-1,this.paginationOptions.length-1)];
+		  }
 
-	  		}
+		  let select = false;
+		  if(this.config.select){
+			  select = true;
+		  }
 
-	  		return this.allSelectedCustom;
+		  let hoverClass = "bg-muted";
+		  if(this.config.hoverClass === false){
+			  hoverClass = false;
+		  }else if(this.config.hoverClass && this.config.hoverClass !== true){
+			  hoverClass = this.config.hoverClass
+		  }
 
-  		},
-  		set(val){
-			this.allSelectedCustom = val;
-  		}
+		  let multiSort = false;
+		  if(this.config.multiSort){
+			  multiSort = true;
+		  }
 
-  	},
+		  let multiSortSelect = false;
+		  if(this.config.multiSortSelect){
+			  multiSortSelect = true;
+		  }
 
+		  let ajaxUrl = false;
+		  if(this.config.ajaxUrl){
+			  ajaxUrl = this.config.ajaxUrl;
+		  }
 
+		  let selectPosition = "post";
+		  if(["pre","post"].includes(this.config.selectPosition)){
+			  selectPosition = this.config.selectPosition;
+		  }
+
+		  let expandedAll = false;
+		  if(this.config.expandedAll){
+			  expandedAll = true;
+		  }
+
+		  let prettySelect = false;
+		  if(this.config.prettySelect){
+			  prettySelect = true;
+		  }
+
+		  let rowsSelect = false;
+		  if(this.config.rowsSelect){
+			  rowsSelect = true;
+		  }
+
+		  let search = false;
+		  if(this.config.search){
+			  search = true;
+		  }
+
+		  let searchLength = 1;
+		  if(this.config.searchLength){
+			  searchLength = this.config.searchLength;
+		  }
+
+		  let searchPlaceholder = "Search...";
+		  if(this.config.searchPlaceholder){
+			  searchPlaceholder = this.config.searchPlaceholder;
+		  }
+
+		  let multiSortPlaceholder = "Multiple sort";
+		  if(this.config.multiSortPlaceholder){
+			  multiSortPlaceholder = this.config.multiSortPlaceholder;
+		  }
+
+		  let filterRelation = "AND";
+		  if(["AND","OR"].includes(this.config.filterRelation)){
+			  filterRelation = this.config.filterRelation;
+		  }
+
+		  let filterGroupRelation = "AND";
+		  if(["AND","OR"].includes(this.config.filterGroupRelation)){
+			  filterGroupRelation = this.config.filterGroupRelation;
+		  }
+
+		  let rowsPlaceholder = "Rows per page:";
+		  if(this.config.rowsPlaceholder){
+			  rowsPlaceholder = this.config.rowsPlaceholder;
+		  }
+
+		  let emptyPlaceholder = "No rows...";
+		  if(this.config.emptyPlaceholder){
+			  emptyPlaceholder = this.config.emptyPlaceholder;
+		  }
+
+		  let selectAll = false;
+		  if(this.config.selectAll){
+			  selectAll = true;
+		  }
+
+		  let selectAllRows = false;
+		  if(this.config.selectAll && this.config.selectAllRows){
+			  selectAllRows = true;
+		  }
+
+		  let defaultSelected = false;
+		  if(this.config.defaultSelected){
+			  defaultSelected = true;
+		  }
+
+		  let hideRowToggle = false;
+		  if(this.config.hideRowToggle){
+			  hideRowToggle = true;
+		  }
+
+		  let pageRange = 5;
+		  if(this.config.pageRange){
+			  pageRange = this.config.pageRange;
+		  }
+
+		  let number= 0;
+		  let headlines = [];
+		  let breakpoints = [];
+		  let sorts = [];
+		  let stickyCols = [];
+		  let alignments = [];
+
+		  let columns = null;
+		  if(this.config.columns){
+
+			  number = this.config.columns.length;
+
+			  for(let i = 0 ; i<this.config.columns.length;i++) {
+
+				  if(this.config.columns[i] && this.config.columns[i].headline){
+					  headlines[i] = this.config.columns[i].headline;
+				  }else{
+					  headlines[i] = "";
+				  }
+
+				  if(this.config.columns[i] && this.config.columns[i].breakpoint){
+					  breakpoints[i] = this.config.columns[i].breakpoint;
+				  }else{
+					  breakpoints[i] = "";
+				  }
+
+				  if(this.config.columns[i] && this.config.columns[i].sort){
+					  sorts[i] = true;
+				  }else{
+					  sorts[i] = false;
+				  }
+
+				  if(this.config.columns[i] && this.config.columns[i].sticky){
+					  stickyCols[i] = true;
+				  }else{
+					  stickyCols[i] = false;
+				  }
+
+				  if(this.config.columns[i] && this.config.columns[i].align){
+					  alignments[i] = this.config.columns[i].align;
+				  }else{
+					  alignments[i] = false;
+				  }
+			  }
+
+			  columns = this.config.columns;
+
+		  }
+
+		  return{
+			  headlines:headlines,
+			  sorts:sorts,
+			  multiSort:multiSort,
+			  multiSortSelect:multiSortSelect,
+			  filterGroupRelation:filterGroupRelation,
+			  filterRelation:filterRelation,
+			  rowsSelect:rowsSelect,
+			  defaultSelected:defaultSelected,
+			  searchLength:searchLength,
+			  search:search,
+			  ajaxUrl:ajaxUrl,
+			  multiSortPlaceholder:multiSortPlaceholder,
+			  searchPlaceholder:searchPlaceholder,
+			  rowsPlaceholder:rowsPlaceholder,
+			  emptyPlaceholder:emptyPlaceholder,
+			  stickyCols:stickyCols,
+			  alignments:alignments,
+			  breakpoints:breakpoints,
+			  pagination:pagination,
+			  select:select,
+			  selectAll:selectAll,
+			  selectAllRows:selectAllRows,
+			  hoverClass:hoverClass,
+			  expandedAll:expandedAll,
+			  pageRange:pageRange,
+			  prettySelect:prettySelect,
+			  number:number,
+			  columns:columns,
+			  hideRowToggle:hideRowToggle,
+			  selectPosition:selectPosition,
+		  }
+	  },
+
+	  /**
+	   * Calculates the all selected flag. Special case: defaultSelected is set and no user action in place
+	   *
+	   */
+	  allSelectedProperty:{
+			get(){
+				if(this.allSelectedCustom === null){
+					return this.configFinal.defaultSelected;
+				}
+				return this.allSelectedCustom;
+
+			},
+			set(val){
+				this.allSelectedCustom = val;
+			}
+
+	  },
+
+	  /**
+	   * Calculates number of current rows per page. Special case: no user action in place
+	   *
+	   */
+	  currentRowsPerPageProperty:{
+		  get(){
+			  if(!this.customRowsPerPage){
+				  return this.currentRowsPerPage;
+			  }
+			  return this.customRowsPerPage;
+
+		  },
+		  set(val){
+			  this.customRowsPerPage = val;
+		  }
+
+	  },
+
+	  /**
+	   * Checks if multi sort is currently active. Special case: no user action in place
+	   *
+	   */
+	  multiSort:{
+		  get(){
+
+			  if(this.customMultiSort === null){
+				  return this.configFinal.multiSort;
+			  }
+			  return this.customMultiSort;
+
+		  },
+		  set(val){
+			  this.customMultiSort = val;
+		  }
+
+	  },
+
+	  /**
+	   * Calculates the value of number of shown rows. If no pagination is set, all will be displayed.
+	   *
+	   */
 	  currentRowsPerPage(){
 
 		  if(!this.customRowsPerPage){
@@ -485,38 +757,35 @@ export default {
 
 	  },
 
-
-	  allSelected(){
-
-		  if(this.allSelectedCustom === null){
-			  return this.configFinal.defaultSelected;
-		  }
-		  return this.allSelectedCustom;
-	  },
-
-
-
-
-
-
-
+	  /**
+	   * Checks if there are any generated rows in place
+	   *
+	   */
 	  hasGeneratedRows(){
   		for (let row in this.generatedRows){
-  			if(Object.keys(this.generatedRows[row]).length){
-  				return true;
+  			if(this.generatedRows.hasOwnProperty(row)){
+  				if(Object.keys(this.generatedRows[row]).length){
+  					return true;
+				}
 			}
 		}
   		return false;
 	  },
 
+	  /**
+	   * Calculates the classes array for every cell from the align parameters of rows and cells and the custom class string passed to cells
+	   *
+	   */
 	  cellClassesParsed(){
 
 		   let cellClasses = [];
 
 		   for(let i = 0;i<this.rowsFinal.length;i++){
 		   		cellClasses.push([]);
+
 		   		let rAlign = this.rowsFinal[i].align;
 		   		let cells = this.rowsFinal[i].cells?this.rowsFinal[i].cells:this.rowsFinal[i];
+
 		   		for (let j =0;j<cells.length;j++){
 					let classes = [];
 
@@ -540,6 +809,10 @@ export default {
 		  return cellClasses;
 	  },
 
+	  /**
+	   *Calculates the number of hidden columns
+	   *
+	   */
 	  hiddenColumns(){
   		let hidden = 0;
 
@@ -557,371 +830,150 @@ export default {
 		return hidden;
 	  },
 
-  	breakpoints(){
-  		let bp = {};
-  		for (let i = 0;i<this.hiddenBreakpoints.length;i++){
-  			bp[this.hiddenBreakpoints[i]] = true;
-  		}
+	  /**
+	   * Calculates the actual rows which shall be used.
+ 	   *
+	   */
+	   rowsFinal(){
+	      return this.configFinal.ajaxUrl?this.ajaxRows:this.rows?this.rows:[];
+	   },
 
-  		return bp;
-  	},
-
-	currentRowsPerPageProperty:{
-		get(){
-			  if(!this.customRowsPerPage){
-				  return this.currentRowsPerPage;
-			  }
-			  return this.customRowsPerPage;
-
+	  /**
+	   * Checks if some rows are selected
+	   *
+	   */
+		someSelected(){
+			for (let i = 0; i<this.selected.length;i++){
+				if(this.selected[i]){
+					return true;
+				}
+			}
+			return false;
 		},
-		set(val){
-			this.customRowsPerPage = val;
-		}
 
-	},
-
-  	rowsFinal(){
-	  return this.configFinal.ajaxUrl?this.ajaxRows:this.rows?this.rows:[];
-  	},
-
-  	someSelected(){
-  		for (let i = 0; i<this.selected.length;i++){
-  			if(this.selected[i]){
-  				return true;
-  			}
-  		}
-  		return false;
-  	},
-
-  	numberOfSorts(){
-  		return Object.keys(this.currentSortIndexes).length;
-  	},
+	  /**
+	   * Calculates the number of active sorts
+	   *
+	   */
+		numberOfSorts(){
+			return Object.keys(this.currentSortIndexes).length;
+		},
 
 
-  	multiSort:{
-  		get(){
+	  /**
+	   * Calculates the actual visible pagination options to sort out options which are bigger than number of rows
+	   *
+	   */
+		paginationOptionsFilled(){
 
-	  		if(this.customMultiSort === null){
-	  			return this.configFinal.multiSort;
-	  		}
-	  		return this.customMultiSort;
+			let all = this.rowsFinal.length
 
-  		},
-  		set(val){
-			this.customMultiSort = val;
-  		}
-
-  	},
-
-
-
-  	paginationOptionsFilled(){
-
-  		let all = this.rowsFinal.length
-
-  		if(this.configFinal.ajaxUrl){
-  			all = this.ajaxAll;
-  		}
-
-  		let options = ["All"];
-  		let i = 0;
-  		while(i<this.paginationOptions.length&&i<all){
-  			options.push(this.paginationOptions[i]);
-  			i++;
-  		}
-
-  		return options;
-  	},
-
-  	sortingColumns(){
-  		let columns = {};
-
-  		for(let index in this.currentSortIndexes){
-  			columns[index] = this.configFinal.columns[index];
-  		}
-
-  		return columns
-
-  	},
-
-  	configFinal(){
-
-  		if(!this.config){
-  			return {};
-		}
-
-  		let pagination = false;
-  		if(this.config.pagination === true){
-  			pagination = 25;
-  		}else if(this.config.pagination){
-
-  			let i = 0;
-  			while(this.paginationOptions[i] < this.config.pagination && i < this.paginationOptions.length){
-  				i++;
-  			}
-  			pagination = this.paginationOptions[Math.min(i-1,this.paginationOptions.length-1)];
-  		}
-
-
-  		let select = false;
-  		if(this.config.select){
-  			select = true;
-  		}
-
-  		let hoverClass = "bg-muted";
-  		if(this.config.hoverClass === false){
-  			hoverClass = false;
-  		}else if(this.config.hoverClass && this.config.hoverClass !== true){
-  			hoverClass = this.config.hoverClass
-  		}
-
-  		let multiSort = false;
-  		if(this.config.multiSort){
-  			multiSort = true;
-  		}
-
-  		let multiSortSelect = false;
-  		if(this.config.multiSortSelect){
-  			multiSortSelect = true;
-  		}
-
-  		let ajaxUrl = false;
-  		if(this.config.ajaxUrl){
-  			ajaxUrl = this.config.ajaxUrl;
-  		}
-
-  		let selectPosition = "post";
-  		if(["pre","post"].indexOf(this.config.selectPosition)!== -1){
-  			selectPosition = this.config.selectPosition;
-  		}
-
-  		let expandedAll = false;
-  		if(this.config.expandedAll){
-  			expandedAll = true;
-  		}
-
-  		let prettySelect = false;
-  		if(this.config.prettySelect){
-  			prettySelect = true;
-  		}
-
-  		let rowsSelect = false;
-  		if(this.config.rowsSelect){
-  			rowsSelect = true;
-  		}
-
-  		let search = false;
-  		if(this.config.search){
-  			search = true;
-  		}
-
-	    let searchLength = 1;
-	    if(this.config.searchLength){
-	       searchLength = this.config.searchLength;
-	    }
-
-	    let searchPlaceholder = "Search...";
-	    if(this.config.searchPlaceholder){
-	       searchPlaceholder = this.config.searchPlaceholder;
-	    }
-
-	    let multiSortPlaceholder = "Multiple sort";
-	    if(this.config.multiSortPlaceholder){
-	       multiSortPlaceholder = this.config.multiSortPlaceholder;
-	    }
-
-	    let filterRelation = "AND";
-	    if(["AND","OR"].includes(this.config.filterRelation)){
-	       filterRelation = this.config.filterRelation;
-	    }
-
-	    let filterGroupRelation = "AND";
-	    if(["AND","OR"].includes(this.config.filterGroupRelation)){
-	       filterGroupRelation = this.config.filterGroupRelation;
-	    }
-
-	    let rowsPlaceholder = "Rows per page:";
-	    if(this.config.rowsPlaceholder){
-	       rowsPlaceholder = this.config.rowsPlaceholder;
-	    }
-
-	    let emptyPlaceholder = "No rows...";
-	    if(this.config.emptyPlaceholder){
-	       emptyPlaceholder = this.config.emptyPlaceholder;
-	    }
-
-  		let selectAll = false;
-  		if(this.config.selectAll){
-  			selectAll = true;
-  		}
-
-		let selectAllRows = false;
-		if(this.config.selectAll && this.config.selectAllRows){
-			selectAllRows = true;
-		}
-
-  		let defaultSelected = false;
-		if(this.config.defaultSelected){
-		  	defaultSelected = true;
-		}
-
-  		let hideRowToggle = false;
-  		if(this.config.hideRowToggle){
-  			hideRowToggle = true;
-  		}
-
-		let pageRange = 5;
-		if(this.config.pageRange){
-			pageRange = this.config.pageRange;
-		}
-
-  		let number= 0;
-  		let headlines = [];
-  		let breakpoints = [];
-  		let sorts = [];
-  		let stickyCols = [];
-  		let alignments = [];
-
-  		let columns = null;
-  		if(this.config.columns){
-
-  			number = this.config.columns.length;
-
-	  		for(let i = 0 ; i<this.config.columns.length;i++) {
-
-	  			if(this.config.columns[i] && this.config.columns[i].headline){
-	  				headlines[i] = this.config.columns[i].headline;
-	  			}else{
-	  				headlines[i] = "";
-	  			}
-
-	  			if(this.config.columns[i] && this.config.columns[i].breakpoint){
-	  				breakpoints[i] = this.config.columns[i].breakpoint;
-	  			}else{
-	  				breakpoints[i] = "";
-	  			}
-
-	  			if(this.config.columns[i] && this.config.columns[i].sort){
-	  				sorts[i] = true;
-	  			}else{
-	  				sorts[i] = false;
-	  			}
-
-	  			if(this.config.columns[i] && this.config.columns[i].sticky){
-	  				stickyCols[i] = true;
-	  			}else{
-	  				stickyCols[i] = false;
-	  			}
-
-	  			if(this.config.columns[i] && this.config.columns[i].align){
-	  				alignments[i] = this.config.columns[i].align;
-	  			}else{
-	  				alignments[i] = false;
-	  			}
-	  		}
-
-	  		columns = this.config.columns;
-
-  		}
-
-  		return{
-  			headlines:headlines,
-  			sorts:sorts,
-  			multiSort:multiSort,
-  			multiSortSelect:multiSortSelect,
-  			filterGroupRelation:filterGroupRelation,
-  			filterRelation:filterRelation,
-        	rowsSelect:rowsSelect,
-        	defaultSelected:defaultSelected,
-        	searchLength:searchLength,
-        	search:search,
-        	ajaxUrl:ajaxUrl,
-        	multiSortPlaceholder:multiSortPlaceholder,
-        	searchPlaceholder:searchPlaceholder,
-        	rowsPlaceholder:rowsPlaceholder,
-        	emptyPlaceholder:emptyPlaceholder,
-  			stickyCols:stickyCols,
-  			alignments:alignments,
-  			breakpoints:breakpoints,
-  			pagination:pagination,
-  			select:select,
-  			selectAll:selectAll,
-  			selectAllRows:selectAllRows,
-  			hoverClass:hoverClass,
-  			expandedAll:expandedAll,
-  			pageRange:pageRange,
-  			prettySelect:prettySelect,
-  			number:number,
-  			columns:columns,
-  			hideRowToggle:hideRowToggle,
-  			selectPosition:selectPosition,
-  		}
-  	},
-  	headerClass(){
-
-  		let classes = []
-
-  		for(let i = 0 ; i<this.configFinal.number;i++) {
-  			let iClasses = [];
-  			if(this.configFinal.alignments[i]){
-				iClasses.push("text-"+ this.configFinal.alignments[i]);
+			if(this.configFinal.ajaxUrl){
+				all = this.ajaxAll;
 			}
 
-			if(this.configFinal.sorts[i]){
-				iClasses.push("sort-header");
+			let options = ["All"];
+			let i = 0;
+			while(i<this.paginationOptions.length&&i<all){
+				options.push(this.paginationOptions[i]);
+				i++;
+			}
 
-				if(this.currentSortIndexes[i]){
-					iClasses.push("active")
+			return options;
+		},
+
+	  /**
+	   * Calculates columns which can be sorted from config value
+	   *
+	   */
+	  sortingColumns(){
+			let columns = {};
+
+			for(let index in this.currentSortIndexes){
+				if(this.currentSortIndexes.hasOwnProperty(index)){
+					columns[index] = this.configFinal.columns[index];
 				}
 			}
 
+			return columns
 
-			classes.push(iClasses.join(" "));
-  		}
-  		return classes;
-  	},
+		},
+
+	  /**
+	   * Calculates the classes of every table header
+	   *
+	   */
+		headerClass(){
+
+			let classes = [];
+
+			for(let i = 0 ; i<this.configFinal.number;i++) {
+				let iClasses = [];
+				if(this.configFinal.alignments[i]){
+					iClasses.push("text-"+ this.configFinal.alignments[i]);
+				}
+
+				if(this.configFinal.sorts[i]){
+					iClasses.push("sort-header");
+
+					if(this.currentSortIndexes[i]){
+						iClasses.push("active")
+					}
+				}
 
 
-  	pageRange(){
-      return Math.min(this.configFinal.pageRange,this.pages);
-    },
-    pages(){
+				classes.push(iClasses.join(" "));
+			}
+			return classes;
+		},
 
-     if(this.ajaxPages){
-     	return this.ajaxPages;
-     }
+	  /**
+	   * Calculates the actual displayed page range (number of shown page buttons in pagination) to prevent showing pages out of row range
+	   *
+	   */
+		pageRange(){
+		  return Math.min(this.configFinal.pageRange,this.pages);
+		},
 
-      if(!this.currentRowsPerPage || this.currentRowsPerPage == "All"){
-        return 1;
-      }
+	  /**
+	   * Calculates number of pages regarding the rows per page and visible rows
+	   *
+	   */
+		pages(){
 
-      return Math.max(1,Math.ceil(this.onlyVisibleRows.length / this.currentRowsPerPage));
-    },
+		 if(this.ajaxPages){
+			return this.ajaxPages;
+		 }
 
-    onlyVisibleRows(){
+		  if(!this.currentRowsPerPage || this.currentRowsPerPage === "All"){
+			return 1;
+		  }
+
+		  return Math.max(1,Math.ceil(this.numberOfVisibleRows / this.currentRowsPerPage));
+		},
+
+	  /**
+	   * Calculates the number of visible Rows without paging;
+	   *
+	   */
+		numberOfVisibleRows(){
+			if(this.configFinal.ajaxUrl){
+				return this.ajaxAll;
+			}
+
+			return this.filteredRows.filter((item)=>{
+			   return item;
+			}).length;
+		},
+
+	  /**
+	   * Calculates the number of visible Rows with paging;
+	   *
+	   */
+	  numberOfVisiblePagesRows(){
 
     	if(this.configFinal.ajaxUrl){
-    		let rows = [];
-    		for (let i = 0;i<this.ajaxAll; i++){
-    			rows.push(true);
-    		}
-    		return rows;
-    	}
-
- 		return this.filteredRows.filter((item)=>{
-	       return item;
-	    });
-    },
-
-
-    onlyVisiblePagedRows(){
-
-    	if(this.configFinal.ajaxUrl){
-    		let rows = [];
-    		for (let i = 0;i<this.ajaxAll; i++){
-    			rows.push(true);
-    		}
-    		return rows;
+			return this.ajaxAll;
     	}
 
  		return this.visibleRows.filter((item)=>{
@@ -929,338 +981,407 @@ export default {
 	    });
     },
 
+	  /**
+	   * Calculates all accessible pages regarding to page range and current page
+	   *
+	   */
+		visiblePages(){
 
-    visiblePages(){
+		  let pages = [];
+		  let start = 0;
 
-      let pages = [];
-      let start = 0;
+		  if(this.pages < this.pageRange || this.currentPage === 1){
+			start = 1;
+		  }else if(this.currentPage === this.pages){
+			start = this.currentPage - (this.pageRange - 1);
+		  }else{
+			let off;
+			if(this.pageRange % 2 === 0){
+			   off = this.pageRange/2
+			}else{
+			  off = (this.pageRange-1)/2;
+			  if(this.currentPage + off > this.pages){
+				off++;
+			  }
+			}
 
-      if(this.pages < this.pageRange){
-        start = 1;
-      }else if(this.currentPage === 1){
-        start = 1;
-      }else if(this.currentPage==this.pages){
-        start = this.currentPage - (this.pageRange-1);
-      }else{
-        let off;
-        if(this.pageRange % 2 == 0){
-           off = this.pageRange/2
-        }else{
-          off = (this.pageRange-1)/2
-          if(this.currentPage + off > this.pages){
-            off++;
-          }
-        }
+			start = this.currentPage - off;
 
-        start = this.currentPage - off;
+		  }
 
-      }
+		  start = Math.max(start,1);
 
-      start = Math.max(start,1);
+		  for(let i = 0; i < this.pageRange; i++){
+			if(i+start > this.pages){
+			  break;
+			}
+			pages.push(i+start);
+		  }
 
-      for(let i = 0; i<this.pageRange;i++){
-        if(i+start > this.pages){
-          break;
-        }
-        pages.push(i+start);
-      }
+		  return pages;
 
-      return pages;
+		},
 
-    },
+	  /**
+	   * Checks if any filter is active
+	   *
+	   */
+		filterActive(){
+			return this.filters && Object.keys(this.filters).length;
+		},
 
+	  /**
+	   * Calculates all rows which passes the filter and search restrictions
+	   *
+	   */
+		filteredRows(){
+		   let visible = [];
 
-    filterActive(){
-    	return this.filters && Object.keys(this.filters).length;
-    },
+		   if(this.configFinal.ajaxUrl){
+				return this.rowsFinal;
+			}
 
-    filteredRows(){
-       let visible = [];
+		   for(let i = 0 ; i<this.rowsFinal.length;i++) {
+			   visible.push(true);
+		   }
 
-       if(this.configFinal.ajaxUrl){
-  			return this.rowsFinal;
-  		}
+		   if(
+				(!this.configFinal.search && !this.filterActive) ||
+				(!this.filterActive && this.configFinal.search && this.query.length <= this.configFinal.searchLength)
+			){
+			  //Skip filtering, no search or filter is active
+			  return visible;
+			}
 
-       for(let i = 0 ; i<this.rowsFinal.length;i++) {
-		   visible.push(true);
-	   }
+			//search per row
+			for(let i = 0 ; i<this.rowsFinal.length;i++) {
 
-	   if(
-	   		(!this.configFinal.search && !this.filterActive) ||
-	   		(!this.filterActive && this.configFinal.search && this.query.length <= this.configFinal.searchLength)
-	   	){
-	   	  //Skip filtering, no search or filter is active
-	      return visible;
-	    }
+				let row = this.rowsFinal[i].cells?this.rowsFinal[i].cells:this.rowsFinal[i];
+				let match = false;
+				let searched = false;
 
-	    //search per row
-        for(let i = 0 ; i<this.rowsFinal.length;i++) {
+				if(this.configFinal.search && this.query.length > this.configFinal.searchLength){
 
-	       	let row = this.rowsFinal[i].cells?this.rowsFinal[i].cells:this.rowsFinal[i];
-       	  	let match = false;
-       	  	let searched = false;
+					//check inner html/text per row/col
+					for (let j = 0; j < row.length; j++){
+						let col = row[j];
 
-       	  	if(this.configFinal.search && this.query.length > this.configFinal.searchLength){
+						let textVal = col.html?col.html:col.text;
 
+						if(fuzzy((textVal + "").toLowerCase(), (this.query + "").toLowerCase()).score > 6){
+						  match = true;
+						  break;
+						}
 
-		        for (let j = 0; j < row.length; j++){
-		            let col = row[j];
+					}
+					//check set per row keywords
+					 if(row.keywords){
+						 for(let k = 0;k<row.keywords.length;k++){
+							if(fuzzy((row.keywords[k] + "").toLowerCase(), (this.query + "").toLowerCase()).score > 6){
+							  match = true;
+							  break;
+							}
+						 }
+					}
 
-		            let textVal = col.html?col.html:col.text;
+					searched = true;
+				}
 
-		            if(fuzzy((textVal + "").toLowerCase(), (this.query + "").toLowerCase()).score > 6){
-		              match = true;
-		              break;
-		            }
+				//filter are active but no filter values on row!
+				if(this.filterActive && !this.rowsFinal[i].filters){
+					match = false;
+				}
 
-			    }
+				//filter will be applied
+				else if((searched && match || !searched) && this.filterActive){
 
-			     if(row.keywords){
-	            	 for(let k = 0;k<row.keywords.length;k++){
-	            	 	if(fuzzy((row.keywords[k] + "").toLowerCase(), (this.query + "").toLowerCase()).score > 6){
-			              match = true;
-			              break;
-			            }
-	            	 }
-	            }
+					//filter groups are defined
+					if(this.filterGroups){
+						match = this.doFiltering(this.rowsFinal[i].filters);
 
-			    searched = true;
-		   	}
+					//define dummy filter group with filters and relation set
+					}else{
 
-		   	//filter are active but no filter values on row!
-		   	if(this.filterActive && !this.rowsFinal[i].filters){
-	   			match = false;
-	   		}
+						let group = {
+							items:[],
+							relation:this.configFinal.filterRelation,
+						};
 
-		   	//filter will be applied
-		   	else if((searched && match || !searched) && this.filterActive){
+						for (let filter in this.filters){
+							if(this.filters.hasOwnProperty(filter)){
+								group.items.push({name:filter});
+							}
+						}
 
-		   		//filter groups are defined
-		   		if(this.filterGroups){
-		   			match = this.doFiltering(this.rowsFinal[i].filters);
+						match = this.doFilteringForGroup(this.filters,this.rowsFinal[i].filters,group);
 
-		   		//define dummy filter group with filters and relation set
-		   		}else{
+					}
+					//######################################
+					if(this.DEBUG){
+						console.log("\n");
+						console.log("ROW " + i,match,this.rowsFinal[i].filters);
+						console.log("\n");
+					}
+					//######################################
+				}
 
-		   			let group = {
-		   				items:[],
-		   				relation:this.configFinal.filterRelation,
-		   			};
+				visible[i] = match;
 
-		   			for (let filter in this.filters){
-		   				group.items.push({name:filter});
-		   			}
+			}
 
-		   			match = this.doFilteringForGroup(this.filters,this.rowsFinal[i].filters,group);
+			return visible;
+		},
 
-		   		}
-				//######################################
-				if(this.DEBUG){
-			   		console.log("\n");
-		   			console.log("ROW " + i,match,this.rowsFinal[i].filters);
-		   			console.log("\n");
-	   			}
-	   			//######################################
-		   	}
+	  /**
+	   * Checks if there are currently no rows visible
+	   *
+	   */
+		noRows(){
+			return !this.numberOfVisibleRows;
+		},
 
-		    visible[i] = match;
+	  /**
+	   * Calculates the first visible row for displaying
+	   *
+	   */
+		firstVisibleRow(){
+			if(this.currentRowsPerPage === "All"){
+				return 1;
+			}
+			return this.currentPage * this.currentRowsPerPage - this.currentRowsPerPage + 1;
+		},
 
-    	}
+	  /**
+	   * Calculates the last visible row for displaying
+	   *
+	   */
+		lastVisibleRow(){
+			if(this.currentRowsPerPage === "All"){
+				return 1;
+			}
+			return Math.min(this.firstVisibleRow + this.currentRowsPerPage-1,this.numberOfVisibleRows);
+		},
 
-      	return visible;
-    },
-
-
-  	noRows(){
-  		return !this.onlyVisibleRows.length;
-  	},
-
-  	firstVisibleRow(){
-  		if(this.currentRowsPerPage === "All"){
-  			return 1;
-  		}
-  		return this.currentPage * this.currentRowsPerPage - this.currentRowsPerPage + 1;
-  	},
-  	lastVisibleRow(){
-  		if(this.currentRowsPerPage === "All"){
-  			return 1;
-  		}
-  		return Math.min(this.firstVisibleRow + this.currentRowsPerPage-1,this.onlyVisibleRows.length);
-  	},
-  	ajaxLoading(){
-  		return this.loading || this.fetching;
-  	},
-
+	  /**
+	   * Calculates if something is currently loading via ajax
+	   *
+	   */
+		ajaxLoading(){
+			return this.loading || this.fetching;
+		},
 
   },
 
   watch:{
-  	filters:{
-    	handler(){
 
-    		if(this.configFinal.ajaxUrl){
-	 			this.loadViaAjax(true);
-	 			return;
-	 		}
+	  /**
+	   * Resets page and selects if a filter value is changes
+	   *
+	   */
+		filters:{
+			handler(){
 
- 			this.currentPage = 1;
- 			this.resetSelect();
-    	},
-    	deep:true,
-    },
+				if(this.configFinal.ajaxUrl){
+					this.loadViaAjax(true);
+					return;
+				}
 
+				if(this.currentPage !== 1){
+					this.currentPage = 1;
+				}else{
+					this.resetSelect();
+				}
+			},
+			deep:true,
+		},
 
-    hiddenBreakpoints(val){
-    	if(!this.initBreakpoints){
-    		this.$emit("change:breakpoints",val,"change:breakpoints");
-    	}
-    	this.initBreakpoints = false;
-    },
+	  /**
+	   * Emits an event if breakpoints are changed
+	   *
+	   */
+		hiddenBreakpoints(val){
+			if(!this.initBreakpoints){
+				this.$emit("change:breakpoints",val,"change:breakpoints");
+			}
+			this.initBreakpoints = false;
+		},
 
-    hoveredRow(val){
-    	if(val){
-    		this.$emit("hover:row",this.rowsFinal[val],"hover:row");
-    	}
-    },
+	  /**
+	   * Emits an event if a row is hovered
+	   *
+	   */
+		hoveredRow(val){
+			if(val){
+				this.$emit("hover:row",this.rowsFinal[val],"hover:row");
+			}
+		},
 
-    query(val){
-        if(val.length > this.configFinal.searchLength){
-	    	if(this.configFinal.ajaxUrl){
-	 			this.loadViaAjax(true);
-	 			return;
-	 		}
+	  /**
+	   * Resets page and selects if a search query is entered and emits and event
+	   *
+	   */
+		query(val){
+			if(val.length > this.configFinal.searchLength){
+				if(this.configFinal.ajaxUrl){
+					this.loadViaAjax(true);
+					return;
+				}
 
-          this.$emit("update:search",val,"update:search");
+			    this.$emit("update:search",val,"update:search");
 
-          this.currentPage = 1;
-          this.resetSelect();
+				if(this.currentPage !== 1){
+					this.currentPage = 1;
+				}else{
+					this.resetSelect();
+				}
 
-        }
-    },
+			}
+		},
 
-    currentRowsPerPage(val){
+	  /**
+	   * Resets page and selects if the number of rows per page is changed and emits and event
+	   *
+	   */
+		currentRowsPerPage(val){
 
-    	this.$emit("update:rows-per-page",val,"update:rows-per-page");
+			this.$emit("update:rows-per-page",val,"update:rows-per-page");
 
-    	if(this.configFinal.ajaxUrl){
- 			this.loadViaAjax(true);
- 			return;
- 		}
+			if(this.configFinal.ajaxUrl){
+				this.loadViaAjax(true);
+				return;
+			}
 
- 		this.currentPage = 1;
-
-		if(!this.configFinal.selectAllRows){
-			this.resetSelect();
-		}
-    },
-
-
-  	config(val){
-  		if(typeof val !== "object"){
-	  		throw "config must be an object"
-	  	}
-
-	  	this.initLists();
-
-		if(this.configFinal.ajaxUrl){
- 			this.loadViaAjax();
-	 	}
-
-	 	if(this.configFinal.defaultSelected){
-	 		this.checkAll();
-	 	}
-  	},
-
-  	selected(val){
-
-  		let selected = [];
-
-  		for (let index in this.sortedIndexes){
-  			index = parseInt(index);
-  			if(val[index]){
-  				selected.push(this.rowsFinal[this.sortedIndexes[index]]);
-  			}
-  		}
-
-  		if(!this.configFinal.selectAllRows && selected.length && selected.length === this.onlyVisiblePagedRows.length){
-  			this.allSelectedProperty = true;
-  		}
+			if(this.currentPage !== 1){
+			  this.currentPage = 1;
+			}else if(!this.configFinal.selectAllRows){
+			  this.resetSelect();
+			}
 
 
-		if(this.configFinal.selectAllRows && selected.length && selected.length === this.onlyVisibleRows.length){
-			this.allSelectedProperty = true;
-		}
+		},
 
-  		if(JSON.stringify(this.lastSelected) !== JSON.stringify(selected)){
-			this.$emit("input",selected);
-			this.lastSelected = selected;
-  		}
+	   /**
+	   * Reset everything if rows have been changed (e.g. [re]loaded via ajax)
+	   *
+	   */
+		rows(){
+
+		  this.$nextTick(()=>{
+			  this.initLists();
+			  this.$forceUpdate();
+
+			  this.recomputeEssentials();
+
+			  if(this.configFinal.defaultSelected){
+				  this.allSelectedCustom = null;
+				  this.checkAll();
+			  }
+		  });
+		},
+
+	  /**
+	   * Reset everything if rows have been changed (e.g. [re]loaded via ajax)
+	   *
+	   */
+		config(val){
+			if(typeof val !== "object"){
+				throw "config must be an object"
+			}
+
+			this.initLists();
+		  	this.$forceUpdate();
+
+			if(this.configFinal.ajaxUrl){
+				this.loadViaAjax();
+			}
+
+			if(this.configFinal.defaultSelected){
+				this.checkAll();
+			}
+		},
+
+	  /**
+	   * Prepare the selected rows array for passing to the event and emits it
+	   *
+	   */
+		selected(val){
+
+			let selected = [];
+
+			for (let index in this.sortedIndexes){
+				if(this.sortedIndexes.hasOwnProperty(index)){
+					index = parseInt(index);
+					if(val[index]){
+						selected.push(this.rowsFinal[this.sortedIndexes[index]]);
+					}
+				}
+			}
+
+		  this.$emit("input",selected);
 
 
-	},
+		},
 
-	currentPage(val){
+	  /**
+	   * Resets the row selection if page has been changed and emits an event
+	   *
+	   */
+		currentPage(val){
 
-		this.$emit("update:page",val,"update:page");
+			this.$emit("update:page",val,"update:page");
 
-	 	if(this.configFinal.ajaxUrl){
-	 		this.loadViaAjax(true);
-	 		return;
-	 	}
+			if(this.configFinal.ajaxUrl){
+				this.loadViaAjax(true);
+				return;
+			}
 
-		if(!this.configFinal.selectAllRows){
-			this.resetSelect();
-		}
+			if(!this.configFinal.selectAllRows){
+				this.resetSelect();
+			}
 
-		this.recomputeEssentials()
+			this.recomputeEssentials()
 
 
-	 },
+		 },
 
-	 customMultiSort(val){
-  		if(!val && Object.keys(this.currentSortIndexes).length > 1){
+	  /**
+	   *  Reorder the indexes of sorting if a sort column has been removed (e.g. column 1,2,3 are active, 2 has been removed, 3 has to be 2 now)
+	   *
+	   */
+	  customMultiSort(val){
+			if(!val && Object.keys(this.currentSortIndexes).length > 1){
 
-  			let currentItem;
-  			let currentIndex;
-  			for(let index in this.currentSortIndexes ){
-  				if(this.currentSortIndexes[index].order === 0){
-  					currentItem = this.currentSortIndexes[index];
-  					currentIndex = index;
-  					break;
-  				}
-  			}
+				let currentItem;
+				let currentIndex;
+				for(let index in this.currentSortIndexes ){
+					if(this.currentSortIndexes.hasOwnProperty(index) && this.currentSortIndexes[index].order === 0){
+						currentItem = this.currentSortIndexes[index];
+						currentIndex = index;
+						break;
+					}
+				}
 
-  			this.currentSortIndexes = {};
-  			this.$set(this.currentSortIndexes,currentIndex,currentItem);
+				this.currentSortIndexes = {};
+				this.$set(this.currentSortIndexes,currentIndex,currentItem);
 
-  			this.sort();
+				this.sort();
 
-  		}
-  	},
-
-	rows(){
-
-	  this.$nextTick(()=>{
-	  	this.initLists();
-	  	this.$forceUpdate();
-
-	  	this.recomputeEssentials();
-
-	  	if(this.configFinal.defaultSelected){
-	  		this.allSelectedCustom = null;
-	 		this.checkAll();
-	 	}
-	  });
-	}
+			}
+		},
 
 
   },
   methods:{
 
+	  /**
+	   * Event listener for select row checkboxes. Checks if all rows are selected now and sets the allSelectedProperty in case
+	   *
+	   * @param bool selected or not
+	   * @param index index of selected row
+	   */
 	  checkListener(bool,index){
 
 		  let tmp = this.selected.slice();
-
 		  tmp[index] = bool;
 
 		  if(tmp.indexOf(false) !== -1){
@@ -1273,73 +1394,93 @@ export default {
 
 	  },
 
+	  /**
+	   * Event listener for clicked row. Emits an event if the row has been expanded or collapsed. Emits and event that row was clicked
+	   *
+	   * @param e Click Event
+	   * @param rowIndex Index of clicked row
+	   */
+		onRowClick(e, rowIndex){
 
-  	onRowClick(e,rowIndex){
-
-		if ((e.target || {}).type === 'checkbox') {
-			return;
-		}
-
-  		if(this.hiddenColumns){
-			if(!this.openRows[rowIndex]){
-				this.$set(this.openRows,rowIndex,true);
-				this.$emit("expand:row",this.rowsFinal[this.sortedIndexes[rowIndex]],"expand:row");
-			}else{
-				this.$set(this.openRows,rowIndex,false);
-				this.$emit("expand:row",this.rowsFinal[this.sortedIndexes[rowIndex]],"collapse:row");
+			if ((e.target || {}).type === 'checkbox') {
+				return;
 			}
 
-			this.$recompute('generatedRows');
+			if(this.hiddenColumns){
+				if(!this.openRows[rowIndex]){
+					this.$set(this.openRows,rowIndex,true);
+					this.$emit("expand:row",this.rowsFinal[this.sortedIndexes[rowIndex]],"expand:row");
+				}else{
+					this.$set(this.openRows,rowIndex,false);
+					this.$emit("expand:row",this.rowsFinal[this.sortedIndexes[rowIndex]],"collapse:row");
+				}
 
-		}
+				this.$recompute('generatedRows');
 
-		this.$emit("click:row",this.rowsFinal[rowIndex],"click:row");
-	},
+			}
 
-  	onCellClick(cell){
-  		this.$emit("click:cell",cell,"click:cell");
-  	},
+			this.$emit("click:row",this.rowsFinal[rowIndex],"click:row");
+		},
 
-  	onMouseenterRow(index){
-  		if(this.hoveredRow !== index){
-			this.hoveredRow = index;
-		}
-	},
+	  /**
+	   * Event listener for clicked cell. Emits and event that row was clicked
+	   *
+	   * @param cell Clicked Cell
+	   */
+		onCellClick(cell){
+			this.$emit("click:cell",cell,"click:cell");
+		},
 
-  	onMouseleaveTable(){
+	  /**
+	   * Event listener for hovered row. Sets the hoveredRow data entry
+	   *
+	   * @param index Index of hovered row
+	   */
+		onMouseenterRow(index){
+			if(this.hoveredRow !== index){
+				this.hoveredRow = index;
+			}
+		},
 
-		this.hoveredRow = null;
-  	},
+	  /**
+	   * Event listener for mouse leave of table body. Releases the hoveredRow data entry
+	   *
+	   */
+		onMouseleaveTable(){
+			this.hoveredRow = null;
+		},
 
-  	removeSort(index){
+	  /**
+	   *
+	   *
+	   * @param index Index of removed sorting column
+	   */
+		removeSort(index){
 
-  		for(let i in this.currentSortIndexes){
-  			let item = this.currentSortIndexes[i];
-  			if(item.order > this.currentSortIndexes[index].order){
-  				item.order--;
-  			}
-  			this.$set(this.currentSortIndexes,i,item);
-  		}
-  		this.$delete(this.currentSortIndexes,index);
+			for(let i in this.currentSortIndexes){
+				if(this.currentSortIndexes.hasOwnProperty(i)){
+					let item = this.currentSortIndexes[i];
+					if(item.order > this.currentSortIndexes[index].order){
+						item.order--;
+					}
+					this.$set(this.currentSortIndexes,i,item);
+				}
+			}
+			this.$delete(this.currentSortIndexes,index);
 
+			if(this.numberOfSorts === 0){
+				for(let i = 0 ; i<this.rowsFinal.length;i++) {
+					this.sortedIndexes[i] = parseInt(i);
+				}
+				this.recomputeEssentials();
+			}else{
+				this.sort();
+			}
 
-  		if(this.numberOfSorts === 0){
-
-	 		for(let i = 0 ; i<this.rowsFinal.length;i++) {
-	  			this.sortedIndexes[i] = parseInt(i);
-		 	}
-
-			this.recomputeEssentials();
-
-		}else{
-  			this.sort();
-  		}
-
-
-  	},
+		},
 
   	checkAll(){
-  		let value = this.allSelected;
+  		let value = this.allSelectedProperty;
 
 		for (let index in this.sortedIndexes){
 			index = parseInt(index);
