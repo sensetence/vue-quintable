@@ -28,7 +28,9 @@
 									<span><font-awesome-icon v-if="someSelected && !allSelectedProperty" icon="square" class="text-success icon-check" /></span>
 								</template>
 							</p-check>
-							<input v-else type="checkbox" v-model="allSelectedProperty"  @change="checkAll()">
+							<label v-else class="mb-0 mt-0">
+								<input  type="checkbox" v-model="allSelectedProperty"  @change="checkAll()">
+							</label>
 						</template>
 					</th>
 
@@ -65,7 +67,9 @@
 									<span><font-awesome-icon v-if="someSelected && !allSelectedProperty" icon="square" class="text-success icon-check" /></span>
 								</template>
 							</p-check>
-							<input v-else type="checkbox" v-model="allSelectedProperty"  @change="checkAll()">
+							<label v-else class="mb-0 mt-0">
+								<input  type="checkbox" v-model="allSelectedProperty"  @change="checkAll()">
+							</label>
 						</template>
 					</th>
 				</tr>
@@ -88,7 +92,9 @@
 								  <span><font-awesome-icon v-if="selected[rIndex]" icon="check" class="text-success icon-check" /></span>
 							  </template>
 						  </p-check>
-						  <input v-else type="checkbox" v-model="selected[rIndex]" @change="checkListener($event,rIndex)" >
+						  <label v-else class="mb-0 mt-0">
+						  	<input type="checkbox" v-model="selected[rIndex]" @change="checkListener($event,rIndex)" >
+						  </label>
 					  </td>
 
 
@@ -118,7 +124,9 @@
 								  <span><font-awesome-icon v-if="selected[rIndex]" icon="check" class="text-success icon-check" /></span>
 							  </template>
 						  </p-check>
-						  <input v-else type="checkbox" v-model="selected[rIndex]" @change="checkListener($event,rIndex)">
+						  <label v-else class="mb-0 mt-0">
+						  	<input type="checkbox" v-model="selected[rIndex]" @change="checkListener($event,rIndex)">
+						  </label>
 					  </td>
 				  </tr>
 					  <template v-if="(generatedRows[rIndex] || stickyRows[rIndex]) && visibleRows[rIndex]">
@@ -342,7 +350,7 @@ export default {
       	customMultiSort:null,
       	hiddenBreakpoints:[],
       	initBreakpoints:true,
-      	generationDate:new Date(),
+		breakpointTimeout:null,
   	}
   },
 
@@ -866,7 +874,7 @@ export default {
 	   */
 		paginationOptionsFilled(){
 
-			let all = this.rowsFinal.length
+			let all = this.rowsFinal.length;
 
 			if(this.configFinal.ajaxUrl){
 				all = this.ajaxAll;
@@ -966,20 +974,6 @@ export default {
 			}).length;
 		},
 
-	  /**
-	   * Calculates the number of visible Rows with paging;
-	   *
-	   */
-	  numberOfVisiblePagesRows(){
-
-    	if(this.configFinal.ajaxUrl){
-			return this.ajaxAll;
-    	}
-
- 		return this.visibleRows.filter((item)=>{
-	       return item;
-	    });
-    },
 
 	  /**
 	   * Calculates all accessible pages regarding to page range and current page
@@ -1468,527 +1462,601 @@ export default {
 			}
 			this.$delete(this.currentSortIndexes,index);
 
+
 			if(this.numberOfSorts === 0){
+
 				for(let i = 0 ; i<this.rowsFinal.length;i++) {
 					this.sortedIndexes[i] = parseInt(i);
 				}
-				this.recomputeEssentials();
+				this.currentPage = 1;
+
 			}else{
 				this.sort();
 			}
 
 		},
 
-  	checkAll(){
-  		let value = this.allSelectedProperty;
+	  /**
+	   * Select all relevant rows
+	   *
+	   */
+	  checkAll(){
+			let value = this.allSelectedProperty;
 
-		for (let index in this.sortedIndexes){
-			index = parseInt(index);
+			for (let index in this.sortedIndexes){
+				if(this.sortedIndexes.hasOwnProperty(index)){
+					index = parseInt(index);
 
-			if((!this.configFinal.selectAllRows && this.visibleRows[this.sortedIndexes[index]]) || (this.configFinal.selectAllRows && this.filteredRows[this.sortedIndexes[index]])){
-				this.$set(this.selected,this.sortedIndexes[index],value);
-			}else{
-				this.$set(this.selected,this.sortedIndexes[index],false);
+					if((!this.configFinal.selectAllRows && this.visibleRows[this.sortedIndexes[index]]) || (this.configFinal.selectAllRows && this.filteredRows[this.sortedIndexes[index]])){
+						this.$set(this.selected,this.sortedIndexes[index],value);
+					}else{
+						this.$set(this.selected,this.sortedIndexes[index],false);
+					}
+				}
 			}
 
-		}
 
-
-    },
-
-
-  doFiltering(filterValues){
-
-  	let results = [];
-
-
-  	for (let i = 0; i<this.filterGroups.length;i++){
-
-  		results.push(this.doFilteringForGroup(this.filters,filterValues,this.filterGroups[i]));
-
-  		if(i<this.filterGroups.length-1){
-  			console.log(this.configFinal.filterGroupRelation);
-  		}
-
-  	}
-  	//######################################
-  	if(this.DEBUG){
-  		console.log("RESULTS FOR GROUPS:",results,this.configFinal.filterGroupRelation);
-  	}
-  	//######################################
-
-  	if(this.configFinal.filterGroupRelation === "AND"){
-  		if(results.indexOf(true) !== -1){
-  			return true;
-  		}
-  		return false;
-  		
-  	}else if(this.configFinal.filterGroupRelation === "OR"){
-		if(results.indexOf(true) === -1){
-  			return false;
-  		}
-  		return true;
-  	}else{
-  		return true;
-  	}
-  },
-
-  
-  doFilteringForGroup(filters,filterValues,group,index = 0){
-
-  	//######################################
-
-  	let spaces = "   ";
-
-  	for (let i = 0;i<index;i++){
-  		spaces+= "   ";
-  	}
-
-  	if(this.DEBUG){
-
-	  	
-
-	  	if(group.items){
-
-		  	let str = spaces;
-
-		  	let tmp = group.items.slice();
-
-		  	let cmp = function(a,b){
-		  	
-		  		if(a.name === undefined){
-		  			return 1;
-		  		}
-		  		if(b.name === undefined){
-		  			return -1;
-		  		}
-		  		return 0;
-		  	}
-
-		  	tmp = tmp.sort(cmp);
-
-		  	for (let i = 0; i<tmp.length;i++){
-		  		if(tmp[i].name){
-			  		str += tmp[i].name;
-			  		if(i<tmp.length-1){
-			  			str +=" "+group.relation+" "
-			  		}
-		  		}
-		  	}
-
-		  	console.log(str);
-	  	}
-  	}
-
-  	//######################################
-
-  	let found = false;
-
-  	//######################################
-  	if(this.DEBUG){
-  		console.log(spaces,"GROUP:",group);
-  	}
-  	//######################################
-
-  	if(group.relation === "AND"){
-  		for(let key in filters){
-  			if(this.filterGroups && !this.findInFilterGroups(key,this.filterGroups)){
-  				continue;
-  			}
-
-  			let allIncluding = true;
-  			for (let i = 0; i<group.items.length;i++){
-  				let item = group.items[i];
-
-  				if(item.name && filterValues[item.name] === undefined){
-  					allIncluding = false;
-  					break;
-  				}
-  			}
-
-  			if(allIncluding){
-
-	  			for (let i = 0; i<group.items.length;i++){
-	  				let item = group.items[i];
-	  				found = true;
-	  				if(item.items){
-	  					found = this.doFilteringForGroup(filters,filterValues,item,index+1);
-	  				}
-
-	  				if(!found){
-	  					break;
-	  				}
-
-	  				//actual checking for matching
-	  				if(typeof filters[item.name] === "object" && filters[item.name].length && filters[item.name].indexOf(filterValues[item.name]) === -1){
-	  					found =  false;
-	  					break;
-	  				}else if(typeof filters[item.name] !== "object" &&filterValues[item.name] !== filters[item.name]){
-	  					found =  false;
-	  					break;
-	  				}
-	  			}
-
-  			}
-
-  		}
-  		return found
-
-  	}else if(group.relation === "OR" || group.items){
-  		for(let key in filters){
-
-  			if(this.filterGroups && !this.findInFilterGroups(key,this.filterGroups)){
-  				continue;
-  			}
-
-  			for (let i = 0; i<group.items.length;i++){
-  				let item = group.items[i];
-  				if(item.items){
-  					found = this.doFilteringForGroup(filters,filterValues,item,index+1);
-
-  					if(found){
-	  					break;
-	  				}
-  				}
-
-  				//actual checking for matching
-  				if(typeof filters[item.name] === "object" && filters[item.name].length && filters[item.name].indexOf(filterValues[item.name]) !== -1){
-  					found =  true;
-  					break;
-	  			}else if(typeof filters[item.name] !== "object" && filterValues[item.name] && filters[item.name] && filterValues[item.name] === filters[item.name]){
-  					found =  true;
-  					break;
-  				}
-  			}
-
-  		}
-  	  	return found
-  	}else{
-  		return true;
-  	}
-
-  },
-
-  	findInFilterGroups(key,arr,index=0) {
-
-  		if(!arr){
-  			return false;
-  		}
-
-  		let found = false;
-
-  		for(let i = 0;i<arr.length;i++){
-  			let item = arr[i];
-  			if(item.items){
-  				found = this.findInFilterGroups(key,item.items,index+1);
-  				if(found){
-  					break;
-  				}
-  			}
-
-  			if(item.name == key){
-  				found = true;
-  				break;
-  			}
-  			
-  		}
-  		return found;
-
-	},
-
-    gotoPage(page){
-
-      if(page === "prev"){
-        if(this.currentPage -1 >0){
-          this.currentPage--;
-        }
-      }else if(page === "next"){
-        if(this.currentPage +1 <= this.pages){
-          this.currentPage++;
-        }
-      }else if(page === "first"){
-        this.currentPage = 1;
-      }else if(page === "last"){
-        this.currentPage = this.pages;
-      }else{
-        this.currentPage = page;
-      }
-      
-    },
-
-
-  	setSortColumn(index){
-
-  		if(!this.configFinal.sorts[index]){
-  			return;
-  		}
-
-  		let item;
-
-  		if(!this.currentSortIndexes[index]){
-
-  			if(!this.multiSort){
-  				this.currentSortIndexes  = {};
-  			}
-
-  			item = {
-  				headline:this.configFinal.headlines[index],
-  				index:index,
-  				asc:true,
-  				order:this.numberOfSorts,
-  			};
-
-  		}else{
-
-  			item = this.currentSortIndexes[index];
-  			item.asc = !item.asc;
-  		}
-
-  		this.$set(this.currentSortIndexes,index,item);
-
-  		this.$emit("update:sort",this.currentSortIndexes,"update:sort");
-
-  		this.sort();
-
-
-  	},
-
-  	sort(){
-
-  		if(this.configFinal.ajaxUrl){
-  			this.loadViaAjax(true);
-  			return;
-  		}
-
-  		let rows = this.rowsFinal.slice();
-
-  		for(let i = 0 ; i<rows.length;i++) {
-			rows[i].index = i;
-		}
-
-		let sortableIndexes = [];
-		for (let index in this.currentSortIndexes) {
-			let data = this.currentSortIndexes[index];
-			data.index = index;
-		    sortableIndexes.push(data);
-		}
-
-		sortableIndexes.sort(function(a, b) {
-		    return a.order - b.order;
-		});
-
-		let compare =(a, b, keys, index) => {
-		    index = index || 0;
-
-		    let currentKey = keys[index];
-
-		    let i = currentKey.index;
-
-  			let cellsA = a.cells?a.cells:a;
-			let cellsB = b.cells?b.cells:b;
-
-			let aValue = cellsA[i].sortValue?cellsA[i].sortValue:cellsA[i].html?cellsA[i].html:cellsA[i].text;
-		  	let bValue = cellsB[i].sortValue?cellsB[i].sortValue:cellsB[i].html?cellsB[i].html:cellsB[i].text;
-
-		  	if(currentKey.asc){
-		    	return aValue > bValue ? 1 : (aValue < bValue ? -1 : ( keys[index+1] ? compare(a, b, keys, index + 1):1));
-		  	}else{
-		    	return aValue < bValue ? 1 : (aValue > bValue ? -1 : ( keys[index+1] ? compare(a, b, keys, index + 1):-1));
-		  	}
-		  
-		};
-
-		rows.sort(function(a, b){
-			return compare(a, b, sortableIndexes);
-		});
-
-
-		for(let i = 0 ; i<rows.length;i++) {
-			this.sortedIndexes[i] = parseInt(rows[i].index);
-		}
-
-		this.currentPage = 1;
-
-
-		if(!this.configFinal.selectAllRows){
-			this.resetSelect();
-		}
-
-		this.recomputeEssentials();
-
-
-
-  	},
-
+		},
+
+	  /**
+	   * Do the filtering for all rows against all groups
+	   *
+	   * @param filterValues the set filter keys and values
+	   *
+	   * @returns {boolean}
+	   */
+		doFiltering(filterValues){
+
+			let results = [];
+
+			for (let i = 0; i<this.filterGroups.length;i++){
+
+				results.push(this.doFilteringForGroup(this.filters,filterValues,this.filterGroups[i]));
+
+				if(i<this.filterGroups.length-1){
+					console.log(this.configFinal.filterGroupRelation);
+				}
+
+			}
+			//######################################
+			if(this.DEBUG){
+				console.log("RESULTS FOR GROUPS:",results,this.configFinal.filterGroupRelation);
+			}
+			//######################################
+
+			if(this.configFinal.filterGroupRelation === "AND"){
+				return results.indexOf(false) === -1;
+
+			}else if(this.configFinal.filterGroupRelation === "OR"){
+				return results.indexOf(true) !== -1;
+			}else{
+				return true;
+			}
+		},
+
+	  /**
+	   * Do the actual filtering for a row against a cetrain group
+	   *
+	   * @param filters the set filter keys and values
+	   * @param filterValues the filter values of one row
+	   * @param group the actual filter group
+	   * @param index just a counter
+	   *
+	   * @returns {boolean}
+	   */
+	    doFilteringForGroup(filters,filterValues,group,index = 0){
+
+			//###################################### DEBUG
+			let spaces = "   ";
+
+			for (let i = 0;i<index;i++){
+				spaces+= "   ";
+			}
+
+			if(this.DEBUG){
+
+				if(group.items){
+
+					let str = spaces;
+					let tmp = group.items.slice();
+
+					let cmp = function(a,b){
+
+						if(a.name === undefined){
+							return 1;
+						}
+						if(b.name === undefined){
+							return -1;
+						}
+						return 0;
+					};
+
+					tmp = tmp.sort(cmp);
+
+					for (let i = 0; i<tmp.length;i++){
+						if(tmp[i].name){
+							str += tmp[i].name;
+							if(i<tmp.length-1){
+								str +=" "+group.relation+" "
+							}
+						}
+					}
+
+					console.log(str);
+				}
+
+				console.log(spaces,"GROUP:",group);
+			}
+			//###################################### / DEBUG
+
+
+		  let found = false;
+
+		  if(group.relation === "AND"){
+				for(let key in filters){
+					if(filters.hasOwnProperty(key)){
+
+						if(this.filterGroups && !this.findInFilterGroups(key,this.filterGroups)){
+							continue;
+						}
+
+						let allIncluding = true;
+						for (let i = 0; i<group.items.length;i++){
+							let item = group.items[i];
+
+							if(item.name && filterValues[item.name] === undefined){
+								allIncluding = false;
+								break;
+							}
+						}
+
+						if(allIncluding){
+
+							for (let i = 0; i<group.items.length;i++){
+								let item = group.items[i];
+								found = true;
+								if(item.items){
+									found = this.doFilteringForGroup(filters,filterValues,item,index+1);
+								}
+
+								if(!found){
+									break;
+								}
+
+								//actual checking for matching
+								if(typeof filters[item.name] === "object" && filters[item.name].length && filters[item.name].indexOf(filterValues[item.name]) === -1){
+									found =  false;
+									break;
+								}else if(typeof filters[item.name] !== "object" &&filterValues[item.name] !== filters[item.name]){
+									found =  false;
+									break;
+								}
+							}
+
+						}
+
+					}
+				}
+				return found
+
+		  }else if(group.relation === "OR" || group.items){
+				for(let key in filters){
+
+					if(filters.hasOwnProperty(key)){
+
+						if(this.filterGroups && !this.findInFilterGroups(key,this.filterGroups)){
+							continue;
+						}
+
+						for (let i = 0; i<group.items.length;i++){
+							let item = group.items[i];
+							if(item.items){
+								found = this.doFilteringForGroup(filters,filterValues,item,index+1);
+
+								if(found){
+									break;
+								}
+							}
+
+							//actual checking for matching
+							if(typeof filters[item.name] === "object" && filters[item.name].length && filters[item.name].indexOf(filterValues[item.name]) !== -1){
+								found =  true;
+								break;
+							}else if(typeof filters[item.name] !== "object" && filterValues[item.name] && filters[item.name] && filterValues[item.name] === filters[item.name]){
+								found =  true;
+								break;
+							}
+						}
+					}
+
+				}
+				return found
+			}else{
+				return true;
+			}
+
+	    },
+
+	  /**
+	   * Search a certain filter key in a filter group
+	   *
+	   * @param key the filter key
+	   * @param arr the group
+	   * @param index just a counter
+	   * @returns {boolean}
+	   */
+		findInFilterGroups(key,arr,index = 0) {
+
+			if(!arr){
+				return false;
+			}
+
+			let found = false;
+
+			for(let i = 0;i<arr.length;i++){
+				let item = arr[i];
+				if(item.items){
+					found = this.findInFilterGroups(key,item.items,index+1);
+					if(found){
+						break;
+					}
+				}
+
+				if(item.name === key){
+					found = true;
+					break;
+				}
+
+			}
+			return found;
+
+		},
+
+	  /**
+	   * Change page with certain value
+	   *
+	   * @param page
+	   */
+		gotoPage(page){
+
+		  if(page === "prev"){
+			if(this.currentPage -1 > 0){
+			  this.currentPage--;
+			}
+		  }else if(page === "next"){
+			if(this.currentPage +1 <= this.pages){
+			  this.currentPage++;
+			}
+		  }else if(page === "first"){
+			this.currentPage = 1;
+		  }else if(page === "last"){
+			this.currentPage = this.pages;
+		  }else{
+			this.currentPage = page;
+		  }
+
+		},
+
+	  /**
+	   * Add a column to the sorting or change the sort direction of set sorting column
+	   *
+	   * @param index the column
+	   */
+		setSortColumn(index){
+
+			if(!this.configFinal.sorts[index]){
+				return;
+			}
+
+			let item;
+
+			if(!this.currentSortIndexes[index]){
+
+				if(!this.multiSort){
+					this.currentSortIndexes  = {};
+				}
+
+				item = {
+					headline:this.configFinal.headlines[index],
+					index:index,
+					asc:true,
+					order:this.numberOfSorts,
+				};
+
+			}else{
+
+				item = this.currentSortIndexes[index];
+				item.asc = !item.asc;
+			}
+
+			this.$set(this.currentSortIndexes,index,item);
+
+			this.$emit("update:sort",this.currentSortIndexes,"update:sort");
+
+			this.sort();
+
+		},
+
+	  /**
+	   * The actual sorting process. Sort by sorting value or the inner text/html of the cells
+	   *
+	   */
+	  sort(){
+
+			if(this.configFinal.ajaxUrl){
+				this.loadViaAjax(true);
+				return;
+			}
+
+			let rows = this.rowsFinal.slice();
+
+			for(let i = 0 ; i<rows.length;i++) {
+				rows[i].index = i;
+			}
+
+			let sortableIndexes = [];
+			for (let index in this.currentSortIndexes) {
+				if(this.currentSortIndexes.hasOwnProperty(index)){
+					let data = this.currentSortIndexes[index];
+					data.index = index;
+					sortableIndexes.push(data);
+				}
+			}
+
+			sortableIndexes.sort(function(a, b) {
+				return a.order - b.order;
+			});
+
+			let compare =(a, b, keys, index) => {
+				index = index || 0;
+
+				let currentKey = keys[index];
+
+				let i = currentKey.index;
+
+				let cellsA = a.cells?a.cells:a;
+				let cellsB = b.cells?b.cells:b;
+
+				let aValue = cellsA[i].sortValue?cellsA[i].sortValue:cellsA[i].html?cellsA[i].html:cellsA[i].text;
+				let bValue = cellsB[i].sortValue?cellsB[i].sortValue:cellsB[i].html?cellsB[i].html:cellsB[i].text;
+
+				if(currentKey.asc){
+					return aValue > bValue ? 1 : (aValue < bValue ? -1 : ( keys[index+1] ? compare(a, b, keys, index + 1):1));
+				}else{
+					return aValue < bValue ? 1 : (aValue > bValue ? -1 : ( keys[index+1] ? compare(a, b, keys, index + 1):-1));
+				}
+
+			};
+
+			rows.sort(function(a, b){
+				return compare(a, b, sortableIndexes);
+			});
+
+
+			for(let i = 0 ; i<rows.length;i++) {
+				this.sortedIndexes[i] = parseInt(rows[i].index);
+			}
+
+			this.currentPage = 1;
+
+
+			if(!this.configFinal.selectAllRows){
+				this.resetSelect();
+			}
+
+			this.recomputeEssentials();
+
+		},
+
+	  /**
+	   * Trigger recomputing of the essential parts of the table to ensure correct displaying
+	   *
+	   */
 	  recomputeEssentials(){
 		  this.$nextTick(()=>{
 			  this.$recompute('visibleRows');
 			  this.$recompute('visibleRowIndexes');
 			  this.$recompute('generatedRows');
 		  });
-	  },
+		},
 
+	  /**
+	   * Initialize nested object lists
+	   *
+	   */
+		initLists(){
 
-  	initLists(){
-
-  		if(!this.rowsFinal){
-  			return;
-  		}
-
- 		for(let i = 0 ; i<this.rowsFinal.length;i++) {
- 			if(typeof this.generatedRows[i] !== "object"){
-  				this.generatedRows[i] = {};
-  			}
-
-  			if(typeof this.stickyRows[i] !== "object"){
-  				this.stickyRows[i] = {};
-  			}
-
-  			if(typeof this.sortedIndexes[i] === "undefined"){
-  				this.sortedIndexes[i] = parseInt(i);
-  			}
-
-			if(typeof this.selected[i] === "undefined"){
-				this.selected[i] = false;
+			if(!this.rowsFinal){
+				return;
 			}
 
-			if(this.configFinal.expandedAll || this.rowsFinal[i].expanded){
-				this.openRows[i] = true;
-			}else{
-				this.openRows[i] = false;
+			for(let i = 0 ; i<this.rowsFinal.length;i++) {
+				if(typeof this.generatedRows[i] !== "object"){
+					this.generatedRows[i] = {};
+				}
+
+				if(typeof this.stickyRows[i] !== "object"){
+					this.stickyRows[i] = {};
+				}
+
+				if(typeof this.sortedIndexes[i] === "undefined"){
+					this.sortedIndexes[i] = parseInt(i);
+				}
+
+				if(typeof this.selected[i] === "undefined"){
+					this.selected[i] = false;
+				}
+
+				if(this.configFinal.expandedAll || this.rowsFinal[i].expanded){
+					this.openRows[i] = true;
+				}else{
+					this.openRows[i] = false;
+				}
+
 			}
 
+		},
+
+	  /**
+	   * Clear all relevant lists to ensure re-initialization
+	   *
+	   */
+	  clearLists(){
+			this.selected = [];
+			this.stickyRows = {};
+
+			this.openRows = {};
+			this.sortedIndexes = {};
+		},
+
+	  /**
+	   * Clear all row selections
+	   *
+	   */
+	  resetSelect(){
+
+			this.allSelectedProperty = false;
+
+			for(let i = 0 ; i<this.rowsFinal.length;i++) {
+				this.$set(this.selected,i,false);
+			}
+
+		},
+	  /**
+	   * Load new rows via ajax including filters, search query and pagination
+	   *
+	   * @param clear
+	   */
+		loadViaAjax(clear = false){
+			this.fetching = true;
+			this.clearLists();
+			this.ajaxRows = [];
+
+			if(clear){
+				this.currentPage = 1;
+				this.resetSelect();
+			}
+
+			let params = {
+				search:this.query,
+				filters:this.filters,
+				perPage:this.currentRowsPerPage,
+				page:this.currentPage,
+				sort:this.numberOfSorts > 0? {
+					indexes:this.currentSortIndexes,
+					columns:this.sortingColumns,
+				}:null
+
+			};
+
+			axios.get(this.configFinal.ajaxUrl,{params}).then((response)=>{
+				this.ajaxRows = response.data.rows;
+				this.ajaxPages = Math.ceil(response.data.all / this.currentRowsPerPage);
+				this.ajaxAll = response.data.all;
+				this.fetching = false;
+				this.initLists();
+			});
+
+		},
+
+	  /**
+	   * Check if DOM element is visible
+	   *
+	   * @param el DOMElement
+	   * @returns {boolean}
+	   */
+		elementVisible(el) {
+			if (el) {
+				let computedStyle = window.getComputedStyle(el);
+				return computedStyle.display !== "none";
+			}
+			return false;
+		},
+
+	  /**
+	   * Event Listener for window resize event.
+	   *
+	   */
+		breakpointListener(){
+		  clearTimeout(this.breakpointTimeout);
+
+		  this.breakpointTimeout = setTimeout(()=>{
+			this.generateHiddenBreakpoints(false);
+		  },250);
+		},
+
+	  /**
+	   * Generate the list of hidden breakpoints
+	   *
+	   * @param regenerate
+	   */
+		generateHiddenBreakpoints(regenerate = false) {
+			if(regenerate){
+				this.hiddenBreakpoints = [];
+			}
+
+			let breakpoints = [];
+			if (!this.elementVisible(this.$refs.xl)) {
+				breakpoints.push("xl");
+			}
+
+			if (!this.elementVisible(this.$refs.lg)) {
+				breakpoints.push("lg");
+			}
+
+			if (!this.elementVisible(this.$refs.md)) {
+				breakpoints.push("md");
+			}
+
+			if (!this.elementVisible(this.$refs.sm)) {
+				breakpoints.push("sm");
+			}
+
+			breakpoints.push("all");
 
 
-	 	}
+			if((JSON.stringify(this.hiddenBreakpoints) !== JSON.stringify(breakpoints))){
+				this.hiddenBreakpoints = breakpoints;
+			}
 
-
-
-  		
-  	},
-  	clearLists(){
-  		this.selected = [];
-  		this.stickyRows = {};
-
-  		this.openRows = {};
-  		this.sortedIndexes = {};
-  	},
-  	resetSelect(){
-
-		this.allSelectedProperty = false;
-
-  		for(let i = 0 ; i<this.rowsFinal.length;i++) {
-			this.$set(this.selected,i,false);
-		}
-
-  	},
-  	loadViaAjax(clear = false){
-  		this.fetching = true;
-  		this.clearLists();
-  		this.ajaxRows = [];
-
-  		if(clear){
-  			this.currentPage = 1;
-			this.resetSelect();
-  		}
-
-  		let params = {
-  			search:this.query,
-  			filters:this.filters,
-  			perPage:this.currentRowsPerPage,
-  			page:this.currentPage,
-  			sort:this.numberOfSorts>0?{
-  				indexes:this.currentSortIndexes,
-  				columns:this.sortingColumns,
-  			}:null
-
-  		};
-
-  		axios.get(this.configFinal.ajaxUrl,{params}).then((response)=>{
-	  		this.ajaxRows = response.data.rows;
-	  		this.ajaxPages = Math.ceil(response.data.all / this.currentRowsPerPage);
-	  		this.ajaxAll = response.data.all;
-	  		this.fetching = false;
-	  		this.initLists();
-	  	});
-
-  	},
-
-  	elementVisible(el) {
-		        if (el) {
-		            let computedStyle = window.getComputedStyle(el);
-		            return computedStyle.display !== "none";
-		        }
-		        return false;
-		    },
-
-  	generateHiddenBreakpoints(regenerate = false) {
-
-  		if(regenerate){
-  			this.hiddenBreakpoints = [];
-  		}
-
-		let breakpoints = [];
-        if (!this.elementVisible(this.$refs.xl)) {
-            breakpoints.push("xl");
-        }     
-
-        if (!this.elementVisible(this.$refs.lg)) {
-            breakpoints.push("lg");
-        }
-
-        if (!this.elementVisible(this.$refs.md)) {
-            breakpoints.push("md");
-        }
-
-        if (!this.elementVisible(this.$refs.sm)) {
-            breakpoints.push("sm");
-        }
-
-		breakpoints.push("all");
-
-
-        if((JSON.stringify(this.hiddenBreakpoints) !== JSON.stringify(breakpoints))){
-        	this.hiddenBreakpoints = breakpoints;
-        }
-
-    },
-
+		},
   	
-  },
-  created(){
-  	 this.initLists();
+  	},
+	created(){
+	 this.initLists();
+
+	 //Pre-select rows in case
 	  for (let i = 0; i < this.rowsFinal.length; i++) {
 		  let row = this.rowsFinal[i];
 		  if(row.selected){
 			  this.$set(this.selected,i,true);
 		  }
 	  }
- },
- mounted(){
- 	if(this.configFinal.ajaxUrl){
- 		this.loadViaAjax();
- 	}
+	},
+	 mounted(){
+		if(this.configFinal.ajaxUrl){
+			this.loadViaAjax();
+		}
 
- 	if(this.configFinal.defaultSelected){
- 		this.checkAll();
- 	}
+		if(this.configFinal.defaultSelected){
+			this.checkAll();
+		}
 
- 	this.generateHiddenBreakpoints();
+		this.generateHiddenBreakpoints();
 
+		//bind listener to window resize
+		window.addEventListener("resize",this.breakpointListener);
 
-	window.addEventListener("resize",this.generateHiddenBreakpoints);
+	},
+	beforeDestroy(){
+		//release listener from window resize
+		window.removeEventListener("resize",this.breakpointListener);
+	}
 
-},
-beforeDestroy(){
-	window.removeEventListener("resize",this.generateHiddenBreakpoints);
-}
-
-  
 }
 </script>
 
-<style>
+<style scoped>
 	.icon-check{
 		padding: 3px;
 		position: absolute;
@@ -2004,12 +2072,6 @@ beforeDestroy(){
 	.table-wrapper .pretty{
 		background:#fff;
 	}
-
-</style>
-
-<style scoped>
-
-
 
 
 	.footer {
