@@ -199,17 +199,23 @@ Vue.use(VueTable);
                   //Object[] columns with headline, sticky, breakpoint, align, sort
                   columns:[ 
                      {
+                        //String headline for table header 
                         headline:"Name",
+                        //Boolean if column is sortable
                         sort:true,
                      },{
                         headline:"Age",
                         sort:true,
                      },{
                         headline:"Birthplace",
+                        //String for breakpoint when column should be hidden
+                        //["xs","sm","md","lg","xl","all"] 
                         breakpoint:"md",
+                        //String alignment of table header ["right","left","center"]
                         align:"right"
                      },{
                         headline:"Job",
+                        //will always be displayed as additional open row 
                         sticky:true,
                      }
                   ],
@@ -270,13 +276,13 @@ Vue.use(VueTable);
                      //Array with cell content/options
                      cells:[
                          {
-                            //text string
+                            //String text string
                             text:"Max Mustermann",
-                            //HTML string
+                            //String HTML string
                             html:"Max Mustermann",
                             //String space separated classes
                             classes:"special-td",
-                            //String alignment
+                            //String alignment ["left","right","center"]
                             align:"right",
 
                          },
@@ -284,16 +290,16 @@ Vue.use(VueTable);
                         {html:"Berlin"},
                         {html:"Software Developer"},
                      ],
-					  //selected on default
+					  //Boolean if selected on default
                       selected:true,
-                      //expanded on default
+                      //Bollean if expanded on default
                       expanded:true,
-                      //Keywords for search
+                      //String[] Keywords for search
                       keywords:[
                           "Web Developer"
                       ],
 
-                    //Custom filter values
+                    //Object Custom filter values
                     filters:{
                         printable:true,
                         active:true,
@@ -311,7 +317,7 @@ Vue.use(VueTable);
                     ],
                     //String space separated classes
                     classes:"text-danger",
-                    //Custom filter values
+                    //Object Custom filter values
                     filters:{
                         name:"John Doe",
                         printable:true,
