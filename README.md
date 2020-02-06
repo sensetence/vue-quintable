@@ -1,6 +1,6 @@
-# VueFooTable
+# VueQuintable
 
-VueFooTable is a table wrapper for Vue.js. It is build with bootstrap 4.0. High configurable, easy to use, flexible and responsive.
+VueQuintable is a table wrapper for Vue.js. It is build with bootstrap 4.0. High configurable, easy to use, flexible and responsive.
 
 
 
@@ -12,7 +12,7 @@ VueFooTable is a table wrapper for Vue.js. It is build with bootstrap 4.0. High 
 - Search
 - Custom Filters
 - Recursive filter groups with relations
-- Select columns
+- Select rows
 - Custom search keywords and filter values for rows
 - Vue-binded values for columns and rows
 
@@ -53,7 +53,7 @@ VueFooTable is a table wrapper for Vue.js. It is build with bootstrap 4.0. High 
 
 ## Selection of Rows
 
-VueFooTable uses v-model for selected rows
+VueQuintable uses v-model for selected rows
 
 
 
@@ -87,8 +87,8 @@ Vue.use(BootstrapVue)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-import "@quintet/vue-foo-table/dist/vue-foo-table.css"
-import VueTable from '@quintet/vue-foo-table'
+import "@quintet/vue-quintable/dist/vue-quintable.css"
+import VueTable from '@quintet/vue-quintable'
 Vue.use(VueTable);
 ```
 
@@ -101,7 +101,7 @@ Vue.use(VueTable);
 
 ...
                 
-	<VueFooTable 
+	<VueQuintable 
 	     v-model="selectedRows" 
 	     :filterGroups="filterGroups" 
 	     :filters="filters" 
@@ -147,7 +147,7 @@ Vue.use(VueTable);
         </template>
 
 
-	</VueFooTable>
+	</VueQuintable>
 
 ...
 
@@ -155,7 +155,7 @@ Vue.use(VueTable);
 
 <script>
 
-    import VueFooTable from './components/VueFooTable.vue'
+    import VueQuintable from './components/VueQuintable.vue'
 	
     ...
  
@@ -226,6 +226,8 @@ Vue.use(VueTable);
                   selectPosition:"pre",
                   //Boolean if there should be a select all checkbox
                   selectAll:true,
+				  //Boolean if "select all" selects all rows allover the pages
+                  selectAllRows:true,
                   //Boolean if all rows are selected on init
                   defaultSelected:false,
                   //Boolean if there shall be a search input 
@@ -253,7 +255,7 @@ Vue.use(VueTable);
                   //Boolean if multi-key sorting is enabled
                   multiSort:true,
                   //Boolean if user should be allowed to set multisort
-                  multiSortSelect:false,
+                  multiSortSelect:true,
                   //String Placeholder for multiple sort description
                   multiSortPlaceholder:"Multiple sort",
                   //String/Boolean search/filter/sort/pagination per ajax
@@ -268,6 +270,8 @@ Vue.use(VueTable);
                      //Array with cell content/options
                      cells:[
                          {
+                            //text string
+                            text:"Max Mustermann",
                             //HTML string
                             html:"Max Mustermann",
                             //String space separated classes
@@ -418,7 +422,7 @@ Vue.use(VueTable);
 
 ...
 
-<VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" />
+<VueQuintable :loading="loading" :config="remoteConfig" :rows="remoteRows" />
 
 ...
 

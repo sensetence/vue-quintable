@@ -4,13 +4,13 @@
   		<div class="row">
   			<div class="col-12">
   				<h1 class="mb-4">
-  					Vue Foo Table Demo
+  					VueQuintable Demo
   				</h1>
   			</div>
   		</div>
   		<div class="row">
   			<div class="col-12">
-			     <VueFooTable
+			     <VueQuintable
 			    	v-model="selectedRows"
 			    	:verbose="verbose"
 			    	:filterGroups="filterGroups"
@@ -53,10 +53,10 @@
 			    		<div class="text-center">No Results...</div>
 			    	</template>
 
-			    </VueFooTable>
+			    </VueQuintable>
 
 			    <!-- Remote Loading Data -->
-			     <VueFooTable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" />
+			     <VueQuintable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" />
 
 
   			</div>
@@ -68,13 +68,13 @@
 
 <script>
 
-import VueFooTable from './components/VueFooTable.vue'
+import VueQuintable from './components/VueQuintable.vue'
 import axios from 'axios'
 
 export default {
   name: 'app',
   components: {
-    VueFooTable,
+    VueQuintable,
   },
 
  data(){

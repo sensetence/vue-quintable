@@ -30,32 +30,32 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 
-library.add(faCheck)
-library.add(faTimes)
-library.add(faSort)
-library.add(faSquare)
-library.add(faSortAmountDownAlt)
-library.add(faSortAmountDown)
-library.add(faAngleDoubleRight)
-library.add(faAngleDoubleLeft)
-library.add(faAngleRight)
-library.add(faAngleLeft)
-library.add(faCircleNotch)
+library.add(faCheck);
+library.add(faTimes);
+library.add(faSort);
+library.add(faSquare);
+library.add(faSortAmountDownAlt);
+library.add(faSortAmountDown);
+library.add(faAngleDoubleRight);
+library.add(faAngleDoubleLeft);
+library.add(faAngleRight);
+library.add(faAngleLeft);
+library.add(faCircleNotch);
 
 
 /** COMMON END **/
 
-import VueFooTable from './components/VueFooTable.vue'
+import VueQuintable from './components/VueQuintable.vue'
 
 // Declare install function executed by Vue.use()
 let install = function(Vue) {
 	if (install.installed) return;
 	
 	install.installed = true;
-	Vue.component('v-select', vueSelect)
+	Vue.component('v-select', vueSelect);
 	Vue.component('p-check', PrettyCheck);
-	Vue.component('font-awesome-icon', FontAwesomeIcon)
-	Vue.component('vue-foo-table', VueFooTable)
+	Vue.component('font-awesome-icon', FontAwesomeIcon);
+	Vue.component('VueQuintable', VueQuintable);
 }
 
 // Create module definition for Vue.use()
@@ -76,6 +76,6 @@ if (GlobalVue) {
 
 // To allow use as module (npm/webpack/etc.) export component
 export default {
-	VueFooTable:VueFooTable,
+	VueQuintable:VueQuintable,
 	install:install
 }

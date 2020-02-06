@@ -35,23 +35,23 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 
 
-library.add(faCheck)
-library.add(faTimes)
-library.add(faSort)
-library.add(faSquare)
-library.add(faSortAmountDownAlt)
-library.add(faSortAmountDown)
-library.add(faAngleDoubleRight)
-library.add(faAngleDoubleLeft)
-library.add(faAngleRight)
-library.add(faAngleLeft)
-library.add(faCircleNotch)
+library.add(faCheck);
+library.add(faTimes);
+library.add(faSort);
+library.add(faSquare);
+library.add(faSortAmountDownAlt);
+library.add(faSortAmountDown);
+library.add(faAngleDoubleRight);
+library.add(faAngleDoubleLeft);
+library.add(faAngleRight);
+library.add(faAngleLeft);
+library.add(faCircleNotch);
 
 
 
 Vue.component('v-select', vueSelect);
 Vue.component('p-check', PrettyCheck);
-Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 /** COMMON END **/
 
