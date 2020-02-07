@@ -144,7 +144,7 @@
 									|| Object.keys(stickyRows[rIndex]).length">
 								
 								<td :colspan="configFinal.number+1" class="">
-									<table class="table mb-0">
+									<table class="table mb-0 generated-table">
 										<tbody>
 											<tr 
 												class="generated-row-cell"
@@ -303,10 +303,10 @@
 <script>
 
 import fuzzy from "fuzzy.js";
-import axios from 'axios'
+import axios from "axios"
 
 export default {
-  name: 'VueQuintable',
+  name: "VueQuintable",
   props:{
 		rows:{
 			type:Array
@@ -509,7 +509,7 @@ export default {
 
 		  let hoverClass = "bg-muted";
 		  if(this.config.hoverClass === false){
-			  hoverClass = false;
+			  hoverClass = "";
 		  }else if(this.config.hoverClass && this.config.hoverClass !== true){
 			  hoverClass = this.config.hoverClass
 		  }
@@ -1394,6 +1394,16 @@ export default {
 	  },
 
 	  /**
+	   * Check if a parent with certain class exists
+	   *
+	   */
+	  hasSomeParentTheClass(element, className) {
+
+			if (element instanceof HTMLElement && element.classList.contains(className)) return true;
+			return element instanceof Element && element.parentNode && this.hasSomeParentTheClass(element.parentNode, className);
+	  },
+
+	  /**
 	   * Event listener for clicked row. Emits an event if the row has been expanded or collapsed. Emits and event that row was clicked
 	   *
 	   * @param e Click Event
@@ -1401,7 +1411,9 @@ export default {
 	   */
 		onRowClick(e, rowIndex){
 
-			if ((e.target || {}).type === 'checkbox') {
+			if ((e.target || {}).type === "checkbox") {
+				return;
+			}else if(this.hasSomeParentTheClass(e.target,"generated-table")){
 				return;
 			}
 
@@ -1414,7 +1426,7 @@ export default {
 					this.$emit("expand:row",this.rowsFinal[this.sortedIndexes[rowIndex]],"collapse:row");
 				}
 
-				this.$recompute('generatedRows');
+				this.$recompute("generatedRows");
 
 			}
 
@@ -1865,9 +1877,9 @@ export default {
 	   */
 	  recomputeEssentials(){
 		  this.$nextTick(()=>{
-			  this.$recompute('visibleRows');
-			  this.$recompute('visibleRowIndexes');
-			  this.$recompute('generatedRows');
+			  this.$recompute("visibleRows");
+			  this.$recompute("visibleRowIndexes");
+			  this.$recompute("generatedRows");
 		  });
 		},
 
