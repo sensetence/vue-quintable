@@ -874,20 +874,20 @@ export default {
 	   */
 		paginationOptionsFilled(){
 
-			let all = this.rowsFinal.length;
-
-			if(this.configFinal.ajaxUrl){
-				all = this.ajaxAll;
-			}
+			// let all = this.rowsFinal.length;
+			//
+			// if(this.configFinal.ajaxUrl){
+			// 	all = this.ajaxAll;
+			// }
 
 			let options = ["All"];
-			let i = 0;
-			while(i<this.paginationOptions.length&&i<all){
-				options.push(this.paginationOptions[i]);
-				i++;
-			}
+			// let i = 0;
+			// while(i<this.paginationOptions.length&&i<all){
+			// 	options.push(this.paginationOptions[i]);
+			// 	i++;
+			// }
 
-			return options;
+			return options.concat(this.paginationOptions);
 		},
 
 	  /**
@@ -1139,9 +1139,10 @@ export default {
 	   *
 	   */
 		firstVisibleRow(){
-			if(this.currentRowsPerPage === "All"){
+			if(this.currentRowsPerPage === "All" || this.pages === 1){
 				return 1;
 			}
+
 			return this.currentPage * this.currentRowsPerPage - this.currentRowsPerPage + 1;
 		},
 
@@ -1150,8 +1151,8 @@ export default {
 	   *
 	   */
 		lastVisibleRow(){
-			if(this.currentRowsPerPage === "All"){
-				return 1;
+			if(this.currentRowsPerPage === "All" || this.pages === 1){
+				return this.rowsFinal.length;
 			}
 			return Math.min(this.firstVisibleRow + this.currentRowsPerPage-1,this.numberOfVisibleRows);
 		},
@@ -1974,7 +1975,7 @@ export default {
 
 			axios.get(this.configFinal.ajaxUrl,{params}).then((response)=>{
 				this.ajaxRows = response.data.rows;
-				this.ajaxPages = Math.ceil(response.data.all / this.currentRowsPerPage);
+				this.ajaxPages = Math.max(1,Math.ceil(response.data.all / this.currentRowsPerPage));
 				this.ajaxAll = response.data.all;
 				this.fetching = false;
 				this.initLists();
