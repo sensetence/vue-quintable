@@ -1177,7 +1177,7 @@ export default {
 			handler(){
 
 				if(this.configFinal.ajaxUrl){
-					this.loadViaAjax(true);
+					this.loadViaAjax(true,"FILTERS");
 				}
 
 			},
@@ -1187,7 +1187,7 @@ export default {
 	  filteredRows:{
 		  handler(val,old){
 
-		  	  if(JSON.stringify(val) === JSON.stringify(old)){
+		  	  if(JSON.stringify(val) === JSON.stringify(old) || this.configFinal.ajaxUrl){
 		  	  	return;
 			  }
 
@@ -1229,7 +1229,7 @@ export default {
 		query(val){
 			if(val.length > this.configFinal.searchLength){
 				if(this.configFinal.ajaxUrl){
-					this.loadViaAjax(true);
+					this.loadViaAjax(true,"QUERY");
 					return;
 				}
 
@@ -1247,7 +1247,7 @@ export default {
 			this.$emit("update:rows-per-page",val,"update:rows-per-page");
 
 			if(this.configFinal.ajaxUrl){
-				this.loadViaAjax(true);
+				this.loadViaAjax(true,"PAGE_ROWS");
 				return;
 			}
 
@@ -1292,7 +1292,7 @@ export default {
 		  	this.$forceUpdate();
 
 			if(this.configFinal.ajaxUrl){
-				this.loadViaAjax();
+				this.loadViaAjax(false,"CONFIG");
 			}
 
 			if(this.configFinal.defaultSelected){
@@ -1331,7 +1331,7 @@ export default {
 			this.$emit("update:page",val,"update:page");
 
 			if(this.configFinal.ajaxUrl){
-				this.loadViaAjax();
+				this.loadViaAjax(false,"PAGE");
 				return;
 			}
 
@@ -1808,7 +1808,7 @@ export default {
 	  sort(){
 
 			if(this.configFinal.ajaxUrl){
-				this.loadViaAjax(true);
+				this.loadViaAjax(true,"SORT");
 				return;
 			}
 
@@ -1951,7 +1951,12 @@ export default {
 	   *
 	   * @param clear
 	   */
-		loadViaAjax(clear = false){
+		loadViaAjax(clear = false, accessor = null){
+
+			if(this.DEBUG){
+				console.log("CALLED FROM:",accessor);
+			}
+
 			this.fetching = true;
 			this.clearLists();
 			this.ajaxRows = [];
@@ -2069,7 +2074,7 @@ export default {
 	},
 	 mounted(){
 		if(this.configFinal.ajaxUrl){
-			this.loadViaAjax();
+			this.loadViaAjax(false,"MOUNTED");
 		}
 
 		if(this.configFinal.defaultSelected){
