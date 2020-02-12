@@ -206,6 +206,17 @@ Vue.use(VueTable);
                      },{
                         headline:"Age",
                         sort:true,
+                        /*
+                        Function for cell formatting. May return Object with value:String
+                        and type:String{"text","html"} properties or just a formatted 
+                        value (will be interpreted as type "text")
+                        */
+                        cellFormatter(cell){
+							  return {
+								  value: cell.html + "<p>Additional Text</p>",
+								  type:"html"
+							  };
+						 },
                      },{
                         headline:"Birthplace",
                         //String for breakpoint when column should be hidden

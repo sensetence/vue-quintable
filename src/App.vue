@@ -152,6 +152,12 @@ export default {
                         headline:"Age",
                         breakpoint:"sm",
                         sort:true,
+						  cellFormatter(cell){
+							  return {
+								  value: cell.html + "<p>Additional Text</p>",
+								  type:"html"
+							  };
+						  },
                      },{
                         headline:"Birthplace",
                         breakpoint:"md",

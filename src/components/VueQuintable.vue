@@ -110,8 +110,15 @@
 								  <span v-html="cell.tooltip"></span>
 							  </b-tooltip>
 
-							  <div class="cell-inner" v-if="cell.html" v-html="cell.html"></div>
-							  <div class="cell-inner" v-if="cell.text">{{cell.text}}</div>
+							  <template v-if="configFinal.columns[cIndex].cellFormatter">
+								  <div class="cell-inner" v-if="cellFormatters(cIndex,cell).type === 'html'" v-html="cellFormatters(cIndex,cell).value"></div>
+								  <div class="cell-inner" v-else>{{cellFormatters(cIndex,cell).value}}</div>
+							  </template>
+							  <template v-else>
+								  <div class="cell-inner" v-if="cell.html" v-html="cell.html"></div>
+								  <div class="cell-inner" v-if="cell.text">{{cell.text}}</div>
+							  </template>
+
 						  </template>
 
 					  </td>
@@ -172,14 +179,20 @@
 												</td>
 
 
-												<td class="text-right" @click="onCellClick(generatedRows[rIndex][cIndex])" :key="'vue-quintable-generated-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-cell-'+rIndex+'-'+cIndex">
+												<td class="text-right" @click="onCellClick(cell)" :key="'vue-quintable-generated-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-cell-'+rIndex+'-'+cIndex">
 
 													<b-tooltip :target="'vue-quintable-cell-'+rIndex+'-'+cIndex" triggers="hover" v-if="cell.tooltip" placement ="left">
 														<span v-html="cell.tooltip"></span>
 													</b-tooltip>
 
-													<div class="cell-inner" v-if="generatedRows[rIndex][cIndex].html" v-html="generatedRows[rIndex][cIndex].html"></div>
-													<div class="cell-inner" v-if="generatedRows[rIndex][cIndex].text">{{generatedRows[rIndex][cIndex].text}}</div>
+													<template v-if="configFinal.columns[cIndex].cellFormatter">
+														<div class="cell-inner" v-if="cellFormatters(cIndex,cell).type === 'html'" v-html="cellFormatters(cIndex,cell).value"></div>
+														<div class="cell-inner" v-else>{{cellFormatters(cIndex,cell).value}}</div>
+													</template>
+													<template v-else>
+														<div class="cell-inner" v-if="cell.html" v-html="cell.html"></div>
+														<div class="cell-inner" v-if="cell.text">{{cell.text}}</div>
+													</template>
 
 												</td>
 
@@ -203,14 +216,21 @@
 														</span>
 													</span>
 												</td>
-												<td class="text-right" @click="onCellClick(stickyRows[rIndex][cIndex])" :key="'vue-quintable-sticky-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-cell-'+rIndex+'-'+cIndex">
+												<td class="text-right" @click="onCellClick(cell)" :key="'vue-quintable-sticky-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-cell-'+rIndex+'-'+cIndex">
 
 													<b-tooltip :target="'vue-quintable-cell-'+rIndex+'-'+cIndex" triggers="hover" v-if="cell.tooltip" placement="left">
 														<span v-html="cell.tooltip"></span>
 													</b-tooltip>
 
-													<div class="cell-inner" v-if="stickyRows[rIndex][cIndex].html" v-html="stickyRows[rIndex][cIndex].html"></div>
-													<div class="cell-inner" v-if="stickyRows[rIndex][cIndex].text">{{stickyRows[rIndex][cIndex].text}}</div>
+													<template v-if="configFinal.columns[cIndex].cellFormatter">
+														<div class="cell-inner" v-if="cellFormatters(cIndex,cell).type === 'html'" v-html="cellFormatters(cIndex,cell).value"></div>
+														<div class="cell-inner" v-else>{{cellFormatters(cIndex,cell).value}}</div>
+													</template>
+													<template v-else>
+														<div class="cell-inner" v-if="cell.html" v-html="cell.html"></div>
+														<div class="cell-inner" v-if="cell.text">{{cell.text}}</div>
+													</template>
+
 
 												</td>
 											</tr>
@@ -1373,6 +1393,23 @@ export default {
 
   },
   methods:{
+
+	  cellFormatters(cIndex,cell){
+		  if(typeof this.configFinal.columns[cIndex].cellFormatter === "function"){
+			   let formatted = this.configFinal.columns[cIndex].cellFormatter(cell);
+
+			   if(typeof formatted !== "object"){
+			   		formatted = {
+			   			value:formatted,
+					}
+			   }
+
+			   return formatted;
+		  }
+
+		  return cell.html?cell.html:cell.text?cell.text:"";
+
+	  },
 
 	  /**
 	   * Event listener for select row checkboxes. Checks if all rows are selected now and sets the allSelectedProperty in case
