@@ -452,7 +452,7 @@ export default {
 
 		  let rows = [];
 		  if(this.configFinal.ajaxUrl){
-			  for (let i = 0;i<this.ajaxAll; i++){
+			  for (let i = 0;i<this.rowsFinal.length; i++){
 				  rows.push(i);
 			  }
 		  }else{
@@ -1331,7 +1331,7 @@ export default {
 			this.$emit("update:page",val,"update:page");
 
 			if(this.configFinal.ajaxUrl){
-				this.loadViaAjax(true);
+				this.loadViaAjax();
 				return;
 			}
 
@@ -1974,6 +1974,16 @@ export default {
 			};
 
 			axios.get(this.configFinal.ajaxUrl,{params}).then((response)=>{
+
+				if(!response.data.rows){
+					throw "Response data has to contain rows property. Please see Readme.md for details";
+				}
+
+				if(!response.data.all){
+					throw "Response data has to contain all property. Please see Readme.md for details";
+				}
+
+
 				this.ajaxRows = response.data.rows;
 				this.ajaxPages = Math.max(1,Math.ceil(response.data.all / this.currentRowsPerPage));
 				this.ajaxAll = response.data.all;

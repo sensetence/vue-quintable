@@ -460,3 +460,39 @@ Vue.use(VueTable);
 </script>
 ```
 
+
+
+The request for the ajax handling on server has got the following structure:
+
+```javascript
+{
+    //String search query
+    search:"some query",
+    //Object Filters, see above
+    filters:{},
+    //Number etries per page
+    perPage:12,
+    //Number current page, starting at 1
+    page:2,
+    //Object sorting columns and 
+    sort:{
+        //Array of sorting column indexes
+        indexes:this.currentSortIndexes,
+        //Object of column definitions keyed by column index
+        columns:this.sortingColumns,
+    }
+
+};
+```
+
+The response has to be the following structure:
+
+```javascript
+{
+	//Array of all rows, see above
+	rows:[]
+    //Number of all matching rows, without paging
+    all:240
+}
+```
+
