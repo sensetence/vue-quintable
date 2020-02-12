@@ -351,6 +351,7 @@ export default {
       	hiddenBreakpoints:[],
       	initBreakpoints:true,
 		breakpointTimeout:null,
+		cancelSource:null,
   	}
   },
 
@@ -1957,6 +1958,11 @@ export default {
 				console.log("CALLED FROM:",accessor);
 			}
 
+
+		  if (this.cancelSource) {
+			  this.cancelSource.cancel('Operation canceled by the user.');
+		  }
+
 			this.fetching = true;
 			this.clearLists();
 			this.ajaxRows = [];
@@ -1978,23 +1984,37 @@ export default {
 
 			};
 
-			axios.get(this.configFinal.ajaxUrl,{params}).then((response)=>{
 
-				if(!response.data.rows){
+
+		  this.cancelSource = axios.CancelToken.source();
+
+
+		  axios.get(this.configFinal.ajaxUrl,{
+		  		params:params,
+			  	cancelToken: this.cancelSource.token,
+		  }).then((response)=>{
+
+				if(!response.data.rows || typeof response.data.rows.length === "undefined"){
 					throw "Response data has to contain rows property. Please see Readme.md for details";
 				}
 
-				if(!response.data.all){
+				if(typeof response.data.all === "undefined"){
 					throw "Response data has to contain all property. Please see Readme.md for details";
 				}
 
-
-				this.ajaxRows = response.data.rows;
-				this.ajaxPages = Math.max(1,Math.ceil(response.data.all / this.currentRowsPerPage));
 				this.ajaxAll = response.data.all;
+				this.ajaxPages = Math.max(1,Math.ceil(response.data.all / this.currentRowsPerPage));
+
+				if(response.data.all){
+					this.ajaxRows = response.data.rows;
+					this.initLists();
+				}
+
+		  }).catch(error=>{
+				console.log(error);
+		  }).finally(()=>{
 				this.fetching = false;
-				this.initLists();
-			});
+		  });
 
 		},
 
