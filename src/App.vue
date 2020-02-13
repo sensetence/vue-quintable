@@ -56,7 +56,7 @@
 			    </VueQuintable>
 
 			    <!-- Remote Loading Data -->
-			     <VueQuintable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" />
+<!--			     <VueQuintable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" />-->
 
 
   			</div>
@@ -107,7 +107,7 @@ export default {
                     selectAll: true,
                     defaultSelected: true,
                 },
-        	verbose:false,
+        	verbose:true,
             //filters
             active:false,
             name:"",
@@ -192,7 +192,7 @@ export default {
                   //Boolean show plus for row toggle or not
                   hideRowToggle:true,
                   //Integer minimum length of query that triggers search
-                  searchLength:1,
+                  searchLength:3,
                   //String Placeholder for search input
                   searchPlaceholder:"Search rows...",
                   //String Placeholder for no searching/filtered resulting rows

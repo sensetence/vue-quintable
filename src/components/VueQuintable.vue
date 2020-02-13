@@ -372,6 +372,7 @@ export default {
       	initBreakpoints:true,
 		breakpointTimeout:null,
 		cancelSource:null,
+		lastQuery:"",
   	}
   },
 
@@ -1062,7 +1063,7 @@ export default {
 
 		   if(
 				(!this.configFinal.search && !this.filterActive) ||
-				(!this.filterActive && this.configFinal.search && this.query.length <= this.configFinal.searchLength)
+				(!this.filterActive && this.configFinal.search && this.query.length < this.configFinal.searchLength)
 			){
 			  //Skip filtering, no search or filter is active
 			  return visible;
@@ -1075,7 +1076,7 @@ export default {
 				let match = false;
 				let searched = false;
 
-				if(this.configFinal.search && this.query.length > this.configFinal.searchLength){
+				if(this.configFinal.search && this.query.length >= this.configFinal.searchLength){
 
 					//check inner html/text per row/col
 					for (let j = 0; j < row.length; j++){
@@ -1247,15 +1248,16 @@ export default {
 	   * Resets page and selects if a search query is entered and emits and event
 	   *
 	   */
-		query(val){
-			if(val.length > this.configFinal.searchLength){
-				if(this.configFinal.ajaxUrl){
-					this.loadViaAjax(true,"QUERY");
-					return;
-				}
+		query(val,old){
 
+			 this.lastQuery = old;
+
+			if(this.configFinal.ajaxUrl){
+			  this.loadViaAjax(true,"QUERY");
+			}
+
+			if(val.length >= this.configFinal.searchLength){
 			    this.$emit("update:search",val,"update:search");
-
 			}
 		},
 
@@ -1995,22 +1997,44 @@ export default {
 				console.log("CALLED FROM:",accessor);
 			}
 
+			let query = this.query;
+
+			//Do nothing if there is a query and it is shorter than the minimum search length and either the last entered query is shorter or the last entered query is also shorter than the minimum search length
+			if(query && query.length < this.configFinal.searchLength && ( this.lastQuery.length < query.length || this.lastQuery.length < this.configFinal.searchLength)
+			){
+				return;
+			}
+			//Reset last query if the current query is empty and last query hasn't been reset
+			else if (!query && this.lastQuery) {
+				const tmp = this.lastQuery;
+				this.lastQuery = "";
+				//Return if last query was shorter than minimum search length (means it was the last )
+				if(tmp.length < this.configFinal.searchLength){
+					return;
+				}
+			}
+			//Set query to empty string (no filtering) if the query is shorter than minimum search length
+			else if (query && query.length < this.configFinal.searchLength) {
+				query = "";
+			}
 
 		  if (this.cancelSource) {
 			  this.cancelSource.cancel('Operation canceled by the user.');
 		  }
 
-			this.fetching = true;
-			this.clearLists();
-			this.ajaxRows = [];
 
-			if(clear){
-				this.currentPage = 1;
-				this.resetSelect();
-			}
+		  this.clearLists();
+		  this.ajaxRows = [];
 
-			let params = {
-				search:this.query,
+		  if(clear){
+			  this.currentPage = 1;
+			  this.resetSelect();
+		  }
+		  this.fetching = true;
+
+
+		  let params = {
+				search:query,
 				filters:this.filters,
 				perPage:this.currentRowsPerPage,
 				page:this.currentPage,
@@ -2020,8 +2044,6 @@ export default {
 				}:null
 
 			};
-
-
 
 		  this.cancelSource = axios.CancelToken.source();
 
@@ -2047,10 +2069,16 @@ export default {
 					this.initLists();
 				}
 
+			  	this.fetching = false;
+
 		  }).catch(error=>{
-				console.log(error);
-		  }).finally(()=>{
-				this.fetching = false;
+			  if (axios.isCancel(error)) {
+				  console.log('Request canceled', error.message);
+			  } else {
+				  this.fetching = false;
+				  console.log(error);
+			  }
+
 		  });
 
 		},
