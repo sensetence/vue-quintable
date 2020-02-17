@@ -110,13 +110,22 @@
 								  <span v-html="cell.tooltip"></span>
 							  </b-tooltip>
 
+
 							  <template v-if="configFinal.columns[cIndex].cellFormatter">
 								  <div class="cell-inner" v-if="cellFormatters(cIndex,cell).type === 'html'" v-html="cellFormatters(cIndex,cell).value"></div>
 								  <div class="cell-inner" v-else>{{cellFormatters(cIndex,cell).value}}</div>
+								  <div class="cell-inner" v-if="cell.quintable">
+									<VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
+
+								  </div>
 							  </template>
 							  <template v-else>
 								  <div class="cell-inner" v-if="cell.html" v-html="cell.html"></div>
 								  <div class="cell-inner" v-if="cell.text">{{cell.text}}</div>
+								  <div class="cell-inner" v-if="cell.quintable">
+									<VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
+
+								  </div>
 							  </template>
 
 						  </template>
@@ -188,10 +197,17 @@
 													<template v-if="configFinal.columns[cIndex].cellFormatter">
 														<div class="cell-inner" v-if="cellFormatters(cIndex,cell).type === 'html'" v-html="cellFormatters(cIndex,cell).value"></div>
 														<div class="cell-inner" v-else>{{cellFormatters(cIndex,cell).value}}</div>
+														<div class="cell-inner" v-if="cell.quintable">
+																														<VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
+
+														</div>
 													</template>
 													<template v-else>
 														<div class="cell-inner" v-if="cell.html" v-html="cell.html"></div>
 														<div class="cell-inner" v-if="cell.text">{{cell.text}}</div>
+														<div class="cell-inner" v-if="cell.quintable">
+															<VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
+														</div>
 													</template>
 
 												</td>
@@ -225,10 +241,18 @@
 													<template v-if="configFinal.columns[cIndex].cellFormatter">
 														<div class="cell-inner" v-if="cellFormatters(cIndex,cell).type === 'html'" v-html="cellFormatters(cIndex,cell).value"></div>
 														<div class="cell-inner" v-else>{{cellFormatters(cIndex,cell).value}}</div>
+														<div class="cell-inner" v-if="cell.quintable">
+																														<VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
+
+														</div>
 													</template>
 													<template v-else>
 														<div class="cell-inner" v-if="cell.html" v-html="cell.html"></div>
 														<div class="cell-inner" v-if="cell.text">{{cell.text}}</div>
+														<div class="cell-inner" v-if="cell.quintable">
+																														<VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
+
+														</div>
 													</template>
 
 
@@ -347,6 +371,9 @@ export default {
 			type:Array
 		},
 		verbose:{
+			type:Boolean
+		},
+	  	nested:{
 			type:Boolean
 		}
 	},
@@ -1454,11 +1481,12 @@ export default {
 
 			if ((e.target || {}).type === "checkbox") {
 				return;
-			}else if(this.hasSomeParentTheClass(e.target,"generated-table")){
+			}else if(this.hasSomeParentTheClass(e.target,"generated-table") && !this.nested){
 				return;
 			}
 
-			if(this.hiddenColumns){
+
+			if(this.hiddenColumns ){
 				if(!this.openRows[rowIndex]){
 					this.$set(this.openRows,rowIndex,true);
 					this.$emit("expand:row",this.rowsFinal[this.sortedIndexes[rowIndex]],"expand:row");

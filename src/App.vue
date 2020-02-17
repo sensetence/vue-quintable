@@ -225,10 +225,11 @@ export default {
                      //Array with cell content/options
                      cells:[
                          {
+
                             //text string
-                            text:"Max Mustermann",
+                            text:"max mustermann",
 							 //html string
-							 html:"Max Mustermann html",
+							 html:"",
                             //String space separated classes
                             classes:"special-td",
                             //String alignment
@@ -237,7 +238,40 @@ export default {
                          },
                      	{html:20},
                         {text:"Berlin"},
-                        {text:"Software Developer"},
+                        {quintable: {
+								config: {
+									columns: [
+										{
+											headline: "Name",
+											sort: true,
+										}, {
+											headline: "Age",
+											breakpoint: "sm",
+											sort: true,
+											cellFormatter(cell) {
+												return {
+													value: cell.html + "<p>Additional Text</p>",
+													type: "html"
+												};
+											},
+										}, {
+											headline: "Birthplace",
+											breakpoint: "md",
+											align: "right",
+											sticky: true
+										}, {
+											headline: "Job",
+											breakpoint: "all",
+										}
+									],
+								},
+								rows: [
+									[{text: "1234"}, {text: "4567"}, {text: "8910"}, {text: "1112"}],
+									[{text: "1234"}, {text: "4567"}, {text: "8910"}, {text: "1112"}],
+									[{text: "1234"}, {text: "4567"}, {text: "8910"}, {text: "1112"}]
+
+								],
+							},},
                      ],
 
                       //selected on default
