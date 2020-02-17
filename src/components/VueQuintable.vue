@@ -311,12 +311,23 @@
 							        <font-awesome-icon icon="angle-left" />
 							      </span>
 							    </li>
+								  <li class="page-item" v-if="pageRange < pages && visiblePages[0] > 1" @click="updatePageOffset(-1)">
+									  <span class="page-link">
+									  ...
+									  </span>
+								  </li>
 
 							    <li :key="'pagination-item-'+page" class="page-item"  :class="{active:page === currentPage}" v-for="page in visiblePages"  @click="gotoPage(page)">
 							      <span class="page-link">
 							        {{page}}
 							      </span>
 							    </li>
+
+								  <li class="page-item"  v-if="pageRange < pages && visiblePages[visiblePages.length - 1] < pages" @click="updatePageOffset(1)">
+									  <span class="page-link">
+									  ...
+									  </span>
+								  </li>
 
 							    <li class="page-item" :class="{disabled:pages === currentPage}" @click="gotoPage('next')">
 							      <span class="page-link">
@@ -400,6 +411,7 @@ export default {
 		breakpointTimeout:null,
 		cancelSource:null,
 		lastQuery:"",
+		pageOffset:0,
   	}
   },
 
@@ -1052,7 +1064,7 @@ export default {
 
 		  }
 
-		  start = Math.max(start,1);
+		  start = Math.max(start + this.pageOffset,1);
 
 		  for(let i = 0; i < this.pageRange; i++){
 			if(i+start > this.pages){
@@ -1378,6 +1390,8 @@ export default {
 	   */
 		currentPage(val){
 
+		  	this.pageOffset = 0;
+
 			this.$emit("update:page",val,"update:page");
 
 			if(this.configFinal.ajaxUrl){
@@ -1422,6 +1436,21 @@ export default {
 
   },
   methods:{
+
+	  updatePageOffset(factor){
+
+	  		let result = this.pageOffset + this.pageRange * factor;
+
+	  		if(factor > 0){
+	  			let offset = Math.min(result,this.pages - this.pageRange);
+	  			this.pageOffset = Math.min(offset,this.pages - this.currentPage);
+			}else if (factor < 0){
+				this.pageOffset = Math.max(result,-(this.pages - this.pageRange));
+			}else{
+	  			this.pageOffset = 0;
+			}
+	  },
+
 
 	  cellFormatters(cIndex,cell){
 		  if(typeof this.configFinal.columns[cIndex].cellFormatter === "function"){

@@ -107,7 +107,7 @@ export default {
                     selectAll: true,
                     defaultSelected: true,
                 },
-        	verbose:true,
+        	verbose:false,
             //filters
             active:false,
             name:"",
@@ -188,7 +188,7 @@ export default {
                   //Boolean if there shall be a search input 
                   search:true,
                   //Integer displayed page range of pagination
-                  pageRange:5,
+                  pageRange:2,
                   //Boolean show plus for row toggle or not
                   hideRowToggle:true,
                   //Integer minimum length of query that triggers search
