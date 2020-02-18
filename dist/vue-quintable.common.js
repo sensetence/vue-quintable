@@ -1,14 +1,5 @@
-(function webpackUniversalModuleDefinition(root, factory) {
-	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("vue"));
-	else if(typeof define === 'function' && define.amd)
-		define([], factory);
-	else if(typeof exports === 'object')
-		exports["vue-quintable"] = factory(require("vue"));
-	else
-		root["vue-quintable"] = factory(root["Vue"]);
-})((typeof self !== 'undefined' ? self : this), function(__WEBPACK_EXTERNAL_MODULE__8bbf__) {
-return /******/ (function(modules) { // webpackBootstrap
+module.exports =
+/******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -3700,7 +3691,7 @@ hiddenKeys[HIDDEN] = true;
 /***/ "8bbf":
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE__8bbf__;
+module.exports = require("vue");
 
 /***/ }),
 
@@ -19461,5 +19452,4 @@ $({ target: 'Array', proto: true, forced: FORCED }, {
 /***/ })
 
 /******/ });
-});
-//# sourceMappingURL=vue-quintable.umd.js.map
+//# sourceMappingURL=vue-quintable.common.js.map

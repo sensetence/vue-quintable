@@ -27,7 +27,9 @@
 			    	@expand:row="eventListener"
 			    	@hover:row="eventListener"
 			    	@collapse:row="eventListener"
-			    	@change:breakpoints="eventListener">
+			    	@change:breakpoints="eventListener"
+				 	@componentEvent="onComponentEvent"
+				 >
 			    	<template v-slot:header>
 					  	<div class="clearfix py-2">
 			                <label>
@@ -68,13 +70,23 @@
 
 <script>
 
-import VueQuintable from './components/VueQuintable.vue'
-import axios from 'axios'
+import VueQuintable from "./components/VueQuintable.vue"
+import Tester from "./components/Test.vue"
+import axios from "axios"
+import Vue from "vue"
+
+Vue.component(
+		"tester",
+		// Look for the component options on `.default`, which will
+		// exist if the component was exported with `export default`,
+		// otherwise fall back to module's root.
+		Tester.default || Tester
+);
 
 export default {
   name: 'app',
   components: {
-    VueQuintable,
+    VueQuintable
   },
 
  data(){
@@ -229,7 +241,13 @@ export default {
                             //text string
                             text:"max mustermann",
 							 //html string
-							 html:"",
+							 component:{
+                            	name:"tester",
+								 props:{
+                            		test:1,
+									 tester:2,
+								 }
+							 },
                             //String space separated classes
                             classes:"special-td",
                             //String alignment
@@ -266,7 +284,7 @@ export default {
 									],
 								},
 								rows: [
-									[{text: "1234"}, {text: "4567"}, {text: "8910"}, {text: "1112"}],
+									[{text: "1234",tooltip:"Test: 1234"}, {text: "4567"}, {text: "8910"}, {text: "1112"}],
 									[{text: "1234"}, {text: "4567"}, {text: "8910"}, {text: "1112"}],
 									[{text: "1234"}, {text: "4567"}, {text: "8910"}, {text: "1112"}]
 
@@ -405,7 +423,10 @@ export default {
   		if(this.verbose){
 	  		console.log(event,data);
 	  	}
-  	}
+  	},
+	  onComponentEvent(data){
+		  console.log(data);
+	  }
   },
   mounted(){
   	this.loading = true;

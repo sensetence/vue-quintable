@@ -112,19 +112,23 @@
 
 
 							  <template v-if="configFinal.columns[cIndex].cellFormatter">
-								  <div class="cell-inner" v-if="cellFormatters(cIndex,cell).type === 'html'" v-html="cellFormatters(cIndex,cell).value"></div>
-								  <div class="cell-inner" v-else>{{cellFormatters(cIndex,cell).value}}</div>
 								  <div class="cell-inner" v-if="cell.quintable">
-									<VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
-
+									  <VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
 								  </div>
+								  <div class="cell-inner" v-else-if="cell.component">
+									  <component :is="cell.component.name" v-bind="cell.component.props" @action="handleComponentEvent"></component>
+								  </div>
+								  <div class="cell-inner" v-else-if="cellFormatters(cIndex,cell).type === 'html'" v-html="cellFormatters(cIndex,cell).value"></div>
+								  <div class="cell-inner" v-else>{{cellFormatters(cIndex,cell).value}}</div>
 							  </template>
 							  <template v-else>
 								  <div class="cell-inner" v-if="cell.html" v-html="cell.html"></div>
 								  <div class="cell-inner" v-if="cell.text">{{cell.text}}</div>
 								  <div class="cell-inner" v-if="cell.quintable">
 									<VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
-
+								  </div>
+								  <div class="cell-inner" v-if="cell.component">
+									  <component :is="cell.component.name" v-bind="cell.component.props" @action="handleComponentEvent"></component>
 								  </div>
 							  </template>
 
@@ -196,18 +200,23 @@
 													</b-tooltip>
 
 													<template v-if="configFinal.columns[cIndex].cellFormatter">
-														<div class="cell-inner" v-if="cellFormatters(cIndex,cell).type === 'html'" v-html="cellFormatters(cIndex,cell).value"></div>
-														<div class="cell-inner" v-else>{{cellFormatters(cIndex,cell).value}}</div>
 														<div class="cell-inner" v-if="cell.quintable">
-																														<VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
-
+															<VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
 														</div>
+														<div class="cell-inner" v-else-if="cell.component">
+															<component :is="cell.component.name" v-bind="cell.component.props" @action="handleComponentEvent"></component>
+														</div>
+														<div class="cell-inner" v-else-if="cellFormatters(cIndex,cell).type === 'html'" v-html="cellFormatters(cIndex,cell).value"></div>
+														<div class="cell-inner" v-else>{{cellFormatters(cIndex,cell).value}}</div>
 													</template>
 													<template v-else>
 														<div class="cell-inner" v-if="cell.html" v-html="cell.html"></div>
 														<div class="cell-inner" v-if="cell.text">{{cell.text}}</div>
 														<div class="cell-inner" v-if="cell.quintable">
 															<VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
+														</div>
+														<div class="cell-inner" v-if="cell.component">
+															<component :is="cell.component.name" v-bind="cell.component.props" @action="handleComponentEvent"></component>
 														</div>
 													</template>
 
@@ -240,22 +249,25 @@
 													</b-tooltip>
 
 													<template v-if="configFinal.columns[cIndex].cellFormatter">
-														<div class="cell-inner" v-if="cellFormatters(cIndex,cell).type === 'html'" v-html="cellFormatters(cIndex,cell).value"></div>
-														<div class="cell-inner" v-else>{{cellFormatters(cIndex,cell).value}}</div>
 														<div class="cell-inner" v-if="cell.quintable">
-																														<VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
-
+															<VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
 														</div>
+														<div class="cell-inner" v-else-if="cell.component">
+															<component :is="cell.component.name" v-bind="cell.component.props" @action="handleComponentEvent"></component>
+														</div>
+														<div class="cell-inner" v-else-if="cellFormatters(cIndex,cell).type === 'html'" v-html="cellFormatters(cIndex,cell).value"></div>
+														<div class="cell-inner" v-else>{{cellFormatters(cIndex,cell).value}}</div>
 													</template>
 													<template v-else>
 														<div class="cell-inner" v-if="cell.html" v-html="cell.html"></div>
 														<div class="cell-inner" v-if="cell.text">{{cell.text}}</div>
 														<div class="cell-inner" v-if="cell.quintable">
-																														<VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
-
+															<VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
+														</div>
+														<div class="cell-inner" v-if="cell.component">
+															<component :is="cell.component.name" v-bind="cell.component.props" @action="handleComponentEvent"></component>
 														</div>
 													</template>
-
 
 												</td>
 											</tr>
@@ -1440,6 +1452,10 @@ export default {
 
   },
   methods:{
+
+	  handleComponentEvent(data){
+		  this.$emit("componentEvent",data);
+	  },
 
 	  updatePageOffset(factor){
 
