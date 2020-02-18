@@ -78,7 +78,7 @@
 			  <!--  -->
 			  <template  v-for="(rIndex) in visibleRowIndexes" >
 
-				  <tr  :style="hiddenColumns>0?'cursor:pointer;':''" :ref="'row-highlighted-on-hover-'+rIndex" :key="'vue-quintable-row-'+rIndex" @click="onRowClick($event,rIndex)" :class="hoveredRow === rIndex ? configFinal.hoverClass + ' ' +rowsFinal[rIndex].classes : rowsFinal[rIndex].classes"  :id="'vue-quintable-row-'+rIndex" @mouseenter="onMouseenterRow(rIndex)" >
+				  <tr  :style="hiddenColumns>0?'cursor:pointer;':''" :ref="'row-highlighted-on-hover-'+rIndex" :key="'vue-quintable-'+uuid+'-row-'+rIndex" @click="onRowClick($event,rIndex)" :class="hoveredRow === rIndex ? configFinal.hoverClass + (rowsFinal[rIndex].classes ? ' ' +rowsFinal[rIndex].classes : ''): (rowsFinal[rIndex].classes ? rowsFinal[rIndex].classes : '')"  :id="'vue-quintable-'+uuid+'-row-'+rIndex" @mouseenter="onMouseenterRow(rIndex)" >
 					  <td class="toggle" v-if="hasGeneratedRows && !configFinal.hideRowToggle">
 						  <span>
 							  <span v-if="!openRows[rIndex]">+</span>
@@ -99,14 +99,14 @@
 
 
 
-					  <td :class="cellClassesParsed[rIndex][cIndex]" v-show="cell && hiddenBreakpoints.findIndex(x => x === configFinal.columns[cIndex].breakpoint) === -1 && configFinal.columns[cIndex].breakpoint !== 'all' && !configFinal.stickyCols[cIndex]" @click="onCellClick(cell)" :key="'vue-quintable-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-cell-'+rIndex+'-'+cIndex" v-for="(cell, cIndex) in rowsFinal[rIndex].cells?rowsFinal[rIndex].cells:rowsFinal[rIndex]">
+					  <td :class="cellClassesParsed[rIndex][cIndex]" v-show="cell && hiddenBreakpoints.findIndex(x => x === configFinal.columns[cIndex].breakpoint) === -1 && configFinal.columns[cIndex].breakpoint !== 'all' && !configFinal.stickyCols[cIndex]" @click="onCellClick(cell)" :key="'vue-quintable-'+uuid+'-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-'+uuid+'-cell-'+rIndex+'-'+cIndex" v-for="(cell, cIndex) in rowsFinal[rIndex].cells?rowsFinal[rIndex].cells:rowsFinal[rIndex]">
 
 						  <template v-if="cell && hiddenBreakpoints.findIndex(x => x === configFinal.columns[cIndex].breakpoint) === -1 && configFinal.columns[cIndex].breakpoint !== 'all' && !configFinal.stickyCols[cIndex]">
-							  <b-tooltip :target="'vue-quintable-row-'+rIndex" triggers="hover" v-if="rowsFinal[rIndex].tooltip && cIndex === 0" placement ="top">
+							  <b-tooltip :target="'vue-quintable-'+uuid+'-row-'+rIndex" triggers="hover" v-if="rowsFinal[rIndex].tooltip && cIndex === 0" placement ="top">
 								  <span v-html="rowsFinal[rIndex].tooltip"></span>
 							  </b-tooltip>
 
-							  <b-tooltip :target="'vue-quintable-cell-'+rIndex+'-'+cIndex" triggers="hover" v-if="cell.tooltip" placement ="left">
+							  <b-tooltip :target="'vue-quintable-'+uuid+'-cell-'+rIndex+'-'+cIndex" triggers="hover" v-if="cell.tooltip" placement ="left">
 								  <span v-html="cell.tooltip"></span>
 							  </b-tooltip>
 
@@ -165,7 +165,8 @@
 											<tr 
 												class="generated-row-cell"
 												:class="hoveredRow === rIndex ? configFinal.hoverClass : ''"
-												:key="'vue-quintable-generated-cell-'+rIndex+'-'+cIndex"
+												:key="'vue-quintable-'+uuid+'-generated-row-cell-'+rIndex+'-'+cIndex"
+												:id="'vue-quintable-'+uuid+'-generated-row-cell-'+rIndex+'-'+cIndex"
 												v-show="openRows[rIndex]"
 												v-for="(cell,cIndex) in generatedRows[rIndex]">
 
@@ -188,9 +189,9 @@
 												</td>
 
 
-												<td class="text-right" @click="onCellClick(cell)" :key="'vue-quintable-generated-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-cell-'+rIndex+'-'+cIndex">
+												<td class="text-right" @click="onCellClick(cell)" :key="'vue-quintable-'+uuid+'-generated-cell-'+rIndex+'-'+cIndex">
 
-													<b-tooltip :target="'vue-quintable-cell-'+rIndex+'-'+cIndex" triggers="hover" v-if="cell.tooltip" placement ="left">
+													<b-tooltip :target="'vue-quintable-'+uuid+'-generated-row-cell-'+rIndex+'-'+cIndex" triggers="hover" v-if="cell.tooltip" placement ="top">
 														<span v-html="cell.tooltip"></span>
 													</b-tooltip>
 
@@ -214,7 +215,7 @@
 
 
 											</tr>
-											<tr v-for="(cell,cIndex) in stickyRows[rIndex]" :key="'sticky-row-cell-'+rIndex+'-'+cIndex" :class="hoveredRow === rIndex ? configFinal.hoverClass : ''" class="generated-row-cell">
+											<tr v-for="(cell,cIndex) in stickyRows[rIndex]" :key="'vue-quintable-'+uuid+'-sticky-row-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-'+uuid+'-sticky-row-cell-'+rIndex+'-'+cIndex" :class="hoveredRow === rIndex ? configFinal.hoverClass : ''" class="generated-row-cell">
 												<td @click="setSortColumn(cIndex)">
 													<strong v-html="configFinal.headlines[cIndex]"></strong>
 
@@ -232,9 +233,9 @@
 														</span>
 													</span>
 												</td>
-												<td class="text-right" @click="onCellClick(cell)" :key="'vue-quintable-sticky-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-cell-'+rIndex+'-'+cIndex">
+												<td class="text-right" @click="onCellClick(cell)" :key="'vue-quintable-'+uuid+'-sticky-cell-'+rIndex+'-'+cIndex">
 
-													<b-tooltip :target="'vue-quintable-cell-'+rIndex+'-'+cIndex" triggers="hover" v-if="cell.tooltip" placement="left">
+													<b-tooltip :target="'vue-quintable-'+uuid+'-sticky-row-cell-'+rIndex+'-'+cIndex" triggers="hover" v-if="cell.tooltip" placement="top">
 														<span v-html="cell.tooltip"></span>
 													</b-tooltip>
 
@@ -359,6 +360,8 @@
 
 import fuzzy from "fuzzy.js";
 import axios from "axios"
+import randomUUID from "uuid/v4";
+
 
 export default {
   name: "VueQuintable",
@@ -412,6 +415,7 @@ export default {
 		cancelSource:null,
 		lastQuery:"",
 		pageOffset:0,
+		uuid:randomUUID(),
   	}
   },
 

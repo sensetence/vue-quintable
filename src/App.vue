@@ -333,19 +333,19 @@ export default {
                       {html:"San Fransisco"},
                       {html:"Trainee"},
 
-
                   ],
                   [
                       {html:"Mia Wong"},
                       {html:50},
-                      {html:"Pejing"},
+                      {html:"Pejing",
+						  tooltip:"Test: Peking!"},
                       {html:"Trainee"},
                   ],
                   [
                       {html:"Peter Stanbridge"},
                       {html:18},
                       {html:"London"},
-                      {html:"Trainee"},
+                      {html:"Trainee", tooltip:"Test: London!"},
                   ],
                   [
                       {html:"Natalie Lee-Walsh"},
