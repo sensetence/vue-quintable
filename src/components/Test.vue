@@ -13,7 +13,17 @@
             }
         },
         methods: {
-            check() { this.checked = !this.checked; this.$emit("action",{index:1,checked:this.checked,tester:this.tester,test:this.test}) }
+            check() {
+                this.checked = !this.checked;
+                this.$emit("action",
+                    {
+                        index:1,
+                        checked:this.checked,
+                        tester:this.tester,
+                        test:this.test
+                    }
+                )
+            }
         }
     }
 

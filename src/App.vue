@@ -28,7 +28,7 @@
 			    	@hover:row="eventListener"
 			    	@collapse:row="eventListener"
 			    	@change:breakpoints="eventListener"
-				 	@componentEvent="onComponentEvent"
+				 	@component:event="onComponentEvent"
 				 >
 			    	<template v-slot:header>
 					  	<div class="clearfix py-2">

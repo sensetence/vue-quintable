@@ -1454,7 +1454,7 @@ export default {
   methods:{
 
 	  handleComponentEvent(data){
-		  this.$emit("componentEvent",data);
+		  this.$emit("component:event",data);
 	  },
 
 	  updatePageOffset(factor){
@@ -1515,10 +1515,18 @@ export default {
 	   *
 	   */
 	  hasSomeParentTheClass(element, className) {
-
-			if (element instanceof HTMLElement && element.classList.contains(className)) return true;
+			if (element instanceof HTMLElement && element.classList.contains(className)){ return true;}
 			return element instanceof Element && element.parentNode && this.hasSomeParentTheClass(element.parentNode, className);
 	  },
+
+      /**
+       * Check if a parent with certain tag name exists
+       *
+       */
+      hasSomeParentTagName(element, tagName) {
+          if (element instanceof HTMLElement && element.tagName.toLowerCase() === tagName.toLowerCase()){ return true;}
+          return element instanceof Element && element.parentNode && this.hasSomeParentTagName(element.parentNode, tagName);
+      },
 
 	  /**
 	   * Event listener for clicked row. Emits an event if the row has been expanded or collapsed. Emits and event that row was clicked
@@ -1534,8 +1542,10 @@ export default {
 				return;
 			}
 
+			let isLink = this.hasSomeParentTagName(e.target ,"a");
+			let shouldPrevent = this.hasSomeParentTheClass(e.target,'prevent-toggle');
 
-			if(this.hiddenColumns ){
+			if(this.hiddenColumns && !isLink && !shouldPrevent){
 				if(!this.openRows[rowIndex]){
 					this.$set(this.openRows,rowIndex,true);
 					this.$emit("expand:row",this.rowsFinal[this.sortedIndexes[rowIndex]],"expand:row");
@@ -1545,10 +1555,10 @@ export default {
 				}
 
 				this.$recompute("generatedRows");
-
 			}
 
 			this.$emit("click:row",this.rowsFinal[rowIndex],"click:row");
+
 		},
 
 	  /**
