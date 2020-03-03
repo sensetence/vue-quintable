@@ -18,6 +18,7 @@
 			    	:config="config"
 			    	:rows="rows"
 			    	key="table-1"
+					table-classes="test"
 			    	@update:sort="eventListener"
 			    	@update:page="eventListener"
 			    	@update:search="eventListener"
@@ -29,6 +30,7 @@
 			    	@collapse:row="eventListener"
 			    	@change:breakpoints="eventListener"
 				 	@component:event="onComponentEvent"
+
 				 >
 			    	<template v-slot:header>
 					  	<div class="clearfix py-2">
@@ -159,7 +161,8 @@ export default {
                   columns:[ 
                      {
                         headline:"Name",
-                        sort:true,
+						 title:"Name of participant",
+						 sort:true,
                      },{
                         headline:"Age",
                         breakpoint:"sm",
@@ -256,38 +259,36 @@ export default {
                          },
                      	{html:20},
                         {text:"Berlin"},
-                        {quintable: {
+                        { quintable: {
+                        		tableClasses:"text-center",
 								config: {
 									columns: [
 										{
-											headline: "Name",
-											sort: true,
+											headline: "State of birth",
 										}, {
-											headline: "Age",
-											breakpoint: "sm",
-											sort: true,
-											cellFormatter(cell) {
-												return {
-													value: cell.html + "<p>Additional Text</p>",
-													type: "html"
-												};
-											},
+											headline: "City of birth",
+
 										}, {
-											headline: "Birthplace",
-											breakpoint: "md",
-											align: "right",
-											sticky: true
-										}, {
-											headline: "Job",
-											breakpoint: "all",
+											headline: "Time of birth",
 										}
 									],
 								},
 								rows: [
-									[{text: "1234",tooltip:"Test: 1234"}, {text: "4567"}, {text: "8910"}, {text: "1112"}],
-									[{text: "1234"}, {text: "4567"}, {text: "8910"}, {text: "1112"}],
-									[{text: "1234"}, {text: "4567"}, {text: "8910"}, {text: "1112"}]
-
+									[
+										{text: "Bavaria"},
+										{text: "Augsburg"},
+										{text: "10:10 AM"}
+									],
+									[
+										{text: "New York"},
+										{text: "New York"},
+										{text: "12:10 AM"}
+									],
+									[
+										{text: "Texas"},
+										{text: "Houston"},
+										{text: "09:12 PM"}
+									],
 								],
 							},},
                      ],

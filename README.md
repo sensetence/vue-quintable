@@ -15,6 +15,9 @@ VueQuintable is a table wrapper for Vue.js. It is build with bootstrap 4.0. High
 - Select rows
 - Custom search keywords and filter values for rows
 - Vue-binded values for columns and rows
+- Nested VueQuintables
+- Vue components inside tables
+- Custom cell formatters
 
 
 
@@ -48,6 +51,8 @@ VueQuintable is a table wrapper for Vue.js. It is build with bootstrap 4.0. High
 - update:search | passing string as second parameter
 
 - update:sort | passing object of sort group as second parameter
+
+- component:event | generic event for passing data from child components
 
   
 
@@ -105,8 +110,10 @@ Vue.use(VueTable);
 	     v-model="selectedRows" 
 	     :filterGroups="filterGroups" 
 	     :filters="filters" 
-	     :config="config" 
+	     :config="config"
 	     :rows="rows" 
+         :verbose="true"
+         :table-classes="custom-table-class"
 	     @update:sort="eventListenerSort"
 	     @update:page="eventListenerPage"
 	     @update:search="eventListenerSearch"
@@ -116,7 +123,8 @@ Vue.use(VueTable);
 	     @expand:row="eventListenerExpandRow" 
          @collapse:row="eventListenerCollapseRow" 
 	     @hover:row="eventListenerHoverRow" 
-	     @change:breakpoints="eventListenerBreakpoints">
+	     @change:breakpoints="eventListenerBreakpoints"
+         @components:event="handleComponentEvents">
 
         <template v-slot:header>
             <div class="clearfix py-2">
@@ -196,6 +204,7 @@ Vue.use(VueTable);
             
             //Object Table config
             config:{ 
+              
                   //Object[] columns with headline, sticky, breakpoint, align, sort
                   columns:[ 
                      {
@@ -203,6 +212,8 @@ Vue.use(VueTable);
                         headline:"Name",
                         //Boolean if column is sortable
                         sort:true,
+                        //String hover title
+                        title:"Name of Participant"
                      },{
                         headline:"Age",
                         sort:true,
@@ -277,10 +288,9 @@ Vue.use(VueTable);
                   multiSortPlaceholder:"Multiple sort",
                   //String/Boolean search/filter/sort/pagination per ajax
                   ajaxUrl:false,
-
-
                 },
-                //Array of Array and/or Object
+            
+               //Array of Array and/or Object
                rows:[ 
                   //Object, if options apart from cell content will be set 
                   { 
@@ -291,10 +301,56 @@ Vue.use(VueTable);
                             text:"Max Mustermann",
                             //String HTML string
                             html:"Max Mustermann",
+                            //Object component definition
+                            component:{
+                                //String name/tag definition of component
+                            	name:"test-component",
+								//Object properties passed to component 
+                                props:{
+                            		identifier:1,
+								 }
+							 },
+                             //Object nested VueQuintable
+                             quintable: {
+                                 //String classes for sub table
+                                 tableClasses:"text-center",
+                                 //Object config for sub table
+								 config: {
+          							columns: [
+          								{
+          									headline: "State of birth",
+          								}, {
+          									headline: "City of birth",
+          								}, {
+          									headline: "Time of birth",
+          								}
+          							],
+          						 },
+                                 //Object rows for sub table
+        						 rows: [
+        							[
+                                    	{text: "Bavaria"}, 
+                                     	{text: "Augsburg"},
+                                        {text: "10:10 AM"}
+                                    ],
+                          			[
+                                        {text: "New York"}, 
+                                        {text: "New York"}, 
+                                        {text: "12:10 AM"}
+                                    ],
+                          			[
+                                        {text: "Texas"}, 
+                                        {text: "Houston"}, 
+                                        {text: "09:12 PM"}
+                                    ],        								
+        						],
+        					},
                             //String space separated classes
                             classes:"special-td",
                             //String alignment ["left","right","center"]
                             align:"right",
+                     
+						  },
 
                          },
                      	{html:20},
@@ -392,7 +448,7 @@ Vue.use(VueTable);
                       {html:"Trainee"},
                   ],
                ],
-        }
+           }
       },
           
       ...
@@ -428,6 +484,54 @@ Vue.use(VueTable);
     ...
     
 </script>
+```
+
+
+
+#### Component Definition
+
+To use a custom component inside a VueQuintable you have to define it as the following:
+
+```vue
+<template>
+    <div @click="check">
+       Component ID: {{identifier}}
+    </div>
+</template>
+
+
+<script>
+
+    export default {
+        props:["identifier"],
+        methods: {
+            check() {
+                //emit the pre-defined event for component actions
+                //handled from VueQuintable by "component:event"
+                this.$emit("action",
+                    {
+                        identifiert:this.id,
+                    }
+                )
+            }
+        }
+    }
+
+</script>
+
+```
+
+
+
+Import and use the Component in your Code:
+
+```js
+import TestComponent from "./components/TestComponent.vue"
+
+Vue.component(
+    "test-component",
+    TestComponent.default || TestComponent
+);
 ```
 
 
@@ -507,3 +611,8 @@ The response has to be the following structure:
 }
 ```
 
+
+
+### Good to know
+
+- Links won't trigger expanded rows to collapse. Also you can prevent collapse parent row by define an element with the class "prevent-toggle"

@@ -16,7 +16,7 @@
 		<div v-if="configFinal.search" class="mb-3">
 			<input type="search" :placeholder="configFinal.searchPlaceholder" v-model="query" class="form-control">
 		</div>		
-		<table class="vue-quintable table" v-if="!ajaxLoading" >
+		<table class="vue-quintable table" :class="tableClasses" v-if="!ajaxLoading" >
 			<thead v-if="configFinal.headlines.length">
 				<tr>
 					<th class="placeholder" v-if="hasGeneratedRows && !configFinal.hideRowToggle">&nbsp;</th>
@@ -41,8 +41,8 @@
 						) && 
 						!configFinal.columns[hIndex].sticky" 
 						:class="headerClass[hIndex]" 
-						:title="'headline-'+hIndex" 
-						:key="'headline-'+hIndex" 
+						:title="configFinal.columns[hIndex].title"
+						:key="'headline-'+hIndex"
 						@click="setSortColumn(hIndex)">
 						<span class="headline" v-html="headline"></span> 
 						<span class="sorting-icon ml-2" v-if="configFinal.sorts[hIndex]">
@@ -113,7 +113,7 @@
 
 							  <template v-if="configFinal.columns[cIndex].cellFormatter">
 								  <div class="cell-inner" v-if="cell.quintable">
-									  <VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
+									  <VueQuintable :table-classes="cell.quintable.tableClasses" class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
 								  </div>
 								  <div class="cell-inner" v-else-if="cell.component">
 									  <component :is="cell.component.name" v-bind="cell.component.props" @action="handleComponentEvent"></component>
@@ -125,7 +125,7 @@
 								  <div class="cell-inner" v-if="cell.html" v-html="cell.html"></div>
 								  <div class="cell-inner" v-if="cell.text">{{cell.text}}</div>
 								  <div class="cell-inner" v-if="cell.quintable">
-									<VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
+									<VueQuintable :table-classes="cell.quintable.tableClasses" class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
 								  </div>
 								  <div class="cell-inner" v-if="cell.component">
 									  <component :is="cell.component.name" v-bind="cell.component.props" @action="handleComponentEvent"></component>
@@ -201,7 +201,7 @@
 
 													<template v-if="configFinal.columns[cIndex].cellFormatter">
 														<div class="cell-inner" v-if="cell.quintable">
-															<VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
+															<VueQuintable :table-classes="cell.quintable.tableClasses" class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
 														</div>
 														<div class="cell-inner" v-else-if="cell.component">
 															<component :is="cell.component.name" v-bind="cell.component.props" @action="handleComponentEvent"></component>
@@ -213,7 +213,7 @@
 														<div class="cell-inner" v-if="cell.html" v-html="cell.html"></div>
 														<div class="cell-inner" v-if="cell.text">{{cell.text}}</div>
 														<div class="cell-inner" v-if="cell.quintable">
-															<VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
+															<VueQuintable :table-classes="cell.quintable.tableClasses" class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
 														</div>
 														<div class="cell-inner" v-if="cell.component">
 															<component :is="cell.component.name" v-bind="cell.component.props" @action="handleComponentEvent"></component>
@@ -250,7 +250,7 @@
 
 													<template v-if="configFinal.columns[cIndex].cellFormatter">
 														<div class="cell-inner" v-if="cell.quintable">
-															<VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
+															<VueQuintable :table-classes="cell.quintable.tableClasses" class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
 														</div>
 														<div class="cell-inner" v-else-if="cell.component">
 															<component :is="cell.component.name" v-bind="cell.component.props" @action="handleComponentEvent"></component>
@@ -262,7 +262,7 @@
 														<div class="cell-inner" v-if="cell.html" v-html="cell.html"></div>
 														<div class="cell-inner" v-if="cell.text">{{cell.text}}</div>
 														<div class="cell-inner" v-if="cell.quintable">
-															<VueQuintable class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
+															<VueQuintable :table-classes="cell.quintable.tableClasses" class="quintable-sub-table" :nested="true" :config="cell.quintable.config" :rows="cell.quintable.rows" :verbose="verbose" :filter-groups="cell.quintable.filterGroups?cell.quintable.filterGroups:[]" :filters="cell.quintable.filters?cell.quintable.filters:{}" v-model="cell.quintable.value"  />
 														</div>
 														<div class="cell-inner" v-if="cell.component">
 															<component :is="cell.component.name" v-bind="cell.component.props" @action="handleComponentEvent"></component>
@@ -401,6 +401,9 @@ export default {
 		},
 	  	nested:{
 			type:Boolean
+		},
+	    tableClasses:{
+			type:String
 		}
 	},
   data(){
@@ -2343,6 +2346,10 @@ export default {
 
 	.generated-row table tr:first-child td{
 		border-top:none;
+	}
+
+	.quintable-sub-table{
+		text-align: left;
 	}
 
 </style>
