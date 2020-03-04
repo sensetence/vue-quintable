@@ -163,7 +163,9 @@ export default {
                         headline:"Name",
 						 title:"Name of participant",
 						 sort:true,
-                     },{
+						 align:"right",
+
+					 },{
                         headline:"Age",
                         breakpoint:"sm",
                         sort:true,
@@ -176,7 +178,6 @@ export default {
                      },{
                         headline:"Birthplace",
                         breakpoint:"md",
-                        align:"right",
                         sticky:true
                      },{
 						  headline:"Job",
@@ -254,7 +255,7 @@ export default {
                             //String space separated classes
                             classes:"special-td",
                             //String alignment
-                            align:"right",
+                            align:"center",
 
                          },
                      	{html:20},

@@ -872,16 +872,23 @@ export default {
 		   		cellClasses.push([]);
 
 		   		let rAlign = this.rowsFinal[i].align;
+
 		   		let cells = this.rowsFinal[i].cells?this.rowsFinal[i].cells:this.rowsFinal[i];
 
 		   		for (let j =0;j<cells.length;j++){
 					let classes = [];
 
-					if(cells[j].align || rAlign){
+					let colAlign = this.configFinal.alignments[j];
+
+					console.log(colAlign);
+
+					if(cells[j].align || rAlign || colAlign){
 						if(cells[j].align){
 							classes.push ("text-"+ cells[j].align);
-						}else{
+						}else if(rAlign){
 							classes.push ("text-"+ rAlign);
+						}else{
+							classes.push ("text-"+ colAlign);
 						}
 					}
 
