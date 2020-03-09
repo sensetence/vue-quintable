@@ -379,32 +379,57 @@ export default {
   name: "VueQuintable",
   props:{
 		rows:{
-			type:Array
+			type:Array,
+            default(){
+                return [];
+            }
 		},
 		config:{
-			type: Object
+			type: Object,
+            default(){
+                return {};
+            }
 		},
 		value:{
-			type:Array
+			type:Array,
+            default(){
+                return [];
+            }
 		},
 		loading:{
-			type:Boolean
+			type:Boolean,
+            default:false,
 		},
 		filters:{
-			type:Object
+			type:Object,
+            default(){
+			    return {};
+            }
 		},
 		filterGroups:{
-			type:Array
+			type:Array,
+            default(){
+                return [];
+            }
 		},
 		verbose:{
-			type:Boolean
+			type:Boolean,
+            default:false,
 		},
 	  	nested:{
-			type:Boolean
+			type:Boolean,
+            default:false,
 		},
 	    tableClasses:{
-			type:String
-		}
+			type:String,
+            default:"",
+		},
+        sortOrder:{
+            type:Array,
+            default(){
+                return [];
+            },
+        }
 	},
   data(){
   	return {
@@ -694,6 +719,7 @@ export default {
 			  pageRange = this.config.pageRange;
 		  }
 
+
 		  let number= 0;
 		  let headlines = [];
 		  let breakpoints = [];
@@ -879,8 +905,6 @@ export default {
 					let classes = [];
 
 					let colAlign = this.configFinal.alignments[j];
-
-					console.log(colAlign);
 
 					if(cells[j].align || rAlign || colAlign){
 						if(cells[j].align){
@@ -1388,6 +1412,14 @@ export default {
 			}
 		},
 
+      /**
+       * detect changes of config
+       *
+       */
+      configFinal(){
+          // console.log("CONFIG CHANGED",val);
+      },
+
 	  /**
 	   * Prepare the selected rows array for passing to the event and emits it
 	   *
@@ -1458,6 +1490,13 @@ export default {
 
 			}
 		},
+
+      sortOrder(){
+	      this.currentSortIndexes = {};
+          for(let i = 0;i<this.sortOrder.length;i++){
+              this.setSortColumn(this.sortOrder[i]);
+          }
+      }
 
 
   },
@@ -2263,6 +2302,10 @@ export default {
 			this.checkAll();
 		}
 
+         for(let i = 0;i<this.sortOrder.length;i++){
+             this.setSortColumn(this.sortOrder[i]);
+         }
+
 		this.generateHiddenBreakpoints();
 
 		//bind listener to window resize
@@ -2318,7 +2361,7 @@ export default {
 	}
 
 	.sort-header.active{
-		padding-right: 40px !important;
+		padding-right: 45px !important;
 	}
 
 

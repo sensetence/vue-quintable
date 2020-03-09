@@ -112,8 +112,9 @@ Vue.use(VueTable);
 	     :filters="filters" 
 	     :config="config"
 	     :rows="rows" 
-         :verbose="true"
-         :table-classes="custom-table-class"
+         :verbose="false"
+         :sort-order="sortOrder"
+         table-classes="custom-table-class"
 	     @update:sort="eventListenerSort"
 	     @update:page="eventListenerPage"
 	     @update:search="eventListenerSearch"
@@ -173,11 +174,15 @@ Vue.use(VueTable);
             active:false,
             name:"",
             printable:false,
+            
 			//selected rows for v-model
             selectedRows:[],
-
+            
             //Object active filter criterias
             filters:{},
+            
+            //Array for (initial) sorting indexex, ordered front to back
+            sortOrder:[1,0]
             
             //Object[] filter groups with relations, recursive.
             filterGroups:[

@@ -17,6 +17,7 @@
 			    	:filters="filters"
 			    	:config="config"
 			    	:rows="rows"
+                    :sortOrder="sortOrder"
 			    	key="table-1"
 					table-classes="test"
 			    	@update:sort="eventListener"
@@ -131,6 +132,8 @@ export default {
 
             //Object active filter criterias
             filters:{},
+
+            sortOrder:[1,0],
             
             //Object[] filter groups with relations, recursive.
             filterGroups:[
@@ -225,6 +228,8 @@ export default {
                   filterGroupRelation:"OR",
                   //Boolean if multi-key sorting is enabled
                   multiSort:true,
+                  //Array initial sort order of column
+                  initialSortOrder:[1,0],
                   //Boolean if user should be allowed to set multisort
                   multiSortSelect:true,
                   //String Placeholder for multiple sort description
@@ -438,6 +443,12 @@ export default {
       // this.remoteRows = JSON.parse(response.data.rows);
   		this.loading = false;
   	});
+
+
+  	setTimeout(()=>{
+  	    this.sortOrder = [0,1];
+    },2500)
+
   }
 }
 </script>
