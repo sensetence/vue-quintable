@@ -178,6 +178,7 @@ export default {
 								  type:"html"
 							  };
 						  },
+						  alwaysExpanded:true,
                      },{
                         headline:"Birthplace",
                         breakpoint:"md",

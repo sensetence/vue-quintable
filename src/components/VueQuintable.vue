@@ -518,6 +518,7 @@ export default {
 
 		  for(let x = 0;x<this.rowsFinal.length;x++) {
 			  let cells = this.rowsFinal[x].cells?this.rowsFinal[x].cells:this.rowsFinal[x];
+
 			  let generatedCells = {};
 			  let stickyCells = {};
 
@@ -526,15 +527,18 @@ export default {
 				  let bp = this.hiddenBreakpoints[i];
 				  for (let j = 0; j < this.configFinal.columns.length; j++) {
 					  let col = this.configFinal.columns[j];
-					  if (col.breakpoint && (col.breakpoint.toLocaleLowerCase() === "all" || col.breakpoint.toLocaleLowerCase() === bp)) {
-						  if(!col.sticky){
+
+					  if(col.sticky){
+						  stickyCells[j] = cells[j];
+					  }else if (col.breakpoint && (col.breakpoint.toLocaleLowerCase() === "all" || col.breakpoint.toLocaleLowerCase() === bp)) {
+						  if(!col.sticky && !col.alwaysExpanded){
 							  generatedCells[j] = cells[j];
+						  }else if(col.alwaysExpanded){
+							  stickyCells[j] = cells[j];
 						  }
 					  }
 
-					  if(col.sticky){
-					  	stickyCells[j] = cells[j];
-					  }
+
 				  }
 			  }
 

@@ -239,7 +239,9 @@ Vue.use(VueTable);
                         //["xs","sm","md","lg","xl","all"] 
                         breakpoint:"md",
                         //String alignment of table header ["right","left","center"]
-                        align:"right"
+                        align:"right",
+                        //Boolean if always expanded on breakpoint, wont collapse at all
+					    alwaysExpanded:true,
                      },{
                         headline:"Job",
                         //will always be displayed as additional open row 
@@ -364,7 +366,7 @@ Vue.use(VueTable);
                      ],
 					  //Boolean if selected on default
                       selected:true,
-                      //Bollean if expanded on default
+                      //Boolean if expanded on default
                       expanded:true,
                       //String[] Keywords for search
                       keywords:[
