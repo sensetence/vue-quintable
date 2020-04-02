@@ -159,7 +159,7 @@ Vue.use(VueTable);
 	</VueQuintable>
 	
 	<!-- Ajax operated quintable -->
-	<VueQuintable :updated="updated" :config="ajaxConfig" />
+	<VueQuintable :axios="configuredAxios" :updated="updated" :config="ajaxConfig" />
 
 ...
 
@@ -167,12 +167,15 @@ Vue.use(VueTable);
 
 <script>
 
-    import VueQuintable from './components/VueQuintable.vue'
-	
+    import VueQuintable from './components/VueQuintable.vue
+	import axios from "axios"
     ...
  
   	data(){
         return {
+            //custom configured axios instance for passing to quintable
+            configuredAxios:axios,
+           
             //filters
             active:false,
             name:"",

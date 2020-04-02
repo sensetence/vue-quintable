@@ -63,7 +63,7 @@
 			    <!-- Remote Loading Data -->
 <!--			     <VueQuintable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" />-->
 
-				<VueQuintable :updated="updated" :config="ajaxConfig" key="table-2" />
+				<VueQuintable :axios="axios" :updated="updated" :config="ajaxConfig" key="table-3" />
 
 
 
@@ -78,7 +78,7 @@
 
 import VueQuintable from "./components/VueQuintable.vue"
 import Tester from "./components/Test.vue"
-import axios from "axios"
+import axiosTest from "axios"
 import Vue from "vue"
 
 Vue.component(
@@ -89,6 +89,18 @@ Vue.component(
 		Tester.default || Tester
 );
 
+axiosTest.interceptors.request.use(
+		(config) => {
+
+			console.warn("Custom axios",config);
+
+			return config
+		},
+		error => {
+			console.log("ERROR AXIOS", error)
+		}
+)
+
 export default {
   name: 'app',
   components: {
@@ -97,6 +109,8 @@ export default {
 
  data(){
         return {
+
+        	axios:axiosTest,
 
         	//loading
         	loading:false,
@@ -467,7 +481,7 @@ export default {
   },
   mounted(){
   	this.loading = true;
-  	axios.get("http://localhost/test/data.php?fetch=true").then((response)=>{
+	  axiosTest.get("http://localhost/test/data.php?fetch=true").then((response)=>{
   		this.remoteRows = response.data.rows;
   		this.remoteConfig = response.data.config;
       // this.remoteRows = JSON.parse(response.data.rows);

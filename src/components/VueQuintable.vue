@@ -390,6 +390,7 @@ export default {
                 return {};
             }
 		},
+
 		value:{
 			type:Array,
             default(){
@@ -430,10 +431,13 @@ export default {
                 return [];
             },
         },
-	  updated:{
-		  type:[Boolean,Object,Date],
-		  default:false,
-	  },
+	    updated:{
+			  type:[Boolean,Object,Date],
+			  default:false,
+		},
+	    axios:{
+			  type: Function,
+		  },
 	},
   data(){
   	return {
@@ -464,6 +468,15 @@ export default {
   },
 
   recomputed: {
+
+  	  /**
+	   * Checks if an axios instance has been passed to quintable or the default axios has to be used
+	   *
+	   */
+  	  axiosFinal(){
+		  return this.axios ? this.axios : axios
+	  },
+
 	  /**
 	   * Checks which rows shall be shown
 	   *
@@ -2207,10 +2220,10 @@ export default {
 
 			};
 
-		  this.cancelSource = axios.CancelToken.source();
+		  this.cancelSource = this.axiosFinal.CancelToken.source();
 
 
-		  axios.get(this.configFinal.ajaxUrl,{
+		  this.axiosFinal.get(this.configFinal.ajaxUrl,{
 		  		params:params,
 			  	cancelToken: this.cancelSource.token,
 		  }).then((response)=>{
@@ -2234,7 +2247,7 @@ export default {
 			  	this.fetching = false;
 
 		  }).catch(error=>{
-			  if (axios.isCancel(error)) {
+			  if (this.axiosFinal.isCancel(error)) {
 				  console.log('Request canceled', error.message);
 			  } else {
 				  this.fetching = false;
