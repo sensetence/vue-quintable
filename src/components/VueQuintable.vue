@@ -37,7 +37,7 @@
 					<th 
 						v-for="(headline,hIndex) in configFinal.headlines" 
 						v-show="(
-							!configFinal.columns[hIndex].breakpoint || hiddenBreakpoints.findIndex(x => x === configFinal.columns[hIndex].breakpoint) === -1
+							configFinal.columns[hIndex] && !configFinal.columns[hIndex].breakpoint || hiddenBreakpoints.findIndex(x => x === configFinal.columns[hIndex] && configFinal.columns[hIndex].breakpoint) === -1
 						) && 
 						!configFinal.columns[hIndex].sticky" 
 						:class="headerClass[hIndex]" 
@@ -99,9 +99,9 @@
 
 
 
-					  <td :class="cellClassesParsed[rIndex][cIndex]" v-show="cell && hiddenBreakpoints.findIndex(x => x === configFinal.columns[cIndex].breakpoint) === -1 && configFinal.columns[cIndex].breakpoint !== 'all' && !configFinal.stickyCols[cIndex]" @click="onCellClick(cell)" :key="'vue-quintable-'+uuid+'-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-'+uuid+'-cell-'+rIndex+'-'+cIndex" v-for="(cell, cIndex) in rowsFinal[rIndex].cells?rowsFinal[rIndex].cells:rowsFinal[rIndex]">
+					  <td :class="cellClassesParsed[rIndex][cIndex]" v-show="configFinal.columns[cIndex] && cell && hiddenBreakpoints.findIndex(x => x === configFinal.columns[cIndex].breakpoint) === -1 && configFinal.columns[cIndex].breakpoint !== 'all' && !configFinal.stickyCols[cIndex]" @click="onCellClick(cell)" :key="'vue-quintable-'+uuid+'-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-'+uuid+'-cell-'+rIndex+'-'+cIndex" v-for="(cell, cIndex) in rowsFinal[rIndex].cells?rowsFinal[rIndex].cells:rowsFinal[rIndex]">
 
-						  <template v-if="cell && hiddenBreakpoints.findIndex(x => x === configFinal.columns[cIndex].breakpoint) === -1 && configFinal.columns[cIndex].breakpoint !== 'all' && !configFinal.stickyCols[cIndex]">
+						  <template v-if="configFinal.columns[cIndex] && cell && hiddenBreakpoints.findIndex(x => x === configFinal.columns[cIndex].breakpoint) === -1 && configFinal.columns[cIndex].breakpoint !== 'all' && !configFinal.stickyCols[cIndex]">
 							  <b-tooltip :target="'vue-quintable-'+uuid+'-row-'+rIndex" triggers="hover" v-if="rowsFinal[rIndex].tooltip && cIndex === 0" placement ="top">
 								  <span v-html="rowsFinal[rIndex].tooltip"></span>
 							  </b-tooltip>
@@ -429,7 +429,11 @@ export default {
             default(){
                 return [];
             },
-        }
+        },
+	  updated:{
+		  type:[Boolean,Object,Date],
+		  default:false,
+	  },
 	},
   data(){
   	return {
@@ -527,6 +531,7 @@ export default {
 				  let bp = this.hiddenBreakpoints[i];
 				  for (let j = 0; j < this.configFinal.columns.length; j++) {
 					  let col = this.configFinal.columns[j];
+
 
 					  if(col.sticky){
 						  stickyCells[j] = cells[j];
@@ -744,6 +749,7 @@ export default {
 					  headlines[i] = "";
 				  }
 
+
 				  if(this.config.columns[i] && this.config.columns[i].breakpoint){
 					  breakpoints[i] = this.config.columns[i].breakpoint;
 				  }else{
@@ -943,7 +949,8 @@ export default {
 				let bp = this.hiddenBreakpoints[i];
 				for (let j = 0; j<this.configFinal.columns.length;j++){
 				  let col = this.configFinal.columns[j];
-				  if(col.breakpoint && (col.breakpoint.toLocaleLowerCase() === "all" || col.breakpoint.toLocaleLowerCase() === bp)){
+
+					if(col.breakpoint && (col.breakpoint.toLocaleLowerCase() === "all" || col.breakpoint.toLocaleLowerCase() === bp)){
 				  	 hidden++;
 				  	 break;
 				  }
@@ -1298,6 +1305,21 @@ export default {
 			},
 			deep:true,
 		},
+
+	  updated(val){
+
+			console.log(this.configFinal.ajaxUrl,val);
+
+			if(!this.configFinal.ajaxUrl){
+				return;
+			}
+
+			if(val && val.clear){
+				this.loadViaAjax(true);
+			}else if(val){
+				this.loadViaAjax();
+			}
+	  },
 
 	  filteredRows:{
 		  handler(val,old){
@@ -2216,7 +2238,7 @@ export default {
 				  console.log('Request canceled', error.message);
 			  } else {
 				  this.fetching = false;
-				  console.log(error);
+				  console.error(error);
 			  }
 
 		  });

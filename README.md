@@ -157,6 +157,9 @@ Vue.use(VueTable);
 
 
 	</VueQuintable>
+	
+	<!-- Ajax operated quintable -->
+	<VueQuintable :updated="updated" :config="ajaxConfig" />
 
 ...
 
@@ -207,6 +210,10 @@ Vue.use(VueTable);
                 }
             ],
             
+            //Boolean/Object/Date property to trigger reload on current page
+            //ONLY relevant if ajaxUrl is useed
+            updated:false,
+           
             //Object Table config
             config:{ 
               
@@ -455,7 +462,29 @@ Vue.use(VueTable);
                       {html:"Trainee"},
                   ],
                ],
-           }
+           },
+               
+           ajaxConfig: {
+				columns: [
+					{
+						headline: "Name",
+						sort: true,
+					}, {
+						headline: "Email",
+						breakpoint: "sm",
+						sort: true,
+					}, {
+						headline: "Phone",
+						breakpoint: "md",
+					}, {
+						headline: "Job Title",
+						breakpoint: "md",
+						sort: true,
+					}
+				],
+				pagination:25,
+				ajaxUrl:"http://your.server.url"
+			},
       },
           
       ...
@@ -602,8 +631,7 @@ The request for the ajax handling on server has got the following structure:
         indexes:this.currentSortIndexes,
         //Object of column definitions keyed by column index
         columns:this.sortingColumns,
-    }
-
+    },
 };
 ```
 

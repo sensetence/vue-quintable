@@ -63,8 +63,11 @@
 			    <!-- Remote Loading Data -->
 <!--			     <VueQuintable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" />-->
 
+				<VueQuintable :updated="updated" :config="ajaxConfig" key="table-2" />
 
-  			</div>
+
+
+			</div>
   		</div>
   	</div>
   </div>
@@ -97,6 +100,30 @@ export default {
 
         	//loading
         	loading:false,
+
+			ajaxConfig: {
+				//Object[] columns with headline, sticky, breakpoint, align, sort
+				columns: [
+					{
+						headline: "Name",
+						sort: true,
+					}, {
+						headline: "Email",
+						breakpoint: "sm",
+						sort: true,
+					}, {
+						headline: "Phone",
+						breakpoint: "md",
+					}, {
+						headline: "Job Title",
+						breakpoint: "md",
+						sort: true,
+					}
+				],
+				pagination:25,
+				ajaxUrl:"http://localhost/test/data.php"
+			},
+
         	remoteRows:[],
         	remoteConfig: {
                     //Object[] columns with headline, sticky, breakpoint, align, sort
@@ -123,6 +150,8 @@ export default {
                     defaultSelected: true,
                 },
         	verbose:false,
+			//property to trigger ajax update for current page and filters
+        	updated:false,
             //filters
             active:false,
             name:"",
@@ -449,6 +478,10 @@ export default {
   	setTimeout(()=>{
   	    this.sortOrder = [0,1];
     },2500)
+
+	  setTimeout(()=>{
+		  this.updated = new Date();
+	  },15000)
 
   }
 }
