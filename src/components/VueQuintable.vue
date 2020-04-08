@@ -15,8 +15,9 @@
 
 		<div v-if="configFinal.search" class="mb-3">
 			<input type="search" :placeholder="configFinal.searchPlaceholder" v-model="query" class="form-control">
-		</div>		
-		<table class="vue-quintable table" :class="tableClasses" v-if="!ajaxLoading" ref="quintable">
+		</div>
+		<div class="clearfix" ref="height-wrapper">
+		<table class="vue-quintable table" :class="tableClasses" v-if="!ajaxLoading">
 			<thead v-if="configFinal.headlines.length">
 				<tr>
 					<th class="placeholder" v-if="hasGeneratedRows && !configFinal.hideRowToggle">&nbsp;</th>
@@ -298,7 +299,10 @@
 				   <hr>
 				</div>
 			</template>
-			<div v-if="ajaxLoading">
+
+		</div>
+
+		<div v-if="ajaxLoading">
 
 					<slot name="loading">
 						<div class="loader-wrapper" :style="'height:'+loaderHeight+'px;'">
@@ -320,11 +324,11 @@
 						</div>
 					</div>
 					<div class="col-md-8">
-						<div class="pt-md-0 pt-3 float-md-right mr-3 pagination-container" v-if="configFinal && configFinal.pagination && !ajaxLoading" >
+						<div class="pt-md-0 pt-3 float-md-right mr-3 pagination-container" v-if="configFinal && configFinal.pagination" >
 							<span class="d-inline-block align-middle mr-2" v-if="configFinal.rowsSelect" v-html="configFinal.rowsPlaceholder"></span> 
 							<v-select v-if="configFinal.rowsSelect" class="d-inline-block align-middle"  :options="paginationOptionsFilled" v-model="currentRowsPerPageProperty" :clearable="false" />
 
-							<nav v-if="configFinal && configFinal.pagination && pages>1 && !ajaxLoading" class="d-inline-block align-middle ml-3" >
+							<nav v-if="configFinal && configFinal.pagination && pages>1 " class="d-inline-block align-middle ml-3" :class="{disabled:ajaxLoading}" >
 							  <ul class="pagination mb-0">
 							    <li class="page-item" v-if="pages>pageRange" :class="{disabled:currentPage<=1}" @click="gotoPage('first')">
 							      <span class="page-link">
@@ -372,7 +376,6 @@
 					</div>
 				</div>
 			</div>
-
 		<div class="footer">
 			<slot name="footer"></slot>
 		</div>	
@@ -1331,10 +1334,11 @@ export default {
 			},
 			deep:true,
 		},
-
-	  updated(val){
-
-			console.log(this.configFinal.ajaxUrl,val);
+	  /**
+	   * Trigger reload current page without changing filter/search/page from outside
+	   *
+	   */
+	   updated(val){
 
 			if(!this.configFinal.ajaxUrl){
 				return;
@@ -1347,7 +1351,19 @@ export default {
 			}
 	  },
 
-	  filteredRows:{
+	  /**
+	   * set height of loader if loading is set from outside
+	   *
+	   */
+	  loading(){
+		  this.loaderHeight = this.$refs["height-wrapper"].clientHeight;
+	  },
+
+	  /**
+	   * Reset page and select if filtering/search is active
+	   *
+	   */
+	   filteredRows:{
 		  handler(val,old){
 
 		  	  if(JSON.stringify(val) === JSON.stringify(old) || this.configFinal.ajaxUrl){
@@ -1543,6 +1559,10 @@ export default {
 			}
 		},
 
+	  /**
+	   * Reset sort order if it is changed from outside
+	   *
+	   */
       sortOrder(){
 	      this.currentSortIndexes = {};
           for(let i = 0;i<this.sortOrder.length;i++){
@@ -1554,10 +1574,18 @@ export default {
   },
   methods:{
 
+  	/**
+	 * Handler for generic component events
+	 *
+	 */
 	  handleComponentEvent(data){
 		  this.$emit("component:event",data);
 	  },
 
+	  /**
+	   * Calculate which pages should be displayed in pagination due to page offset
+	   *
+	   */
 	  updatePageOffset(factor){
 
 	  		let result = this.pageOffset + this.pageRange * factor;
@@ -2219,7 +2247,7 @@ export default {
 			  this.resetSelect();
 		  }
 
-		  this.loaderHeight = this.$refs["quintable"].clientHeight;
+		  this.loaderHeight = this.$refs["height-wrapper"].clientHeight;
 
 		  this.fetching = true;
 
@@ -2467,6 +2495,11 @@ export default {
 
 	.quintable-sub-table{
 		text-align: left;
+	}
+
+	nav.disabled{
+		pointer-events: none;
+		opacity: 0.75;
 	}
 
 </style>
