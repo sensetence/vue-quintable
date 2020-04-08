@@ -16,7 +16,7 @@
 		<div v-if="configFinal.search" class="mb-3">
 			<input type="search" :placeholder="configFinal.searchPlaceholder" v-model="query" class="form-control">
 		</div>		
-		<table class="vue-quintable table" :class="tableClasses" v-if="!ajaxLoading" >
+		<table class="vue-quintable table" :class="tableClasses" v-if="!ajaxLoading" ref="quintable">
 			<thead v-if="configFinal.headlines.length">
 				<tr>
 					<th class="placeholder" v-if="hasGeneratedRows && !configFinal.hideRowToggle">&nbsp;</th>
@@ -299,12 +299,17 @@
 				</div>
 			</template>
 			<div v-if="ajaxLoading">
-				<slot name="loading">
-					
-						<div  class="loader text-center py-4" >
-							<font-awesome-icon icon="circle-notch" spin class="ajax-loader" />
+
+					<slot name="loading">
+						<div class="loader-wrapper" :style="'height:'+loaderHeight+'px;'">
+
+						<div class="loader text-center py-4" >
+								<font-awesome-icon icon="circle-notch" spin class="ajax-loader" />
+							</div>
 						</div>
-				</slot>
+
+					</slot>
+
 			</div>
 
 			<div class="clearfix">
@@ -471,6 +476,7 @@ export default {
 		lastQuery:"",
 		pageOffset:0,
 		uuid:randomUUID(),
+		loaderHeight:0,
   	}
   },
 
@@ -2212,6 +2218,9 @@ export default {
 			  this.currentPage = 1;
 			  this.resetSelect();
 		  }
+
+		  this.loaderHeight = this.$refs["quintable"].clientHeight;
+
 		  this.fetching = true;
 
 
@@ -2373,6 +2382,18 @@ export default {
 		top: 50%;
 		left: 50%;
 		transform: translateX(-50%) translateY(-50%);
+	}
+
+	.loader-wrapper{
+		position: relative;
+		min-height: 100px;
+	}
+
+	.loader{
+		position: absolute;
+		top: 50%;
+		left:50%;
+		transform: translate3d(-50%,-50%,0);
 	}
 
 	.table-wrapper .bg-muted{
