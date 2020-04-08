@@ -37,9 +37,16 @@
 					<th 
 						v-for="(headline,hIndex) in configFinal.headlines" 
 						v-show="(
-							configFinal.columns[hIndex] && !configFinal.columns[hIndex].breakpoint || hiddenBreakpoints.findIndex(x => x === configFinal.columns[hIndex] && configFinal.columns[hIndex].breakpoint) === -1
+							  (
+							  	configFinal.columns[hIndex] &&
+							  	!configFinal.columns[hIndex].breakpoint
+							  )
+							  	||
+							  (
+							  	hiddenBreakpoints.findIndex(x => configFinal.columns[hIndex] &&  x ===  configFinal.columns[hIndex].breakpoint) === -1
+							  )
 						) && 
-						!configFinal.columns[hIndex].sticky" 
+						!configFinal.columns[hIndex].sticky"
 						:class="headerClass[hIndex]" 
 						:title="configFinal.columns[hIndex].title"
 						:key="'headline-'+hIndex"

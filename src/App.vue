@@ -489,13 +489,13 @@ export default {
   	});
 
 
-  	setTimeout(()=>{
-  	    this.sortOrder = [0,1];
-    },2500)
-
-	  setTimeout(()=>{
-		  this.updated = new Date();
-	  },15000)
+  // 	setTimeout(()=>{
+  // 	    this.sortOrder = [0,1];
+  //   },2500)
+  //
+  // setTimeout(()=>{
+	//   this.updated = new Date();
+  // },15000)
 
   }
 }
