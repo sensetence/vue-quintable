@@ -182,7 +182,7 @@
 												v-show="openRows[rIndex]"
 												v-for="(cell,cIndex) in generatedRows[rIndex]">
 
-												<td @click="setSortColumn(cIndex)" v-if="openRows[rIndex]">
+												<td @click="setSortColumn(cIndex)" v-if="openRows[rIndex] && (configFinal.headlines[cIndex] || configFinal.sorts[cIndex])">
 													<strong v-html="configFinal.headlines[cIndex]">
 													</strong>
 													<span class="sorting-icon ml-2" v-if="configFinal.sorts[cIndex] && hoveredRow === rIndex">
@@ -1569,7 +1569,7 @@ export default {
 
 	      this.currentSortIndexes = {};
           for(let i = 0;i<this.sortOrder.length;i++){
-			  
+
           	  if(typeof this.sortOrder[i] === "object"){
 				  this.setSortColumn(this.sortOrder[i].index,this.sortOrder[i].asc);
 			  }else if(typeof this.sortOrder[i] === "number"){
