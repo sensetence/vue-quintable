@@ -176,7 +176,7 @@ export default {
             //Object active filter criterias
             filters:{},
 
-            sortOrder:[1,0],
+            sortOrder:[{index:1,asc:false},0],
             
             //Object[] filter groups with relations, recursive.
             filterGroups:[

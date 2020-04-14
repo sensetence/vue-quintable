@@ -1563,11 +1563,20 @@ export default {
 	   * Reset sort order if it is changed from outside
 	   *
 	   */
-      sortOrder(){
+      sortOrder:{
+      	immediate:true,
+      	handler(){
+
 	      this.currentSortIndexes = {};
           for(let i = 0;i<this.sortOrder.length;i++){
-              this.setSortColumn(this.sortOrder[i]);
+			  
+          	  if(typeof this.sortOrder[i] === "object"){
+				  this.setSortColumn(this.sortOrder[i].index,this.sortOrder[i].asc);
+			  }else if(typeof this.sortOrder[i] === "number"){
+				  this.setSortColumn(this.sortOrder[i]);
+			  }
           }
+		}
       }
 
 
@@ -2021,8 +2030,9 @@ export default {
 	   * Add a column to the sorting or change the sort direction of set sorting column
 	   *
 	   * @param index the column
+	   * @param asc bool if it shall be set to a direction
 	   */
-		setSortColumn(index){
+		setSortColumn(index,asc){
 
 			if(!this.configFinal.sorts[index]){
 				return;
@@ -2048,6 +2058,11 @@ export default {
 				item = this.currentSortIndexes[index];
 				item.asc = !item.asc;
 			}
+
+			if(typeof asc !== "undefined"){
+				item.asc = asc;
+			}
+
 
 			this.$set(this.currentSortIndexes,index,item);
 
@@ -2384,10 +2399,6 @@ export default {
 		if(this.configFinal.defaultSelected){
 			this.checkAll();
 		}
-
-         for(let i = 0;i<this.sortOrder.length;i++){
-             this.setSortColumn(this.sortOrder[i]);
-         }
 
 		this.generateHiddenBreakpoints();
 
