@@ -208,12 +208,14 @@ export default {
                      {
                         headline:"Name",
 						 title:"Name of participant",
+						 showHeadlineBreakpoint:"md",
 						 sort:true,
 						 align:"right",
 
 					 },{
                         headline:"Age",
-                        breakpoint:"sm",
+						  hideHeadlineBreakpoint:"md",
+						  breakpoint:"sm",
                         sort:true,
 						  cellFormatter(cell){
 							  return {
@@ -225,9 +227,11 @@ export default {
                      },{
                         headline:"Birthplace",
                         breakpoint:"md",
-                        sticky:true
+
+						  sticky:true
                      },{
 						  headline:"Job",
+						  hideHeadlineBreakpoint:"md",
 						  breakpoint:"all",
                      }
                   ],

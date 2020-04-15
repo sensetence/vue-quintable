@@ -187,7 +187,7 @@ Vue.use(VueTable);
             //Object active filter criterias
             filters:{},
             
-            //Array for (initial) sorting indexex, ordered front to back
+            //Array for (initial) sorting indexex, ordered front to back, can be changed 			   dynamically, also supports direction sortOrder: [{index:1,asc:false},0]
             sortOrder:[1,0]
             
             //Object[] filter groups with relations, recursive.
@@ -225,12 +225,16 @@ Vue.use(VueTable);
                      {
                         //String headline for table header 
                         headline:"Name",
+                        //String breakpoint for hiding headline
+                        hideHeadlineBreakpoint:"md",
                         //Boolean if column is sortable
                         sort:true,
                         //String hover title
                         title:"Name of Participant"
                      },{
                         headline:"Age",
+                        //String breakpoint for showing headline
+                        showHeadlineBreakpoint:"md",
                         sort:true,
                         /*
                         Function for cell formatting. May return Object with value:String

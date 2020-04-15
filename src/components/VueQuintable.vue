@@ -52,7 +52,12 @@
 						:title="configFinal.columns[hIndex].title"
 						:key="'headline-'+hIndex"
 						@click="setSortColumn(hIndex)">
-						<span class="headline" v-html="headline"></span> 
+						<span class="headline" v-html="headline"
+							  v-if="(!configFinal.columns[hIndex].showHeadlineBreakpoint ||
+							  	configFinal.columns[hIndex].showHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[hIndex] &&  x ===  configFinal.columns[hIndex].showHeadlineBreakpoint) !== -1 )&&
+							  	(!configFinal.columns[hIndex].hideHeadlineBreakpoint || configFinal.columns[hIndex].hideHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[hIndex] &&  x ===  configFinal.columns[hIndex].hideHeadlineBreakpoint) === -1)"
+						></span>
+						<span class="headline" v-else><wbr></span>
 						<span class="sorting-icon ml-2" v-if="configFinal.sorts[hIndex]">
 							<font-awesome-icon v-if="!currentSortIndexes[hIndex]" icon="sort" class="text-primary" />
 							<font-awesome-icon v-if="currentSortIndexes[hIndex] && currentSortIndexes[hIndex].asc" icon="sort-amount-down-alt" class="text-primary" />
@@ -183,9 +188,12 @@
 												v-for="(cell,cIndex) in generatedRows[rIndex]">
 
 												<td @click="setSortColumn(cIndex)" v-if="openRows[rIndex] && (configFinal.headlines[cIndex] || configFinal.sorts[cIndex])">
-													<strong v-html="configFinal.headlines[cIndex]">
+													<strong v-html="configFinal.headlines[cIndex]"
+															v-if="(!configFinal.columns[cIndex].showHeadlineBreakpoint ||
+							  								configFinal.columns[cIndex].showHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[cIndex] &&  x ===  configFinal.columns[cIndex].showHeadlineBreakpoint) !== -1 )&&
+							  								(!configFinal.columns[cIndex].hideHeadlineBreakpoint || configFinal.columns[cIndex].hideHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[cIndex] &&  x ===  configFinal.columns[cIndex].hideHeadlineBreakpoint) === -1)">
 													</strong>
-													<span class="sorting-icon ml-2" v-if="configFinal.sorts[cIndex] && hoveredRow === rIndex">
+													<span class="sorting-icon ml-2 cursor-pointer" v-if="configFinal.sorts[cIndex] && hoveredRow === rIndex">
 														<font-awesome-icon v-if="!currentSortIndexes[cIndex]" icon="sort" class="text-primary" />
 														<font-awesome-icon v-if="currentSortIndexes[cIndex] && currentSortIndexes[cIndex].asc" icon="sort-amount-down-alt" class="text-primary" />
 														<font-awesome-icon v-if="currentSortIndexes[cIndex] && !currentSortIndexes[cIndex].asc" icon="sort-amount-down" class="text-primary" />
@@ -234,9 +242,12 @@
 											</tr>
 											<tr v-for="(cell,cIndex) in stickyRows[rIndex]" :key="'vue-quintable-'+uuid+'-sticky-row-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-'+uuid+'-sticky-row-cell-'+rIndex+'-'+cIndex" :class="hoveredRow === rIndex ? configFinal.hoverClass : ''" class="generated-row-cell">
 												<td @click="setSortColumn(cIndex)">
-													<strong v-html="configFinal.headlines[cIndex]"></strong>
-
-													<span class="sorting-icon ml-2" v-if="configFinal.sorts[cIndex] && hoveredRow === rIndex">
+													<strong v-html="configFinal.headlines[cIndex]"
+															v-if="(!configFinal.columns[cIndex].showHeadlineBreakpoint ||
+							  									configFinal.columns[cIndex].showHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[cIndex] &&  x ===  configFinal.columns[cIndex].showHeadlineBreakpoint) !== -1 )&&
+							  									(!configFinal.columns[cIndex].hideHeadlineBreakpoint || configFinal.columns[cIndex].hideHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[cIndex] &&  x ===  configFinal.columns[cIndex].hideHeadlineBreakpoint) === -1)"
+													></strong>
+													<span class="sorting-icon ml-2 cursor-pointer" v-if="configFinal.sorts[cIndex] && hoveredRow === rIndex">
 														<font-awesome-icon v-if="!currentSortIndexes[cIndex]" icon="sort" class="text-primary" />
 														<font-awesome-icon v-if="currentSortIndexes[cIndex] && currentSortIndexes[cIndex].asc" icon="sort-amount-down-alt" class="text-primary" />
 														<font-awesome-icon v-if="currentSortIndexes[cIndex] && !currentSortIndexes[cIndex].asc" icon="sort-amount-down" class="text-primary" />
@@ -2415,6 +2426,9 @@ export default {
 </script>
 
 <style scoped>
+	.cursor-pointer{
+		cursor: pointer;
+	}
 	.icon-check{
 		padding: 3px;
 		position: absolute;
