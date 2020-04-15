@@ -13,7 +13,6 @@
 			     <VueQuintable
 			    	v-model="selectedRows"
 			    	:verbose="verbose"
-			    	:filterGroups="filterGroups"
 			    	:filters="filters"
 			    	:config="config"
 			    	:rows="rows"

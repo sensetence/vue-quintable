@@ -1251,8 +1251,9 @@ export default {
 				//filter will be applied
 				else if((searched && match || !searched) && this.filterActive){
 
+
 					//filter groups are defined
-					if(this.filterGroups){
+					if(this.filterGroups.length){
 						match = this.doFiltering(this.rowsFinal[i].filters);
 
 					//define dummy filter group with filters and relation set
@@ -1269,7 +1270,13 @@ export default {
 							}
 						}
 
+
 						match = this.doFilteringForGroup(this.filters,this.rowsFinal[i].filters,group);
+
+						if(this.DEBUG) {
+							console.log("FILTER GROUPS CALCULATED", this.filterGroups);
+						}
+
 
 					}
 					//######################################
@@ -1896,7 +1903,7 @@ export default {
 				for(let key in filters){
 					if(filters.hasOwnProperty(key)){
 
-						if(this.filterGroups && !this.findInFilterGroups(key,this.filterGroups)){
+						if(this.filterGroups.length && !this.findInFilterGroups(key,this.filterGroups)){
 							continue;
 						}
 
@@ -1944,7 +1951,7 @@ export default {
 
 					if(filters.hasOwnProperty(key)){
 
-						if(this.filterGroups && !this.findInFilterGroups(key,this.filterGroups)){
+						if(this.filterGroups.length && !this.findInFilterGroups(key,this.filterGroups)){
 							continue;
 						}
 
