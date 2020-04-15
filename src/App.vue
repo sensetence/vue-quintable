@@ -14,6 +14,7 @@
 			    	v-model="selectedRows"
 			    	:verbose="verbose"
 			    	:filters="filters"
+			    	:filterGroups="filterGroups"
 			    	:config="config"
 			    	:rows="rows"
                     :sortOrder="sortOrder"
