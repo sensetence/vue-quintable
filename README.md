@@ -281,6 +281,8 @@ Vue.use(VueTable);
                   defaultSelected:false,
                   //Boolean if there shall be a search input 
                   search:true,
+                  //Boolean use fuzzy.js search matching library for more search results
+				  useFuzzySearch:false,
                   //Integer displayed page range of pagination
                   pageRange:5,
                   //Boolean show plus for row toggle or not

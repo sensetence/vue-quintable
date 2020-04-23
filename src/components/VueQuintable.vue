@@ -496,13 +496,7 @@ export default {
 
   recomputed: {
 
-  	  /**
-	   * Checks if an axios instance has been passed to quintable or the default axios has to be used
-	   *
-	   */
-  	  axiosFinal(){
-		  return this.axios ? this.axios : axios
-	  },
+
 
 	  /**
 	   * Checks which rows shall be shown
@@ -627,6 +621,7 @@ export default {
 
   computed:{
 
+
 	  /**
 	   * Just a debug flag
 	   *
@@ -634,6 +629,14 @@ export default {
 		DEBUG(){
 			return this.verbose;
 		},
+
+	  /**
+	   * Checks if an axios instance has been passed to quintable or the default axios has to be used
+	   *
+	   */
+	  axiosFinal(){
+		  return this.axios ? this.axios : axios
+	  },
 
 	  /**
 	   * Set default values for all possible config values
@@ -693,6 +696,10 @@ export default {
 			  expandedAll = true;
 		  }
 
+		  let useFuzzySearch = false;
+		  if(this.config.useFuzzySearch){
+			  useFuzzySearch = true;
+		  }
 		  let prettySelect = false;
 		  if(this.config.prettySelect){
 			  prettySelect = true;
@@ -830,9 +837,10 @@ export default {
 			  defaultSelected:defaultSelected,
 			  searchLength:searchLength,
 			  search:search,
+			  searchPlaceholder:searchPlaceholder,
+			  useFuzzySearch:useFuzzySearch,
 			  ajaxUrl:ajaxUrl,
 			  multiSortPlaceholder:multiSortPlaceholder,
-			  searchPlaceholder:searchPlaceholder,
 			  rowsPlaceholder:rowsPlaceholder,
 			  emptyPlaceholder:emptyPlaceholder,
 			  stickyCols:stickyCols,
@@ -1224,19 +1232,33 @@ export default {
 
 						let textVal = col.html?col.html:col.text;
 
-						if(fuzzy((textVal + "").toLowerCase(), (this.query + "").toLowerCase()).score > 6){
-						  match = true;
-						  break;
+						if(textVal){
+
+
+							if( this.configFinal.useFuzzySearch && fuzzy((textVal + "").toLowerCase(), (this.query + "").toLowerCase()).score > 6){
+								match = true;
+								break;
+							}
+
+							if((textVal + "").toLowerCase().indexOf(this.query) !== -1 ){
+							  match = true;
+							  break;
+							}
 						}
 
 					}
 					//check set per row keywords
 					 if(row.keywords){
 						 for(let k = 0;k<row.keywords.length;k++){
-							if(fuzzy((row.keywords[k] + "").toLowerCase(), (this.query + "").toLowerCase()).score > 6){
+							 if( this.configFinal.useFuzzySearch && fuzzy((row.keywords[k] + "").toLowerCase(), (this.query + "").toLowerCase()).score > 6){
 							  match = true;
 							  break;
 							}
+
+							 if((row.keywords[k] + "").toLowerCase().indexOf(this.query) !== -1 ){
+								 match = true;
+								 break;
+							 }
 						 }
 					}
 
@@ -1463,12 +1485,12 @@ export default {
 	   *
 	   */
 		rows(){
+		   this.initLists();
 
-		  this.$nextTick(()=>{
-			  this.initLists();
-			  this.$forceUpdate();
+		   this.$nextTick(()=>{
 
-			  this.recomputeEssentials();
+			   this.recomputeEssentials();
+			   this.$forceUpdate();
 
 			  if(this.configFinal.defaultSelected){
 				  this.allSelectedCustom = null;
@@ -2170,6 +2192,7 @@ export default {
 			  this.$recompute("visibleRows");
 			  this.$recompute("visibleRowIndexes");
 			  this.$recompute("generatedRows");
+
 		  });
 		},
 
@@ -2239,6 +2262,7 @@ export default {
 	   * Load new rows via ajax including filters, search query and pagination
 	   *
 	   * @param clear
+	   * @param accessor
 	   */
 		loadViaAjax(clear = false, accessor = null){
 

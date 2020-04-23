@@ -254,6 +254,8 @@ export default {
                   defaultSelected:false,
                   //Boolean if there shall be a search input 
                   search:true,
+				  //Boolean use fuzzy.js search matching library to find more search results
+				  useFuzzySearch:true,
                   //Integer displayed page range of pagination
                   pageRange:2,
                   //Boolean show plus for row toggle or not
