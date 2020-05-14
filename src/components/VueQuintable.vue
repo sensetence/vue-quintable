@@ -53,9 +53,7 @@
 						:key="'headline-'+hIndex"
 						@click="setSortColumn(hIndex)">
 						<span class="headline" v-html="headline"
-							  v-if="(!configFinal.columns[hIndex].showHeadlineBreakpoint ||
-							  	configFinal.columns[hIndex].showHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[hIndex] &&  x ===  configFinal.columns[hIndex].showHeadlineBreakpoint) !== -1 )&&
-							  	(!configFinal.columns[hIndex].hideHeadlineBreakpoint || configFinal.columns[hIndex].hideHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[hIndex] &&  x ===  configFinal.columns[hIndex].hideHeadlineBreakpoint) === -1)"
+							  v-if="showHeadlines[hIndex]"
 						></span>
 						<span class="headline" v-else><wbr></span>
 						<span class="sorting-icon ml-2" v-if="configFinal.sorts[hIndex]">
