@@ -187,7 +187,7 @@
 												v-show="openRows[rIndex]"
 												v-for="(cell,cIndex) in generatedRows[rIndex]">
 
-												<td @click="setSortColumn(cIndex)" v-if="openRows[rIndex] && ((!configFinal.columns[cIndex].showHeadlineBreakpoint ||
+												<td @click="setSortColumn(cIndex)" v-if="openRows[rIndex] && (configFinal.headlines[cIndex] && (!configFinal.columns[cIndex].showHeadlineBreakpoint ||
 							  								configFinal.columns[cIndex].showHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[cIndex] &&  x ===  configFinal.columns[cIndex].showHeadlineBreakpoint) !== -1 )&&
 							  								(!configFinal.columns[cIndex].hideHeadlineBreakpoint || configFinal.columns[cIndex].hideHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[cIndex] &&  x ===  configFinal.columns[cIndex].hideHeadlineBreakpoint) === -1) || configFinal.sorts[cIndex])">
 
