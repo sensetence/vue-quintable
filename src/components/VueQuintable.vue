@@ -187,14 +187,10 @@
 												v-show="openRows[rIndex]"
 												v-for="(cell,cIndex) in generatedRows[rIndex]">
 
-												<td @click="setSortColumn(cIndex)" v-if="openRows[rIndex] && (configFinal.headlines[cIndex] && (!configFinal.columns[cIndex].showHeadlineBreakpoint ||
-							  								configFinal.columns[cIndex].showHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[cIndex] &&  x ===  configFinal.columns[cIndex].showHeadlineBreakpoint) !== -1 )&&
-							  								(!configFinal.columns[cIndex].hideHeadlineBreakpoint || configFinal.columns[cIndex].hideHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[cIndex] &&  x ===  configFinal.columns[cIndex].hideHeadlineBreakpoint) === -1) || configFinal.sorts[cIndex])">
+												<td @click="setSortColumn(cIndex)" v-if="openRows[rIndex] && (showHeadlines[cIndex] || configFinal.sorts[cIndex])">
 
 													<strong v-html="configFinal.headlines[cIndex]"
-															v-if="(!configFinal.columns[cIndex].showHeadlineBreakpoint ||
-							  								configFinal.columns[cIndex].showHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[cIndex] &&  x ===  configFinal.columns[cIndex].showHeadlineBreakpoint) !== -1 )&&
-							  								(!configFinal.columns[cIndex].hideHeadlineBreakpoint || configFinal.columns[cIndex].hideHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[cIndex] &&  x ===  configFinal.columns[cIndex].hideHeadlineBreakpoint) === -1)">
+															v-if="showHeadlines[cIndex]">
 													</strong>
 													<span class="sorting-icon ml-2 cursor-pointer" v-if="configFinal.sorts[cIndex] && hoveredRow === rIndex">
 														<font-awesome-icon v-if="!currentSortIndexes[cIndex]" icon="sort" class="text-primary" />
@@ -212,9 +208,7 @@
 												</td>
 
 
-												<td :colspan="!(openRows[rIndex] && ((!configFinal.columns[cIndex].showHeadlineBreakpoint ||
-							  								configFinal.columns[cIndex].showHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[cIndex] &&  x ===  configFinal.columns[cIndex].showHeadlineBreakpoint) !== -1 )&&
-							  								(!configFinal.columns[cIndex].hideHeadlineBreakpoint || configFinal.columns[cIndex].hideHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[cIndex] &&  x ===  configFinal.columns[cIndex].hideHeadlineBreakpoint) === -1) || configFinal.sorts[cIndex]))?'2':'1'" class="text-right" @click="onCellClick(cell)" :key="'vue-quintable-'+uuid+'-generated-cell-'+rIndex+'-'+cIndex">
+												<td :colspan="!showHeadlines[cIndex] && !configFinal.sorts[cIndex]?'2':'1'" class="text-right" @click="onCellClick(cell)" :key="'vue-quintable-'+uuid+'-generated-cell-'+rIndex+'-'+cIndex">
 
 													<b-tooltip :target="'vue-quintable-'+uuid+'-generated-row-cell-'+rIndex+'-'+cIndex" triggers="hover" v-if="cell.tooltip" placement ="top">
 														<span v-html="cell.tooltip"></span>
@@ -248,9 +242,7 @@
 											<tr v-for="(cell,cIndex) in stickyRows[rIndex]" :key="'vue-quintable-'+uuid+'-sticky-row-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-'+uuid+'-sticky-row-cell-'+rIndex+'-'+cIndex" :class="hoveredRow === rIndex ? configFinal.hoverClass : ''" class="generated-row-cell">
 												<td @click="setSortColumn(cIndex)">
 													<strong v-html="configFinal.headlines[cIndex]"
-															v-if="(!configFinal.columns[cIndex].showHeadlineBreakpoint ||
-							  									configFinal.columns[cIndex].showHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[cIndex] &&  x ===  configFinal.columns[cIndex].showHeadlineBreakpoint) !== -1 )&&
-							  									(!configFinal.columns[cIndex].hideHeadlineBreakpoint || configFinal.columns[cIndex].hideHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[cIndex] &&  x ===  configFinal.columns[cIndex].hideHeadlineBreakpoint) === -1)"
+															v-if="showHeadlines[cIndex]"
 													></strong>
 													<span class="sorting-icon ml-2 cursor-pointer" v-if="configFinal.sorts[cIndex] && hoveredRow === rIndex">
 														<font-awesome-icon v-if="!currentSortIndexes[cIndex]" icon="sort" class="text-primary" />
@@ -1359,6 +1351,53 @@ export default {
 	   */
 		ajaxLoading(){
 			return this.loading || this.fetching;
+		},
+
+	  	/**
+		 * Calculates if a headline is to be shown on generated rows
+		 *
+		 */
+
+	  	showHeadlines(){
+
+			let shows = [];
+
+			for(let i = 0 ; i<this.configFinal.number;i++) {
+				if(
+						//headline is not empty
+						this.configFinal.headlines[i] &&
+						(
+								//show breakpoints match with set settings
+								(
+										//no show breakpoint is set
+										!this.configFinal.columns[i].showHeadlineBreakpoint ||
+										//show breakpoint is set and the hidden breakpoints contain this breakpoint
+										(
+											this.configFinal.columns[i].showHeadlineBreakpoint &&
+											this.hiddenBreakpoints.findIndex(x => this.configFinal.columns[i] &&  x ===  this.configFinal.columns[i].showHeadlineBreakpoint) !== -1
+										)
+								) &&
+								//hide breakpoints match with set settings
+								(
+										//no hide breakpoint is set
+										!this.configFinal.columns[i].hideHeadlineBreakpoint ||
+										//hide breakpoint is set and the hidden breakpoints contain this breakpoint
+										(
+											this.configFinal.columns[i].hideHeadlineBreakpoint &&
+											this.hiddenBreakpoints.findIndex(x => this.configFinal.columns[i] &&  x ===  this.configFinal.columns[i].hideHeadlineBreakpoint) === -1
+
+										)
+								)
+						)
+				){
+					shows.push(true);
+				}else{
+					shows.push(false);
+				}
+			}
+			return shows;
+
+
 		},
 
   },

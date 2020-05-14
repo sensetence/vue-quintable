@@ -214,10 +214,11 @@ export default {
                         headline:"Name",
 						 title:"Name of participant",
 						 sort:true,
+						 showHeadlineBreakpoint:"md",
 
 					 },{
                         headline:"Age",
-						  // hideHeadlineBreakpoint:"md",
+						  hideHeadlineBreakpoint:"md",
 						  breakpoint:"sm",
                           sort:true,
 						  // cellFormatter(cell){
