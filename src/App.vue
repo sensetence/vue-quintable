@@ -3,9 +3,12 @@
   	<div class="container py-5">
   		<div class="row">
   			<div class="col-12">
-  				<h1 class="mb-4">
-  					VueQuintable Demo
-  				</h1>
+           <center>
+            <img src="banner.png" width="400" height="300">
+            <h1 class="mb-4">
+                    VueQuintable Demo
+                  </h1>
+            </center>
   			</div>
   		</div>
   		<div class="row">
@@ -134,7 +137,9 @@ export default {
 						sort: true,
 					}
 				],
-				pagination:25,
+				select:true,
+				selectAll:true,
+				pagination:5,
 				ajaxUrl:"http://localhost/test/data.php"
 			},
 
@@ -208,31 +213,27 @@ export default {
                      {
                         headline:"Name",
 						 title:"Name of participant",
-						 showHeadlineBreakpoint:"md",
 						 sort:true,
-						 align:"right",
 
 					 },{
                         headline:"Age",
-						  hideHeadlineBreakpoint:"md",
+						  // hideHeadlineBreakpoint:"md",
 						  breakpoint:"sm",
-                        sort:true,
-						  cellFormatter(cell){
-							  return {
-								  value: cell.html + "<p>Additional Text</p>",
-								  type:"html"
-							  };
-						  },
-						  alwaysExpanded:true,
+                          sort:true,
+						  // cellFormatter(cell){
+							//   return {
+							// 	  value: cell.html + "<p>Additional Text</p>",
+							// 	  type:"html"
+							//   };
+						  // },
+						  // alwaysExpanded:true,
                      },{
                         headline:"Birthplace",
                         breakpoint:"md",
-
-						  sticky:true
                      },{
 						  headline:"Job",
-						  hideHeadlineBreakpoint:"md",
-						  breakpoint:"all",
+						  hideHeadlineBreakpoint:"xl",
+						  breakpoint:"xl",
                      }
                   ],
 
@@ -249,7 +250,7 @@ export default {
                   //Boolean if there should be a select all checkbox
                   selectAll:true,
 				  //Boolean if "select all" selects all rows allover the pages
-                  selectAllRows:true,
+                  selectAllRows:false,
                   //Boolean if all rows are selected on init
                   defaultSelected:false,
                   //Boolean if there shall be a search input 
@@ -259,7 +260,7 @@ export default {
                   //Integer displayed page range of pagination
                   pageRange:2,
                   //Boolean show plus for row toggle or not
-                  hideRowToggle:true,
+                  hideRowToggle:false,
                   //Integer minimum length of query that triggers search
                   searchLength:3,
                   //String Placeholder for search input

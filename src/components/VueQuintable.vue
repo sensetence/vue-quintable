@@ -187,7 +187,10 @@
 												v-show="openRows[rIndex]"
 												v-for="(cell,cIndex) in generatedRows[rIndex]">
 
-												<td @click="setSortColumn(cIndex)" v-if="openRows[rIndex] && (configFinal.headlines[cIndex] || configFinal.sorts[cIndex])">
+												<td @click="setSortColumn(cIndex)" v-if="openRows[rIndex] && ((!configFinal.columns[cIndex].showHeadlineBreakpoint ||
+							  								configFinal.columns[cIndex].showHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[cIndex] &&  x ===  configFinal.columns[cIndex].showHeadlineBreakpoint) !== -1 )&&
+							  								(!configFinal.columns[cIndex].hideHeadlineBreakpoint || configFinal.columns[cIndex].hideHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[cIndex] &&  x ===  configFinal.columns[cIndex].hideHeadlineBreakpoint) === -1) || configFinal.sorts[cIndex])">
+
 													<strong v-html="configFinal.headlines[cIndex]"
 															v-if="(!configFinal.columns[cIndex].showHeadlineBreakpoint ||
 							  								configFinal.columns[cIndex].showHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[cIndex] &&  x ===  configFinal.columns[cIndex].showHeadlineBreakpoint) !== -1 )&&
@@ -209,7 +212,9 @@
 												</td>
 
 
-												<td :colspan="!(openRows[rIndex] && (configFinal.headlines[cIndex] || configFinal.sorts[cIndex]))?'2':'1'" class="text-right" @click="onCellClick(cell)" :key="'vue-quintable-'+uuid+'-generated-cell-'+rIndex+'-'+cIndex">
+												<td :colspan="!(openRows[rIndex] && ((!configFinal.columns[cIndex].showHeadlineBreakpoint ||
+							  								configFinal.columns[cIndex].showHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[cIndex] &&  x ===  configFinal.columns[cIndex].showHeadlineBreakpoint) !== -1 )&&
+							  								(!configFinal.columns[cIndex].hideHeadlineBreakpoint || configFinal.columns[cIndex].hideHeadlineBreakpoint && hiddenBreakpoints.findIndex(x => configFinal.columns[cIndex] &&  x ===  configFinal.columns[cIndex].hideHeadlineBreakpoint) === -1) || configFinal.sorts[cIndex]))?'2':'1'" class="text-right" @click="onCellClick(cell)" :key="'vue-quintable-'+uuid+'-generated-cell-'+rIndex+'-'+cIndex">
 
 													<b-tooltip :target="'vue-quintable-'+uuid+'-generated-row-cell-'+rIndex+'-'+cIndex" triggers="hover" v-if="cell.tooltip" placement ="top">
 														<span v-html="cell.tooltip"></span>
@@ -1561,6 +1566,7 @@ export default {
 			this.$emit("update:page",val,"update:page");
 
 			if(this.configFinal.ajaxUrl){
+				this.resetSelect();
 				this.loadViaAjax(false,"PAGE");
 				return;
 			}
@@ -2530,6 +2536,17 @@ export default {
 
 	.ajax-loader{
 		font-size: 3em;
+	}
+
+
+	.generated-row-cell td {
+		min-width: 120px;
+	}
+	.generated-row-cell {
+		overflow-wrap: break-word;
+		word-wrap: break-word;
+		word-break: break-word;
+		hyphens: auto;
 	}
 
 	.generated-row-cell:nth-child(odd){

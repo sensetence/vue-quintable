@@ -276,6 +276,7 @@ Vue.use(VueTable);
                   //Boolean if there should be a select all checkbox
                   selectAll:true,
 				  //Boolean if "select all" selects all rows allover the pages
+                  //Please keep in mind that this won't work with server side pagination
                   selectAllRows:true,
                   //Boolean if all rows are selected on init
                   defaultSelected:false,
