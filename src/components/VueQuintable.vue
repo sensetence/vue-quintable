@@ -185,7 +185,7 @@
 												v-show="openRows[rIndex]"
 												v-for="(cell,cIndex) in generatedRows[rIndex]">
 
-												<td @click="setSortColumn(cIndex)" v-if="openRows[rIndex] && (showHeadlines[cIndex] || configFinal.sorts[cIndex])">
+												<td class="generated-headline-cell" @click="setSortColumn(cIndex)" v-if="openRows[rIndex] && (showHeadlines[cIndex] || configFinal.sorts[cIndex])">
 
 													<strong v-html="configFinal.headlines[cIndex]"
 															v-if="showHeadlines[cIndex]">
@@ -206,7 +206,7 @@
 												</td>
 
 
-												<td :colspan="!showHeadlines[cIndex] && !configFinal.sorts[cIndex]?'2':'1'" class="text-right" @click="onCellClick(cell)" :key="'vue-quintable-'+uuid+'-generated-cell-'+rIndex+'-'+cIndex">
+												<td  :colspan="!showHeadlines[cIndex] && !configFinal.sorts[cIndex]?'2':'1'" :class="{'text-right':showHeadlines[cIndex]}" class="generated-content-cell" @click="onCellClick(cell)" :key="'vue-quintable-'+uuid+'-generated-cell-'+rIndex+'-'+cIndex">
 
 													<b-tooltip :target="'vue-quintable-'+uuid+'-generated-row-cell-'+rIndex+'-'+cIndex" triggers="hover" v-if="cell.tooltip" placement ="top">
 														<span v-html="cell.tooltip"></span>
@@ -2576,14 +2576,16 @@ export default {
 	}
 
 
-	.generated-row-cell td {
-		min-width: 120px;
-	}
 	.generated-row-cell {
 		overflow-wrap: break-word;
 		word-wrap: break-word;
 		word-break: break-word;
 		hyphens: auto;
+	}
+
+
+	.generated-row-cell td.generated-headline-cell {
+		min-width: 120px;
 	}
 
 	.generated-row-cell:nth-child(odd){
