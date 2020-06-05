@@ -1,1 +1,1 @@
-npm run build-bundle
+env BUILD_MODE=build npm run build

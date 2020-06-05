@@ -2,9 +2,47 @@
 
 VueQuintable is a table wrapper for Vue.js. It is build with bootstrap 4.0. High configurable, easy to use, flexible and responsive.
 
+## Getting Started
+
+These instructions will get you running VueQuintable for your project for development purposes. 
+
+### Prerequisites
+
+VueQuintable is a https://vuejs.org/ vue.js package and uses https://getbootstrap.com/ bootstrap by default. Please install both before using the package. If you want to use https://de.wikipedia.org/wiki/Ajax_(Programmierung) ajax functionalities please install https://github.com/axios/axios axios as it is used by VueQuintable.
+
+```
+npm install --save vue bootstrap-vue
+npm install --save axios
+```
+
+### Installing
+
+```shell
+npm install --save https://zeitler-quintet@bitbucket.org/zeitler-quintet/vuefootable.git
+```
+
+### Integration
+
+```js
+import Vue from 'vue'
+
+//use bootstrap
+import BootstrapVue from 'bootstrap-vue'
+Vue.use(BootstrapVue)
+//use bootstrap css
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+import "@quintet/vue-quintable/dist/vue-quintable.css"
+import VueTable from '@quintet/vue-quintable'
+Vue.use(VueTable);
+```
 
 
-## Features:
+
+## Features
+
+These points will convince you that VueQuintable is the last table plugin you will ever need 
 
 - Responsive columns which will be rendered as additional rows
 - Pagination
@@ -23,18 +61,22 @@ VueQuintable is a table wrapper for Vue.js. It is build with bootstrap 4.0. High
 
 ## Slots
 
+You can define some slots to customize the table as you want to.
+
 - header
 - footer
 - no-results
 - loading
 
 ```html
-<template v-slot:header>HEADER</template>
+<template v-slot:header>Your HTML-Code</template>
 ```
 
 
 
 ## Events
+
+Add listeners for the following events to handle them as you want to.
 
 - click:row | passing row as second parameter
 
@@ -56,492 +98,182 @@ VueQuintable is a table wrapper for Vue.js. It is build with bootstrap 4.0. High
 
   
 
-## Selection of Rows
+## Configuration
 
-VueQuintable uses v-model for selected rows
+The following will give you an overview how to configure the VueQuintable for your needs.
 
+### Table Properties
 
-
-## Run build
-
-```shell
-npm install && npm run build-bundle
-```
-
-
-
-## Usage
-
-#### Install
-
-```shell
-npm install --save https://zeitler-quintet@bitbucket.org/zeitler-quintet/vuefootable.git
-```
+| Parameter     | Type          | Required                    | Description                                                  |
+| ------------- | ------------- | --------------------------- | ------------------------------------------------------------ |
+| config        | Object        | yes                         | The table configuration object. See details below.           |
+| rows          | Array         | yes (if no ajax url is set) | Table rows containing all cells. See details below.          |
+| filters       | Object        | no                          | The active filters for displaying rows. This has to be an Object with filter name as key and filter value as value. See example below. |
+| filter-groups | Array         | no                          | Filter groups with relations. See example below.             |
+| sort-order    | Object        | no                          | Set sorting values and order by default or on the fly. See examples below. |
+| axios         | Object        | no                          | Pass a configured axios instance to be used for ajax functionalities. Only relevant if ajax is used. |
+| updated       | Boolean\|Date | no                          | Property to trigger reload on current page. Only relevant if ajax is used. |
+| verbose       | Boolean       | no                          | Default is false. Set to true to see debug informations on developer tools in your Browser. |
 
 
 
-#### Integration
+#### Example for config property
 
-```js
-import Vue from 'vue'
+| Key                  | Type                  | Required | Pre-condition                                                | Description                                                  | Default          | Example                                                      |
+| -------------------- | --------------------- | -------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ---------------- | ------------------------------------------------------------ |
+| columns              | Array                 | yes      | -                                                            | Contains the configuration for the table columns including headlines. | null             | *See below*                                                  |
+| expandedAll          | Boolean               | no       | Breakpoints for columns are set                              | If set to true, all columns will be expanded by default      | false            | true                                                         |
+| hoverClass           | Boolean\|String       | no       | -                                                            | Class for rows on hover                                      | "bg-muted"       | "bg-success"                                                 |
+| hideRowToggle        | Boolean               | no       | Breakpoints for columns are set                              | If set to true, no plus symbols will be displayed for row toggle. | false            | true                                                         |
+| pagination           | Boolean\|Number       | no       | -                                                            | If set to true, the default page size will be 25.            | false            | 5                                                            |
+| pageRange            | Number                | no       | *pagination* enabled                                         | Displayed page range of pagination.                          | 5                | 3                                                            |
+| rowsSelect           | Boolean               | no       | *pagination* enabled                                         | If set to true, user will be allowed to set rows per page    | false            | true                                                         |
+| rowsPlaceholder      | String                | no       | *pagination* enabled and *rows select* is enabled            | Text for *rows per page* selection                           | "Rows per page:" | "Rows:"                                                      |
+| select               | Boolean               | no       | -                                                            | If set to true rows can be selected by check boxes. Tables v-model can be used for selected row Array. | false            | true                                                         |
+| prettySelect         | Boolean               | no       | *select* is enabled                                          | If set to true, https://lokesh-coder.github.io/pretty-checkbox/ pretty checkboxes library will be used. | false            | true                                                         |
+| selectPosition       | String{"pre"\|"post"} | no       | *select* is enabled                                          | Position of the select check boxes, first or last column.    | "post"           | "pre"                                                        |
+| selectAll            | Boolean               | no       | *select* is enabled                                          | If set to true,  additional checkbox will appear to select all rows | false            | true                                                         |
+| selectAllRows        | Boolean               | no       | *select* is enabled                                          | If set to true, *select all* selects all rows allover the pages. Please keep in mind that this won't work with server side pagination. | false            | true                                                         |
+| defaultSelected      | Boolean               | no       | *select* is enabled                                          | If set to true, all rows will be selected initially.         | false            | true                                                         |
+| search               | Boolean               | no       | -                                                            | If set to true a filter search input will be displayed       | false            | true                                                         |
+| searchLength         | Number                | no       | *search* is enabled                                          | Minimum length of query that triggers search.                | 1                | 3                                                            |
+| searchPlaceholder    | String                | no       | *search* is enabled                                          | Placeholder if no search query is entered                    | "Search..."      | "Search rows..."                                             |
+| emptyPlaceholder     | String                | no       | *search* is enabled or *filters* are set                     | Placeholder if filtering rows has no results.                | "No rows"        | "No results"                                                 |
+| filterRelation       | String{"OR"\|"AND"}   | no       | *filters* are set                                            | Filter relation, if no filter group affected                 | "AND"            | "OR"                                                         |
+| filterGroupRelation  | String{"OR"\|"AND"}   | no       | *filters* are set                                            | Default relation filter groups to each other                 | "AND"            | "OR"                                                         |
+| multiSort            | Boolean               | no       | *sort* is enabled on at least one column                     | If set to true multi-key sorting is enabled                  | false            | true                                                         |
+| multiSortSelect      | Boolean               | no       | *sort* is enabled on at least one column                     | If set to true user will be allowed to enable and disable *multi sort* | false            | true                                                         |
+| multiSortPlaceholder | String                | no       | *sort* is enabled on at least one column and *multi sort select* is enabled | Placeholder for multiple sort description                    | "Multiple sort"  | "Toggle multiple"                                            |
+| ajaxUrl              | String\|Boolean       | no       | -                                                            | If set ajax will be useed for search/filter/sort/pagination  | false            | "[https://www.example.com/table-options](https://www.example.com/table-options)" |
 
-//use bootstrap
-import BootstrapVue from 'bootstrap-vue'
-Vue.use(BootstrapVue)
-//use bootstrap css
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+##### Addtional example for *columns* config property
 
-import "@quintet/vue-quintable/dist/vue-quintable.css"
-import VueTable from '@quintet/vue-quintable'
-Vue.use(VueTable);
-```
-
-
-
-#### Basic Example
-
-```vue
-<template>
-
-...
-                
-	<VueQuintable 
-	     v-model="selectedRows" 
-	     :filterGroups="filterGroups" 
-	     :filters="filters" 
-	     :config="config"
-	     :rows="rows" 
-         :verbose="false"
-         :sort-order="sortOrder"
-         table-classes="custom-table-class"
-	     @update:sort="eventListenerSort"
-	     @update:page="eventListenerPage"
-	     @update:search="eventListenerSearch"
-	     @update:rows-per-page="eventListenerPePage"
-	     @click:row="eventListenerClickRow" 
-	     @click:cell="eventListenerClickCell" 
-	     @expand:row="eventListenerExpandRow" 
-         @collapse:row="eventListenerCollapseRow" 
-	     @hover:row="eventListenerHoverRow" 
-	     @change:breakpoints="eventListenerBreakpoints"
-         @components:event="handleComponentEvents">
-
-        <template v-slot:header>
-            <div class="clearfix py-2">
-                <p-check class="p-switch" v-model="active" value="true">
-                    Active
-                </p-check>
-            </div>
-            <div class="clearfix py-2">
-                <p-check class="p-switch" v-model="printable" value="true">
-                    Printable
-    			</p-check>
-            </div>
-            <div class="clearfix py-2">
-                <label>
-                    Name: 
-                    <input class="form-control" v-model="name" placeholder="Name"/>						</label>
-            </div>
-            <hr>
-        </template>
-
-        <template v-slot:footer>
-        	<div class="text-center py-3 mt-3 bg-info text-white">
-            	Copyright © 2019 by Example Company
-            </div>
-        </template>
-        <template v-slot:no-results>
-        	<div class="text-center">No Results...</div>
-        </template>
+| Key                    | Type     | Options                             | Pre-condition           | Description                                                  |
+| ---------------------- | -------- | ----------------------------------- | ----------------------- | ------------------------------------------------------------ |
+| headline               | String   | -                                   | -                       | Headline for column                                          |
+| title                  | String   | -                                   | -                       | Description, displayed on hover the headline                 |
+| sort                   | Boolean  | true\|false                         | -                       | If set to true, this column will be sortable                 |
+| breakpoint             | String   | "xs"\|"sm"\|"md"\|"lg"\|"xl"\|"all" | -                       | Bootstrap breakpoint from which descending the column will be displayed as additional row |
+| showHeadlineBreakpoint | String   | "xs"\|"sm"\|"md"\|"lg"\|"xl"\|"all" | *headline* is set       | Bootstrap breakpoint from which descending the columns headline will be shown |
+| hideHeadlineBreakpoint | String   | "xs"\|"sm"\|"md"\|"lg"\|"xl"\|"all" | *headline* is set       | Bootstrap breakpoint from which descending the columns headline will be hidden |
+| align                  | String   | "left"\|"right"\|"center"           |                         | Text alignment for whole column                              |
+| alwaysExpanded         | Boolean  | true\|false                         | *breakpoint* is set     | If set to true, the additional columns row will be always expanded if the breakpoint is reached |
+| sticky                 | Boolean  | true\|false                         | *breakpoint* is not set | If set to true,  this column will be always displayed as additional row and will be expanded always |
+| cellFormatter          | Function | -                                   | -                       | Function for complex custom cell formatting. The cell will be passed as function parameter |
 
 
-	</VueQuintable>
-	
-	<!-- Ajax operated quintable -->
-	<VueQuintable :axios="configuredAxios" :updated="updated" :config="ajaxConfig" />
 
-...
+#### Example for rows property
 
-</template>
+| Key      | Type                              | Pre-condition                                   | Description                                                  | Default |
+| -------- | --------------------------------- | ----------------------------------------------- | ------------------------------------------------------------ | ------- |
+| cells    | Array                             | -                                               | List of cells for the row                                    | null    |
+| selected | Boolean                           | *select* is enabled                             | If set to true the row will be selected on default           | false   |
+| expanded | Boolean                           | *breakpoint* of at least one column is affected | If set to true the row will be expanded on default           | false   |
+| keywords | String[]                          | *search* is enabled                             | Additional keywords which will match a search query          | null    |
+| classes  | String                            | -                                               | Additional CSS classes for row                               | null    |
+| filters  | Object                            | *filters* are set                               | Filters with filter name(s) and value(s), which will match selected filter(s) | null    |
+| align    | String{"left"\|"right"\|"center"} | -                                               | Text alignment for whole row, this will be overwritten by *columns* align value | "left"  |
 
-<script>
+##### Addtional example for *cells* rows property
 
-    import VueQuintable from './components/VueQuintable.vue
-	import axios from "axios"
-    ...
- 
-  	data(){
-        return {
-            //custom configured axios instance for passing to quintable
-            configuredAxios:axios,
-           
-            //filters
-            active:false,
-            name:"",
-            printable:false,
-            
-			//selected rows for v-model
-            selectedRows:[],
-            
-            //Object active filter criterias
-            filters:{},
-            
-            //Array for (initial) sorting indexex, ordered front to back, can be changed 			   dynamically, also supports direction sortOrder: [{index:1,asc:false},0]
-            sortOrder:[1,0]
-            
-            //Object[] filter groups with relations, recursive.
-            filterGroups:[
-                {
-                    items:[
-                        {
-                            items:[
-                                {name:"name"},
-                                {name:"active"}
-                            ],
-                            relation:"OR",
-                        },
-                        {
-                            items:[
-                                {
-                                    name:"printable"
-                                }
-                            ],
-                        }
-                    ],
-                    relation:"AND"
-                }
-            ],
-            
-            //Boolean/Object/Date property to trigger reload on current page
-            //ONLY relevant if ajaxUrl is useed
-            updated:false,
-           
-            //Object Table config
-            config:{ 
-              
-                  //Object[] columns with headline, sticky, breakpoint, align, sort
-                  columns:[ 
-                     {
-                        //String headline for table header 
-                        headline:"Name",
-                        //String breakpoint for hiding headline
-                        hideHeadlineBreakpoint:"md",
-                        //Boolean if column is sortable
-                        sort:true,
-                        //String hover title
-                        title:"Name of Participant"
-                     },{
-                        headline:"Age",
-                        //String breakpoint for showing headline
-                        showHeadlineBreakpoint:"md",
-                        sort:true,
-                        /*
-                        Function for cell formatting. May return Object with value:String
-                        and type:String{"text","html"} properties or just a formatted 
-                        value (will be interpreted as type "text")
-                        */
-                        cellFormatter(cell){
-							  return {
-								  value: cell.html + "<p>Additional Text</p>",
-								  type:"html"
-							  };
-						 },
-                     },{
-                        headline:"Birthplace",
-                        //String for breakpoint when column should be hidden
-                        //["xs","sm","md","lg","xl","all"] 
-                        breakpoint:"md",
-                        //String alignment of table header ["right","left","center"]
-                        align:"right",
-                        //Boolean if always expanded on breakpoint, wont collapse at all
-					    alwaysExpanded:true,
-                     },{
-                        headline:"Job",
-                        //will always be displayed as additional open row 
-                        sticky:true,
-                     }
-                  ],
+| Key       | Type   | Pre-condition                                                | Description                                                  |
+| --------- | ------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| text      | String | non of the following are set: *html*, *component*, *quintable* | Content string                                               |
+| html      | String | non of the following are set: *text*, *component*, *quintable* | HTML content string                                          |
+| component | String | non of the following are set: *text*, *html*, *quintable*    | Custom component object, see code example below              |
+| quintable | String | non of the following are set: *text*, *html*, *component*    | VueQuintable object component for nested table, see simple code example below |
+| classes   | String | -                                                            | Additional CSS classes for cell                              |
+| align     | String | -                                                            | Text alignment for whole column, this will overwrite *columns* and *rows* align values |
 
-                  //Boolean String of class rows on hover, default class bg-muted
-                  hoverClass:"bg-success text-white",	
-                  //Number or false/true, default false, if true => 25
-                  pagination:5,
-                  //Boolean if cells can be selected
-                  select:true,
-                  //Boolean if use pretty checkboxes library
-                  prettySelect:true,
-                  //String [pre/post] position of the select checkboxes 
-                  selectPosition:"pre",
-                  //Boolean if there should be a select all checkbox
-                  selectAll:true,
-				  //Boolean if "select all" selects all rows allover the pages
-                  //Please keep in mind that this won't work with server side pagination
-                  selectAllRows:true,
-                  //Boolean if all rows are selected on init
-                  defaultSelected:false,
-                  //Boolean if there shall be a search input 
-                  search:true,
-                  //Boolean use fuzzy.js search matching library for more search results
-				  useFuzzySearch:false,
-                  //Integer displayed page range of pagination
-                  pageRange:5,
-                  //Boolean show plus for row toggle or not
-                  hideRowToggle:true,
-                  //Integer minimum length of query that triggers search
-                  searchLength:1,
-                  //String Placeholder for search input
-                  searchPlaceholder:"Search rows...",
-                  //String Placeholder for no searching/filtered resulting rows
-                  emptyPlaceholder:"No results!",
-                  //Boolean if all columns should be expanded by default
-                  expandedAll:false,
-                  //Boolean if user should be allowed to set rows per page
-                  rowsSelect:true,
-                  //String text for rows per page select
-                  rowsPlaceholder:"Rows:",
-                  //String ["AND"/"OR"] filter relation, if no filter group affected
-                  filterRelation:"OR",
-                   //String ["AND"/"OR"] default relation filter groups to each other
-                  filterGroupRelation:"OR",
-                  //Boolean if multi-key sorting is enabled
-                  multiSort:true,
-                  //Boolean if user should be allowed to set multisort
-                  multiSortSelect:true,
-                  //String Placeholder for multiple sort description
-                  multiSortPlaceholder:"Multiple sort",
-                  //String/Boolean search/filter/sort/pagination per ajax
-                  ajaxUrl:false,
-                },
-            
-               //Array of Array and/or Object
-               rows:[ 
-                  //Object, if options apart from cell content will be set 
-                  { 
-                     //Array with cell content/options
-                     cells:[
-                         {
-                            //String text string
-                            text:"Max Mustermann",
-                            //String HTML string
-                            html:"Max Mustermann",
-                            //Object component definition
-                            component:{
-                                //String name/tag definition of component
-                            	name:"test-component",
-								//Object properties passed to component 
-                                props:{
-                            		identifier:1,
-								 }
-							 },
-                             //Object nested VueQuintable
-                             quintable: {
-                                 //String classes for sub table
-                                 tableClasses:"text-center",
-                                 //Object config for sub table
-								 config: {
-          							columns: [
-          								{
-          									headline: "State of birth",
-          								}, {
-          									headline: "City of birth",
-          								}, {
-          									headline: "Time of birth",
-          								}
-          							],
-          						 },
-                                 //Object rows for sub table
-        						 rows: [
-        							[
-                                    	{text: "Bavaria"}, 
-                                     	{text: "Augsburg"},
-                                        {text: "10:10 AM"}
-                                    ],
-                          			[
-                                        {text: "New York"}, 
-                                        {text: "New York"}, 
-                                        {text: "12:10 AM"}
-                                    ],
-                          			[
-                                        {text: "Texas"}, 
-                                        {text: "Houston"}, 
-                                        {text: "09:12 PM"}
-                                    ],        								
-        						],
-        					},
-                            //String space separated classes
-                            classes:"special-td",
-                            //String alignment ["left","right","center"]
-                            align:"right",
-                     
-						  },
+Lets have a look on a example for *rows* and *cells*
 
-                         },
-                     	{html:20},
-                        {html:"Berlin"},
-                        {html:"Software Developer"},
-                     ],
-					  //Boolean if selected on default
-                      selected:true,
-                      //Boolean if expanded on default
-                      expanded:true,
-                      //String[] Keywords for search
-                      keywords:[
-                          "Web Developer"
-                      ],
+```javascript
+//Table with columns "Name","Age","Birthplace","Job"
 
-                    //Object Custom filter values
-                    filters:{
-                        printable:true,
-                        active:true,
+[
+    //simple row as array
+    [ 
+        {
+            text:"John Doe"
+        },
+        {
+            text:50
+        },
+        {
+            text:"New York"
+        },
+        {
+            text:"Trainee"
+        },
+    ],
+    //advances row as object
+    {
+    	cells:[
+            {
+                html:"<b>Max</b> Mustermann",
+                classes:"special-td",
+                align:"right",
+             },
+            {
+                component:{
+                    name:"age-component",
+                    props:{
+                        age:20,
                     }
-                  },
-                  { 
-                    cells:[
-                     	{
-                            html:"John Doe",
-                         	sortValue:"#1"
-                        },
-                        {html:25},
-                        {html:"New York"},
-                        {html:"CEO"}
-                    ],
-                    //String space separated classes
-                    classes:"text-danger",
-                    //Object Custom filter values
-                    filters:{
-                        name:"John Doe",
-                        printable:true,
-                        active:false
+                },
+            },
+            {
+                quintable: {
+                    tableClasses:"text-center",
+                    config: {
+                        columns: [
+                            {
+                                headline: "State of birth",
+                            }, {
+                                headline: "City of birth",
+                            }, {
+                                headline: "Time of birth",
+                            }
+                        ],
                     },
-                    tooltip:"John Doe (CEO)"
+                    rows: [
+                        [
+                            {text: "Bavaria"}, 
+                            {text: "Augsburg"},
+                            {text: "10:10 AM"}
+                        ],
+                        [
+                            {text: "New York"}, 
+                            {text: "New York"}, 
+                            {text: "12:10 AM"}
+                        ],
+                        [
+                            {text: "Texas"}, 
+                            {text: "Houston"}, 
+                            {text: "09:12 PM"}
+                        ],        								
+                    ],
+            	},
+            },
+            {
+                text:"Trainee"
+            },
+		]
+    }
+]
 
-                  },
-                  {
-                      cells:[
-                          {html:"John Stone"},
-                          {html:"WOW 2"},
-                          {html:"WOW 3"},
-                          {html:"LOL 4"},
-                          {html:"LOL 5"},
-                          {html:"LOL 6"}
-                      ],
-                      filters:{
-                          active:true,
-                          printable:true
-                      }
-                  },
-                  [ 
-                     {
-                         html:"Ponnappa Priya",
-                         tooltip:"Name: Ponnappa Priya"
-                     },
-                      {html:28},
-                      {html:"San Fransisco"},
-                      {html:"Trainee"},
 
-                  ],
-                  [ 
-                      {html:"Mia Wong"},
-                      {html:50},
-                      {html:"Pejing"},
-                      {html:"Trainee"},
-                  ],
-                  [ 
-                      {html:"Peter Stanbridge"},
-                      {html:18},
-                      {html:"London"},
-                      {html:"Trainee"},
-                  ],
-                  [ 
-                      {html:"Natalie Lee-Walsh"},
-                      {html:25},
-                      {html:"Dublin"},
-                      {html:"Trainee"},
-                  ],
-                  [ 
-                      {html:"Eugenia Anders"},
-                      {html:65},
-                      {html:"Jerusalem"},
-                      {html:"Trainee"},
-                  ],
-                  [ 
-                      {html:"Desiree Burch"},
-                      {html:27},
-                      {html:"Kopenhaven"},
-                      {html:"Trainee"},
-                  ],
-               ],
-           },
-               
-           ajaxConfig: {
-				columns: [
-					{
-						headline: "Name",
-						sort: true,
-					}, {
-						headline: "Email",
-						breakpoint: "sm",
-						sort: true,
-					}, {
-						headline: "Phone",
-						breakpoint: "md",
-					}, {
-						headline: "Job Title",
-						breakpoint: "md",
-						sort: true,
-					}
-				],
-				pagination:25,
-				ajaxUrl:"http://your.server.url"
-			},
-      },
-          
-      ...
-      
-      watch:{
-        selectedRows(val){
-            console.log("SELECTED ROWS",val);
-        },
-        name(val){
-            if(val !== ""){
-                this.$set(this.filters,"name",val); 
-            }else{
-                this.$delete(this.filters,"name");
-            }
-
-        },
-        active(val){
-            if(val){
-                this.$set(this.filters,"active",true); 
-            }else{
-                this.$delete(this.filters,"active");
-            }
-        },
-        printable(val){
-            if(val){
-                this.$set(this.filters,"printable",true); 
-            }else{
-                this.$delete(this.filters,"printable");
-            }
-        }
-      }
-    
-    ...
-    
-</script>
 ```
 
-
-
-#### Component Definition
+##### Component Definition
 
 To use a custom component inside a VueQuintable you have to define it as the following:
 
 ```vue
 <template>
     <div @click="check">
-       Component ID: {{identifier}}
+      Age: {{age}}
     </div>
 </template>
 
@@ -549,14 +281,14 @@ To use a custom component inside a VueQuintable you have to define it as the fol
 <script>
 
     export default {
-        props:["identifier"],
+        props:["age"],
         methods: {
             check() {
                 //emit the pre-defined event for component actions
                 //handled from VueQuintable by "component:event"
                 this.$emit("action",
                     {
-                        identifiert:this.id,
+                        age:this.age,
                     }
                 )
             }
@@ -567,8 +299,6 @@ To use a custom component inside a VueQuintable you have to define it as the fol
 
 ```
 
-
-
 Import and use the Component in your Code:
 
 ```js
@@ -578,6 +308,175 @@ Vue.component(
     "test-component",
     TestComponent.default || TestComponent
 );
+```
+
+
+
+#### Example for *filters* property
+
+This example shows selected values for **name**, **active** and **printable** filters.
+
+```javascript
+{
+   name:"John",
+   active:true,
+   printable:false
+}
+```
+
+
+
+#### Example for *filter-groups* property
+
+| Key      | Type                | Description                                                  |
+| -------- | ------------------- | ------------------------------------------------------------ |
+| items    | Object[]            | List that contains Object of filter names or nested groups related to the group |
+| relation | String{"OR"\|"AND"} | Relation between the items                                   |
+
+This filter groups example will cause to show rows that have filter matching filter values for selected  **name** *OR* **active** filter **AND** selected printable filter. This groups are infinitely nestable.
+
+```javascript
+[
+    {
+        items:[
+            {
+                items:[
+                    {
+                        name:"name"
+                    },
+                    {
+                        name:"active"
+                    }
+                ],
+                relation:"OR",
+            },
+            {
+                items:[
+                    {
+                        name:"printable"
+                    }
+                ],
+            }
+        ],
+        relation:"AND"
+    }
+],
+```
+
+#### Example for for *sort-order* property
+
+These examples depict a sorting ordered second column (index=1) before first column (index=0). You can use Objects to set the ascending or descending order optionally. The Default will be *asc=true*, column index starts on zero.
+
+```javascript
+//simple
+[
+   1,0
+]
+
+//advanced
+[
+    {
+        index:1,
+        asc:false
+    },
+    {
+        index:0,
+        asc:true
+    },
+]
+
+```
+
+
+
+## Basic Example
+
+A simple basic example to show the usage of VueQuintable. More examples are included in the project and can be started with:
+
+```shell
+npm run start
+```
+
+ 
+
+```vue
+<template>
+	<VueQuintable :config="config" :rows="rows"></VueQuintable>
+</template>
+
+<script>
+
+    import VueQuintable from './components/VueQuintable.vue
+
+    ...
+ 
+  	data() {
+        return {
+            config: {
+                columns: [
+                    {
+                        headline: "Name",
+                    }, {
+                        headline: "Age",
+                    }, {
+                        headline: "Birthplace",
+                        breakpoint: "md"
+                    }, {
+                        headline: "Job",
+                        sticky: true,
+                    }
+                ],
+            },
+
+            rows: [
+                [
+                    {
+                        text: "Mia Wong"
+                    },
+                    {
+                        text: 50
+                    },
+                    {
+                        text: "Pejing"
+                    },
+                    {
+                        text: "Trainee"
+                    },
+                ],
+                [
+                    {
+                        text: "Peter Stanbridge"
+                    },
+                    {
+                        text: 18
+                    },
+                    {
+                        text: "London"
+                    },
+                    {
+                        text: "Trainee"
+                    },
+                ],
+                [
+                    {
+                        text: "Natalie Lee-Walsh"
+                    },
+                    {
+                        text: 25
+                    },
+                    {
+                        text: "Dublin"
+                    },
+                    {
+                        text: "Trainee"
+                    },
+                ],
+            ],
+        }
+    }
+          
+  ...
+</script>
 ```
 
 
@@ -621,8 +520,6 @@ Vue.component(
 </script>
 ```
 
-
-
 The request for the ajax handling on server has got the following structure:
 
 ```javascript
@@ -649,7 +546,7 @@ The response has to be the following structure:
 
 ```javascript
 {
-	//Array of all rows, see above
+	//Array of all rows, structure see above
 	rows:[]
     //Number of all matching rows, without paging
     all:240
@@ -661,3 +558,10 @@ The response has to be the following structure:
 ### Good to know
 
 - Links won't trigger expanded rows to collapse. Also you can prevent collapse parent row by define an element with the class "prevent-toggle"
+- VueQuintable uses v-model for selected rows
+
+
+
+## Authors
+
+Quintet Consulting UG - Samuel Zeitler

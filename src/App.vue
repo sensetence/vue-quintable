@@ -13,6 +13,22 @@
   		</div>
   		<div class="row">
   			<div class="col-12">
+
+
+                <div>
+                    <b-tabs content-class="mt-3">
+                        <b-tab title="Basic" active>
+                            <Basic></Basic>
+                        </b-tab>
+                        <b-tab title="Second">
+                            TEST
+                        </b-tab>
+                    </b-tabs>
+                </div>
+
+
+
+
 			     <VueQuintable
 			    	v-model="selectedRows"
 			    	:verbose="verbose"
@@ -80,9 +96,14 @@
 <script>
 
 import VueQuintable from "./components/VueQuintable.vue"
-import Tester from "./components/Test.vue"
+import Tester from "./examples/TestComponent.vue"
 import axiosTest from "axios"
 import Vue from "vue"
+
+
+import Basic from "./examples/Basic.vue"
+
+
 
 Vue.component(
 		"tester",
@@ -107,7 +128,7 @@ axiosTest.interceptors.request.use(
 export default {
   name: 'app',
   components: {
-    VueQuintable
+    VueQuintable,Basic
   },
 
  data(){
@@ -231,6 +252,7 @@ export default {
                      },{
                         headline:"Birthplace",
                         breakpoint:"md",
+                          sticky:true
                      },{
 						  headline:"Job",
 						  hideHeadlineBreakpoint:"xl",
@@ -508,4 +530,15 @@ export default {
   }
 }
 </script>
+
+<style>
+    pre .close {
+        float: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        line-height: inherit;
+        text-shadow: inherit;
+        opacity: inherit;
+    }
+</style>
 
