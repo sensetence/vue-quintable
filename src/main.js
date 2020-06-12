@@ -8,6 +8,7 @@ import './plugins/bootstrap-vue'
 Vue.config.productionTip = false
 
 import PrettyCheck from 'pretty-checkbox-vue/check';
+import PrettyRadio from 'pretty-checkbox-vue/radio';
 import 'pretty-checkbox/src/pretty-checkbox.scss';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -28,6 +29,7 @@ import {
 	faSortAmountDownAlt,
 	faSortAmountDown,
 	faAngleRight,
+	faInfoCircle,
 	faAngleLeft,
 	faAngleDoubleRight,
 	faAngleDoubleLeft,
@@ -45,12 +47,14 @@ library.add(faAngleDoubleRight);
 library.add(faAngleDoubleLeft);
 library.add(faAngleRight);
 library.add(faAngleLeft);
+library.add(faInfoCircle);
 library.add(faCircleNotch);
 
 
 
 Vue.component('v-select', vueSelect);
 Vue.component('p-check', PrettyCheck);
+Vue.component('p-radio', PrettyRadio);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 /** COMMON END **/

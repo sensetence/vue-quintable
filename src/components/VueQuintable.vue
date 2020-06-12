@@ -486,6 +486,70 @@ export default {
 		pageOffset:0,
 		uuid:randomUUID(),
 		loaderHeight:0,
+		defaultOperator:"equal",
+		operatorFunctions:{
+  			equal:(a,b)=>{
+  				return b === a;
+			},
+			greater:(a,b)=>{
+				return b > a;
+			},
+			less:(a,b)=>{
+				return b < a;
+			},
+			greaterEqual:(a,b)=>{
+				return b >= a;
+			},
+			lessEqual:(a,b)=>{
+				return b <= a;
+			},
+			contains:(a,b)=>{
+
+  				if(!Array.isArray(b) && typeof b !== "string"){
+  					return false;
+				}
+
+  				return b.indexOf(a) !== -1;
+	  		},
+
+			notContains:(a,b)=>{
+
+				if(!Array.isArray(b) && typeof b !== "string"){
+					return false;
+				}
+
+				return b.indexOf(a) === -1;
+			},
+
+			startsWith:(a,b)=>{
+
+				if(typeof b !== "string"){
+					return false;
+				}
+
+				return b.indexOf(a) === 0;
+			},
+
+			endsWitch:(a,b)=>{
+
+				if(typeof b !== "string"){
+					return false;
+				}
+
+				return b.indexOf(a, this.length - a.length) !== -1;
+			},
+
+			matches(regex,b){
+
+  				if(!(regex instanceof RegExp) || typeof b !== "string"){
+  					return false;
+				}
+				return regex.test(b);
+
+			}
+		},
+
+
   	}
   },
 
@@ -616,6 +680,9 @@ export default {
 
   computed:{
 
+  		operators(){
+  			return Object.keys(this.operatorFunctions);
+		},
 
 	  /**
 	   * Just a debug flag
@@ -1402,6 +1469,7 @@ export default {
 
   watch:{
 
+
 	  /**
 	   * Resets page and selects if a filter value is changes
 	   *
@@ -1438,7 +1506,7 @@ export default {
 	   *
 	   */
 	  loading(){
-		  this.loaderHeight = this.$refs["height-wrapper"].clientHeight;
+		  this.loaderHeight = this.$refs["height-wrapper"]?this.$refs["height-wrapper"].clientHeight:0;
 	  },
 
 	  /**
@@ -1458,8 +1526,19 @@ export default {
 			  	this.resetSelect();
 			  }
 
+
+			  const rows = [];
+			  for(let i = 0;i<val.length;i++){
+			    if(val[i]){
+			  	  rows.push(this.rowsFinal[this.sortedIndexes[i]]);
+			    }
+			  }
+
+			  this.$emit("filtered:rows",rows,"filtered:rows");
+
 		  },
 		  deep:true,
+		  immediate:true,
 	  },
 
 	  /**
@@ -1671,7 +1750,7 @@ export default {
 	 *
 	 */
 	  handleComponentEvent(data){
-		  this.$emit("component:event",data);
+		  this.$emit("component:event",data,"component:event");
 	  },
 
 	  /**
@@ -1995,14 +2074,34 @@ export default {
 									break;
 								}
 
-								//actual checking for matching
-								if(typeof filters[item.name] === "object" && filters[item.name].length && filters[item.name].indexOf(filterValues[item.name]) === -1){
-									found =  false;
-									break;
-								}else if(typeof filters[item.name] !== "object" &&filterValues[item.name] !== filters[item.name]){
-									found =  false;
+
+
+								let operator = typeof filters[item.name] === "object" && filters[item.name] !== null && filters[item.name]["operator"] && this.operators.includes(filters[item.name]["operator"]) ? filters[item.name]["operator"] :this.defaultOperator;
+								let filterProperties = this.getFilterValues(filters[item.name]);
+
+								const cmpFunction = typeof filters[item.name].compare === "function"?filters[item.name].compare:this.operatorFunctions[operator];
+
+								for (let j = 0;j<filterProperties.length;j++){
+									const matches = cmpFunction(filterProperties[j],filterValues[item.name])
+									if(!matches){
+										found = false;
+										break;
+									}
+								}
+
+								if(!found){
 									break;
 								}
+
+
+								//actual checking for matching
+								// if( Array.isArray(filters[item.name]) && filters[item.name].length && filters[item.name].indexOf(filterValues[item.name]) === -1){
+								// 	found =  false;
+								// 	break;
+								// }else if( !Array.isArray(filters[item.name]) && typeof filters[item.name] !== "object" && filterValues[item.name] !== filters[item.name]){
+								// 	found =  false;
+								// 	break;
+								// }
 							}
 
 						}
@@ -2030,14 +2129,32 @@ export default {
 								}
 							}
 
-							//actual checking for matching
-							if(typeof filters[item.name] === "object" && filters[item.name].length && filters[item.name].indexOf(filterValues[item.name]) !== -1){
-								found =  true;
-								break;
-							}else if(typeof filters[item.name] !== "object" && filterValues[item.name] && filters[item.name] && filterValues[item.name] === filters[item.name]){
-								found =  true;
+							let operator = typeof filters[item.name] === "object" && filters[item.name] !== null && filters[item.name]["operator"] && this.operators.includes(filters[item.name]["operator"]) ? filters[item.name]["operator"] :this.defaultOperator;
+							let filterProperties = this.getFilterValues(filters[item.name]);
+
+							const cmpFunction = typeof filters[item.name].compare === "function"?filters[item.name].compare:this.operatorFunctions[operator];
+
+							for (let j = 0;j<filterProperties.length;j++){
+								const matches = cmpFunction(filterProperties[j],filterValues[item.name])
+
+								if(matches){
+									found = true;
+									break;
+								}
+							}
+
+							if(found){
 								break;
 							}
+
+							// //actual checking for matching
+							// if(Array.isArray(filters[item.name]) && filters[item.name].length && filters[item.name].indexOf(filterValues[item.name]) !== -1){
+							// 	found =  true;
+							// 	break;
+							// }else if(!Array.isArray(filters[item.name]) && typeof filters[item.name] !== "object" && filterValues[item.name] && filters[item.name] && filterValues[item.name] === filters[item.name]){
+							// 	found =  true;
+							// 	break;
+							// }
 						}
 					}
 
@@ -2048,6 +2165,15 @@ export default {
 			}
 
 	    },
+
+	   /**
+	   	*
+		* Helper method to calculate an array of filter values from value/array/object
+		*
+	   	*/
+	  	getFilterValues(values){
+		   return values instanceof RegExp || typeof values !== "object" || values === null ? [values]: (Array.isArray(values) ? values: this.getFilterValues(values.values));
+		},
 
 	  /**
 	   * Search a certain filter key in a filter group

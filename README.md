@@ -38,7 +38,27 @@ import VueTable from '@quintet/vue-quintable'
 Vue.use(VueTable);
 ```
 
+### Use directly in browser
 
+You can either install VueQuintable via bower
+
+```shell
+bower install --save https://zeitler-quintet@bitbucket.org/zeitler-quintet/vuefootable.git
+```
+
+or just download the source and include the scripts and styles in dist folder to use VueQuintable for your browser page.
+
+```html
+<script type="text/javascript" src="/path/to/vue/dist/vue.min.js"></script>
+
+<script type="text/javascript" src="/path/to/project/dist/vue-quintable.umd.min.js"></script>
+
+<link rel="stylesheet" href="/path/to/project/dist/vue-quintable.css"></link>
+```
+
+```javascript
+Vue.use(window["vue-quintable"]);
+```
 
 ## Features
 
@@ -78,21 +98,23 @@ You can define some slots to customize the table as you want to.
 
 Add listeners for the following events to handle them as you want to.
 
-- click:row | passing row as second parameter
+- click:row | passes row as first parameter
 
-- click:cell | passing cell as second parameter
+- click:cell | passes cell as first parameter
 
-- expand:row | passing row as second parameter
+- expand:row | passes row as first parameter
 
-- collapse:row | passing row as second parameter
+- collapse:row | passes row as first  parameter
 
-- update:perPage | passing integer as second parameter
+- filtered:rows| passes filtered rows as first parameter
 
-- update:page | passing integer as second parameter
+- update:perPage | passes integer as first parameter
 
-- update:search | passing string as second parameter
+- update:page | passes  integer as first parameter
 
-- update:sort | passing object of sort group as second parameter
+- update:search | passes string as first parameter
+
+- update:sort | passes object of sort group as first parameter
 
 - component:event | generic event for passing data from child components
 
@@ -108,16 +130,14 @@ The following will give you an overview how to configure the VueQuintable for yo
 | ------------- | ------------- | --------------------------- | ------------------------------------------------------------ |
 | config        | Object        | yes                         | The table configuration object. See details below.           |
 | rows          | Array         | yes (if no ajax url is set) | Table rows containing all cells. See details below.          |
-| filters       | Object        | no                          | The active filters for displaying rows. This has to be an Object with filter name as key and filter value as value. See example below. |
+| filters       | Object        | no                          | The active filters for displaying rows. This has to be an Object with filter name as key and filter value as value. Additionally a set of operators can be passed. See example below. |
 | filter-groups | Array         | no                          | Filter groups with relations. See example below.             |
 | sort-order    | Object        | no                          | Set sorting values and order by default or on the fly. See examples below. |
 | axios         | Object        | no                          | Pass a configured axios instance to be used for ajax functionalities. Only relevant if ajax is used. |
 | updated       | Boolean\|Date | no                          | Property to trigger reload on current page. Only relevant if ajax is used. |
 | verbose       | Boolean       | no                          | Default is false. Set to true to see debug informations on developer tools in your Browser. |
 
-
-
-#### Example for config property
+#### Property *config* properties
 
 | Key                  | Type                  | Required | Pre-condition                                                | Description                                                  | Default          | Example                                                      |
 | -------------------- | --------------------- | -------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ---------------- | ------------------------------------------------------------ |
@@ -146,9 +166,9 @@ The following will give you an overview how to configure the VueQuintable for yo
 | multiSortPlaceholder | String                | no       | *sort* is enabled on at least one column and *multi sort select* is enabled | Placeholder for multiple sort description                    | "Multiple sort"  | "Toggle multiple"                                            |
 | ajaxUrl              | String\|Boolean       | no       | -                                                            | If set ajax will be useed for search/filter/sort/pagination  | false            | "[https://www.example.com/table-options](https://www.example.com/table-options)" |
 
-##### Addtional example for *columns* config property
+##### Property *columns* for property *config* properties
 
-| Key                    | Type     | Options                             | Pre-condition           | Description                                                  |
+| Key                    | Type     | Options/Return                      | Pre-condition           | Description                                                  |
 | ---------------------- | -------- | ----------------------------------- | ----------------------- | ------------------------------------------------------------ |
 | headline               | String   | -                                   | -                       | Headline for column                                          |
 | title                  | String   | -                                   | -                       | Description, displayed on hover the headline                 |
@@ -159,11 +179,11 @@ The following will give you an overview how to configure the VueQuintable for yo
 | align                  | String   | "left"\|"right"\|"center"           |                         | Text alignment for whole column                              |
 | alwaysExpanded         | Boolean  | true\|false                         | *breakpoint* is set     | If set to true, the additional columns row will be always expanded if the breakpoint is reached |
 | sticky                 | Boolean  | true\|false                         | *breakpoint* is not set | If set to true,  this column will be always displayed as additional row and will be expanded always |
-| cellFormatter          | Function | -                                   | -                       | Function for complex custom cell formatting. The cell will be passed as function parameter |
+| cellFormatter          | Function | String\|Object                      | -                       | Function for complex custom cell formatting. The cell will be passed as function parameter. Has to return a string handled as text or an object with String value and String type{"html","text"} |
 
 
 
-#### Example for rows property
+#### Property *rows* properties
 
 | Key      | Type                              | Pre-condition                                   | Description                                                  | Default |
 | -------- | --------------------------------- | ----------------------------------------------- | ------------------------------------------------------------ | ------- |
@@ -175,7 +195,7 @@ The following will give you an overview how to configure the VueQuintable for yo
 | filters  | Object                            | *filters* are set                               | Filters with filter name(s) and value(s), which will match selected filter(s) | null    |
 | align    | String{"left"\|"right"\|"center"} | -                                               | Text alignment for whole row, this will be overwritten by *columns* align value | "left"  |
 
-##### Addtional example for *cells* rows property
+##### Property *cells* for property *rows* properties
 
 | Key       | Type   | Pre-condition                                                | Description                                                  |
 | --------- | ------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -189,7 +209,7 @@ The following will give you an overview how to configure the VueQuintable for yo
 Lets have a look on a example for *rows* and *cells*
 
 ```javascript
-//Table with columns "Name","Age","Birthplace","Job"
+//Table with columns "Name","Age","Birth Place","Job"
 
 [
     //simple row as array
@@ -312,21 +332,44 @@ Vue.component(
 
 
 
-#### Example for *filters* property
+#### Property *filters* properties
 
-This example shows selected values for **name**, **active** and **printable** filters.
+| Key      | Type         | Required | Description                                                  |
+| -------- | ------------ | -------- | ------------------------------------------------------------ |
+| values   | Mixed\|Array | Yes      | Compare values. Can be single value or array of values which will match the filter values of rows. |
+| operator | String       | No       | Operator for comparing. The defined operators are:<br />*equal, greater, less, greaterEqual, lessEqual, startsWith, endsWith , contains, notContains, matches* |
+| compare  | Function     | No       | Custom compare function. See Below.                          |
+
+This example shows selected values for **active**, **printable**, **first_name**, **middle_name**, and **last_name **filters. Operators can be:
 
 ```javascript
 {
-   name:"John",
    active:true,
-   printable:false
+   printable:false,
+   first_name:
+    {
+        operator:"contains",
+        values:["Jo","ja"],   
+    },
+    middle_name:
+    {
+        compare:"matches",
+        values:new RegExp("r.+a","g"),   
+    },
+    last_name:
+    {
+        compare:(value,rowValue)=>{
+        	return rowValue.indexOf(value) === 2;
+        },
+        values:"a",   
+    }
+   
 }
 ```
 
 
 
-#### Example for *filter-groups* property
+#### Property *filter-groups* properties
 
 | Key      | Type                | Description                                                  |
 | -------- | ------------------- | ------------------------------------------------------------ |
@@ -363,7 +406,7 @@ This filter groups example will cause to show rows that have filter matching fil
 ],
 ```
 
-#### Example for for *sort-order* property
+#### Property *sort-order* properties
 
 These examples depict a sorting ordered second column (index=1) before first column (index=0). You can use Objects to set the ascending or descending order optionally. The Default will be *asc=true*, column index starts on zero.
 
@@ -419,7 +462,7 @@ npm run start
                     }, {
                         headline: "Age",
                     }, {
-                        headline: "Birthplace",
+                        headline: "Birth Place",
                         breakpoint: "md"
                     }, {
                         headline: "Job",
@@ -437,7 +480,7 @@ npm run start
                         text: 50
                     },
                     {
-                        text: "Pejing"
+                        text: "Beijing"
                     },
                     {
                         text: "Trainee"

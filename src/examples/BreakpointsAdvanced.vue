@@ -1,12 +1,10 @@
 <template>
 
     <div class="content">
-
         <p class="alert alert-info">
             <font-awesome-icon class="mr-2" icon="info-circle"></font-awesome-icon>
-            Just a simple table
+            Resize your brower window to see responsive behaviour
         </p>
-
         <VueQuintable :config="config" :rows="rows"></VueQuintable>
 
         <b-button v-b-toggle.code-basic variant="secondary">Toggle Code</b-button>
@@ -15,7 +13,6 @@
 <pre data-toolbar-order="copy-to-clipboard"><code class="language-markup">&lt;template&gt;
         &lt;VueQuintable :config=&quot;config&quot; :rows=&quot;rows&quot;&gt;&lt;/VueQuintable&gt;
 &lt;/template&gt;
-
 &lt;script&gt;
     import VueQuintable from "../components/VueQuintable.vue"
     export default {
@@ -30,29 +27,18 @@
                             headline: "Name",
                         }, {
                             headline: "Age",
+                            breakpoint:"md"
                         }, {
                             headline: "Birth Place",
+                            sticky:true
                         }, {
                             headline: "Job",
+                            breakpoint:"all"
                         }
                     ],
                 },
 
                 rows: [
-                    [
-                        {
-                            html: "<em>John Doe</em>"
-                        },
-                        {
-                            text: 40
-                        },
-                        {
-                            text: "New York"
-                        },
-                        {
-                            text: "CFO"
-                        },
-                    ],
                     [
                         {
                             text: "Mia Wong"
@@ -99,9 +85,7 @@
             }
         }
     }
-&lt;/script&gt;
-</code></pre>
-
+&lt;/script&gt;</code></pre>
             <!-- @formatter:on -->
 
         </b-collapse>
@@ -114,7 +98,7 @@
 
     export default {
         components:{
-          VueQuintable
+            VueQuintable
         },
         data() {
             return {
@@ -124,10 +108,13 @@
                             headline: "Name",
                         }, {
                             headline: "Age",
+                            breakpoint:"md"
                         }, {
                             headline: "Birth Place",
+                            sticky:true
                         }, {
                             headline: "Job",
+                            breakpoint:"all"
                         }
                     ],
                 },
@@ -135,22 +122,7 @@
                 rows: [
                     [
                         {
-                            html: "<em>John Doe</em>"
-                        },
-                        {
-                            text: 40
-                        },
-                        {
-                            text: "New York"
-                        },
-                        {
-                            text: "CFO"
-                        },
-                    ],
-                    [
-                        {
-                            text: "Mia Wong",
-                            classes:"text-primary"
+                            text: "Mia Wong"
                         },
                         {
                             text: 50
@@ -167,32 +139,29 @@
                             text: "Peter Stanbridge"
                         },
                         {
-                            text: 18,
+                            text: 18
                         },
                         {
                             text: "London"
                         },
                         {
-                            text: "Trainee",
-                            align:"right"
+                            text: "Trainee"
                         },
                     ],
-                    {
-                         cells:[   {
-                                text: "Natalie Lee-Walsh"
-                            },
-                            {
-                                text: 25
-                            },
-                            {
-                                text: "Dublin"
-                            },
-                            {
-                                text: "Managing Director"
-                            },
-                        ],
-                        classes:"text-danger"
-                    },
+                    [
+                        {
+                            text: "Natalie Lee-Walsh"
+                        },
+                        {
+                            text: 25
+                        },
+                        {
+                            text: "Dublin"
+                        },
+                        {
+                            text: "Managing Director"
+                        },
+                    ],
                 ],
             }
         }

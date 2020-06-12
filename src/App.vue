@@ -15,74 +15,118 @@
   			<div class="col-12">
 
 
-                <div>
-                    <b-tabs content-class="mt-3">
-                        <b-tab title="Basic" active>
-                            <Basic></Basic>
-                        </b-tab>
-                        <b-tab title="Second">
-                            TEST
-                        </b-tab>
-                    </b-tabs>
-                </div>
+<!--                <div>-->
+<!--                    <b-tabs content-class="mt-3" @activate-tab="tabChanged">-->
+<!--                        <b-tab title="Basic" active>-->
+<!--                            <Basic></Basic>-->
+<!--                        </b-tab>-->
+<!--                        <b-tab title="Sort">-->
+<!--							<Sort></Sort>-->
+<!--      >-->
+<!--                </b-tab>-->
+<!--						<b-tab title="Pagination">-->
+<!--							<Pagination></Pagination>-->
+<!--						</b-tab>-->
+<!--						<b-tab title="Select">-->
+<!--							<Select></Select>-->
+<!--						</b-tab>-->
+<!--						<b-tab title="Breakpoints">-->
+<!--							<Breakpoints></Breakpoints>-->
+<!--						</b-tab>-->
+<!--						<b-tab title="Breakpoints Advanced">-->
+<!--							<BreakpointsAdvanced></BreakpointsAdvanced>-->
+<!--						</b-tab>-->
+<!--						<b-tab title="Ajax">-->
+<!--							<Ajax></Ajax>-->
+<!--						</b-tab>-->
+<!--						<b-tab title="Ajax Loaded">-->
+<!--							<AjaxLoaded :updated="tabUpdated"></AjaxLoaded>-->
+<!--						</b-tab>-->
+<!--						<b-tab title="Filter">-->
+<!--							Coming soon...-->
+<!--						</b-tab>-->
+<!--						<b-tab title="Component">-->
+<!--							Coming soon...-->
+<!--						</b-tab>-->
+<!--						<b-tab title="Nested">-->
+<!--							Coming soon...-->
+<!--						</b-tab>-->
+<!--						<b-tab title="Slots">-->
+<!--							Coming soon...-->
+<!--						</b-tab>-->
+<!--						<b-tab title="Computed Rows">-->
+<!--							Coming soon...-->
+<!--						</b-tab>-->
+<!--						<b-tab title="Full">-->
+<!--							Coming soon...-->
+<!--						</b-tab>-->
+
+<!--                    </b-tabs>-->
+<!--                </div>-->
+
+				<v-select class="mb-3" :clearable="false" v-model="example" :options="examples"></v-select>
+
+				<div class="example-content">
+					<component :is="example.value"></component>
+				</div>
 
 
 
 
-			     <VueQuintable
-			    	v-model="selectedRows"
-			    	:verbose="verbose"
-			    	:filters="filters"
-			    	:filterGroups="filterGroups"
-			    	:config="config"
-			    	:rows="rows"
-                    :sortOrder="sortOrder"
-			    	key="table-1"
-					table-classes="test"
-			    	@update:sort="eventListener"
-			    	@update:page="eventListener"
-			    	@update:search="eventListener"
-			    	@update:rows-per-page="eventListener"
-			    	@click:row="eventListener"
-			    	@click:cell="eventListener"
-			    	@expand:row="eventListener"
-			    	@hover:row="eventListener"
-			    	@collapse:row="eventListener"
-			    	@change:breakpoints="eventListener"
-				 	@component:event="onComponentEvent"
+<!--			     <VueQuintable-->
+<!--			    	v-model="selectedRows"-->
+<!--			    	:verbose="verbose"-->
+<!--			    	:filters="filters"-->
+<!--			    	:filterGroups="filterGroups"-->
+<!--			    	:config="config"-->
+<!--			    	:rows="rows"-->
+<!--                    :sortOrder="sortOrder"-->
+<!--			    	key="table-1"-->
+<!--					table-classes="test"-->
+<!--			    	@update:sort="eventListener"-->
+<!--			    	@update:page="eventListener"-->
+<!--			    	@update:search="eventListener"-->
+<!--			    	@update:rows-per-page="eventListener"-->
+<!--			    	@click:row="eventListener"-->
+<!--			    	@click:cell="eventListener"-->
+<!--			    	@expand:row="eventListener"-->
+<!--			    	@hover:row="eventListener"-->
+<!--			    	@collapse:row="eventListener"-->
+<!--			    	@change:breakpoints="eventListener"-->
+<!--				 	@component:event="onComponentEvent"-->
 
-				 >
-			    	<template v-slot:header>
-					  	<div class="clearfix py-2">
-			                <label>
-			                    Name:
-			                    <input class="form-control" v-model="name" placeholder="Name"/>
-			                </label>
-			            </div>
-					  	<div class="clearfix py-2">
-					  		<p-check class="p-switch" v-model="active" value="true">Active</p-check>
-					  	</div>
-					  	<div class="clearfix py-2">
-					  		<p-check class="p-switch" v-model="printable" value="true">Printable</p-check>
-					  	</div>
+<!--				 >-->
+<!--			    	<template v-slot:header>-->
+<!--					  	<div class="clearfix py-2">-->
+<!--			                <label>-->
+<!--			                    Name:-->
+<!--			                    <input class="form-control" v-model="name" placeholder="Name"/>-->
+<!--			                </label>-->
+<!--			            </div>-->
+<!--					  	<div class="clearfix py-2">-->
+<!--					  		<p-check class="p-switch" v-model="active" value="true">Active</p-check>-->
+<!--					  	</div>-->
+<!--					  	<div class="clearfix py-2">-->
+<!--					  		<p-check class="p-switch" v-model="printable" value="true">Printable</p-check>-->
+<!--					  	</div>-->
 
-					  	<hr>
-			    	</template>
-			    	<template v-slot:footer>
-			    		<div class="text-center py-3 px-3 mt-3 bg-info text-white">
-			    			Copyright © 2019 by Quintet Consulting UG (haftungsbeschränkt)
-			    		</div>
-			    	</template>
-			    	<template v-slot:no-results>
-			    		<div class="text-center">No Results...</div>
-			    	</template>
+<!--					  	<hr>-->
+<!--			    	</template>-->
+<!--			    	<template v-slot:footer>-->
+<!--			    		<div class="text-center py-3 px-3 mt-3 bg-info text-white">-->
+<!--			    			Copyright © 2019 by Quintet Consulting UG (haftungsbeschränkt)-->
+<!--			    		</div>-->
+<!--			    	</template>-->
+<!--			    	<template v-slot:no-results>-->
+<!--			    		<div class="text-center">No Results...</div>-->
+<!--			    	</template>-->
 
-			    </VueQuintable>
+<!--			    </VueQuintable>-->
 
 			    <!-- Remote Loading Data -->
 <!--			     <VueQuintable :loading="loading" :config="remoteConfig" :rows="remoteRows" key="table-2" />-->
 
-				<VueQuintable :axios="axios" :updated="updated" :config="ajaxConfig" key="table-3" />
+<!--				<VueQuintable :axios="axios" :updated="updated" :config="ajaxConfig" key="table-3" />-->
 
 
 
@@ -95,14 +139,35 @@
 
 <script>
 
-import VueQuintable from "./components/VueQuintable.vue"
-import Tester from "./examples/TestComponent.vue"
-import axiosTest from "axios"
+// import VueQuintable from "./components/VueQuintable.vue"
+import axiosCustom from "axios"
 import Vue from "vue"
 
 
 import Basic from "./examples/Basic.vue"
+import Select from "./examples/Select.vue"
+import Pagination from "./examples/Pagination.vue"
+import Sort from "./examples/Sort.vue"
+import Breakpoints from "./examples/Breakpoints.vue"
+import AjaxLoaded from "./examples/AjaxLoaded.vue"
+import Filters from "./examples/Filters.vue"
+import Components from "./examples/Components.vue"
+import Nested from "./examples/Nested.vue"
+import Slots from "./examples/Slots.vue"
+import ComputedRows from "./examples/ComputedRows.vue"
+import CellFormatters from "./examples/Formatter.vue"
+import Ajax from "./examples/Ajax.vue"
+import BreakpointsAdvanced from "./examples/BreakpointsAdvanced.vue"
 
+import Prism from 'prismjs';
+import 'prismjs/themes/prism-okaidia.css';
+import 'prismjs/plugins/line-numbers/prism-line-numbers.css';
+import 'prismjs/plugins/line-numbers/prism-line-numbers.min.js';
+import 'prismjs/plugins/toolbar/prism-toolbar.css';
+import 'prismjs/plugins/toolbar/prism-toolbar.min.js';
+import 'prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js';
+
+import Tester from "./examples/CheckboxComponent.vue"
 
 
 Vue.component(
@@ -113,7 +178,7 @@ Vue.component(
 		Tester.default || Tester
 );
 
-axiosTest.interceptors.request.use(
+axiosCustom.interceptors.request.use(
 		(config) => {
 
 			console.warn("Custom axios",config);
@@ -128,13 +193,90 @@ axiosTest.interceptors.request.use(
 export default {
   name: 'app',
   components: {
-    VueQuintable,Basic
+    // VueQuintable,
+	  Basic,
+	  Breakpoints,
+	  BreakpointsAdvanced,
+	  Ajax,
+	  AjaxLoaded,
+	  Pagination,
+	  Sort,
+	  Select,
+	  Filters,
+	  Components,
+	  Nested,
+	  Slots,
+	  ComputedRows,
+	  CellFormatters,
   },
 
  data(){
         return {
 
-        	axios:axiosTest,
+			example:{
+				value:"Basic",
+				label:"Basic Example",
+			},
+        	examples:[
+				{
+					value:"Basic",
+					label:"Basic Example",
+				},
+				{
+					value:"ComputedRows",
+					label:"Computed Rows Example",
+				},
+				{
+					value:"Pagination",
+					label:"Pagination Example",
+				},
+				{
+					value:"Sort",
+					label:"Sort Example",
+				},
+				{
+					value:"Select",
+					label:"Select Example",
+				},
+				{
+					value:"CellFormatters",
+					label:"Cell Formatters Example",
+				},
+				{
+					value:"Breakpoints",
+					label:"Breakpoints Example",
+				},
+				{
+					value:"BreakpointsAdvanced",
+					label:"Breakpoints Advanced Example",
+				},
+				{
+					value:"Ajax",
+					label:"Ajax Example",
+				},
+				{
+					value:"AjaxLoaded",
+					label:"Ajax Loaded Example",
+				},
+				{
+					value:"Slots",
+					label:"Slots Example",
+				},
+				{
+					value:"Filters",
+					label:"Filter Example",
+				},
+				{
+					value:"Components",
+					label:"Component Example",
+				},
+				{
+					value:"Nested",
+					label:"Nested Example",
+				},
+
+			],
+        	axios:axiosCustom,
 
         	//loading
         	loading:false,
@@ -192,6 +334,7 @@ export default {
         	verbose:false,
 			//property to trigger ajax update for current page and filters
         	updated:false,
+			tabUpdated:false,
             //filters
             active:false,
             name:"",
@@ -203,7 +346,7 @@ export default {
             filters:{},
 
             sortOrder:[{index:1,asc:false},0],
-            
+
             //Object[] filter groups with relations, recursive.
             filterGroups:[
                 {
@@ -226,11 +369,11 @@ export default {
                     relation:"AND"
                 }
             ],
-            
+
             //Object Table config
-            config:{ 
+            config:{
                   //Object[] columns with headline, sticky, breakpoint, align, sort
-                  columns:[ 
+                  columns:[
                      {
                         headline:"Name",
 						 title:"Name of participant",
@@ -250,7 +393,7 @@ export default {
 						  // },
 						  // alwaysExpanded:true,
                      },{
-                        headline:"Birthplace",
+                        headline:"Birth Place",
                         breakpoint:"md",
                           sticky:true
                      },{
@@ -261,14 +404,14 @@ export default {
                   ],
 
                   //Boolean String of class rows on hover, default class bg-muted
-                  hoverClass:"bg-success text-white",	
+                  hoverClass:"bg-success text-white",
                   //Number or false/true, default false, if true => 25
                   pagination:5,
                   //Boolean if cells can be selected
                   select:true,
                   //Boolean if use pretty checkboxes library
                   prettySelect:true,
-                  //String [pre/post] position of the select checkboxes 
+                  //String [pre/post] position of the select checkboxes
                   selectPosition:"pre",
                   //Boolean if there should be a select all checkbox
                   selectAll:true,
@@ -276,7 +419,7 @@ export default {
                   selectAllRows:false,
                   //Boolean if all rows are selected on init
                   defaultSelected:false,
-                  //Boolean if there shall be a search input 
+                  //Boolean if there shall be a search input
                   search:true,
 				  //Boolean use fuzzy.js search matching library to find more search results
 				  useFuzzySearch:true,
@@ -314,9 +457,9 @@ export default {
 
                 },
                 //Array of Array and/or Object
-               rows:[ 
-                  //Object, if options apart from cell content will be set 
-                  { 
+               rows:[
+                  //Object, if options apart from cell content will be set
+                  {
                      //Array with cell content/options
                      cells:[
                          {
@@ -388,7 +531,7 @@ export default {
                         active:true,
                     }
                   },
-                  { 
+                  {
                     cells:[
                      	{
                             html:"John Doe",
@@ -436,7 +579,7 @@ export default {
                   [
                       {html:"Mia Wong"},
                       {html:50},
-                      {html:"Pejing",
+                      {html:"Beijing",
 						  tooltip:"Test: Peking!"},
                       {html:"Trainee"},
                   ],
@@ -468,6 +611,19 @@ export default {
         }
   },
   watch:{
+
+  	example:{
+  		handler(){
+  			this.$nextTick(()=>{
+  				console.log(Prism.plugins);
+				Prism.highlightAll();
+			});
+
+		},
+		immediate:true,
+	},
+
+
 	selectedRows(val){
 		if(this.verbose){
 			console.log("SELECTED ROWS",val);
@@ -475,7 +631,7 @@ export default {
 	},
 	name(val){
   		if(val !== ""){
-  			this.$set(this.filters,"name",val); 
+  			this.$set(this.filters,"name",val);
   		}else{
   			this.$delete(this.filters,"name");
   		}
@@ -485,21 +641,22 @@ export default {
   	},
 	active(val){
   		if(val){
-  			this.$set(this.filters,"active",true); 
+  			this.$set(this.filters,"active",true);
   		}else{
   			this.$delete(this.filters,"active");
   		}
   	},
   	printable(val){
   		if(val){
-  			this.$set(this.filters,"printable",true); 
+  			this.$set(this.filters,"printable",true);
   		}else{
   			this.$delete(this.filters,"printable");
   		}
   	},
 	},
   methods:{
-  	
+
+
   	eventListener(data,event){
   		if(this.verbose){
 	  		console.log(event,data);
@@ -509,9 +666,12 @@ export default {
 		  console.log(data);
 	  }
   },
+	created(){
+		Prism.manual = true;
+	},
   mounted(){
   	this.loading = true;
-	  axiosTest.get("http://localhost/test/data.php?fetch=true").then((response)=>{
+	  axiosCustom.get("http://localhost/test/data.php?fetch=true").then((response)=>{
   		this.remoteRows = response.data.rows;
   		this.remoteConfig = response.data.config;
       // this.remoteRows = JSON.parse(response.data.rows);
@@ -540,5 +700,10 @@ export default {
         text-shadow: inherit;
         opacity: inherit;
     }
+
+	.nav-item{
+		font-size: .85em;
+		padding: .3rem 0.5rem;
+	}
 </style>
 
