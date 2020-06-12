@@ -2,13 +2,17 @@
 
 VueQuintable is a table wrapper for Vue.js. It is build with bootstrap 4.0. High configurable, easy to use, flexible and responsive.
 
+ 
+
 ## Getting Started
+
+[Demo](https://quintet.io/vue-quintable-demo/) 
 
 These instructions will get you running VueQuintable for your project for development purposes. 
 
 ### Prerequisites
 
-VueQuintable is a https://vuejs.org/ vue.js package and uses https://getbootstrap.com/ bootstrap by default. Please install both before using the package. If you want to use https://de.wikipedia.org/wiki/Ajax_(Programmierung) ajax functionalities please install https://github.com/axios/axios axios as it is used by VueQuintable.
+VueQuintable is a [vue.js](https://vuejs.org/) package and uses [bootstrap](https://getbootstrap.com/) by default. Please install both before using the package. If you want to use [ajax](https://de.wikipedia.org/wiki/Ajax_(Programmierung)) functionalities please install [axios](https://github.com/axios/axios) as it is used by VueQuintable.
 
 ```
 npm install --save vue bootstrap-vue
@@ -150,7 +154,7 @@ The following will give you an overview how to configure the VueQuintable for yo
 | rowsSelect           | Boolean               | no       | *pagination* enabled                                         | If set to true, user will be allowed to set rows per page    | false            | true                                                         |
 | rowsPlaceholder      | String                | no       | *pagination* enabled and *rows select* is enabled            | Text for *rows per page* selection                           | "Rows per page:" | "Rows:"                                                      |
 | select               | Boolean               | no       | -                                                            | If set to true rows can be selected by check boxes. Tables v-model can be used for selected row Array. | false            | true                                                         |
-| prettySelect         | Boolean               | no       | *select* is enabled                                          | If set to true, https://lokesh-coder.github.io/pretty-checkbox/ pretty checkboxes library will be used. | false            | true                                                         |
+| prettySelect         | Boolean               | no       | *select* is enabled                                          | If set to true, [pretty checkboxes](https://lokesh-coder.github.io/pretty-checkbox/ ) library will be used. | false            | true                                                         |
 | selectPosition       | String{"pre"\|"post"} | no       | *select* is enabled                                          | Position of the select check boxes, first or last column.    | "post"           | "pre"                                                        |
 | selectAll            | Boolean               | no       | *select* is enabled                                          | If set to true,  additional checkbox will appear to select all rows | false            | true                                                         |
 | selectAllRows        | Boolean               | no       | *select* is enabled                                          | If set to true, *select all* selects all rows allover the pages. Please keep in mind that this won't work with server side pagination. | false            | true                                                         |
@@ -164,7 +168,7 @@ The following will give you an overview how to configure the VueQuintable for yo
 | multiSort            | Boolean               | no       | *sort* is enabled on at least one column                     | If set to true multi-key sorting is enabled                  | false            | true                                                         |
 | multiSortSelect      | Boolean               | no       | *sort* is enabled on at least one column                     | If set to true user will be allowed to enable and disable *multi sort* | false            | true                                                         |
 | multiSortPlaceholder | String                | no       | *sort* is enabled on at least one column and *multi sort select* is enabled | Placeholder for multiple sort description                    | "Multiple sort"  | "Toggle multiple"                                            |
-| ajaxUrl              | String\|Boolean       | no       | -                                                            | If set ajax will be useed for search/filter/sort/pagination  | false            | "[https://www.example.com/table-options](https://www.example.com/table-options)" |
+| ajaxUrl              | String\|Boolean       | no       | -                                                            | If set ajax will be useed for search/filter/sort/pagination  | false            | "http://your.server.url/api/endpoint" |
 
 ##### Property *columns* for property *config* properties
 
@@ -552,7 +556,7 @@ npm run start
  
     mounted(){
         this.loading = true;
-        axios.get("http://your.server.url").then((response)=>{
+        axios.get("http://your.server.url/api/endpoint").then((response)=>{
             this.remoteRows = response.data.rows;
             this.remoteConfig = response.data.config;
             this.loading = false;
