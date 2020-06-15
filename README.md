@@ -24,7 +24,7 @@ npm install --save axios
 ### Installing
 
 ```shell
-npm install --save https://zeitler-quintet@bitbucket.org/zeitler-quintet/vuefootable.git
+npm install --save @quintet/vue-quintable
 ```
 
 ### Integration
