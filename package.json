@@ -53,5 +53,5 @@
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.41.2"
   },
-  "licence": "MIT"
+  "license" : "See in LICENCE"
 }
