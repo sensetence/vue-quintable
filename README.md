@@ -1,4 +1,6 @@
-<img alt="vue-quintable" src="https://quintet.io/vue-quintable-demo/banner.png" width="400" height="300">
+<img alt="vue-quintable" src="https://quintet.io/vue-quintable-demo/vue-table.png" width="265" height="222">
+
+
 
 # VueQuintable
 
