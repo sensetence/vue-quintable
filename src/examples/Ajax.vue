@@ -15,7 +15,7 @@
             <pre data-toolbar-order="copy-to-clipboard">
              <code class="language-markup">
         &lt;template&gt;
-                &lt;VueQuintable :axios=&quot;axios&quot; :updated=&quot;updated&quot; :config=&quot;ajaxConfig&quot;&gt;&lt;/VueQuintable&gt;
+                &lt;VueQuintable :axios=&quot;axios&quot; :config=&quot;ajaxConfig&quot;&gt;&lt;/VueQuintable&gt;
         &lt;/template&gt;
 
         &lt;script&gt;

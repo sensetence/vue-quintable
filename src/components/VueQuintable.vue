@@ -1516,6 +1516,7 @@ export default {
 	   filteredRows:{
 		  handler(val,old){
 
+
 		  	  if(JSON.stringify(val) === JSON.stringify(old) || this.configFinal.ajaxUrl){
 		  	  	return;
 			  }
@@ -1526,11 +1527,10 @@ export default {
 			  	this.resetSelect();
 			  }
 
-
 			  const rows = [];
 			  for(let i = 0;i<val.length;i++){
 			    if(val[i]){
-			  	  rows.push(this.rowsFinal[this.sortedIndexes[i]]);
+			  	  rows.push(this.rowsFinal[(this.sortedIndexes[i]?this.sortedIndexes[i]:i)]);
 			    }
 			  }
 
@@ -1557,7 +1557,7 @@ export default {
 	   *
 	   */
 		hoveredRow(val){
-			if(val){
+			if(val !== null){
 				this.$emit("hover:row",this.rowsFinal[val],"hover:row");
 			}
 		},

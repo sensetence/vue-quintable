@@ -18,6 +18,8 @@
     import VueQuintable from &quot;../components/VueQuintable.vue&quot;
 
     import Chance from &quot;chance&quot;;
+    import * as moment from 'moment';
+    import 'moment-timezone'
 
     export default {
         components:{
@@ -52,6 +54,19 @@
                 const chance = new Chance();
 
                 for(let i = 0; i &lt; count; i++){
+
+                    const hours = Math.ceil(Math.random() * 24);
+                    const minutes = Math.ceil(Math.random() * 59);
+
+                    var m = moment.tz(&quot;Europe/Berlin&quot;);
+                    m.set({hour:hours,minute:minutes,second:0,millisecond:0});
+
+                    const timeB = m.format(&quot;hh:mm A&quot;);
+
+                    const timeNY = m.tz(&quot;America/New_York&quot;).format(&quot;hh:mm A&quot;);
+
+                    const timeH =  m.tz(&quot;America/Chicago&quot;).format(&quot;hh:mm A&quot;);
+
                     rows.push([
                         {
                             text:chance.name({ nationality: 'en' })
@@ -80,17 +95,17 @@
                                     [
                                         {text: &quot;Germany&quot;},
                                         {text: &quot;Berlin&quot;},
-                                        {text: &quot;10:10 AM&quot;}
+                                        {text:  timeB}
                                     ],
                                     [
                                         {text: &quot;United States&quot;},
                                         {text: &quot;New York&quot;},
-                                        {text: &quot;04:10 AM&quot;}
+                                        {text: timeNY}
                                     ],
                                     [
                                         {text: &quot;United States&quot;},
-                                        {text: &quot;Houston&quot;},
-                                        {text: &quot;03:10 AM&quot;}
+                                        {text: &quot;Chicago&quot;},
+                                        {text: timeH}
                                     ],
                                 ],
                             },},

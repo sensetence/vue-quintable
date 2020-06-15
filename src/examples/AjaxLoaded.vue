@@ -7,7 +7,13 @@
             Initially pulled config and rows from server via ajax
         </p>
 
-        <VueQuintable :loading="loading" :config="remoteConfig" :rows="remoteRows" />
+        <VueQuintable :loading="loading" :config="remoteConfig" :rows="remoteRows">
+            <template v-slot:loading>
+                <div class="text-center py-3 mb-3 text-white bg-success">
+                    Loading... <font-awesome-icon class="ml-3" icon="circle-notch" spin></font-awesome-icon>
+                </div>
+            </template>
+        </VueQuintable>
 
         <b-button v-b-toggle.code-basic variant="secondary">Toggle Code</b-button>
         <b-collapse id="code-basic" class="mt-2">
@@ -15,7 +21,13 @@
             <pre data-toolbar-order="copy-to-clipboard">
              <code class="language-markup">
         &lt;template&gt;
-                &lt;VueQuintable :loading="loading" :config=&quot;remoteConfig&quot; :rows=&quot;remoteRows&quot;&gt;&lt;/VueQuintable&gt;
+             &lt;VueQuintable :loading=&quot;loading&quot; :config=&quot;remoteConfig&quot; :rows=&quot;remoteRows&quot;&gt;
+                &lt;template v-slot:loading&gt;
+                    &lt;div class=&quot;text-center py-3 mb-3 text-white bg-success&quot;&gt;
+                        Loading... &lt;font-awesome-icon class=&quot;ml-3&quot; icon=&quot;circle-notch&quot; spin&gt;&lt;/font-awesome-icon&gt;
+                    &lt;/div&gt;
+                &lt;/template&gt;
+            &lt;/VueQuintable&gt;
         &lt;/template&gt;
 
         &lt;script&gt;
@@ -34,6 +46,8 @@
                     }
                 },
                 mounted(){
+                    this.remoteConfig = null;
+                    this.remoteRows = null;
                     this.loading = true;
                     axios.get("https://quintet.io/vue-quintable-demo/data.php?fetch=true").then((response)=>{
                         this.remoteRows = response.data.rows;

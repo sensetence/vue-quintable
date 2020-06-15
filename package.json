@@ -1,7 +1,7 @@
 {
   "name": "@quintet/vue-quintable",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -12,6 +12,10 @@
   "files": [
     "dist/*"
   ],
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Quintetio/vue-quintable.git"
+  },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",

@@ -17,7 +17,8 @@
 &lt;/template&gt;
 
 &lt;script&gt;
-    import VueQuintable from "../components/VueQuintable.vue"
+    import VueQuintable from &quot;../components/VueQuintable.vue&quot;
+
     export default {
         components:{
           VueQuintable
@@ -27,13 +28,13 @@
                 config: {
                     columns: [
                         {
-                            headline: "Name",
+                            headline: &quot;Name&quot;,
                         }, {
-                            headline: "Age",
+                            headline: &quot;Age&quot;,
                         }, {
-                            headline: "Birth Place",
+                            headline: &quot;Birth Place&quot;,
                         }, {
-                            headline: "Job",
+                            headline: &quot;Job&quot;,
                         }
                     ],
                 },
@@ -41,66 +42,69 @@
                 rows: [
                     [
                         {
-                            html: "<em>John Doe</em>"
+                            html: &quot;&lt;em&gt;John Doe&lt;/em&gt;&quot;
                         },
                         {
                             text: 40
                         },
                         {
-                            text: "New York"
+                            text: &quot;New York&quot;
                         },
                         {
-                            text: "CFO"
+                            text: &quot;CFO&quot;
                         },
                     ],
                     [
                         {
-                            text: "Mia Wong"
+                            text: &quot;Mia Wong&quot;,
+                            classes:&quot;text-primary&quot;
                         },
                         {
                             text: 50
                         },
                         {
-                            text: "Beijing"
+                            text: &quot;Beijing&quot;
                         },
                         {
-                            text: "CEO"
+                            text: &quot;CEO&quot;
                         },
                     ],
                     [
                         {
-                            text: "Peter Stanbridge"
+                            text: &quot;Peter Stanbridge&quot;
                         },
                         {
-                            text: 18
+                            text: 18,
                         },
                         {
-                            text: "London"
+                            text: &quot;London&quot;
                         },
                         {
-                            text: "Trainee"
+                            text: &quot;Trainee&quot;,
+                            align:&quot;right&quot;
                         },
                     ],
-                    [
-                        {
-                            text: "Natalie Lee-Walsh"
-                        },
-                        {
-                            text: 25
-                        },
-                        {
-                            text: "Dublin"
-                        },
-                        {
-                            text: "Managing Director"
-                        },
-                    ],
+                    {
+                         cells:[   {
+                                text: &quot;Natalie Lee-Walsh&quot;
+                            },
+                            {
+                                text: 25
+                            },
+                            {
+                                text: &quot;Dublin&quot;
+                            },
+                            {
+                                text: &quot;Managing Director&quot;
+                            },
+                        ],
+                        classes:&quot;text-danger&quot;
+                    },
                 ],
             }
         }
     }
-&lt;/script&gt;
-</code></pre>
+&lt;/script&gt;</code></pre>
 
             <!-- @formatter:on -->
 
@@ -109,7 +113,6 @@
 
 </template>
 <script>
-
     import VueQuintable from "../components/VueQuintable.vue"
 
     export default {
