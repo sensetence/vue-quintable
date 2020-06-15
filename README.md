@@ -1,12 +1,12 @@
+<img alt="vue-quintable" src="https://quintet.io/vue-quintable-demo/banner.png" width="400" height="300">
+
 # VueQuintable
 
 VueQuintable is a table wrapper for Vue.js. It is build with bootstrap 4.0. High configurable, easy to use, flexible and responsive.
 
- 
+[Demo](https://quintet.io/vue-quintable-demo/) 
 
 ## Getting Started
-
-[Demo](https://quintet.io/vue-quintable-demo/) 
 
 These instructions will get you running VueQuintable for your project for development purposes. 
 
