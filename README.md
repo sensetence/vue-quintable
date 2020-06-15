@@ -49,7 +49,7 @@ Vue.use(VueTable);
 You can either install VueQuintable via bower
 
 ```shell
-bower install --save https://zeitler-quintet@bitbucket.org/zeitler-quintet/vuefootable.git
+bower install --save https://github.com/Quintetio/vue-quintable
 ```
 
 or just download the source and include the scripts and styles in dist folder to use VueQuintable for your browser page.
