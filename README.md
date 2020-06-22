@@ -609,7 +609,15 @@ The response has to be the following structure:
 - Links won't trigger expanded rows to collapse. Also you can prevent collapse parent row by define an element with the class "prevent-toggle"
 - VueQuintable uses v-model for selected rows
 
+## License
 
+VueQuintable is free for everyone to use in personal projects (MIT License).
+
+If you want to include VueQuintable within a commercial project or product you
+will need to purchase one of our commercial licenses. Commercial Licenses are 
+priced per project which can be an internal application, a website, or a even 
+a product, for example. You can purchase licenses on 
+our website: https://quintet.io/quintable/
 
 ## Authors
 

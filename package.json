@@ -54,5 +54,6 @@
     "webpack": "^4.41.2"
   },
   "license" : "See in LICENCE",
-  "homepage": "https://quintet.io/quintable/"
+  "homepage": "https://quintet.io/quintable/",
+  "keywords": ["table","tables","datatable","vue", "vue.js", "data-table", "tables", "responsive", "vue-datasource","vue-table","vue-quintable"]
 }
