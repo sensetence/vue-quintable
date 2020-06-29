@@ -33,10 +33,17 @@ import {
 	faAngleLeft,
 	faAngleDoubleRight,
 	faAngleDoubleLeft,
-	faCircleNotch
+	faCircleNotch,
+	faChevronDown,
+	faArrowsAlt,
+	faExpand,
+	faPlus,
+	faChevronUp,
 } from '@fortawesome/free-solid-svg-icons'
 
 
+library.add(faArrowsAlt);
+library.add(faExpand);
 library.add(faCheck);
 library.add(faTimes);
 library.add(faSort);
@@ -49,6 +56,9 @@ library.add(faAngleRight);
 library.add(faAngleLeft);
 library.add(faInfoCircle);
 library.add(faCircleNotch);
+library.add(faChevronDown);
+library.add(faPlus);
+library.add(faChevronUp);
 
 
 

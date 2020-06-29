@@ -7,7 +7,7 @@
         </p>
         <VueQuintable v-model="selectedRows" :config="config" :rows="rows"></VueQuintable>
 
-        <b-button v-b-toggle.code-basic variant="secondary">Toggle Code</b-button>
+        <b-button v-b-toggle.code-basic variant="secondary"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code </b-button>
         <b-collapse id="code-basic" class="mt-2">
             <!-- @formatter:off -->
 <pre data-toolbar-order="copy-to-clipboard"> <code class="language-markup">&lt;template&gt;
@@ -27,6 +27,7 @@
                     columns: [
                         {
                             headline: "Name",
+                            classes: "first-and-last-name"
                         }, {
                             headline: "Age",
 
@@ -38,6 +39,7 @@
                     ],
                     selectPosition:"pre",
                     select:true,
+                    selectAll:true,
                     prettySelect:true,
                 },
 
@@ -106,6 +108,7 @@
                     columns: [
                         {
                             headline: "Name",
+                            classes: "first-and-last-name"
                         }, {
                             headline: "Age",
                         }, {
@@ -116,6 +119,7 @@
                     ],
                     selectPosition:"pre",
                     select:true,
+                    selectAll:true,
                     prettySelect:true,
 
                 },

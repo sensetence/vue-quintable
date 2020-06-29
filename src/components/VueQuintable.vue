@@ -9,7 +9,7 @@
             <div ref="xl" class="d-none d-xl-block"></div>
         </div>
 
-		<div class="header">
+		<div class="header slot slot-header">
 			<slot name="header"></slot>
 		</div>
 
@@ -20,8 +20,8 @@
 		<table class="vue-quintable table" :class="tableClasses" v-if="!ajaxLoading">
 			<thead v-if="configFinal.headlines.length">
 				<tr>
-					<th class="placeholder" v-if="hasGeneratedRows && !configFinal.hideRowToggle">&nbsp;</th>
-					<th v-if="configFinal.select &&  configFinal.selectPosition === 'pre'">
+					<th class="placeholder toggle-th" v-if="hasGeneratedRows && !configFinal.hideRowToggle">&nbsp;</th>
+					<th v-if="configFinal.select &&  configFinal.selectPosition === 'pre'" class="select-th pre">
 						<template v-if="configFinal.selectAll">
 							<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelectedProperty" @change="checkAll()">
 								<template slot="extra" >
@@ -70,7 +70,7 @@
 							</span>
 						</span>
 					</th>
-					<th v-if="configFinal.select && configFinal.selectPosition === 'post'">
+					<th v-if="configFinal.select && configFinal.selectPosition === 'post'" class="select-th post">
 						<template v-if="configFinal.selectAll">
 							<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelectedProperty" @change="checkAll()">
 								<template slot="extra" >
@@ -90,13 +90,13 @@
 			  <template  v-for="(rIndex) in visibleRowIndexes" >
 
 				  <tr  :style="hiddenColumns>0?'cursor:pointer;':''" :ref="'row-highlighted-on-hover-'+rIndex" :key="'vue-quintable-'+uuid+'-row-'+rIndex" @click="onRowClick($event,rIndex)" :class="hoveredRow === rIndex ? configFinal.hoverClass + (rowsFinal[rIndex].classes ? ' ' +rowsFinal[rIndex].classes : ''): (rowsFinal[rIndex].classes ? rowsFinal[rIndex].classes : '')"  :id="'vue-quintable-'+uuid+'-row-'+rIndex" @mouseenter="onMouseenterRow(rIndex)" >
-					  <td class="toggle" v-if="hasGeneratedRows && !configFinal.hideRowToggle">
+					  <td class="toggle toggle-td" v-if="hasGeneratedRows && !configFinal.hideRowToggle">
 						  <span>
 							  <span v-if="!openRows[rIndex]">+</span>
 							  <span v-else>-</span>
 						  </span>
 					  </td>
-					  <td v-if="configFinal.select && configFinal.selectPosition === 'pre'">
+					  <td v-if="configFinal.select && configFinal.selectPosition === 'pre'" class="select-td pre">
 
 						  <p-check v-if="configFinal.prettySelect" name="check" class="p-icon" v-model="selected[rIndex]" @change="checkListener($event,rIndex)" >
 							  <template slot="extra" >
@@ -110,7 +110,7 @@
 
 
 
-					  <td :class="cellClassesParsed[rIndex][cIndex]" v-show="configFinal.columns[cIndex] && cell && hiddenBreakpoints.findIndex(x => x === configFinal.columns[cIndex].breakpoint) === -1 && configFinal.columns[cIndex].breakpoint !== 'all' && !configFinal.stickyCols[cIndex]" @click="onCellClick(cell)" :key="'vue-quintable-'+uuid+'-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-'+uuid+'-cell-'+rIndex+'-'+cIndex" v-for="(cell, cIndex) in rowsFinal[rIndex].cells?rowsFinal[rIndex].cells:rowsFinal[rIndex]">
+					  <td :class="cellClassesParsed[rIndex][cIndex] + ' '+configFinal.columnClasses[cIndex]" v-show="configFinal.columns[cIndex] && cell && hiddenBreakpoints.findIndex(x => x === configFinal.columns[cIndex].breakpoint) === -1 && configFinal.columns[cIndex].breakpoint !== 'all' && !configFinal.stickyCols[cIndex]" @click="onCellClick(cell)" :key="'vue-quintable-'+uuid+'-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-'+uuid+'-cell-'+rIndex+'-'+cIndex" v-for="(cell, cIndex) in rowsFinal[rIndex].cells?rowsFinal[rIndex].cells:rowsFinal[rIndex]">
 
 						  <template v-if="configFinal.columns[cIndex] && cell && hiddenBreakpoints.findIndex(x => x === configFinal.columns[cIndex].breakpoint) === -1 && configFinal.columns[cIndex].breakpoint !== 'all' && !configFinal.stickyCols[cIndex]">
 							  <b-tooltip :target="'vue-quintable-'+uuid+'-row-'+rIndex" triggers="hover" v-if="rowsFinal[rIndex].tooltip && cIndex === 0" placement ="top">
@@ -148,7 +148,7 @@
 					  </td>
 
 
-					  <td v-if="configFinal.select && configFinal.selectPosition === 'post'">
+					  <td v-if="configFinal.select && configFinal.selectPosition === 'post'" class="select-td post">
 
 						  <p-check v-if="configFinal.prettySelect" name="check" class="p-icon" v-model="selected[rIndex]" @change="checkListener($event,rIndex)" >
 							  <template slot="extra" >
@@ -179,7 +179,7 @@
 										<tbody>
 											<tr 
 												class="generated-row-cell"
-												:class="hoveredRow === rIndex ? configFinal.hoverClass : ''"
+												:class="configFinal.columnClasses[cIndex] + ' ' +(hoveredRow === rIndex ? configFinal.hoverClass : '')"
 												:key="'vue-quintable-'+uuid+'-generated-row-cell-'+rIndex+'-'+cIndex"
 												:id="'vue-quintable-'+uuid+'-generated-row-cell-'+rIndex+'-'+cIndex"
 												v-show="openRows[rIndex]"
@@ -237,7 +237,7 @@
 
 
 											</tr>
-											<tr v-for="(cell,cIndex) in stickyRows[rIndex]" :key="'vue-quintable-'+uuid+'-sticky-row-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-'+uuid+'-sticky-row-cell-'+rIndex+'-'+cIndex" :class="hoveredRow === rIndex ? configFinal.hoverClass : ''" class="generated-row-cell">
+											<tr v-for="(cell,cIndex) in stickyRows[rIndex]" :key="'vue-quintable-'+uuid+'-sticky-row-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-'+uuid+'-sticky-row-cell-'+rIndex+'-'+cIndex" :class="configFinal.columnClasses[cIndex] + ' ' +(hoveredRow === rIndex ? configFinal.hoverClass : '')" class="generated-row-cell sticky-row-cell">
 												<td @click="setSortColumn(cIndex)">
 													<strong v-html="configFinal.headlines[cIndex]"
 															v-if="showHeadlines[cIndex]"
@@ -296,7 +296,7 @@
 		</table>
 
 			<template v-if="noRows && !ajaxLoading">
-				<div class="clearfix">
+				<div class="clearfix slot-no-results slot">
 					<slot name="no-results">
 					   <div class="text-center p-3">
 					   		<em v-html="configFinal.emptyPlaceholder"></em>
@@ -308,7 +308,7 @@
 
 		</div>
 
-		<div v-if="ajaxLoading">
+		<div v-if="ajaxLoading" class="slot-loading slot">
 
 					<slot name="loading">
 						<div class="loader-wrapper" :style="'height:'+loaderHeight+'px;'">
@@ -382,7 +382,7 @@
 					</div>
 				</div>
 			</div>
-		<div class="footer">
+		<div class="footer slot slot-footer">
 			<slot name="footer"></slot>
 		</div>	
 	</div>
@@ -844,6 +844,7 @@ export default {
 		  let sorts = [];
 		  let stickyCols = [];
 		  let alignments = [];
+		  let columnClasses = [];
 
 		  let columns = null;
 		  if(this.config.columns){
@@ -852,12 +853,21 @@ export default {
 
 			  for(let i = 0 ; i<this.config.columns.length;i++) {
 
+				  columnClasses[i] = "";
 				  if(this.config.columns[i] && this.config.columns[i].headline){
 					  headlines[i] = this.config.columns[i].headline;
+					  columnClasses[i] += this.config.columns[i].headline.replace(/([a-z])([A-Z])/g, "$1-$2")
+							  .replace(/\s+/g, '-')
+							  .toLowerCase();
 				  }else{
 					  headlines[i] = "";
 				  }
 
+				  columnClasses[i] += " column-"+ (i+1);
+
+				  if(this.config.columns[i].classes){
+					  columnClasses[i] += " "+this.config.columns[i].classes;
+				  }
 
 				  if(this.config.columns[i] && this.config.columns[i].breakpoint){
 					  breakpoints[i] = this.config.columns[i].breakpoint;
@@ -890,6 +900,7 @@ export default {
 
 		  return{
 			  headlines:headlines,
+			  columnClasses:columnClasses,
 			  sorts:sorts,
 			  multiSort:multiSort,
 			  multiSortSelect:multiSortSelect,
@@ -1161,8 +1172,7 @@ export default {
 					}
 				}
 
-
-				classes.push(iClasses.join(" "));
+				classes.push(iClasses.join(" ") + " " + this.configFinal.columnClasses[i]);
 			}
 			return classes;
 		},

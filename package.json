@@ -1,6 +1,6 @@
 {
   "name": "@quintet/vue-quintable",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -13,8 +13,8 @@
     "dist/*"
   ],
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/Quintetio/vue-quintable.git"
+    "type": "git",
+    "url": "https://github.com/Quintetio/vue-quintable.git"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
@@ -31,6 +31,7 @@
     "prismjs": "^1.20.0",
     "uuid": "^3.4.0",
     "vue": "^2.6.10",
+    "vue-drag-drop": "^1.1.4",
     "vue-recomputed": "0.0.1",
     "vue-select": "^3.4.0"
   },
@@ -53,7 +54,19 @@
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.41.2"
   },
-  "license" : "See in LICENCE",
+  "license": "See in LICENCE",
   "homepage": "https://quintet.io/quintable/",
-  "keywords": ["table","tables","datatable","vue", "vue.js", "data-table", "tables", "responsive", "vue-datasource","vue-table","vue-quintable"]
+  "keywords": [
+    "table",
+    "tables",
+    "datatable",
+    "vue",
+    "vue.js",
+    "data-table",
+    "tables",
+    "responsive",
+    "vue-datasource",
+    "vue-table",
+    "vue-quintable"
+  ]
 }

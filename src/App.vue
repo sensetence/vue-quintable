@@ -44,6 +44,7 @@ import Filters from "./examples/Filters.vue"
 import Components from "./examples/Components.vue"
 import Nested from "./examples/Nested.vue"
 import Slots from "./examples/Slots.vue"
+import AddRemove from "./examples/AddRemove.vue"
 import ComputedRows from "./examples/ComputedRows.vue"
 import CellFormatters from "./examples/Formatter.vue"
 import Ajax from "./examples/Ajax.vue"
@@ -98,6 +99,7 @@ export default {
 	  Events,
 	  Nested,
 	  Slots,
+	  AddRemove,
 	  ComputedRows,
 	  CellFormatters,
   },
@@ -171,6 +173,10 @@ export default {
 					label:"Component Example",
 				},
 				{
+					value:"AddRemove",
+					label:"Add/Remove/Move Example",
+				},
+				{
 					value:"Nested",
 					label:"Nested Example",
 				},
@@ -183,7 +189,6 @@ export default {
   	example:{
   		handler(){
   			this.$nextTick(()=>{
-  				console.log(Prism.plugins);
 				Prism.highlightAll();
 			});
 
@@ -215,5 +220,22 @@ export default {
 		font-size: .85em;
 		padding: .3rem 0.5rem;
 	}
+
+
+	button [data-icon="chevron-down"],
+	button .show{
+		display:none;
+	}
+
+	button.collapsed [data-icon="chevron-up"],
+	button.collapsed .hide{
+		display:none
+	}
+
+	button.collapsed [data-icon="chevron-down"],
+	button.collapsed .show{
+		display:inline;
+	}
+
 </style>
 
