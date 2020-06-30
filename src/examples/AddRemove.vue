@@ -50,9 +50,9 @@
 
         </VueQuintable>
 
-        <b-button v-b-toggle.code-basic variant="secondary" class="mr-2"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code  for App</b-button>
-        <b-button v-b-toggle.code-component-drag variant="secondary" class="mr-2"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code  Drag Component</b-button>
-        <b-button v-b-toggle.code-component variant="secondary"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code  Actions Component</b-button>
+        <b-button v-b-toggle.code-basic variant="secondary" class="mr-2 mb-1"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code  for App</b-button>
+        <b-button v-b-toggle.code-component-drag variant="secondary" class="mr-2 mb-1"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code  Drag Component</b-button>
+        <b-button v-b-toggle.code-component variant="secondary" class="mb-1"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code  Actions Component</b-button>
 
         <b-collapse id="code-basic" class="mt-2">
             <!-- @formatter:off -->
@@ -130,17 +130,21 @@
                 config: {
                     columns: [
                         {
-                            headline: &quot;&quot;,
+                            headline: "",
                         },{
-                            headline: &quot;Name&quot;,
+                            headline: "Name",
                         }, {
-                            headline: &quot;Age&quot;,
+                            headline: "Age",
+                            breakpoint:"md",
                         }, {
-                            headline: &quot;Birth Place&quot;,
+                            headline: "Birth Place",
+                            breakpoint:"lg",
                         }, {
-                            headline: &quot;Job&quot;,
+                            headline: "Job",
+                            breakpoint:"lg",
                         },{
-                            headline:&quot;Actions&quot;
+                            headline:"Actions",
+                            breakpoint:"sm",
                         }
                     ],
                 },
@@ -437,12 +441,16 @@
                             headline: "Name",
                         }, {
                             headline: "Age",
+                            breakpoint:"md",
                         }, {
                             headline: "Birth Place",
+                            breakpoint:"lg",
                         }, {
                             headline: "Job",
+                            breakpoint:"lg",
                         },{
-                            headline:"Actions"
+                            headline:"Actions",
+                            breakpoint:"sm",
                         }
                     ],
                 },

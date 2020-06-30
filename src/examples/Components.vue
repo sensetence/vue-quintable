@@ -7,8 +7,8 @@
         </p>
         <VueQuintable :config="config" :rows="rows" @component:event="onComponentEvent"></VueQuintable>
 
-        <b-button v-b-toggle.code-basic variant="secondary" class="mr-2"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code  for App</b-button>
-        <b-button v-b-toggle.code-component variant="secondary"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code  Component</b-button>
+        <b-button v-b-toggle.code-basic variant="secondary" class="mr-2 mb-1"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code  for App</b-button>
+        <b-button v-b-toggle.code-component variant="secondary" class="mb-1"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code  Component</b-button>
 
         <b-collapse id="code-basic" class="mt-2">
             <!-- @formatter:off -->

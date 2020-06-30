@@ -324,17 +324,18 @@
 
 			<div class="clearfix">
 				<div class="row">
-					<div class="col-md-4">
-						<div class="float-left" v-if="configFinal.multiSortSelect">
+					<div class="col-lg-4">
+						<div class="pb-lg-0 pb-3  float-left" v-if="configFinal.multiSortSelect">
 							<p-check class="p-switch" v-model="multiSort" value="true">{{configFinal.multiSortPlaceholder}}</p-check>
 						</div>
 					</div>
-					<div class="col-md-8">
-						<div class="pt-md-0 pt-3 float-md-right mr-3 pagination-container" v-if="configFinal && configFinal.pagination" >
-							<span class="d-inline-block align-middle mr-2" v-if="configFinal.rowsSelect" v-html="configFinal.rowsPlaceholder"></span> 
-							<v-select v-if="configFinal.rowsSelect" class="d-inline-block align-middle"  :options="paginationOptionsFilled" v-model="currentRowsPerPageProperty" :clearable="false" />
-
-							<nav v-if="configFinal && configFinal.pagination && pages>1 " class="d-inline-block align-middle ml-3" :class="{disabled:ajaxLoading}" >
+					<div class="col-lg-8">
+						<div class="float-lg-right mr-3 pagination-container" v-if="configFinal && configFinal.pagination" >
+							<div v-if="configFinal.rowsSelect" class="mb-2 d-inline-block mr-3 align-middle" >
+								<span class="d-inline-block align-middle mr-2"  v-html="configFinal.rowsPlaceholder"></span>
+								<v-select class="d-inline-block align-middle" :options="paginationOptionsFilled" v-model="currentRowsPerPageProperty" :clearable="false" />
+							</div>
+							<nav v-if="configFinal && configFinal.pagination && pages>1 " class="d-inline-block align-middle mb-2" :class="{'mr-3':numberOfVisibleRows,disabled:ajaxLoading}" >
 							  <ul class="pagination mb-0">
 							    <li class="page-item" v-if="pages>pageRange" :class="{disabled:currentPage<=1}" @click="gotoPage('first')">
 							      <span class="page-link">
@@ -377,7 +378,7 @@
 							  </ul>
 							</nav>
 
-							<span class="d-inline-block align-middle ml-3" v-if="numberOfVisibleRows" >{{firstVisibleRow}}-{{lastVisibleRow}} of {{numberOfVisibleRows}}</span>
+							<span class="d-inline-block align-middle mb-2" v-if="numberOfVisibleRows" >{{firstVisibleRow}}-{{lastVisibleRow}} of {{numberOfVisibleRows}}</span>
 						</div>
 					</div>
 				</div>
