@@ -414,6 +414,11 @@ export default {
             }
 		},
 
+	  	dynamicConfig:{
+			type:Boolean,
+			default:false,
+		},
+
 		value:{
 			type:Array,
             default(){
@@ -460,7 +465,8 @@ export default {
 		},
 	    axios:{
 			  type: Function,
-		  },
+		},
+
 	},
   data(){
   	return {
@@ -1649,12 +1655,16 @@ export default {
 		},
 
 	  /**
-	   * Reset everything if rows have been changed (e.g. [re]loaded via ajax)
+	   * Reset everything if config has been changed (e.g. [re]loaded via ajax)
 	   *
 	   */
 		config(val){
 			if(typeof val !== "object"){
 				throw "config must be an object"
+			}
+
+			if(this.dynamicConfig){
+				return;
 			}
 
 			this.initLists();

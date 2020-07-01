@@ -5,7 +5,7 @@
             <font-awesome-icon class="mr-2" icon="info-circle"></font-awesome-icon>
             Toggle switches to hide/show columns
         </p>
-        <VueQuintable :config="config" :rows="rows">
+        <VueQuintable :dynamicConfig="dynamicConfig" :config="config" :rows="rows">
 
             <template v-slot:header>
                 <p><p-check class="p-switch" v-model="hideAge">Hide Age Column</p-check>
@@ -20,7 +20,7 @@
         <b-collapse id="code-basic" class="mt-2">
             <!-- @formatter:off -->
             <pre data-toolbar-order="copy-to-clipboard"><code class="language-markup">&lt;template&gt;
-        &lt;VueQuintable :config=&quot;config&quot; :rows=&quot;rows&quot;&gt;
+        &lt;VueQuintable :dynamicConfig=&quot;dynamicConfig&quot; :config=&quot;config&quot; :rows=&quot;rows&quot;&gt;
 
             &lt;template v-slot:header&gt;
                 &lt;p&gt;&lt;p-check class=&quot;p-switch&quot; v-model=&quot;hideAge&quot;&gt;Hide Age Column&lt;/p-check&gt;
@@ -95,6 +95,22 @@
 
 
             }
+        },
+        watch:{
+            hideAge(){
+                this.dynamicConfig = true;
+                this.$nextTick(()=>{
+                    this.dynamicConfig = false;
+
+                });
+            },
+            hideJob(){
+                this.dynamicConfig = true;
+                this.$nextTick(()=>{
+                    this.dynamicConfig = false;
+
+                });
+            },
         }
     }
 &lt;/script&gt;</code></pre>
@@ -118,6 +134,8 @@
             return {
                 hideAge:false,
                 hideJob:false,
+                dynamicConfig:false,
+
             }
         },
         computed:{
@@ -169,6 +187,22 @@
 
 
             }
+        },
+        watch:{
+            hideAge(){
+                this.dynamicConfig = true;
+                this.$nextTick(()=>{
+                    this.dynamicConfig = false;
+
+                });
+            },
+            hideJob(){
+                this.dynamicConfig = true;
+                this.$nextTick(()=>{
+                    this.dynamicConfig = false;
+
+                });
+            },
         }
     }
 </script>

@@ -138,7 +138,8 @@ The following will give you an overview how to configure the VueQuintable for yo
 | ------------- | ------------- | --------------------------- | ------------------------------------------------------------ |
 | config        | Object        | yes                         | The table configuration object. See details below.           |
 | rows          | Array         | yes (if no ajax url is set) | Table rows containing all cells. See details below.          |
-| filters       | Object        | no                          | The active filters for displaying rows. This has to be an Object with filter name as key and filter value as value. Additionally a set of operators can be passed. See example below. |
+| dynamicConfig | Boolean       | no                          | If set to true the Table wont be re-initialized and re-rendered if some values inside the *config* property are changed. This is useful to dynamically set *config* values for columns |
+| filters       | Object        | no                          | The active filters for displaying rows. This has to be an object with filter name as key and filter value as value. Additionally a set of operators can be passed. See example below. |
 | filter-groups | Array         | no                          | Filter groups with relations. See example below.             |
 | sort-order    | Object        | no                          | Set sorting values and order by default or on the fly. See examples below. |
 | axios         | Object        | no                          | Pass a configured axios instance to be used for ajax functionalities. Only relevant if ajax is used. |
@@ -181,7 +182,7 @@ The following will give you an overview how to configure the VueQuintable for yo
 | headline               | String   | -                                   | -                       | Headline for column                                          |
 | title                  | String   | -                                   | -                       | Description, displayed on hover the headline                 |
 | classes                | String   | -                                   | -                       | Space seperated css classes string. Will be applied for headlines, cells, generated rows and sticky rows. |
-| hidden                 | Boolean  | true\|false                         | -                       | If set to true the column will not be displayed in any case. Can be used dynamically. |
+| hidden                 | Boolean  | true\|false                         | -                       | If set to true the column will not be displayed in any case. Highly recommended to use only when *dynamicConfig* is set to to true. |
 | sort                   | Boolean  | true\|false                         | -                       | If set to true, this column will be sortable                 |
 | breakpoint             | String   | "xs"\|"sm"\|"md"\|"lg"\|"xl"\|"all" | -                       | Bootstrap breakpoint from which descending the column will be displayed as additional row |
 | showHeadlineBreakpoint | String   | "xs"\|"sm"\|"md"\|"lg"\|"xl"\|"all" | *headline* is set       | Bootstrap breakpoint from which descending the columns headline will be shown |
