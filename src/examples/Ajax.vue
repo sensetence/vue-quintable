@@ -6,7 +6,7 @@
             Pagination and sorting will be handled by server side via ajax
         </p>
 
-        <VueQuintable :axios="axios" :config="ajaxConfig" />
+        <VueQuintable :axios="axios" :config="ajaxConfig" @ajax:rows="rowsUpdated" />
 
 
         <b-button v-b-toggle.code-basic variant="secondary"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code </b-button>
@@ -15,7 +15,7 @@
             <pre data-toolbar-order="copy-to-clipboard">
              <code class="language-markup">
         &lt;template&gt;
-                &lt;VueQuintable :axios=&quot;axios&quot; :config=&quot;ajaxConfig&quot;&gt;&lt;/VueQuintable&gt;
+                &lt;VueQuintable :axios=&quot;axios&quot; :config=&quot;ajaxConfig&quot; @ajax:rows=&quot;rowsUpdated&quot;&gt;&lt;/VueQuintable&gt;
         &lt;/template&gt;
 
         &lt;script&gt;
@@ -49,6 +49,13 @@
                             ajaxUrl:"https://quintet.io/vue-quintable-demo/data.php"
                         },
                     }
+                },
+                methods:{
+                    rowsUpdated(rows){
+                        if(rows.length){
+                            alert("Rows updated from server: "+rows.length +" rows.")
+                        }
+                    },
                 }
             }
 
@@ -111,6 +118,13 @@
 
 
             }
+        },
+        methods:{
+            rowsUpdated(rows){
+                if(rows.length){
+                    alert("Rows updated from server: "+rows.length +" rows.")
+                }
+            },
         }
     }
 </script>

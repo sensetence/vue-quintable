@@ -104,23 +104,25 @@ You can define some slots to customize the table as you want to.
 
 Add listeners for the following events to handle them as you want to.
 
-- click:row | passes row as first parameter
+- click:row | passes row as first parameter, triggered when row is clicked
 
-- click:cell | passes cell as first parameter
+- click:cell | passes cell as first parameter, triggered when cell is clicked
 
-- expand:row | passes row as first parameter
+- expand:row | passes row as first parameter, triggered when row is expanded
 
-- collapse:row | passes row as first  parameter
+- collapse:row | passes row as first  parameter, triggered when row is collapsed
 
-- filtered:rows| passes filtered rows as first parameter
+- filtered:rows| passes filtered rows as first parameter, triggered when filter or search query affect rows
 
-- update:perPage | passes integer as first parameter
+- ajax:rows| passes ajax rows as first parameter, triggered when rows are updated from server
 
-- update:page | passes  integer as first parameter
+- update:perPage | passes integer as first parameter, triggered when per page parameter changes
 
-- update:search | passes string as first parameter
+- update:page | passes integer as first parameter, triggered when page is changed
 
-- update:sort | passes object of sort group as first parameter
+- update:search | passes string as first parameter, triggered when search query is entered
+
+- update:sort | passes object of sort group as first parameter, triggered when sort order is active/changes
 
 - component:event | generic event for passing data from child components
 

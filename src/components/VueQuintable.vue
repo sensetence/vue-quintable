@@ -1522,11 +1522,19 @@ export default {
 	  },
 
 	  /**
-	   * set height of loader if loading is set from outside
+	   * Set height of loader if loading is set from outside
 	   *
 	   */
 	  loading(){
 		  this.loaderHeight = this.$refs["height-wrapper"]?this.$refs["height-wrapper"].clientHeight:0;
+	  },
+
+	  /**
+	   * Emit event for ajax rows
+	   *
+	   */
+	  ajaxRows(){
+	  		this.$emit("ajax:rows",this.ajaxRows,"ajax:rows");
 	  },
 
 	  /**
