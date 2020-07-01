@@ -45,6 +45,7 @@ import Components from "./examples/Components.vue"
 import Nested from "./examples/Nested.vue"
 import Slots from "./examples/Slots.vue"
 import AddRemove from "./examples/AddRemove.vue"
+import Hidden from "./examples/Hidden.vue"
 import ComputedRows from "./examples/ComputedRows.vue"
 import CellFormatters from "./examples/Formatter.vue"
 import Ajax from "./examples/Ajax.vue"
@@ -99,6 +100,7 @@ export default {
 	  Events,
 	  Nested,
 	  Slots,
+	  Hidden,
 	  AddRemove,
 	  ComputedRows,
 	  CellFormatters,
@@ -171,6 +173,10 @@ export default {
 				{
 					value:"Components",
 					label:"Component Example",
+				},
+				{
+					value:"Hidden",
+					label:"Hide/Show Example",
 				},
 				{
 					value:"AddRemove",

@@ -179,6 +179,7 @@ The following will give you an overview how to configure the VueQuintable for yo
 | headline               | String   | -                                   | -                       | Headline for column                                          |
 | title                  | String   | -                                   | -                       | Description, displayed on hover the headline                 |
 | classes                | String   | -                                   | -                       | Space seperated css classes string. Will be applied for headlines, cells, generated rows and sticky rows. |
+| hidden                 | Boolean  | true\|false                         | -                       | If set to true the column will not be displayed in any case. Can be used dynamically. |
 | sort                   | Boolean  | true\|false                         | -                       | If set to true, this column will be sortable                 |
 | breakpoint             | String   | "xs"\|"sm"\|"md"\|"lg"\|"xl"\|"all" | -                       | Bootstrap breakpoint from which descending the column will be displayed as additional row |
 | showHeadlineBreakpoint | String   | "xs"\|"sm"\|"md"\|"lg"\|"xl"\|"all" | *headline* is set       | Bootstrap breakpoint from which descending the columns headline will be shown |

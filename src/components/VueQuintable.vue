@@ -47,7 +47,8 @@
 							  	hiddenBreakpoints.findIndex(x => configFinal.columns[hIndex] &&  x ===  configFinal.columns[hIndex].breakpoint) === -1
 							  )
 						) && 
-						!configFinal.columns[hIndex].sticky"
+						!configFinal.columns[hIndex].sticky &&
+						!configFinal.hiddenCols[hIndex]"
 						:class="headerClass[hIndex]" 
 						:title="configFinal.columns[hIndex].title"
 						:key="'headline-'+hIndex"
@@ -89,7 +90,7 @@
 			  <!--  -->
 			  <template  v-for="(rIndex) in visibleRowIndexes" >
 
-				  <tr  :style="hiddenColumns>0?'cursor:pointer;':''" :ref="'row-highlighted-on-hover-'+rIndex" :key="'vue-quintable-'+uuid+'-row-'+rIndex" @click="onRowClick($event,rIndex)" :class="hoveredRow === rIndex ? configFinal.hoverClass + (rowsFinal[rIndex].classes ? ' ' +rowsFinal[rIndex].classes : ''): (rowsFinal[rIndex].classes ? rowsFinal[rIndex].classes : '')"  :id="'vue-quintable-'+uuid+'-row-'+rIndex" @mouseenter="onMouseenterRow(rIndex)" >
+				  <tr :style="hiddenColumns>0?'cursor:pointer;':''" :ref="'row-highlighted-on-hover-'+rIndex" :key="'vue-quintable-'+uuid+'-row-'+rIndex" @click="onRowClick($event,rIndex)" :class="hoveredRow === rIndex ? configFinal.hoverClass + (rowsFinal[rIndex].classes ? ' ' +rowsFinal[rIndex].classes : ''): (rowsFinal[rIndex].classes ? rowsFinal[rIndex].classes : '')"  :id="'vue-quintable-'+uuid+'-row-'+rIndex" @mouseenter="onMouseenterRow(rIndex)" >
 					  <td class="toggle toggle-td" v-if="hasGeneratedRows && !configFinal.hideRowToggle">
 						  <span>
 							  <span v-if="!openRows[rIndex]">+</span>
@@ -110,7 +111,7 @@
 
 
 
-					  <td :class="cellClassesParsed[rIndex][cIndex] + ' '+configFinal.columnClasses[cIndex]" v-show="configFinal.columns[cIndex] && cell && hiddenBreakpoints.findIndex(x => x === configFinal.columns[cIndex].breakpoint) === -1 && configFinal.columns[cIndex].breakpoint !== 'all' && !configFinal.stickyCols[cIndex]" @click="onCellClick(cell)" :key="'vue-quintable-'+uuid+'-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-'+uuid+'-cell-'+rIndex+'-'+cIndex" v-for="(cell, cIndex) in rowsFinal[rIndex].cells?rowsFinal[rIndex].cells:rowsFinal[rIndex]">
+					  <td :class="cellClassesParsed[rIndex][cIndex] + ' '+configFinal.columnClasses[cIndex]" v-show="!configFinal.hiddenCols[cIndex] && configFinal.columns[cIndex] && cell && hiddenBreakpoints.findIndex(x => x === configFinal.columns[cIndex].breakpoint) === -1 && configFinal.columns[cIndex].breakpoint !== 'all' && !configFinal.stickyCols[cIndex]" @click="onCellClick(cell)" :key="'vue-quintable-'+uuid+'-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-'+uuid+'-cell-'+rIndex+'-'+cIndex" v-for="(cell, cIndex) in rowsFinal[rIndex].cells?rowsFinal[rIndex].cells:rowsFinal[rIndex]">
 
 						  <template v-if="configFinal.columns[cIndex] && cell && hiddenBreakpoints.findIndex(x => x === configFinal.columns[cIndex].breakpoint) === -1 && configFinal.columns[cIndex].breakpoint !== 'all' && !configFinal.stickyCols[cIndex]">
 							  <b-tooltip :target="'vue-quintable-'+uuid+'-row-'+rIndex" triggers="hover" v-if="rowsFinal[rIndex].tooltip && cIndex === 0" placement ="top">
@@ -627,9 +628,9 @@ export default {
 					  let col = this.configFinal.columns[j];
 
 
-					  if(col.sticky){
+					  if(!col.hidden && col.sticky){
 						  stickyCells[j] = cells[j];
-					  }else if (col.breakpoint && (col.breakpoint.toLocaleLowerCase() === "all" || col.breakpoint.toLocaleLowerCase() === bp)) {
+					  }else if (!col.hidden && col.breakpoint && (col.breakpoint.toLocaleLowerCase() === "all" || col.breakpoint.toLocaleLowerCase() === bp)) {
 						  if(!col.sticky && !col.alwaysExpanded){
 							  generatedCells[j] = cells[j];
 						  }else if(col.alwaysExpanded){
@@ -842,6 +843,7 @@ export default {
 		  let number= 0;
 		  let headlines = [];
 		  let breakpoints = [];
+		  let hiddenCols = [];
 		  let sorts = [];
 		  let stickyCols = [];
 		  let alignments = [];
@@ -888,6 +890,12 @@ export default {
 					  stickyCols[i] = false;
 				  }
 
+				  if(this.config.columns[i] && this.config.columns[i].hidden){
+					  hiddenCols[i] = true;
+				  }else{
+					  hiddenCols[i] = false;
+				  }
+
 				  if(this.config.columns[i] && this.config.columns[i].align){
 					  alignments[i] = this.config.columns[i].align;
 				  }else{
@@ -920,6 +928,7 @@ export default {
 			  stickyCols:stickyCols,
 			  alignments:alignments,
 			  breakpoints:breakpoints,
+			  hiddenCols:hiddenCols,
 			  pagination:pagination,
 			  select:select,
 			  selectAll:selectAll,
