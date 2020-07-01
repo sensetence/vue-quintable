@@ -119,7 +119,7 @@
                         }
                     ],
                     multiSort:true,
-                    multiSortSelect:true,
+                    multiSortSelect:true
                 },
                 sortOrder:[{
                     index:1,

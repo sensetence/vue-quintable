@@ -48,7 +48,8 @@
 							  )
 						) && 
 						!configFinal.columns[hIndex].sticky &&
-						!configFinal.hiddenCols[hIndex]"
+						!configFinal.hiddenCols[hIndex] &&
+						!emptyColumns[hIndex]"
 						:class="headerClass[hIndex]" 
 						:title="configFinal.columns[hIndex].title"
 						:key="'headline-'+hIndex"
@@ -111,7 +112,7 @@
 
 
 
-					  <td :class="cellClassesParsed[rIndex][cIndex] + ' '+configFinal.columnClasses[cIndex]" v-show="!configFinal.hiddenCols[cIndex] && configFinal.columns[cIndex] && cell && hiddenBreakpoints.findIndex(x => x === configFinal.columns[cIndex].breakpoint) === -1 && configFinal.columns[cIndex].breakpoint !== 'all' && !configFinal.stickyCols[cIndex]" @click="onCellClick(cell)" :key="'vue-quintable-'+uuid+'-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-'+uuid+'-cell-'+rIndex+'-'+cIndex" v-for="(cell, cIndex) in rowsFinal[rIndex].cells?rowsFinal[rIndex].cells:rowsFinal[rIndex]">
+					  <td :class="cellClassesParsed[rIndex][cIndex] + ' '+configFinal.columnClasses[cIndex]" v-show="!configFinal.hiddenCols[cIndex] && !emptyColumns[cIndex] && configFinal.columns[cIndex] && cell && hiddenBreakpoints.findIndex(x => x === configFinal.columns[cIndex].breakpoint) === -1 && configFinal.columns[cIndex].breakpoint !== 'all' && !configFinal.stickyCols[cIndex]" @click="onCellClick(cell)" :key="'vue-quintable-'+uuid+'-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-'+uuid+'-cell-'+rIndex+'-'+cIndex" v-for="(cell, cIndex) in rowsFinal[rIndex].cells?rowsFinal[rIndex].cells:rowsFinal[rIndex]">
 
 						  <template v-if="configFinal.columns[cIndex] && cell && hiddenBreakpoints.findIndex(x => x === configFinal.columns[cIndex].breakpoint) === -1 && configFinal.columns[cIndex].breakpoint !== 'all' && !configFinal.stickyCols[cIndex]">
 							  <b-tooltip :target="'vue-quintable-'+uuid+'-row-'+rIndex" triggers="hover" v-if="rowsFinal[rIndex].tooltip && cIndex === 0" placement ="top">
@@ -239,7 +240,7 @@
 
 											</tr>
 											<tr v-for="(cell,cIndex) in stickyRows[rIndex]" :key="'vue-quintable-'+uuid+'-sticky-row-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-'+uuid+'-sticky-row-cell-'+rIndex+'-'+cIndex" :class="configFinal.columnClasses[cIndex] + ' ' +(hoveredRow === rIndex ? configFinal.hoverClass : '')" class="generated-row-cell sticky-row-cell">
-												<td @click="setSortColumn(cIndex)">
+												<td class="generated-headline-cell sticky-headline-cell" @click="setSortColumn(cIndex)">
 													<strong v-html="configFinal.headlines[cIndex]"
 															v-if="showHeadlines[cIndex]"
 													></strong>
@@ -633,10 +634,9 @@ export default {
 				  for (let j = 0; j < this.configFinal.columns.length; j++) {
 					  let col = this.configFinal.columns[j];
 
-
-					  if(!col.hidden && col.sticky){
+					  if(!this.emptyColumns[j] && col.sticky){
 						  stickyCells[j] = cells[j];
-					  }else if (!col.hidden && col.breakpoint && (col.breakpoint.toLocaleLowerCase() === "all" || col.breakpoint.toLocaleLowerCase() === bp)) {
+					  }else if (!this.emptyColumns[j] && col.breakpoint && (col.breakpoint.toLocaleLowerCase() === "all" || col.breakpoint.toLocaleLowerCase() === bp)) {
 						  if(!col.sticky && !col.alwaysExpanded){
 							  generatedCells[j] = cells[j];
 						  }else if(col.alwaysExpanded){
@@ -688,15 +688,12 @@ export default {
 
   computed:{
 
-  		operators(){
-  			return Object.keys(this.operatorFunctions);
-		},
 
 	  /**
 	   * Just a debug flag
 	   *
 	   */
-		DEBUG(){
+	  DEBUG(){
 			return this.verbose;
 		},
 
@@ -780,6 +777,16 @@ export default {
 			  rowsSelect = true;
 		  }
 
+		  let hideEmptyColumns = false;
+		  if(this.config.hideEmptyColumns){
+			  hideEmptyColumns = true;
+		  }
+
+		  let ignoreSortEmptyColumns = "none";
+		  if(["none","active","all"].includes(this.config.ignoreSortEmptyColumns)){
+			  ignoreSortEmptyColumns = this.config.ignoreSortEmptyColumns;
+		  }
+
 		  let search = false;
 		  if(this.config.search){
 			  search = true;
@@ -854,6 +861,7 @@ export default {
 		  let stickyCols = [];
 		  let alignments = [];
 		  let columnClasses = [];
+		  let ignoreEmpty = [];
 
 		  let columns = null;
 		  if(this.config.columns){
@@ -888,6 +896,12 @@ export default {
 					  sorts[i] = true;
 				  }else{
 					  sorts[i] = false;
+				  }
+
+				  if(this.config.columns[i] && this.config.columns[i].ignoreEmpty){
+					  ignoreEmpty[i] = true;
+				  }else{
+					  ignoreEmpty[i] = false;
 				  }
 
 				  if(this.config.columns[i] && this.config.columns[i].sticky){
@@ -935,6 +949,9 @@ export default {
 			  alignments:alignments,
 			  breakpoints:breakpoints,
 			  hiddenCols:hiddenCols,
+			  ignoreEmpty:ignoreEmpty,
+			  hideEmptyColumns:hideEmptyColumns,
+			  ignoreSortEmptyColumns:ignoreSortEmptyColumns,
 			  pagination:pagination,
 			  select:select,
 			  selectAll:selectAll,
@@ -1490,6 +1507,47 @@ export default {
 
 
 		},
+	  /**
+	   * Key of filter operator fuctions
+	   *
+	   */
+	  operators(){
+		  return Object.keys(this.operatorFunctions);
+	  },
+	  emptyColumns(){
+
+	  	const cols = {};
+
+	  	const ignore = this.configFinal.ignoreSortEmptyColumns;
+
+	  	for (let i = 0; i<this.configFinal.number;i++){
+			const ignoredCol = this.configFinal.ignoreEmpty[i];
+			const sort = this.configFinal.sorts[i];
+
+			console.log(this.currentSortIndexes,Object.keys(this.currentSortIndexes).includes(i+""));
+
+	  		if(
+					!this.configFinal.hideEmptyColumns ||
+					ignoredCol ||
+					(ignore === "none" && sort ) ||
+					(ignore === "active" && Object.keys(this.currentSortIndexes).includes(i+""))
+			){
+	  			cols[i] = false;
+			}else{
+				cols[i] = this.visibleRowIndexes.map((index)=>{
+					return this.rowsFinal[index]
+				}).filter((row)=>{
+					const cells = row.cells?row.cells:row;
+					return cells[i].text || cells[i].html || cells[i].quintable || cells[i].component;
+				}).length <= 0;
+			}
+		}
+
+	  	console.log(cols);
+
+	  	return cols;
+
+	  }
 
   },
 
@@ -1678,14 +1736,6 @@ export default {
 				this.checkAll();
 			}
 		},
-
-      /**
-       * detect changes of config
-       *
-       */
-      configFinal(){
-          // console.log("CONFIG CHANGED",val);
-      },
 
 	  /**
 	   * Prepare the selected rows array for passing to the event and emits it
