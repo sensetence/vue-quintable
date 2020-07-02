@@ -22,7 +22,7 @@
 				<tr>
 					<th class="placeholder toggle-th" v-if="hasGeneratedRows && !configFinal.hideRowToggle">&nbsp;</th>
 					<th v-if="configFinal.select &&  configFinal.selectPosition === 'pre'" class="select-th pre">
-						<template v-if="configFinal.selectAll">
+						<template v-if="configFinal.selectAll && !noRows">
 							<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelectedProperty" @change="checkAll()">
 								<template slot="extra" >
 									<span><font-awesome-icon v-if="allSelectedProperty" icon="check" class="text-success icon-check" /></span>
@@ -73,7 +73,7 @@
 						</span>
 					</th>
 					<th v-if="configFinal.select && configFinal.selectPosition === 'post'" class="select-th post">
-						<template v-if="configFinal.selectAll">
+						<template v-if="configFinal.selectAll && !noRows">
 							<p-check v-if="configFinal.prettySelect" name="check" class="p-icon  p-smooth" v-model="allSelectedProperty" @change="checkAll()">
 								<template slot="extra" >
 									<span><font-awesome-icon v-if="allSelectedProperty" icon="check" class="text-success icon-check" /></span>
@@ -91,9 +91,9 @@
 			  <!--  -->
 			  <template  v-for="(rIndex) in visibleRowIndexes" >
 
-				  <tr :style="hiddenColumns>0?'cursor:pointer;':''" :ref="'row-highlighted-on-hover-'+rIndex" :key="'vue-quintable-'+uuid+'-row-'+rIndex" @click="onRowClick($event,rIndex)" :class="hoveredRow === rIndex ? configFinal.hoverClass + (rowsFinal[rIndex].classes ? ' ' +rowsFinal[rIndex].classes : ''): (rowsFinal[rIndex].classes ? rowsFinal[rIndex].classes : '')"  :id="'vue-quintable-'+uuid+'-row-'+rIndex" @mouseenter="onMouseenterRow(rIndex)" >
-					  <td class="toggle toggle-td" v-if="hasGeneratedRows && !configFinal.hideRowToggle">
-						  <span>
+				  <tr :style="hiddenColumns[rIndex]>0?'cursor:pointer;':''" :ref="'row-highlighted-on-hover-'+rIndex" :key="'vue-quintable-'+uuid+'-row-'+rIndex" @click="onRowClick($event,rIndex)" :class="hoveredRow === rIndex ? configFinal.hoverClass + (rowsFinal[rIndex].classes ? ' ' +rowsFinal[rIndex].classes : ''): (rowsFinal[rIndex].classes ? rowsFinal[rIndex].classes : '')"  :id="'vue-quintable-'+uuid+'-row-'+rIndex" @mouseenter="onMouseenterRow(rIndex)" >
+					  <td class="toggle toggle-td" v-if="hasGeneratedRows  && !configFinal.hideRowToggle">
+						  <span v-if="hiddenColumns[rIndex]>0 ">
 							  <span v-if="!openRows[rIndex]">+</span>
 							  <span v-else>-</span>
 						  </span>
@@ -426,6 +426,12 @@ export default {
                 return [];
             }
 		},
+	  	preSelectedRows:{
+			type:Array,
+			default(){
+				return [];
+			}
+		},
 		loading:{
 			type:Boolean,
             default:false,
@@ -564,8 +570,6 @@ export default {
 
   recomputed: {
 
-
-
 	  /**
 	   * Checks which rows shall be shown
 	   *
@@ -634,9 +638,11 @@ export default {
 				  for (let j = 0; j < this.configFinal.columns.length; j++) {
 					  let col = this.configFinal.columns[j];
 
-					  if(!this.emptyColumns[j] && col.sticky){
+					  const hide =  this.configFinal.hiddenCols[j] || !this.configFinal.ignoreEmpty[j] && this.configFinal.hideEmptyColumns && (this.isColEmpty(j) || this.isColEmpty(j,x)) || this.emptyColumns[j];
+
+					  if( !hide && col.sticky){
 						  stickyCells[j] = cells[j];
-					  }else if (!this.emptyColumns[j] && col.breakpoint && (col.breakpoint.toLocaleLowerCase() === "all" || col.breakpoint.toLocaleLowerCase() === bp)) {
+					  }else if (!hide && col.breakpoint && (col.breakpoint.toLocaleLowerCase() === "all" || col.breakpoint.toLocaleLowerCase() === bp)) {
 						  if(!col.sticky && !col.alwaysExpanded){
 							  generatedCells[j] = cells[j];
 						  }else if(col.alwaysExpanded){
@@ -1097,21 +1103,33 @@ export default {
 	   *
 	   */
 	  hiddenColumns(){
-  		let hidden = 0;
 
-		  for (let i = 0;i<this.hiddenBreakpoints.length;i++){
+	  	const rows = {};
+
+	  	for (let x = 0;x<this.visibleRowIndexes.length;x++){
+
+			let hidden = 0;
+
+			const rowIndex = this.visibleRowIndexes[x];
+
+			for (let i = 0;i<this.hiddenBreakpoints.length;i++){
 				let bp = this.hiddenBreakpoints[i];
 				for (let j = 0; j<this.configFinal.columns.length;j++){
-				  let col = this.configFinal.columns[j];
+					let col = this.configFinal.columns[j];
+					const hide =  this.configFinal.hiddenCols[j] || !this.configFinal.ignoreEmpty[j] && this.configFinal.hideEmptyColumns && (this.isColEmpty(j) || this.isColEmpty(j,rowIndex)) || this.emptyColumns[j];
 
-					if(col.breakpoint && (col.breakpoint.toLocaleLowerCase() === "all" || col.breakpoint.toLocaleLowerCase() === bp)){
-				  	 hidden++;
-				  	 break;
-				  }
-			  }
-		  }
+					if(!hide && col.breakpoint && (col.breakpoint.toLocaleLowerCase() === "all" || col.breakpoint.toLocaleLowerCase() === bp)){
+						hidden++;
+						break;
+					}
+				}
+			}
 
-		return hidden;
+			rows[rowIndex] = hidden;
+
+		}
+
+		return rows;
 	  },
 
 	  /**
@@ -1524,8 +1542,6 @@ export default {
 			const ignoredCol = this.configFinal.ignoreEmpty[i];
 			const sort = this.configFinal.sorts[i];
 
-			console.log(this.currentSortIndexes,Object.keys(this.currentSortIndexes).includes(i+""));
-
 	  		if(
 					!this.configFinal.hideEmptyColumns ||
 					ignoredCol ||
@@ -1534,16 +1550,9 @@ export default {
 			){
 	  			cols[i] = false;
 			}else{
-				cols[i] = this.visibleRowIndexes.map((index)=>{
-					return this.rowsFinal[index]
-				}).filter((row)=>{
-					const cells = row.cells?row.cells:row;
-					return cells[i].text || cells[i].html || cells[i].quintable || cells[i].component;
-				}).length <= 0;
+				cols[i] = this.isColEmpty(i);
 			}
 		}
-
-	  	console.log(cols);
 
 	  	return cols;
 
@@ -1553,6 +1562,38 @@ export default {
 
   watch:{
 
+  	  /**
+	   * Check if some rows should be selected due to an outside change
+	   *
+	   */
+	  preSelectedRows(val){
+
+			for(let i = 0 ; i<this.rowsFinal.length;i++) {
+				this.$set(this.selected,i,false);
+			}
+
+			if(val && val.length){
+
+				let counter = 0;
+
+				for(let i = 0;i< val.length;i++){
+					const key = val[i].key;
+					const value = val[i].value;
+
+					for (let j = 0;j<this.visibleRowIndexes.length;j++){
+						const index = this.visibleRowIndexes[j];
+						if(this.rowsFinal[index][key] === value){
+							this.$set(this.selected,index,true);
+							counter++;
+						}
+					}
+
+				}
+
+				this.allSelectedCustom = counter === this.visibleRows.filter(x => x).length;
+
+			}
+	  },
 
 	  /**
 	   * Resets page and selects if a filter value is changes
@@ -1834,6 +1875,22 @@ export default {
   methods:{
 
   	/**
+	 * checks if the passed cell is empty for one or all rows
+	 *
+	 */
+  	isColEmpty(i,rowIndex = -1){
+
+  		const rowIndexes = rowIndex > -1 ? [rowIndex]: this.visibleRowIndexes;
+
+		return rowIndexes.map((index)=>{
+			return this.rowsFinal[index]
+		}).filter((row)=>{
+			const cells = row.cells?row.cells:row;
+			return cells[i].text || cells[i].html || cells[i].quintable || cells[i].component;
+		}).length <= 0;
+	},
+
+  	/**
 	 * Handler for generic component events
 	 *
 	 */
@@ -1933,7 +1990,7 @@ export default {
 			let isLink = this.hasSomeParentTagName(e.target ,"a");
 			let shouldPrevent = this.hasSomeParentTheClass(e.target,'prevent-toggle');
 
-			if(this.hiddenColumns && !isLink && !shouldPrevent){
+			if(this.hiddenColumns[rowIndex] && !isLink && !shouldPrevent){
 				if(!this.openRows[rowIndex]){
 					this.$set(this.openRows,rowIndex,true);
 					this.$emit("expand:row",this.rowsFinal[this.sortedIndexes[rowIndex]],"expand:row");
@@ -2610,6 +2667,7 @@ export default {
 			  } else {
 				  this.fetching = false;
 				  console.error(error);
+				  this.$emit("ajax:error", error, "ajax:error");
 			  }
 
 		  });
