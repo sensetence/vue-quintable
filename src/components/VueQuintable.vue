@@ -2210,6 +2210,8 @@ export default {
 
 							for (let i = 0; i<group.items.length;i++){
 								let item = group.items[i];
+
+
 								found = true;
 								if(item.items){
 									found = this.doFilteringForGroup(filters,filterValues,item,index+1);
@@ -2219,7 +2221,9 @@ export default {
 									break;
 								}
 
-
+								if(typeof filters[item.name] === "undefined"){
+									continue;
+								}
 
 								let operator = typeof filters[item.name] === "object" && filters[item.name] !== null && filters[item.name]["operator"] && this.operators.includes(filters[item.name]["operator"]) ? filters[item.name]["operator"] :this.defaultOperator;
 								let filterProperties = this.getFilterValues(filters[item.name]);
@@ -2266,12 +2270,18 @@ export default {
 
 						for (let i = 0; i<group.items.length;i++){
 							let item = group.items[i];
+
+
 							if(item.items){
 								found = this.doFilteringForGroup(filters,filterValues,item,index+1);
 
 								if(found){
 									break;
 								}
+							}
+
+							if(typeof filters[item.name] === "undefined"){
+								continue;
 							}
 
 							let operator = typeof filters[item.name] === "object" && filters[item.name] !== null && filters[item.name]["operator"] && this.operators.includes(filters[item.name]["operator"]) ? filters[item.name]["operator"] :this.defaultOperator;
