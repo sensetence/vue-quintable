@@ -460,6 +460,7 @@
                 age:null,
                 city:"",
                 job:"",
+                rowCount:10,
             }
 
         },
@@ -477,13 +478,11 @@
 
             Array.range = (start, end) => Array.from({length: (end - start)}, (v, k) => k + start);
 
-
-            let count = 10;
             const rows = [];
 
             const chance = new Chance();
 
-            for(let i = 0; i < count; i++){
+            for(let i = 0; i < this.rowCount; i++){
                 rows.push([
                     {
                         component:{
@@ -511,6 +510,8 @@
                             name:"actions-component",
                             props:{
                                 index:i,
+                                first:i===0,
+                                last:i===this.rowCount -1,
                             },
 
                         }
@@ -525,6 +526,8 @@
             updateIndexes(){
                 this.rows = this.rows.map((row,index)=>{
                     row[5].component.props.index = index;
+                    row[5].component.props.first = index === 0;
+                    row[5].component.props.last = index === this.rowCount - 1;
                     row[0].component.props.index = index;
                     return row;
                 });
@@ -533,6 +536,7 @@
             componentListener(data){
                 if(data.type === "delete-row"){
                     this.rows.splice(data.index,1);
+                    this.rowCount--;
                     this.updateIndexes();
                 }else if(data.type === "move-row"){
                     this.move(data.index,data.to);
@@ -557,7 +561,7 @@
                      return;
                 }
 
-                this.rows.splice(this.index - 1 , 0, [
+                const data = [
                     {
                         component:{
                             name:"drag-component",
@@ -588,13 +592,20 @@
 
                         }
                     }
-                ]);
+                ];
+
+                if(this.index === this.rowCount){
+                    this.rows.push(data);
+                }else{
+                    this.rows.splice(this.index - 1 , 0, data);
+                }
 
                 this.index = 1;
                 this.name = "";
                 this.age = null;
                 this.city = "";
                 this.job = "";
+                this.rowCount ++;
 
                 this.updateIndexes();
 

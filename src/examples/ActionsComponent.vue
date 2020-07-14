@@ -1,10 +1,10 @@
 <template>
     <div class="content">
         <div class="btn-group mr-2">
-            <div class="btn btn-info" @click="moveRow('up')">
+            <div class="btn btn-info" :disabled="first" :class="{disabled:first}" @click="moveRow('up')">
                 <font-awesome-icon icon="chevron-up"></font-awesome-icon>
             </div>
-            <div class="btn btn-info" @click="moveRow('down')">
+            <div class="btn btn-info" :disabled="last" :class="{disabled:last}" @click="moveRow('down')">
                 <font-awesome-icon icon="chevron-down"></font-awesome-icon>
             </div>
        </div>
@@ -12,7 +12,7 @@
             <font-awesome-icon icon="times"></font-awesome-icon>
         </div>
 
-        <drop  class="d-inline-block align-middle " @drop="handleDrop">
+        <drop  class="d-inline-block align-middle " @drop="handleDrop" title="Drop your dragging row here to move it">
             <div class="card px-3 d-inline-block">
                 <div class="py-2 bg-muted">
                     <font-awesome-icon icon="expand"></font-awesome-icon>
@@ -28,6 +28,14 @@
 
     export default {
         props:{
+            first:{
+                type:Boolean,
+                default:false
+            },
+            last:{
+                type:Boolean,
+                default:false
+            },
             index:{
                 type:Number
             }
@@ -52,6 +60,11 @@
                 )
             },
             moveRow(mode = "up") {
+
+                if(mode === "up" && this.first || mode === "down" && this.last){
+                    return;
+                }
+
                 this.$emit("action",
                     {
                         index:this.index,
@@ -68,9 +81,17 @@
                     }
                 )
             }
+        },
+        mounted(){
+            console.log(this.first,this.last);
         }
     }
 
 </script>
+<style scoped>
+    .btn.disabled{
+        cursor: not-allowed;
+    }
+</style>
 
 
