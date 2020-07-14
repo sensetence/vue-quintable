@@ -12,7 +12,7 @@
             <font-awesome-icon icon="times"></font-awesome-icon>
         </div>
 
-        <drop  class="d-inline-block align-middle " @drop="handleDrop" title="Drop your dragging row here to move it">
+        <drop  class="d-inline-block align-middle drop-element" @drop="handleDrop" title="Drop your dragging row here to move it">
             <div class="card px-3 d-inline-block">
                 <div class="py-2 bg-muted">
                     <font-awesome-icon icon="expand"></font-awesome-icon>
@@ -46,7 +46,7 @@
         data(){
             return {
                 checked:false,
-                reference:"checkbox-component",
+                reference:"checkbox-component"
             }
         },
         methods: {
@@ -81,9 +81,6 @@
                     }
                 )
             }
-        },
-        mounted(){
-            console.log(this.first,this.last);
         }
     }
 

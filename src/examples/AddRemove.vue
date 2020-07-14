@@ -5,7 +5,8 @@
             <font-awesome-icon class="mr-2" icon="info-circle"></font-awesome-icon>
             Use buttons to add/remove/move rows or Drag&Drop [<a target="_blank" href="https://github.com/cameronhimself/vue-drag-drop">vue-drag-drop</a>].
         </p>
-        <VueQuintable :config="config" :rows="rows" @component:event="componentListener">
+
+        <VueQuintable :table-classes="tableClasses" :config="config" :rows="rows" @component:event="componentListener">
 
             <template v-slot:header>
                 <div class="row">
@@ -57,7 +58,7 @@
         <b-collapse id="code-basic" class="mt-2">
             <!-- @formatter:off -->
             <pre data-toolbar-order="copy-to-clipboard"><code class="language-markup">&lt;template&gt;
-       &lt;VueQuintable :config=&quot;config&quot; :rows=&quot;rows&quot; @component:event=&quot;componentListener&quot;&gt;
+       &lt;VueQuintable :table-classes="tableClasses" :config=&quot;config&quot; :rows=&quot;rows&quot; @component:event=&quot;componentListener&quot;&gt;
 
             &lt;template v-slot:header&gt;
                 &lt;div class=&quot;row&quot;&gt;
@@ -130,21 +131,21 @@
                 config: {
                     columns: [
                         {
-                            headline: "",
+                            headline: &quot;&quot;,
                         },{
-                            headline: "Name",
+                            headline: &quot;Name&quot;,
                         }, {
-                            headline: "Age",
-                            breakpoint:"md",
+                            headline: &quot;Age&quot;,
+                            breakpoint:&quot;md&quot;,
                         }, {
-                            headline: "Birth Place",
-                            breakpoint:"lg",
+                            headline: &quot;Birth Place&quot;,
+                            breakpoint:&quot;lg&quot;,
                         }, {
-                            headline: "Job",
-                            breakpoint:"lg",
+                            headline: &quot;Job&quot;,
+                            breakpoint:&quot;lg&quot;,
                         },{
-                            headline:"Actions",
-                            breakpoint:"sm",
+                            headline:&quot;Actions&quot;,
+                            breakpoint:&quot;sm&quot;,
                         }
                     ],
                 },
@@ -154,13 +155,20 @@
                 age:null,
                 city:&quot;&quot;,
                 job:&quot;&quot;,
+                rowCount:10,
+                dragging:false,
             }
 
         },
         computed:{
-            ages(){
+            tableClasses() {
+                return this.dragging ? &quot;dragging&quot; : &quot;&quot;;
+            },
+
+            ages() {
                 return Array.range(1, 99);
             },
+
             indexes(){
                 return this.rows.map((row,index)=&gt;{
                     return index+1;
@@ -171,13 +179,11 @@
 
             Array.range = (start, end) =&gt; Array.from({length: (end - start)}, (v, k) =&gt; k + start);
 
-
-            let count = 10;
             const rows = [];
 
             const chance = new Chance();
 
-            for(let i = 0; i &lt; count; i++){
+            for(let i = 0; i &lt; this.rowCount; i++){
                 rows.push([
                     {
                         component:{
@@ -205,6 +211,8 @@
                             name:&quot;actions-component&quot;,
                             props:{
                                 index:i,
+                                first:i===0,
+                                last:i===this.rowCount -1,
                             },
 
                         }
@@ -219,6 +227,8 @@
             updateIndexes(){
                 this.rows = this.rows.map((row,index)=&gt;{
                     row[5].component.props.index = index;
+                    row[5].component.props.first = index === 0;
+                    row[5].component.props.last = index === this.rowCount - 1;
                     row[0].component.props.index = index;
                     return row;
                 });
@@ -227,9 +237,14 @@
             componentListener(data){
                 if(data.type === &quot;delete-row&quot;){
                     this.rows.splice(data.index,1);
+                    this.rowCount--;
                     this.updateIndexes();
                 }else if(data.type === &quot;move-row&quot;){
                     this.move(data.index,data.to);
+                }else if(data.type === &quot;dragstart&quot;){
+                    this.dragging = true;
+                }else if(data.type === &quot;dragend&quot;){
+                    this.dragging = false;
                 }
             },
 
@@ -251,7 +266,7 @@
                      return;
                 }
 
-                this.rows.splice(this.index - 1 , 0, [
+                const data = [
                     {
                         component:{
                             name:&quot;drag-component&quot;,
@@ -282,20 +297,57 @@
 
                         }
                     }
-                ]);
+                ];
+
+                if(this.index === this.rowCount){
+                    this.rows.push(data);
+                }else{
+                    this.rows.splice(this.index - 1 , 0, data);
+                }
 
                 this.index = 1;
                 this.name = &quot;&quot;;
                 this.age = null;
                 this.city = &quot;&quot;;
                 this.job = &quot;&quot;;
+                this.rowCount ++;
 
                 this.updateIndexes();
 
             }
         }
     }
-&lt;/script&gt;</code></pre>
+&lt;/script&gt;
+
+&lt;style&gt;
+    .vue-quintable.dragging .vue-quintable-cell{
+        position: relative;
+    }
+
+    .vue-quintable.dragging .vue-quintable-cell:after{
+        content: &quot;&quot;;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255,255,255,0.75);
+        left: 0;
+        top: 0;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    .vue-quintable.dragging .vue-quintable-cell.actions .drop-element{
+        position: relative;
+        z-index: 3;
+
+    }
+
+    .vue-quintable.dragging .vue-quintable-cell.actions .drop-element .card{
+        background-color: #28a745;
+        color: #fff;
+    }
+
+&lt;/style&gt;</code></pre>
 
         </b-collapse>
 
@@ -304,10 +356,10 @@
             <pre data-toolbar-order="copy-to-clipboard"><code class="language-markup">&lt;template&gt;
     &lt;div class=&quot;content&quot;&gt;
         &lt;div class=&quot;btn-group mr-2&quot;&gt;
-            &lt;div class=&quot;btn btn-info&quot; @click=&quot;moveRow('up')&quot;&gt;
+            &lt;div class=&quot;btn btn-info&quot; :disabled=&quot;first&quot; :class=&quot;{disabled:first}&quot; @click=&quot;moveRow('up')&quot;&gt;
                 &lt;font-awesome-icon icon=&quot;chevron-up&quot;&gt;&lt;/font-awesome-icon&gt;
             &lt;/div&gt;
-            &lt;div class=&quot;btn btn-info&quot; @click=&quot;moveRow('down')&quot;&gt;
+            &lt;div class=&quot;btn btn-info&quot; :disabled=&quot;last&quot; :class=&quot;{disabled:last}&quot; @click=&quot;moveRow('down')&quot;&gt;
                 &lt;font-awesome-icon icon=&quot;chevron-down&quot;&gt;&lt;/font-awesome-icon&gt;
             &lt;/div&gt;
        &lt;/div&gt;
@@ -315,7 +367,7 @@
             &lt;font-awesome-icon icon=&quot;times&quot;&gt;&lt;/font-awesome-icon&gt;
         &lt;/div&gt;
 
-        &lt;drop  class=&quot;d-inline-block align-middle &quot; @drop=&quot;handleDrop&quot;&gt;
+        &lt;drop  class=&quot;d-inline-block align-middle drop-element&quot; @drop=&quot;handleDrop&quot; title=&quot;Drop your dragging row here to move it&quot;&gt;
             &lt;div class=&quot;card px-3 d-inline-block&quot;&gt;
                 &lt;div class=&quot;py-2 bg-muted&quot;&gt;
                     &lt;font-awesome-icon icon=&quot;expand&quot;&gt;&lt;/font-awesome-icon&gt;
@@ -331,6 +383,14 @@
 
     export default {
         props:{
+            first:{
+                type:Boolean,
+                default:false
+            },
+            last:{
+                type:Boolean,
+                default:false
+            },
             index:{
                 type:Number
             }
@@ -355,11 +415,16 @@
                 )
             },
             moveRow(mode = &quot;up&quot;) {
+
+                if(mode === &quot;up&quot; &amp;&amp; this.first || mode === &quot;down&quot; &amp;&amp; this.last){
+                    return;
+                }
+
                 this.$emit(&quot;action&quot;,
                     {
                         index:this.index,
                         type:&quot;move-row&quot;,
-                        to:mode === &quot;up&quot; ? this.index - 1 : this.index + 1
+                        to:mode === &quot;up&quot; ? this.index - 1:this.index + 1
                     }
                 )
             },
@@ -374,14 +439,22 @@
         }
     }
 
-&lt;/script&gt;</code></pre>
+&lt;/script&gt;
+&lt;style scoped&gt;
+    .btn.disabled{
+        cursor: not-allowed;
+    }
+&lt;/style&gt;
+
+
+</code></pre>
 
         </b-collapse>
         <b-collapse id="code-component-drag" class="mt-2">
             <!-- @formatter:off -->
             <pre data-toolbar-order="copy-to-clipboard"><code class="language-markup">&lt;template&gt;
     &lt;drag class=&quot;d-inline-block&quot; :transfer-data=&quot;{ index: index }&quot; :effect-allowed=&quot;['move']&quot;
-          drop-effect=&quot;move&quot;&gt;
+          drop-effect=&quot;move&quot; @dragend=&quot;dragend&quot; @dragstart=&quot;dragstart&quot;&gt;
         &lt;div class=&quot;btn  p-2&quot;&gt;
             &lt;font-awesome-icon icon=&quot;arrows-alt&quot;&gt;&lt;/font-awesome-icon&gt;
         &lt;/div&gt;
@@ -399,6 +472,24 @@
         components:{
             Drag
         },
+        methods:{
+            dragstart(){
+                this.$emit(&quot;action&quot;,
+                    {
+                        index:this.index,
+                        type:&quot;dragstart&quot;,
+                    }
+                );
+            },
+            dragend(){
+                this.$emit(&quot;action&quot;,
+                    {
+                        index:this.index,
+                        type:&quot;dragend&quot;,
+                    }
+                );
+            }
+        }
     }
 &lt;/script&gt;</code></pre>
 
@@ -461,13 +552,19 @@
                 city:"",
                 job:"",
                 rowCount:10,
+                dragging:false,
             }
 
         },
         computed:{
-            ages(){
+            tableClasses() {
+                return this.dragging ? "dragging" : "";
+            },
+
+            ages() {
                 return Array.range(1, 99);
             },
+
             indexes(){
                 return this.rows.map((row,index)=>{
                     return index+1;
@@ -540,6 +637,10 @@
                     this.updateIndexes();
                 }else if(data.type === "move-row"){
                     this.move(data.index,data.to);
+                }else if(data.type === "dragstart"){
+                    this.dragging = true;
+                }else if(data.type === "dragend"){
+                    this.dragging = false;
                 }
             },
 
@@ -613,3 +714,33 @@
         }
     }
 </script>
+
+<style>
+    .vue-quintable.dragging .vue-quintable-cell{
+        position: relative;
+    }
+
+    .vue-quintable.dragging .vue-quintable-cell:after{
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255,255,255,0.75);
+        left: 0;
+        top: 0;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    .vue-quintable.dragging .vue-quintable-cell.actions .drop-element{
+        position: relative;
+        z-index: 3;
+
+    }
+
+    .vue-quintable.dragging .vue-quintable-cell.actions .drop-element .card{
+        background-color: #28a745;
+        color: #fff;
+    }
+
+</style>
