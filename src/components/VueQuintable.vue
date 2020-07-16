@@ -97,16 +97,18 @@
 							  <span v-else>-</span>
 						  </span>
 					  </td>
-					  <td v-if="configFinal.select && configFinal.selectPosition === 'pre'" class="select-td pre">
+					  <td v-if="configFinal.select && configFinal.selectPosition === 'pre'" class="select-td pre" :class="{'disabled-select':rowsFinal[rIndex].disableSelect}">
 
-						  <p-check v-if="configFinal.prettySelect" name="check" class="p-icon" v-model="selected[rIndex]" @change="checkListener($event,rIndex)" >
-							  <template slot="extra" >
-								  <span><font-awesome-icon v-if="selected[rIndex]" icon="check" class="text-success icon-check" /></span>
-							  </template>
-						  </p-check>
-						  <label v-else class="mb-0 mt-0">
-						  	<input type="checkbox" v-model="selected[rIndex]" @change="checkListener($event,rIndex)" >
-						  </label>
+						  <template v-if="!rowsFinal[rIndex].disableSelect">
+							  <p-check v-if="configFinal.prettySelect" name="check" class="p-icon" v-model="selected[rIndex]" @change="checkListener($event,rIndex)" >
+								  <template slot="extra" >
+									  <span><font-awesome-icon v-if="selected[rIndex]" icon="check" class="text-success icon-check" /></span>
+								  </template>
+							  </p-check>
+							  <label v-else class="mb-0 mt-0">
+								<input type="checkbox" v-model="selected[rIndex]" @change="checkListener($event,rIndex)" >
+							  </label>
+						  </template>
 					  </td>
 
 
@@ -149,16 +151,18 @@
 					  </td>
 
 
-					  <td v-if="configFinal.select && configFinal.selectPosition === 'post'" class="select-td post">
+					  <td v-if="configFinal.select && configFinal.selectPosition === 'post'" class="select-td post" :class="{'disabled-select':rowsFinal[rIndex].disableSelect}">
+						  <template v-if="!rowsFinal[rIndex].disableSelect">
 
-						  <p-check v-if="configFinal.prettySelect" name="check" class="p-icon" v-model="selected[rIndex]" @change="checkListener($event,rIndex)" >
-							  <template slot="extra" >
-								  <span><font-awesome-icon v-if="selected[rIndex]" icon="check" class="text-success icon-check" /></span>
-							  </template>
-						  </p-check>
-						  <label v-else class="mb-0 mt-0">
-						  	<input type="checkbox" v-model="selected[rIndex]" @change="checkListener($event,rIndex)">
-						  </label>
+							  <p-check v-if="configFinal.prettySelect" name="check" class="p-icon" v-model="selected[rIndex]" @change="checkListener($event,rIndex)" >
+								  <template slot="extra" >
+									  <span><font-awesome-icon v-if="selected[rIndex]" icon="check" class="text-success icon-check" /></span>
+								  </template>
+							  </p-check>
+							  <label v-else class="mb-0 mt-0">
+								<input type="checkbox" v-model="selected[rIndex]" @change="checkListener($event,rIndex)">
+							  </label>
+						  </template>
 					  </td>
 				  </tr>
 					  <template v-if="(generatedRows[rIndex] || stickyRows[rIndex]) && visibleRows[rIndex]">
@@ -1588,10 +1592,13 @@ export default {
 					}
 
 				}
-
 				this.allSelectedCustom = counter === this.visibleRows.filter(x => x).length;
 
+			}else{
+				this.allSelectedCustom = false;
 			}
+
+
 	  },
 
 	  /**
@@ -1784,18 +1791,20 @@ export default {
 		selected(val){
 
 			let selected = [];
-
 			for (let index in this.sortedIndexes){
 				if(this.sortedIndexes.hasOwnProperty(index)){
 					index = parseInt(index);
 					if(val[index]){
-						selected.push(this.rowsFinal[this.sortedIndexes[index]]);
+						const row = this.rowsFinal[this.sortedIndexes[index]];
+
+						if(!row.disableSelect){
+							selected.push(row);
+						}
 					}
 				}
 			}
 
 		  this.$emit("input",selected);
-
 
 		},
 
@@ -1941,7 +1950,10 @@ export default {
 	   */
 	  checkListener(bool,index){
 
-		  let tmp = this.selected.slice();
+		  let tmp = this.selected.slice().map((checked,i)=>{
+		  		return checked || this.rowsFinal[i].disableSelect;
+		  });
+
 		  tmp[index] = bool;
 
 		  if(tmp.indexOf(false) !== -1){

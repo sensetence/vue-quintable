@@ -202,15 +202,16 @@ The following will give you an overview how to configure the VueQuintable for yo
 
 #### Property *rows* properties
 
-| Key      | Type                              | Pre-condition                                   | Description                                                  | Default |
-| -------- | --------------------------------- | ----------------------------------------------- | ------------------------------------------------------------ | ------- |
-| cells    | Array                             | -                                               | List of cells for the row                                    | null    |
-| selected | Boolean                           | *select* is enabled                             | If set to true the row will be selected on default           | false   |
-| expanded | Boolean                           | *breakpoint* of at least one column is affected | If set to true the row will be expanded on default           | false   |
-| keywords | String[]                          | *search* is enabled                             | Additional keywords which will match a search query          | null    |
-| classes  | String                            | -                                               | Additional CSS classes for row                               | null    |
-| filters  | Object                            | *filters* are set                               | Filters with filter name(s) and value(s), which will match selected filter(s) | null    |
-| align    | String{"left"\|"right"\|"center"} | -                                               | Text alignment for whole row, this will be overwritten by *columns* align value | "left"  |
+| Key           | Type                              | Pre-condition                                   | Description                                                  | Default |
+| ------------- | --------------------------------- | ----------------------------------------------- | ------------------------------------------------------------ | ------- |
+| cells         | Array                             | -                                               | List of cells for the row                                    | null    |
+| selected      | Boolean                           | *select* is enabled                             | If set to true the row will be selected on default           | false   |
+| disableSelect | Boolean                           | *select* is enabled                             | If set to true this row will be excluded from selection at all | false   |
+| expanded      | Boolean                           | *breakpoint* of at least one column is affected | If set to true the row will be expanded on default           | false   |
+| keywords      | String[]                          | *search* is enabled                             | Additional keywords which will match a search query          | null    |
+| classes       | String                            | -                                               | Additional CSS classes for row                               | null    |
+| filters       | Object                            | *filters* are set                               | Filters with filter name(s) and value(s), which will match selected filter(s) | null    |
+| align         | String{"left"\|"right"\|"center"} | -                                               | Text alignment for whole row, this will be overwritten by *columns* align value | "left"  |
 
 ##### Property *cells* for property *rows* properties
 
