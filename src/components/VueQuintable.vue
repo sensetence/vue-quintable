@@ -211,7 +211,7 @@
 												</td>
 
 
-												<td  :colspan="!showHeadlines[cIndex] && !configFinal.sorts[cIndex]?'2':'1'" :class="{'text-right':showHeadlines[cIndex]}" class="generated-content-cell" @click="onCellClick(cell)" :key="'vue-quintable-'+uuid+'-generated-cell-'+rIndex+'-'+cIndex">
+												<td :colspan="!showHeadlines[cIndex] && !configFinal.sorts[cIndex]?'2':'1'" :class="cellClassesParsed[rIndex][cIndex] +  (showHeadlines[cIndex]?' text-right':'')" class="generated-content-cell" @click="onCellClick(cell)" :key="'vue-quintable-'+uuid+'-generated-cell-'+rIndex+'-'+cIndex">
 
 													<b-tooltip :target="'vue-quintable-'+uuid+'-generated-row-cell-'+rIndex+'-'+cIndex" triggers="hover" v-if="cell.tooltip" placement ="top">
 														<span v-html="cell.tooltip"></span>
