@@ -1569,35 +1569,42 @@ export default {
 	   * Check if some rows should be selected due to an outside change
 	   *
 	   */
-	  preSelectedRows(val){
+	  preSelectedRows(val) {
 
-			for(let i = 0 ; i<this.rowsFinal.length;i++) {
-				this.$set(this.selected,i,false);
-			}
+		  for (let i = 0; i < this.rowsFinal.length; i++) {
+			  this.$set(this.selected, i, false);
+		  }
 
-			if(val && val.length){
+		  if (val && val.length) {
 
-				let counter = 0;
+			  let counter = 0;
 
-				for(let i = 0;i< val.length;i++){
-					const key = val[i].key;
-					const value = val[i].value;
+			  const indexes = this.configFinal.selectAllRows ? this.rowsFinal.map((x, i) => i) : this.visibleRowIndexes;
 
-					for (let j = 0;j<this.visibleRowIndexes.length;j++){
-						const index = this.visibleRowIndexes[j];
-						if(this.rowsFinal[index][key] === value){
-							this.$set(this.selected,index,true);
-							counter++;
-						}
-					}
+			  for (let i = 0; i < val.length; i++) {
+				  const key = val[i].key;
+				  const value = val[i].value;
 
-				}
-				this.allSelectedCustom = counter === this.visibleRows.filter(x => x).length;
 
-			}else{
-				this.allSelectedCustom = false;
-			}
+				  for (let j = 0; j < indexes.length; j++) {
+					  const index = indexes[j];
+					  if (this.rowsFinal[index][key] === value) {
+						  this.$set(this.selected, index, true);
+						  counter++;
+					  }
+				  }
 
+			  }
+
+			  if (!this.configFinal.selectAllRows) {
+				  this.allSelectedCustom = counter === this.visibleRows.filter(x => x).length;
+			  } else {
+				  this.allSelectedCustom = counter === this.rowsFinal.length;
+			  }
+
+		  } else {
+			  this.allSelectedCustom = false;
+		  }
 
 	  },
 
@@ -1754,7 +1761,7 @@ export default {
 
 			  if(this.configFinal.defaultSelected){
 				  this.allSelectedCustom = null;
-				  this.checkAll();
+				  this.checkAll(true);
 			  }
 		  });
 		},
@@ -1780,7 +1787,7 @@ export default {
 			}
 
 			if(this.configFinal.defaultSelected){
-				this.checkAll();
+				this.checkAll(true);
 			}
 		},
 
@@ -2087,23 +2094,35 @@ export default {
 	   * Select all relevant rows
 	   *
 	   */
-	  checkAll(){
+	  checkAll(force = false){
 			let value = this.allSelectedProperty;
+
+			if(force){
+				value = true;
+			}
+
+			let counter = 0;
 
 			for (let index in this.sortedIndexes){
 				if(this.sortedIndexes.hasOwnProperty(index)){
 					index = parseInt(index);
-
 					if((!this.configFinal.selectAllRows && this.visibleRows[this.sortedIndexes[index]]) || (this.configFinal.selectAllRows && this.filteredRows[this.sortedIndexes[index]])){
 						this.$set(this.selected,this.sortedIndexes[index],value);
+						counter++;
 					}else{
 						this.$set(this.selected,this.sortedIndexes[index],false);
 					}
 				}
 			}
 
-
-		},
+			if(value){
+				if(!this.configFinal.selectAllRows){
+					this.allSelectedCustom = counter === this.visibleRows.filter(x => x).length;
+				}else{
+					this.allSelectedCustom = counter === this.rowsFinal.length;
+				}
+			}
+	  },
 
 	  /**
 	   * Do the filtering for all rows against all groups
@@ -2759,15 +2778,30 @@ export default {
   	
   	},
 	created(){
-	 this.initLists();
+	 	this.initLists();
 
-	 //Pre-select rows in case
-	  for (let i = 0; i < this.rowsFinal.length; i++) {
-		  let row = this.rowsFinal[i];
-		  if(row.selected){
-			  this.$set(this.selected,i,true);
-		  }
-	  }
+	 	//Pre-select rows in case
+		let counter = 0;
+
+
+		const indexes = this.configFinal.selectAllRows?this.rowsFinal.map((x,i)=>i):this.visibleRowIndexes;
+		for (let i = 0;i<indexes.length;i++){
+			let row = this.rowsFinal[i];
+			if(row.selected){
+				this.$set(this.selected,i,true);
+			}
+			if(row.selected || row.disableSelect){
+				counter++;
+			}
+		}
+
+		if(!this.configFinal.selectAllRows && counter === this.visibleRows.filter(x => x).length){
+			this.allSelectedCustom = true;
+		}else if(this.configFinal.selectAllRows  && counter === this.rowsFinal.length){
+			this.allSelectedCustom = true;
+		}
+
+
 	},
 	 mounted(){
 		if(this.configFinal.ajaxUrl){
@@ -2775,7 +2809,7 @@ export default {
 		}
 
 		if(this.configFinal.defaultSelected){
-			this.checkAll();
+			this.checkAll(true);
 		}
 
 		this.generateHiddenBreakpoints();
@@ -2783,7 +2817,7 @@ export default {
 		//bind listener to window resize
 		window.addEventListener("resize",this.breakpointListener);
 
-	},
+	 },
 	beforeDestroy(){
 		//release listener from window resize
 		window.removeEventListener("resize",this.breakpointListener);

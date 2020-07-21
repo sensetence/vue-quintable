@@ -33,7 +33,6 @@
                         {
                             headline: &quot;Name&quot;,
                             cellFormatter:(cell)=&gt;{
-                                console.log(cell);
                                 return &quot;Name: &quot; +  cell.content.name
                             }
                         }, {
@@ -127,7 +126,6 @@
                         {
                             headline: "Name",
                             cellFormatter:(cell)=>{
-                                console.log(cell);
                                 return "Name: " +  cell.content.name
                             }
                         }, {
