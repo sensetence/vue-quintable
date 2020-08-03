@@ -314,24 +314,21 @@
 		</div>
 
 		<div v-if="ajaxLoading" class="slot-loading slot">
-
-					<slot name="loading">
-						<div class="loader-wrapper" :style="'height:'+loaderHeight+'px;'">
-
-						<div class="loader text-center py-4" >
-								<font-awesome-icon icon="circle-notch" spin class="ajax-loader" />
-							</div>
-						</div>
-
-					</slot>
-
-			</div>
+			<slot name="loading">
+				<div class="loader-wrapper" :style="'height:'+loaderHeight+'px;'">
+				<div class="loader text-center py-4" >
+						<font-awesome-icon icon="circle-notch" spin class="ajax-loader" />
+					</div>
+				</div>
+			</slot>
+		</div>
 
 			<div class="clearfix">
 				<div class="row">
 					<div class="col-lg-4">
-						<div class="pb-lg-0 pb-3  float-left" v-if="configFinal.multiSortSelect">
-							<p-check class="p-switch" v-model="multiSort" value="true">{{configFinal.multiSortPlaceholder}}</p-check>
+						<div class="pb-lg-0 pb-3  float-left" v-if="configFinal.multiSortSelect||configFinal.pageSortSelect">
+							<span :class="configFinal.pageSort?'mr-3':''"><p-check class="p-switch" v-model="multiSort" value="true">{{configFinal.multiSortPlaceholder}}</p-check></span>
+							<p-check class="p-switch" v-model="pageSort" value="true">{{configFinal.pageSortPlaceholder}}</p-check>
 						</div>
 					</div>
 					<div class="col-lg-8">
@@ -496,6 +493,7 @@ export default {
       	ajaxAll:0,
       	customRowsPerPage:null,
       	customMultiSort:null,
+      	customPageSort:null,
       	hiddenBreakpoints:[],
       	initBreakpoints:true,
 		breakpointTimeout:null,
@@ -752,9 +750,20 @@ export default {
 			  multiSort = true;
 		  }
 
+		  let pageSort = false;
+		  if(this.config.pageSort){
+			  pageSort = true;
+		  }
+
+
 		  let multiSortSelect = false;
 		  if(this.config.multiSortSelect){
 			  multiSortSelect = true;
+		  }
+
+		  let pageSortSelect = false;
+		  if(this.config.pageSortSelect){
+			  pageSortSelect = true;
 		  }
 
 		  let ajaxUrl = false;
@@ -814,6 +823,11 @@ export default {
 		  let multiSortPlaceholder = "Multiple sort";
 		  if(this.config.multiSortPlaceholder){
 			  multiSortPlaceholder = this.config.multiSortPlaceholder;
+		  }
+
+		  let pageSortPlaceholder = "Page sort";
+		  if(this.config.pageSortPlaceholder){
+			  pageSortPlaceholder = this.config.pageSortPlaceholder;
 		  }
 
 		  let filterRelation = "AND";
@@ -940,7 +954,9 @@ export default {
 			  headlines:headlines,
 			  columnClasses:columnClasses,
 			  sorts:sorts,
+			  pageSort:pageSort,
 			  multiSort:multiSort,
+			  pageSortSelect:pageSortSelect,
 			  multiSortSelect:multiSortSelect,
 			  filterGroupRelation:filterGroupRelation,
 			  filterRelation:filterRelation,
@@ -951,6 +967,7 @@ export default {
 			  searchPlaceholder:searchPlaceholder,
 			  useFuzzySearch:useFuzzySearch,
 			  ajaxUrl:ajaxUrl,
+			  pageSortPlaceholder:pageSortPlaceholder,
 			  multiSortPlaceholder:multiSortPlaceholder,
 			  rowsPlaceholder:rowsPlaceholder,
 			  emptyPlaceholder:emptyPlaceholder,
@@ -1008,6 +1025,25 @@ export default {
 		  },
 		  set(val){
 			  this.customRowsPerPage = val;
+		  }
+
+	  },
+
+	  /**
+	   * Checks if page sort is currently active. Special case: no user action in place
+	   *
+	   */
+	  pageSort:{
+		  get(){
+
+			  if(this.customPageSort === null){
+				  return this.configFinal.pageSort;
+			  }
+			  return this.customPageSort;
+
+		  },
+		  set(val){
+			  this.customPageSort = val;
 		  }
 
 	  },
@@ -1619,6 +1655,13 @@ export default {
 					this.loadViaAjax(true,"FILTERS");
 				}
 
+				if(this.pageSort){
+
+					this.currentSortIndexes = {};
+					this.resetSorts();
+					this.recomputeEssentials();
+				}
+
 			},
 			deep:true,
 		},
@@ -1723,7 +1766,16 @@ export default {
 			if(val.length >= this.configFinal.searchLength){
 			    this.$emit("update:search",val,"update:search");
 			}
+
+			if(this.pageSort){
+				this.currentSortIndexes = {};
+				this.resetSorts();
+				this.recomputeEssentials();
+			}
+
 		},
+
+
 
 	  /**
 	   * Resets page and selects if the number of rows per page is changed and emits and event
@@ -1835,6 +1887,11 @@ export default {
 				this.resetSelect();
 			}
 
+			if(this.pageSort){
+				this.currentSortIndexes = {};
+				this.resetSorts();
+			}
+
 			this.recomputeEssentials();
 
 
@@ -1866,6 +1923,16 @@ export default {
 		},
 
 	  /**
+	   * Reset sort order on page sort change
+	   *
+	   */
+	  pageSort(){
+		  this.currentSortIndexes = {};
+		  this.resetSorts();
+		  this.recomputeEssentials();
+	  },
+
+	  /**
 	   * Reset sort order if it is changed from outside
 	   *
 	   */
@@ -1883,7 +1950,7 @@ export default {
 			  }
           }
 		}
-      }
+      },
 
 
   },
@@ -2072,23 +2139,24 @@ export default {
 
 
 			if(this.numberOfSorts === 0){
-
-				for(let i = 0 ; i<this.rowsFinal.length;i++) {
-					this.sortedIndexes[i] = parseInt(i);
-				}
-
+				this.resetSorts();
 				if(this.currentPage !== 1){
 					this.currentPage = 1;
 				}else{
 					this.recomputeEssentials();
 				}
 
-
 			}else{
 				this.sort();
 			}
 
 		},
+
+	  resetSorts(){
+		  for(let i = 0 ; i<this.rowsFinal.length;i++) {
+			  this.sortedIndexes[i] = parseInt(i);
+		  }
+	  },
 
 	  /**
 	   * Select all relevant rows
@@ -2472,15 +2540,49 @@ export default {
 	   */
 	  sort(){
 
-			if(this.configFinal.ajaxUrl){
+			if(this.configFinal.ajaxUrl && !this.pageSort){
 				this.loadViaAjax(true,"SORT");
 				return;
 			}
 
-			let rows = this.rowsFinal.slice();
+			let allRows = this.rowsFinal.slice();
+			let rows = [];
+			let visibleIndexes = [];
+			let sortedIndexesBefore = {};
 
-			for(let i = 0 ; i<rows.length;i++) {
-				rows[i].index = i;
+
+		  if(this.pageSort){
+
+				visibleIndexes = this.visibleRowIndexes.slice();
+
+				if(!visibleIndexes.length){
+					const length = this.configFinal.pagination?this.configFinal.pagination:this.rowsFinal.length;
+					for (let i = 0;i<length;i++){
+						visibleIndexes.push(i);
+					}
+				}
+
+				let counter = 0;
+				for(let i = 0 ; i<allRows.length;i++) {
+				  allRows[i].index = i;
+				  if(visibleIndexes.indexOf(i) !== -1){
+					  if(counter < this.configFinal.pagination ){
+						rows.push(allRows[i])
+					  }
+					  counter++
+				  }
+				}
+
+				if(Object.keys(this.sortedIndexes).length){
+					sortedIndexesBefore = Object.assign({},this.sortedIndexes);
+				}else{
+					for (let i = 0; i <allRows.length;i++){
+						sortedIndexesBefore[i] = i;
+					}
+				}
+
+			}else{
+				rows = this.rowsFinal.slice();
 			}
 
 			let sortableIndexes = [];
@@ -2521,15 +2623,35 @@ export default {
 				return compare(a, b, sortableIndexes);
 			});
 
+			const finalRows = [];
 
-			for(let i = 0 ; i<rows.length;i++) {
-				this.sortedIndexes[i] = parseInt(rows[i].index);
+			let counterRows = 0;
+			let counterAdded = 0;
+			for(let i  = 0;i<allRows.length;i++) {
+			  if(this.pageSort && visibleIndexes.indexOf(i) !== -1){
+				  if(counterRows < this.configFinal.pagination ){
+					  finalRows.push(rows[counterAdded]);
+					  counterAdded++;
+				  }else{
+					  finalRows.push(allRows[sortedIndexesBefore[i]]);
+				  }
+				  counterRows++
+			  }else if(this.pageSort){
+				  finalRows.push(allRows[sortedIndexesBefore[i]]);
+			  }else{
+				  finalRows.push(rows[i]);
+			  }
 			}
 
-			this.currentPage = 1;
+			for(let i = 0 ; i<finalRows.length;i++) {
+				this.sortedIndexes[i] = parseInt(finalRows[i].index);
+			}
 
+			if(!this.pageSort){
+				this.currentPage = 1;
+			}
 
-			if(!this.configFinal.selectAllRows){
+			if(!this.configFinal.selectAllRows && !this.pageSort){
 				this.resetSelect();
 			}
 

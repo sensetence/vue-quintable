@@ -41,7 +41,11 @@
                         }
                     ],
                     multiSort:true,
-                    multiSortSelect:true
+                    multiSortSelect:true,
+                    pageSort:true,
+                    pageSortSelect:true,
+                    pagination:5,
+                    search:true,
                 },
                 sortOrder:[{
                     index:1,
@@ -53,7 +57,7 @@
         computed:{
             rows(){
 
-                let count = 10;
+                let count = 30;
                 const rows = [];
 
                 const chance = new Chance();
@@ -119,7 +123,11 @@
                         }
                     ],
                     multiSort:true,
-                    multiSortSelect:true
+                    multiSortSelect:true,
+                    pageSort:true,
+                    pageSortSelect:true,
+                    pagination:5,
+                    search:true,
                 },
                 sortOrder:[{
                     index:1,
@@ -131,7 +139,7 @@
         computed:{
             rows(){
 
-                let count = 10;
+                let count = 30;
                 const rows = [];
 
                 const chance = new Chance();
