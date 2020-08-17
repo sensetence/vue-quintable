@@ -59,15 +59,14 @@
                     select:true,
                     selectAll:true,
                     prettySelect:true,
-
-                    pagination:5,
+                    pagination:8,
                     selectAllRows:this.selectAllRows,
 
                 }
             },
             rows(){
 
-                let count = 10;
+                let count = 24;
                 const rows = [];
 
                 const chance = new Chance();
@@ -75,7 +74,9 @@
                 for(let i = 0; i &lt; count; i++){
                     rows.push(
                         {
-                            disableSelect:i===1,
+                            selected:i % 2 === 0,
+                            disableSelect: i===1,
+                            index:i,
                             cells:[
                             {
                                 text:chance.name({ nationality: 'en' })
@@ -101,7 +102,19 @@
         watch:{
             selectAllRows(){
                 this.selectedRows = [];
-                this.preSelectedRows = [];
+
+                const selectedRows = [];
+                for(let i = 0; i &lt; this.rows.length; i++){
+                    if(i===0 || i % 2 !== 0 ){
+                        selectedRows.push({
+                            key:&quot;index&quot;,
+                            value:i,
+                        });
+                    }
+                }
+
+                this.preSelectedRows = selectedRows;
+
             },
             selectedRows(){
                 alert(&quot;Selection Changed - Names:\n&quot; + (this.selectedRows.length?&quot;- &quot;+this.selectedRows.map((row)=&gt;{return row.cells[0].text}).join(&quot;\n- &quot;): &quot;No rows selected&quot;));
@@ -153,15 +166,14 @@
                     select:true,
                     selectAll:true,
                     prettySelect:true,
-
-                    pagination:5,
+                    pagination:8,
                     selectAllRows:this.selectAllRows,
 
                 }
             },
             rows(){
 
-                let count = 10;
+                let count = 24;
                 const rows = [];
 
                 const chance = new Chance();
@@ -169,7 +181,9 @@
                 for(let i = 0; i < count; i++){
                     rows.push(
                         {
-                            disableSelect:i===1,
+                            selected:i % 2 === 0,
+                            disableSelect: i===1,
+                            index:i,
                             cells:[
                             {
                                 text:chance.name({ nationality: 'en' })
@@ -195,7 +209,19 @@
         watch:{
             selectAllRows(){
                 this.selectedRows = [];
-                this.preSelectedRows = [];
+
+                const selectedRows = [];
+                for(let i = 0; i < this.rows.length; i++){
+                    if(i===0 || i % 2 !== 0 ){
+                        selectedRows.push({
+                            key:"index",
+                            value:i,
+                        });
+                    }
+                }
+
+                this.preSelectedRows = selectedRows;
+
             },
             selectedRows(){
                 alert("Selection Changed - Names:\n" + (this.selectedRows.length?"- "+this.selectedRows.map((row)=>{return row.cells[0].text}).join("\n- "): "No rows selected"));
