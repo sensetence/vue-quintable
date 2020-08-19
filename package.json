@@ -1,6 +1,6 @@
 {
   "name": "@quintet/vue-quintable",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -55,7 +55,7 @@
     "webpack": "^4.41.2"
   },
   "license": "See in LICENCE",
-  "homepage": "https://quintet.io/quintable/",
+  "homepage": "https://quintet.io/vuequintable-post/",
   "keywords": [
     "table",
     "tables",

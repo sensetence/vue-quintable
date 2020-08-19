@@ -2583,6 +2583,10 @@ export default {
 
 			}else{
 				rows = this.rowsFinal.slice();
+				  for(let i = 0 ; i<rows.length;i++) {
+					  rows[i].index = i;
+
+				  }
 			}
 
 			let sortableIndexes = [];
@@ -2654,6 +2658,8 @@ export default {
 			if(!this.configFinal.selectAllRows && !this.pageSort){
 				this.resetSelect();
 			}
+
+			console.log(this.sortedIndexes)
 
 			this.recomputeEssentials();
 

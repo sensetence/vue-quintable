@@ -122,9 +122,9 @@
                             sort:true
                         }
                     ],
-                    multiSort:true,
+                    multiSort:false,
                     multiSortSelect:true,
-                    pageSort:true,
+                    pageSort:false,
                     pageSortSelect:true,
                     pagination:5,
                     search:true,
