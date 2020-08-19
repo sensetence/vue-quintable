@@ -2658,9 +2658,7 @@ export default {
 			if(!this.configFinal.selectAllRows && !this.pageSort){
 				this.resetSelect();
 			}
-
-			console.log(this.sortedIndexes)
-
+		  
 			this.recomputeEssentials();
 
 		},
