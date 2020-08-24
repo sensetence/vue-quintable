@@ -1505,7 +1505,7 @@ export default {
 	   */
 		lastVisibleRow(){
 			if(this.currentRowsPerPage === "All" || this.pages === 1){
-				return this.rowsFinal.length;
+				return this.numberOfVisibleRows;
 			}
 			return Math.min(this.firstVisibleRow + this.currentRowsPerPage-1,this.numberOfVisibleRows);
 		},
@@ -2658,7 +2658,7 @@ export default {
 			if(!this.configFinal.selectAllRows && !this.pageSort){
 				this.resetSelect();
 			}
-		  
+
 			this.recomputeEssentials();
 
 		},
