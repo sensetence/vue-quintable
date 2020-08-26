@@ -113,6 +113,7 @@
                         }
                     ],
                     pagination:5,
+                    pageSortSelect:true,
                     ajaxUrl:"https://quintet.io/vue-quintable-demo/data.php/"
                 },
 

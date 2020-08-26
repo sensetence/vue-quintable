@@ -327,8 +327,8 @@
 				<div class="row">
 					<div class="col-lg-4">
 						<div class="pb-lg-0 pb-3  float-left" v-if="configFinal.multiSortSelect||configFinal.pageSortSelect">
-							<span :class="configFinal.pageSort?'mr-3':''"><p-check class="p-switch" v-model="multiSort" value="true">{{configFinal.multiSortPlaceholder}}</p-check></span>
-							<p-check class="p-switch" v-model="pageSort" value="true">{{configFinal.pageSortPlaceholder}}</p-check>
+							<span :class="configFinal.pageSort?'mr-3':''" v-if="configFinal.multiSortSelect"><p-check class="p-switch" v-model="multiSort" value="true">{{configFinal.multiSortPlaceholder}}</p-check></span>
+							<p-check v-if="configFinal.pageSortSelect" class="p-switch" v-model="pageSort" value="true">{{configFinal.pageSortPlaceholder}}</p-check>
 						</div>
 					</div>
 					<div class="col-lg-8">
@@ -673,7 +673,7 @@ export default {
 	  visibleRowIndexes(){
 
 		  let rows = [];
-		  if(this.configFinal.ajaxUrl){
+		  if(this.configFinal.ajaxUrl && !this.pageSort){
 			  for (let i = 0;i<this.rowsFinal.length; i++){
 				  rows.push(i);
 			  }
