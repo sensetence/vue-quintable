@@ -114,7 +114,7 @@ Add listeners for the following events to handle them as you want to.
 
 - filtered:rows | passes filtered rows as first parameter, triggered when filter or search query affect rows
 
-- ajax:rows | passes ajax rows as first parameter, triggered when rows are updated from server
+- ajax:rows | passes an object with ajax rows and total count as first parameter, triggered when rows are updated from server
 
 - ajax:error | passes an error as first parameter, triggered when an server error occurs while loading rows via ajax 
 

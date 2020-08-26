@@ -1703,7 +1703,7 @@ export default {
 	   *
 	   */
 	  ajaxRows(){
-	  		this.$emit("ajax:rows",this.ajaxRows,"ajax:rows");
+	  		this.$emit("ajax:rows",{rows:this.ajaxRows,all:this.ajaxAll},"ajax:rows");
 	  },
 
 	  /**
