@@ -9,7 +9,7 @@
         <VueQuintable :axios="axios" :config="ajaxConfig" @ajax:rows="rowsUpdated" />
 
 
-        <b-button v-b-toggle.code-basic variant="secondary"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code </b-button>
+        <b-button v-b-toggle.code-basic variant="secondary" class="mt-3"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code </b-button>
         <b-collapse id="code-basic" class="mt-2">
             <!-- @formatter:off -->
             <pre data-toolbar-order="copy-to-clipboard">
@@ -46,6 +46,7 @@
                                 }
                             ],
                             pagination:5,
+                            pageSortSelect:true,
                             ajaxUrl:"https://quintet.io/vue-quintable-demo/data.php"
                         },
                     }

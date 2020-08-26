@@ -1191,9 +1191,21 @@ export default {
 	   *
 	   */
 		someSelected(){
-			for (let i = 0; i<this.selected.length;i++){
-				if(this.selected[i]){
-					return true;
+
+			if(!this.configFinal.selectAllRows){
+				for (let i = 0; i<this.selected.length;i++){
+					if(this.selected[i]){
+						return true;
+					}
+				}
+			}else{
+
+				if(this.configFinal.ajaxUrl){
+					return this.preSelectedRows.length || this.selected.filter(x=>x).length;
+
+				}else{
+					return this.selected.filter(x=>x).length;
+
 				}
 			}
 			return false;
@@ -1618,6 +1630,7 @@ export default {
 			  this.$set(this.selected, i, false);
 		  }
 
+
 		  if (val && val.length) {
 
 			  let counter = 0;
@@ -1640,10 +1653,16 @@ export default {
 			  }
 
 			  if (!this.configFinal.selectAllRows) {
-				  this.allSelectedCustom = counter === this.visibleRows.filter(x => x).length;
+				  	this.allSelectedCustom = counter === this.visibleRows.filter(x => x).length;
+
 			  } else {
-				  this.allSelectedCustom = counter === this.rowsFinal.length;
+				  if(this.configFinal.ajaxUrl){
+					  this.allSelectedCustom = val.length === this.ajaxAll;
+				  }else {
+					  this.allSelectedCustom = counter === this.rowsFinal.length;
+				  }
 			  }
+
 
 		  } else {
 			  this.allSelectedCustom = false;
@@ -2034,18 +2053,57 @@ export default {
 	  checkListener(bool,index){
 
 		  let tmp = this.selected.slice().map((checked,i)=>{
-		  		return checked || this.rowsFinal[i].disableSelect;
+		  		return !!checked || !!this.rowsFinal[i].disableSelect;
 		  });
 
-		  tmp[index] = bool;
+		  tmp[index] = !!bool;
 
-		  if(tmp.indexOf(false) !== -1){
-			  this.allSelectedProperty = false;
+		  if(!this.configFinal.selectAllRows){
+
+			  tmp = tmp.filter((x,index)=>this.visibleRowIndexes.includes(index));
+
+			  if(tmp.indexOf(false) !== -1){
+				  this.allSelectedProperty = false;
+			  } else if(tmp.indexOf(false) === -1){
+				  this.allSelectedProperty = true;
+			  }
+		  }else{
+			  if(tmp.indexOf(false) === -1 ){
+
+
+				if(this.configFinal.ajaxUrl){
+
+					let counterFound = 0;
+
+					for (let i = 0;i<this.visibleRowIndexes.length;i++){
+						const row = this.rowsFinal[this.visibleRowIndexes[i]];
+
+						for (let j = 0;j<this.preSelectedRows.length;j++){
+							const r = this.preSelectedRows[j];
+							if(row[r.key] === r.value){
+								counterFound++;
+								break;
+							}
+						}
+					}
+
+					const counterNotFound = this.preSelectedRows.length - counterFound;
+
+					if(counterNotFound + tmp.length === this.ajaxAll){
+						this.allSelectedProperty = true;
+					}
+				}else if(!this.configFinal.ajaxUrl){
+					if(tmp.length === this.rowsFinal.length){
+						this.allSelectedProperty = true;
+					}
+				}else{
+				  this.allSelectedProperty = false;
+				}
+			  } else {
+				  this.allSelectedProperty = false;
+			  }
 		  }
 
-		  else if(tmp.indexOf(false) === -1){
-			  this.allSelectedProperty = true;
-		  }
 
 	  },
 
@@ -2183,25 +2241,48 @@ export default {
 				value = true;
 			}
 
-			let counter = 0;
+		  let counter = 0;
 
-			for (let index in this.sortedIndexes){
-				if(this.sortedIndexes.hasOwnProperty(index)){
-					index = parseInt(index);
-					if((!this.configFinal.selectAllRows && this.visibleRows[this.sortedIndexes[index]]) || (this.configFinal.selectAllRows && this.filteredRows[this.sortedIndexes[index]])){
-						this.$set(this.selected,this.sortedIndexes[index],value);
-						counter++;
-					}else{
-						this.$set(this.selected,this.sortedIndexes[index],false);
-					}
-				}
-			}
+		  for (let index in this.sortedIndexes){
+			  if(this.sortedIndexes.hasOwnProperty(index)){
+				  index = parseInt(index);
+				  if((!this.configFinal.selectAllRows && this.visibleRows[this.sortedIndexes[index]]) || (this.configFinal.selectAllRows && this.filteredRows[this.sortedIndexes[index]])){
+					  this.$set(this.selected,this.sortedIndexes[index],value);
+					  counter++;
+				  }else{
+					  this.$set(this.selected,this.sortedIndexes[index],false);
+				  }
+			  }
+		  }
 
 			if(value){
+
 				if(!this.configFinal.selectAllRows){
 					this.allSelectedCustom = counter === this.visibleRows.filter(x => x).length;
 				}else{
-					this.allSelectedCustom = counter === this.rowsFinal.length;
+
+					if(!this.configFinal.ajaxUrl){
+						this.allSelectedCustom = counter === this.rowsFinal.length;
+					}else{
+
+						let counterFound = 0;
+
+						for (let i = 0;i<this.visibleRowIndexes.length;i++){
+							const row = this.rowsFinal[this.visibleRowIndexes[i]];
+
+							for (let j = 0;j<this.preSelectedRows.length;j++){
+								const r = this.preSelectedRows[j];
+								if(row[r.key] === r.value){
+									counterFound++;
+									break;
+								}
+							}
+						}
+
+						const counterNotFound = this.preSelectedRows.length - counterFound;
+
+						this.allSelectedCustom = counterNotFound + this.visibleRowIndexes.length === this.ajaxAll;
+					}
 				}
 			}
 	  },
