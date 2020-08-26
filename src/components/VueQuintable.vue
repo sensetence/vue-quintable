@@ -243,7 +243,7 @@
 
 											</tr>
 											<tr v-for="(cell,cIndex) in stickyRows[rIndex]" :key="'vue-quintable-'+uuid+'-sticky-row-cell-'+rIndex+'-'+cIndex" :id="'vue-quintable-'+uuid+'-sticky-row-cell-'+rIndex+'-'+cIndex" :class="configFinal.columnClasses[cIndex] + ' ' +(hoveredRow === rIndex ? configFinal.hoverClass : '')" class="generated-row-cell sticky-row-cell">
-												<td class="generated-headline-cell sticky-headline-cell" @click="setSortColumn(cIndex)">
+												<td class="generated-headline-cell sticky-headline-cell" @click="setSortColumn(cIndex)" v-if="showHeadlines[cIndex] || configFinal.sorts[cIndex]">
 													<strong v-html="configFinal.headlines[cIndex]"
 															v-if="showHeadlines[cIndex]"
 													></strong>
@@ -795,6 +795,12 @@ export default {
 			  rowsSelect = true;
 		  }
 
+		  let disallowAllOption = false;
+		  if(this.config.disallowAllOption){
+			  disallowAllOption = true;
+		  }
+
+
 		  let hideEmptyColumns = false;
 		  if(this.config.hideEmptyColumns){
 			  hideEmptyColumns = true;
@@ -961,6 +967,7 @@ export default {
 			  filterGroupRelation:filterGroupRelation,
 			  filterRelation:filterRelation,
 			  rowsSelect:rowsSelect,
+			  disallowAllOption:disallowAllOption,
 			  defaultSelected:defaultSelected,
 			  searchLength:searchLength,
 			  search:search,
@@ -1213,7 +1220,7 @@ export default {
 			// 	all = this.ajaxAll;
 			// }
 
-			let options = ["All"];
+			let options = !this.configFinal.disallowAllOption?["All"]:[];
 			// let i = 0;
 			// while(i<this.paginationOptions.length&&i<all){
 			// 	options.push(this.paginationOptions[i]);
