@@ -1652,6 +1652,7 @@ export default {
 			handler(){
 
 				if(this.configFinal.ajaxUrl){
+					this.pageSort = false;
 					this.loadViaAjax(true,"FILTERS");
 				}
 
@@ -1760,7 +1761,8 @@ export default {
 			 this.lastQuery = old;
 
 			if(this.configFinal.ajaxUrl){
-			  this.loadViaAjax(true,"QUERY");
+				this.pageSort = false;
+			    this.loadViaAjax(true,"QUERY");
 			}
 
 			if(val.length >= this.configFinal.searchLength){
@@ -2146,7 +2148,7 @@ export default {
 					this.recomputeEssentials();
 				}
 
-				if(this.configFinal.ajaxUrl){
+				if(this.configFinal.ajaxUrl && !this.pageSort){
 					this.loadViaAjax(true,"SORT");
 				}
 
