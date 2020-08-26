@@ -2146,6 +2146,11 @@ export default {
 					this.recomputeEssentials();
 				}
 
+				if(this.configFinal.ajaxUrl){
+					this.loadViaAjax(true,"SORT");
+				}
+
+
 			}else{
 				this.sort();
 			}

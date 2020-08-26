@@ -1,6 +1,6 @@
 {
   "name": "@quintet/vue-quintable",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -45,7 +45,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "mutationobserver-shim": "^0.3.3",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.14.1",
     "popper.js": "^1.15.0",
     "portal-vue": "^2.1.4",
     "pretty-checkbox-vue": "^1.1.9",
