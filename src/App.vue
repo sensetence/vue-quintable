@@ -49,6 +49,7 @@ import Hidden from "./examples/Hidden.vue"
 import ComputedRows from "./examples/ComputedRows.vue"
 import CellFormatters from "./examples/Formatter.vue"
 import Ajax from "./examples/Ajax.vue"
+import AjaxSelect from "./examples/AjaxSelect.vue"
 import BreakpointsAdvanced from "./examples/BreakpointsAdvanced.vue"
 
 import Prism from 'prismjs';
@@ -88,6 +89,7 @@ export default {
     // VueQuintable,
 	  Basic,
 	  Breakpoints,
+	  AjaxSelect,
 	  BreakpointsAdvanced,
 	  Ajax,
 	  AjaxLoaded,
@@ -149,6 +151,10 @@ export default {
 				{
 					value:"Ajax",
 					label:"Ajax Example",
+				},
+				{
+					value:"AjaxSelect",
+					label:"Ajax + Select Example",
 				},
 				{
 					value:"AjaxLoaded",

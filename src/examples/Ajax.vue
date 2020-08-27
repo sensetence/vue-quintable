@@ -122,9 +122,9 @@
             }
         },
         methods:{
-            rowsUpdated(rows){
-                if(rows.length){
-                    alert("Rows updated from server: "+rows.length +" rows.")
+            rowsUpdated(data){
+                if(data.rows.length){
+                    alert("Rows updated from server: "+data.rows.length +" rows.")
                 }
             },
         }

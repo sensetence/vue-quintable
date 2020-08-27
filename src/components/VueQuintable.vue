@@ -866,6 +866,11 @@ export default {
 			  selectAllRows = true;
 		  }
 
+		  if(ajaxUrl && selectAllRows){
+		  	console.warn("Option selectAllRows was deactivated automatically because ajaxUrl is set!");
+		  	selectAllRows = false;
+		  }
+
 		  let defaultSelected = false;
 		  if(this.config.defaultSelected){
 			  defaultSelected = true;
@@ -1191,24 +1196,7 @@ export default {
 	   *
 	   */
 		someSelected(){
-
-			if(!this.configFinal.selectAllRows){
-				for (let i = 0; i<this.selected.length;i++){
-					if(this.selected[i]){
-						return true;
-					}
-				}
-			}else{
-
-				if(this.configFinal.ajaxUrl){
-					return this.preSelectedRows.length || this.selected.filter(x=>x).length;
-
-				}else{
-					return this.selected.filter(x=>x).length;
-
-				}
-			}
-			return false;
+		    return this.selected.filter(x=>x).length >0;
 		},
 
 	  /**
@@ -1653,16 +1641,10 @@ export default {
 			  }
 
 			  if (!this.configFinal.selectAllRows) {
-				  	this.allSelectedCustom = counter === this.visibleRows.filter(x => x).length;
-
+				  this.allSelectedCustom = counter === this.visibleRows.filter(x => x).length;
 			  } else {
-				  if(this.configFinal.ajaxUrl){
-					  this.allSelectedCustom = val.length === this.ajaxAll;
-				  }else {
-					  this.allSelectedCustom = counter === this.rowsFinal.length;
-				  }
+				  this.allSelectedCustom = counter === this.rowsFinal.length;
 			  }
-
 
 		  } else {
 			  this.allSelectedCustom = false;
@@ -1721,8 +1703,8 @@ export default {
 	   * Emit event for ajax rows
 	   *
 	   */
-	  ajaxRows(){
-	  		this.$emit("ajax:rows",{rows:this.ajaxRows,all:this.ajaxAll},"ajax:rows");
+	  ajaxRows(val,old){
+	  		this.$emit("ajax:rows",{rows:val,old:old,all:this.ajaxAll},"ajax:rows");
 	  },
 
 	  /**
@@ -1819,9 +1801,9 @@ export default {
 			}
 
 			if(this.currentPage !== 1){
-			  this.currentPage = 1;
+			    this.currentPage = 1;
 			}else if(!this.configFinal.selectAllRows){
-			  this.resetSelect();
+			    this.resetSelect();
 			}
 
 
@@ -2069,36 +2051,7 @@ export default {
 			  }
 		  }else{
 			  if(tmp.indexOf(false) === -1 ){
-
-
-				if(this.configFinal.ajaxUrl){
-
-					let counterFound = 0;
-
-					for (let i = 0;i<this.visibleRowIndexes.length;i++){
-						const row = this.rowsFinal[this.visibleRowIndexes[i]];
-
-						for (let j = 0;j<this.preSelectedRows.length;j++){
-							const r = this.preSelectedRows[j];
-							if(row[r.key] === r.value){
-								counterFound++;
-								break;
-							}
-						}
-					}
-
-					const counterNotFound = this.preSelectedRows.length - counterFound;
-
-					if(counterNotFound + tmp.length === this.ajaxAll){
-						this.allSelectedProperty = true;
-					}
-				}else if(!this.configFinal.ajaxUrl){
-					if(tmp.length === this.rowsFinal.length){
-						this.allSelectedProperty = true;
-					}
-				}else{
 				  this.allSelectedProperty = false;
-				}
 			  } else {
 				  this.allSelectedProperty = false;
 			  }
@@ -2235,11 +2188,11 @@ export default {
 	   *
 	   */
 	  checkAll(force = false){
-			let value = this.allSelectedProperty;
+		  let value = this.allSelectedProperty;
 
-			if(force){
-				value = true;
-			}
+		  if(force){
+			  value = true;
+		  }
 
 		  let counter = 0;
 
@@ -2260,29 +2213,7 @@ export default {
 				if(!this.configFinal.selectAllRows){
 					this.allSelectedCustom = counter === this.visibleRows.filter(x => x).length;
 				}else{
-
-					if(!this.configFinal.ajaxUrl){
-						this.allSelectedCustom = counter === this.rowsFinal.length;
-					}else{
-
-						let counterFound = 0;
-
-						for (let i = 0;i<this.visibleRowIndexes.length;i++){
-							const row = this.rowsFinal[this.visibleRowIndexes[i]];
-
-							for (let j = 0;j<this.preSelectedRows.length;j++){
-								const r = this.preSelectedRows[j];
-								if(row[r.key] === r.value){
-									counterFound++;
-									break;
-								}
-							}
-						}
-
-						const counterNotFound = this.preSelectedRows.length - counterFound;
-
-						this.allSelectedCustom = counterNotFound + this.visibleRowIndexes.length === this.ajaxAll;
-					}
+					this.allSelectedCustom = counter === this.rowsFinal.length;
 				}
 			}
 	  },
