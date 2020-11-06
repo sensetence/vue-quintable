@@ -1,16 +1,22 @@
 <template>
+  <div class="content">
+    <p class="alert alert-info">
+      <font-awesome-icon class="mr-2" icon="info-circle"></font-awesome-icon>
+      Nested VueQuintable
+    </p>
+    <VueQuintable :config="config" :rows="rows"></VueQuintable>
 
-    <div class="content">
-        <p class="alert alert-info">
-            <font-awesome-icon class="mr-2" icon="info-circle"></font-awesome-icon>
-            Nested VueQuintable
-        </p>
-        <VueQuintable :config="config" :rows="rows"></VueQuintable>
-
-        <b-button v-b-toggle.code-basic variant="secondary"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code </b-button>
-        <b-collapse id="code-basic" class="mt-2">
-            <!-- @formatter:off -->
-            <pre data-toolbar-order="copy-to-clipboard"><code class="language-markup">&lt;template&gt;
+    <b-button v-b-toggle.code-basic variant="secondary"
+      ><font-awesome-icon icon="chevron-up"></font-awesome-icon
+      ><font-awesome-icon icon="chevron-down"></font-awesome-icon>
+      <span class="show ml-2">Show</span
+      ><span class="hide ml-2">Hide</span> Code
+    </b-button>
+    <b-collapse id="code-basic" class="mt-2">
+      <!-- @formatter:off -->
+      <pre
+        data-toolbar-order="copy-to-clipboard"
+      ><code class="language-markup">&lt;template&gt;
         &lt;VueQuintable :config=&quot;config&quot; :rows=&quot;rows&quot;&gt;&lt;/VueQuintable&gt;
 &lt;/template&gt;
 &lt;script&gt;
@@ -116,125 +122,115 @@
                 }
 
                 return rows;
-
-
             }
         }
     }
 &lt;/script&gt;</code></pre>
 
-            <!-- @formatter:on -->
-
-        </b-collapse>
-    </div>
-
+      <!-- @formatter:on -->
+    </b-collapse>
+  </div>
 </template>
 <script>
+import VueQuintable from "../components/VueQuintable.vue";
 
-    import VueQuintable from "../components/VueQuintable.vue"
+import Chance from "chance";
+import * as moment from "moment";
+import "moment-timezone";
 
-    import Chance from "chance";
-    import * as moment from 'moment';
-    import 'moment-timezone'
+export default {
+  components: {
+    VueQuintable,
+  },
+  data() {
+    return {
+      config: {
+        columns: [
+          {
+            headline: "Name",
+          },
+          {
+            headline: "Age",
+          },
+          {
+            headline: "Birth Time",
+            sticky: true,
+          },
+          {
+            headline: "Job",
+          },
+        ],
+      },
+    };
+  },
+  computed: {
+    rows() {
+      let count = 10;
+      const rows = [];
 
-    export default {
-        components:{
-            VueQuintable
-        },
-        data() {
-            return {
-                config: {
-                    columns: [
-                        {
-                            headline: "Name",
-                        }, {
-                            headline: "Age",
-                        }, {
-                            headline: "Birth Time",
-                            sticky:true,
+      const chance = new Chance();
 
-                        }, {
-                            headline: "Job",
-                        }
-                    ],
-                },
+      for (let i = 0; i < count; i++) {
+        const hours = Math.ceil(Math.random() * 24);
+        const minutes = Math.ceil(Math.random() * 59);
 
-            }
-        },
-        computed:{
-            rows(){
+        var m = moment.tz("Europe/Berlin");
+        m.set({ hour: hours, minute: minutes, second: 0, millisecond: 0 });
 
-                let count = 10;
-                const rows = [];
+        const timeB = m.format("hh:mm A");
 
-                const chance = new Chance();
+        const timeNY = m.tz("America/New_York").format("hh:mm A");
 
-                for(let i = 0; i < count; i++){
+        const timeH = m.tz("America/Chicago").format("hh:mm A");
 
-                    const hours = Math.ceil(Math.random() * 24);
-                    const minutes = Math.ceil(Math.random() * 59);
+        rows.push([
+          {
+            text: chance.name({ nationality: "en" }),
+          },
+          {
+            text: chance.age(),
+          },
+          {
+            quintable: {
+              tableClasses: "text-center",
+              config: {
+                columns: [
+                  {
+                    headline: "Country",
+                  },
+                  {
+                    headline: "City",
+                    breakpoint: "lg",
+                  },
+                  {
+                    headline: "Time",
+                    breakpoint: "xl",
+                  },
+                ],
+              },
+              rows: [
+                [{ text: "Germany" }, { text: "Berlin" }, { text: timeB }],
+                [
+                  { text: "United States" },
+                  { text: "New York" },
+                  { text: timeNY },
+                ],
+                [
+                  { text: "United States" },
+                  { text: "Chicago" },
+                  { text: timeH },
+                ],
+              ],
+            },
+          },
+          {
+            text: chance.profession(),
+          },
+        ]);
+      }
 
-                    var m = moment.tz("Europe/Berlin");
-                    m.set({hour:hours,minute:minutes,second:0,millisecond:0});
-
-                    const timeB = m.format("hh:mm A");
-
-                    const timeNY = m.tz("America/New_York").format("hh:mm A");
-
-                    const timeH =  m.tz("America/Chicago").format("hh:mm A");
-
-                    rows.push([
-                        {
-                            text:chance.name({ nationality: 'en' })
-                        },
-                        {
-                            text:chance.age()
-                        },
-                        {
-                            quintable: {
-                                tableClasses:"text-center",
-                                config: {
-                                    columns: [
-                                        {
-                                            headline: "Country",
-                                        }, {
-                                            headline: "City",
-                                            breakpoint:"lg"
-
-                                        }, {
-                                            headline: "Time",
-                                            breakpoint:"xl"
-                                        }
-                                    ],
-                                },
-                                rows: [
-                                    [
-                                        {text: "Germany"},
-                                        {text: "Berlin"},
-                                        {text:  timeB}
-                                    ],
-                                    [
-                                        {text: "United States"},
-                                        {text: "New York"},
-                                        {text: timeNY}
-                                    ],
-                                    [
-                                        {text: "United States"},
-                                        {text: "Chicago"},
-                                        {text: timeH}
-                                    ],
-                                ],
-                            },},
-                        {
-                            text:chance.profession()
-                        },
-                    ]);
-                }
-
-                return rows;
-
-
-            }
-        }
-    }
+      return rows;
+    },
+  },
+};
 </script>

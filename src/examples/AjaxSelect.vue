@@ -1,33 +1,44 @@
 <template>
+  <div class="content">
+    <p class="alert alert-info">
+      <font-awesome-icon class="mr-2" icon="info-circle"></font-awesome-icon>
+      Pagination and sorting will be handled by server side via ajax
+    </p>
 
-    <div class="content">
-        <p class="alert alert-info">
-            <font-awesome-icon class="mr-2" icon="info-circle"></font-awesome-icon>
-            Pagination and sorting will be handled by server side via ajax
-        </p>
+    <VueQuintable
+      v-model="selectedRows"
+      :pre-selected-rows="preSelectedRows"
+      :axios="axios"
+      :config="ajaxConfig"
+      @ajax:rows="rowsUpdated"
+    />
 
-        <VueQuintable  v-model="selectedRows"
-                       :pre-selected-rows="preSelectedRows"
-                       :axios="axios"
-                       :config="ajaxConfig"
-                       @ajax:rows="rowsUpdated" />
+    <p v-if="preSelectedRowIds.length">
+      <strong>Selected Rows:</strong>
+    </p>
+    <div class="list-group">
+      <div class="list-group-item" v-for="id in preSelectedRowIds" :key="id">
+        {{ allSelectedRows[id].cells[0].html }}
+      </div>
+    </div>
+    <div
+      class="btn btn-danger mt-2"
+      v-if="preSelectedRowIds.length"
+      @click="clearSelection"
+    >
+      Clear
+    </div>
+    <div class="clearfix"></div>
 
-        <p v-if="preSelectedRowIds.length">
-            <strong>Selected Rows:</strong>
-        </p>
-        <div class="list-group">
-            <div class="list-group-item" v-for="id in preSelectedRowIds" :key="id">
-                {{allSelectedRows[id].cells[0].html}}
-            </div>
-        </div>
-        <div class="btn btn-danger mt-2" v-if="preSelectedRowIds.length" @click="clearSelection">Clear</div>
-        <div class="clearfix"></div>
-
-
-        <b-button v-b-toggle.code-basic variant="secondary" class="mt-3"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code </b-button>
-        <b-collapse id="code-basic" class="mt-2">
-            <!-- @formatter:off -->
-            <pre data-toolbar-order="copy-to-clipboard">
+    <b-button v-b-toggle.code-basic variant="secondary" class="mt-3"
+      ><font-awesome-icon icon="chevron-up"></font-awesome-icon
+      ><font-awesome-icon icon="chevron-down"></font-awesome-icon>
+      <span class="show ml-2">Show</span
+      ><span class="hide ml-2">Hide</span> Code
+    </b-button>
+    <b-collapse id="code-basic" class="mt-2">
+      <!-- @formatter:off -->
+      <pre data-toolbar-order="copy-to-clipboard">
              <code class="language-markup">
         &lt;template&gt;
             &lt;VueQuintable  v-model=&quot;selectedRows&quot;
@@ -93,8 +104,6 @@
                     ajaxUrl:&quot;https://quintet.io/vue-quintable-demo/data.php/&quot;,
 
                 },
-
-
             }
         },
 
@@ -116,9 +125,7 @@
                         this.allSelectedRows[id] = rows[i];
                         this.$delete(this.allSelectedRows,id);
                     }
-
                 }
-
             },
         },
         methods:{
@@ -143,7 +150,6 @@
                 }
 
                 this.ajaxRows = data.rows;
-
             },
         }
     }
@@ -151,117 +157,107 @@
     </code>
         </pre>
 
-            <!-- @formatter:on -->
-
-        </b-collapse>
-    </div>
-
+      <!-- @formatter:on -->
+    </b-collapse>
+  </div>
 </template>
 <script>
+import VueQuintable from "../components/VueQuintable.vue";
+import axiosCustom from "axios";
 
-    import VueQuintable from "../components/VueQuintable.vue"
-    import axiosCustom from "axios"
+axiosCustom.interceptors.request.use(
+  (config) => {
+    console.warn("Custom axios", config);
 
-    axiosCustom.interceptors.request.use(
-        (config) => {
+    return config;
+  },
+  (error) => {
+    console.log("ERROR AXIOS", error);
+  }
+);
 
-            console.warn("Custom axios",config);
+export default {
+  components: {
+    VueQuintable,
+  },
+  data() {
+    return {
+      axios: axiosCustom,
+      selectedRows: [],
+      allSelectedRows: {},
+      preSelectedRowIds: [],
+      preSelectedRows: [],
+      ajaxRows: [],
+      ajaxConfig: {
+        //Object[] columns with headline, sticky, breakpoint, align, sort
+        columns: [
+          {
+            headline: "Name",
+          },
+          {
+            headline: "Email",
+            breakpoint: "sm",
+          },
+          {
+            headline: "Phone",
+            breakpoint: "md",
+          },
+          {
+            headline: "Job Title",
+            breakpoint: "md",
+          },
+        ],
+        pagination: 5,
+        select: true,
+        selectPosition: "pre",
+        selectAll: true,
+        prettySelect: true,
+        ajaxUrl: "https://quintet.io/vue-quintable-demo/data.php/",
+      },
+    };
+  },
 
-            return config
-        },
-        error => {
-            console.log("ERROR AXIOS", error)
+  watch: {
+    selectedRows(rows) {
+      for (var i = 0; i < rows.length; i++) {
+        if (this.preSelectedRowIds.indexOf(rows[i].id) === -1) {
+          this.preSelectedRowIds.push(rows[i].id);
+          this.$set(this.allSelectedRows, rows[i].id, rows[i]);
         }
-    )
+      }
 
-    export default {
-        components:{
-            VueQuintable
-        },
-        data() {
+      for (var j = 0; j < this.ajaxRows.length; j++) {
+        var id = this.ajaxRows[j].id;
+
+        var index = this.preSelectedRowIds.indexOf(id);
+        if (rows.map((r) => r.id).indexOf(id) === -1 && index !== -1) {
+          this.preSelectedRowIds.splice(index, 1);
+          this.allSelectedRows[id] = rows[i];
+          this.$delete(this.allSelectedRows, id);
+        }
+      }
+    },
+  },
+  methods: {
+    clearSelection() {
+      this.allSelectedRows = {};
+      this.preSelectedRows = [];
+      this.preSelectedRowIds = [];
+    },
+    rowsUpdated(data) {
+      if (data && data.rows && data.rows.length) {
+        this.$nextTick(() => {
+          this.preSelectedRows = this.preSelectedRowIds.map((id) => {
             return {
-                axios:axiosCustom,
-                selectedRows: [],
-                allSelectedRows:{},
-                preSelectedRowIds: [],
-                preSelectedRows: [],
-                ajaxRows: [],
-                ajaxConfig: {
-                    //Object[] columns with headline, sticky, breakpoint, align, sort
-                    columns: [
-                        {
-                            headline: "Name",
-                        }, {
-                            headline: "Email",
-                            breakpoint: "sm",
-                        }, {
-                            headline: "Phone",
-                            breakpoint: "md",
-                        }, {
-                            headline: "Job Title",
-                            breakpoint: "md",
-                        }
-                    ],
-                    pagination:5,
-                    select: true,
-                    selectPosition: "pre",
-                    selectAll: true,
-                    prettySelect: true,
-                    ajaxUrl:"https://quintet.io/vue-quintable-demo/data.php/",
+              key: "id",
+              value: id,
+            };
+          });
+        });
+      }
 
-                },
-
-
-            }
-        },
-
-        watch:{
-            selectedRows(rows) {
-                for (var i = 0; i < rows.length; i++) {
-                    if (this.preSelectedRowIds.indexOf(rows[i].id) === -1) {
-                        this.preSelectedRowIds.push(rows[i].id);
-                        this.$set(this.allSelectedRows,rows[i].id,rows[i])
-                    }
-                }
-
-                for (var j = 0; j < this.ajaxRows.length; j++) {
-                    var id = this.ajaxRows[j].id;
-
-                    var index = this.preSelectedRowIds.indexOf(id);
-                    if (rows.map(r => r.id).indexOf(id) === -1 && index !== -1) {
-                        this.preSelectedRowIds.splice(index, 1);
-                        this.allSelectedRows[id] = rows[i];
-                        this.$delete(this.allSelectedRows,id);
-                    }
-
-                }
-
-            },
-        },
-        methods:{
-            clearSelection(){
-                this.allSelectedRows = {};
-                this.preSelectedRows = [];
-                this.preSelectedRowIds = [];
-            },
-            rowsUpdated(data){
-
-                if (data && data.rows && data.rows.length) {
-                    this.$nextTick(() => {
-
-                        this.preSelectedRows = this.preSelectedRowIds.map(id => {
-                            return {
-                                key: "id",
-                                value: id
-                            }
-                        });
-
-                    });
-                }
-
-                this.ajaxRows = data.rows;
-
-            },
-        }
-    }
+      this.ajaxRows = data.rows;
+    },
+  },
+};
 </script>

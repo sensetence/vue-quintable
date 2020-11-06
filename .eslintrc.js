@@ -8,10 +8,10 @@ module.exports = {
     'eslint:recommended'
   ],
   rules: {
-    'vue/no-unused-components':0,
+    'vue/no-unused-components': 0,
     'no-console': 0,
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-      "no-mixed-spaces-and-tabs": 0, // disable rule
+    "no-mixed-spaces-and-tabs": 0, // disable rule
 
   },
   parserOptions: {

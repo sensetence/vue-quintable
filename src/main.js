@@ -21,7 +21,7 @@ import VueRecomputed from 'vue-recomputed'
 Vue.use(VueRecomputed);
 
 
-import { 
+import {
 	faCheck,
 	faSort,
 	faSquare,
@@ -73,5 +73,5 @@ import App from './App.vue'
 
 
 new Vue({
-  render: h => h(App),
+	render: h => h(App),
 }).$mount('#app')

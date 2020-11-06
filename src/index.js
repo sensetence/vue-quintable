@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import VueRecomputed from 'vue-recomputed'
 Vue.use(VueRecomputed);
 
-import { 
+import {
 	faCheck,
 	faSort,
 	faSquare,
@@ -48,9 +48,9 @@ library.add(faCircleNotch);
 import VueQuintable from './components/VueQuintable.vue'
 
 // Declare install function executed by Vue.use()
-let install = function(Vue) {
+let install = function (Vue) {
 	if (install.installed) return;
-	
+
 	install.installed = true;
 	Vue.component('v-select', vueSelect);
 	Vue.component('p-check', PrettyCheck);
@@ -76,6 +76,6 @@ if (GlobalVue) {
 
 // To allow use as module (npm/webpack/etc.) export component
 export default {
-	VueQuintable:VueQuintable,
-	install:install
+	VueQuintable: VueQuintable,
+	install: install
 }

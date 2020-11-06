@@ -1,53 +1,84 @@
 <template>
+  <div class="content">
+    <p class="alert alert-info">
+      <font-awesome-icon class="mr-2" icon="info-circle"></font-awesome-icon>
+      Filter rows by adjust filter and settings switches
+    </p>
+    <VueQuintable
+      :filter-groups="filterGroups"
+      :filters="filters"
+      :config="config"
+      :rows="rows"
+      @filtered:rows="visibleRows"
+    >
+      <template v-slot:header>
+        <strong class="mb-2">Filters:</strong>
 
-    <div class="content">
-        <p class="alert alert-info">
-            <font-awesome-icon class="mr-2" icon="info-circle"></font-awesome-icon>
-            Filter rows by adjust filter and settings switches
-        </p>
-        <VueQuintable :filter-groups="filterGroups" :filters="filters" :config="config" :rows="rows" @filtered:rows="visibleRows">
-            <template v-slot:header>
+        <div class="clearfix py-2">
+          <p-check class="p-switch" v-model="activeFilter" value="true"
+            >Active</p-check
+          >
+        </div>
+        <div class="clearfix py-2">
+          <p-check class="p-switch" v-model="printableFilter" value="true"
+            >Printable</p-check
+          >
+        </div>
 
-                <strong class="mb-2">Filters:</strong>
+        <div class="clearfix py-2">
+          <p-check class="p-switch" v-model="dynamicFilter" value="true"
+            >Regex for name (/Ma/)</p-check
+          >
+        </div>
 
-                <div class="clearfix py-2">
-                    <p-check class="p-switch" v-model="activeFilter" value="true">Active</p-check>
-                </div>
-                <div class="clearfix py-2">
-                    <p-check class="p-switch" v-model="printableFilter" value="true">Printable</p-check>
-                </div>
+        <hr />
+        <strong class="mb-2">Settings:</strong>
+        <div class="clearfix py-2">
+          <p-check class="p-switch" v-model="filterGroupsActive" value="true"
+            >Toggle Filter Groups</p-check
+          >
+        </div>
 
-                <div class="clearfix py-2">
-                    <p-check class="p-switch" v-model="dynamicFilter" value="true">Regex for name (/Ma/)</p-check>
-                </div>
+        <div class="card">
+          <div class="card-body">
+            <p-radio
+              value="AND"
+              name="radio"
+              color="info"
+              v-model="config.filterRelation"
+              >AND filter relation</p-radio
+            >
+            <span class="mx-2"></span>
+            <p-radio
+              value="OR"
+              name="radio"
+              color="info"
+              v-model="config.filterRelation"
+              >OR filter relation</p-radio
+            >
+          </div>
+        </div>
+        <hr />
+      </template>
 
-                <hr>
-                <strong class="mb-2">Settings:</strong>
-                    <div class="clearfix py-2">
-                        <p-check class="p-switch" v-model="filterGroupsActive" value="true">Toggle Filter Groups</p-check>
-                    </div>
+      <template v-slot:footer>
+        <div class="mb-3 alert alert-info">
+          <em>Number of Rows:</em> <strong>{{ number }}</strong>
+        </div>
+      </template>
+    </VueQuintable>
 
-                <div class="card">
-                    <div class="card-body">
-                     <p-radio value="AND" name="radio" color="info" v-model="config.filterRelation">AND filter relation</p-radio>
-                     <span class="mx-2"></span>
-                        <p-radio value="OR" name="radio" color="info" v-model="config.filterRelation">OR filter relation</p-radio>
-                    </div>
-                    </div>
-                <hr>
-            </template>
-
-            <template v-slot:footer>
-                <div class="mb-3 alert alert-info">
-                    <em>Number of Rows:</em> <strong>{{number}}</strong>
-                </div>
-            </template>
-        </VueQuintable>
-
-        <b-button v-b-toggle.code-basic variant="secondary"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code </b-button>
-        <b-collapse id="code-basic" class="mt-2">
-            <!-- @formatter:off -->
-            <pre data-toolbar-order="copy-to-clipboard"><code class="language-markup">&lt;template&gt;
+    <b-button v-b-toggle.code-basic variant="secondary"
+      ><font-awesome-icon icon="chevron-up"></font-awesome-icon
+      ><font-awesome-icon icon="chevron-down"></font-awesome-icon>
+      <span class="show ml-2">Show</span
+      ><span class="hide ml-2">Hide</span> Code
+    </b-button>
+    <b-collapse id="code-basic" class="mt-2">
+      <!-- @formatter:off -->
+      <pre
+        data-toolbar-order="copy-to-clipboard"
+      ><code class="language-markup">&lt;template&gt;
         &lt;VueQuintable :filter-groups=&quot;filterGroups&quot; :filters=&quot;filters&quot; :config=&quot;config&quot; :rows=&quot;rows&quot; @filtered:rows=&quot;visibleRows&quot;&gt;
             &lt;template v-slot:header&gt;
 
@@ -201,8 +232,6 @@
                 }
 
                 return rows;
-
-
             }
         },
         watch:{
@@ -245,166 +274,151 @@
     }
 &lt;/script&gt;</code></pre>
 
-            <!-- @formatter:on -->
-
-        </b-collapse>
-    </div>
-
+      <!-- @formatter:on -->
+    </b-collapse>
+  </div>
 </template>
 <script>
+import VueQuintable from "../components/VueQuintable.vue";
 
-    import VueQuintable from "../components/VueQuintable.vue"
+import Chance from "chance";
 
-    import Chance from "chance";
-
-    export default {
-        components:{
-            VueQuintable
-        },
-        data() {
-            return {
-                config: {
-                    columns: [
-                        {
-                            headline: "Name",
-                        }, {
-                            headline: "Age",
-                        }, {
-                            headline: "Printable",
-                        }, {
-                            headline: "Active",
-                        }
-                    ],
-                    search:true,
-                    useFuzzySearch:true,
-                    searchLength:3,
-                    filterRelation:"AND",
-                    searchPlaceholder:"Search rows...",
+export default {
+  components: {
+    VueQuintable,
+  },
+  data() {
+    return {
+      config: {
+        columns: [
+          {
+            headline: "Name",
+          },
+          {
+            headline: "Age",
+          },
+          {
+            headline: "Printable",
+          },
+          {
+            headline: "Active",
+          },
+        ],
+        search: true,
+        useFuzzySearch: true,
+        searchLength: 3,
+        filterRelation: "AND",
+        searchPlaceholder: "Search rows...",
+      },
+      filters: {},
+      filterGroupsDefaults: [
+        {
+          items: [
+            {
+              items: [{ name: "name" }, { name: "active" }],
+              relation: "OR",
+            },
+            {
+              items: [
+                {
+                  name: "printable",
                 },
-                filters:{
+              ],
+            },
+          ],
+          relation: "AND",
+        },
+      ],
+      filterGroupsActive: false,
+      printableFilter: false,
+      activeFilter: false,
+      dynamicFilter: false,
+      number: 0,
+    };
+  },
+  computed: {
+    filterGroups() {
+      return this.filterGroupsActive ? this.filterGroupsDefaults : [];
+    },
+    rows() {
+      let count = 50;
+      const rows = [];
+
+      const chance = new Chance();
+
+      for (let i = 0; i < count; i++) {
+        const printable = Math.random() >= 0.5;
+        const active = Math.random() >= 0.5;
+        const name = chance.name({ nationality: "en" });
+        const age = chance.age();
+
+        rows.push({
+          cells: [
+            {
+              text: name,
+            },
+            {
+              text: age,
+            },
+            {
+              component: {
+                name: "font-awesome-icon",
+                props: {
+                  icon: printable ? "check" : "times",
                 },
-                filterGroupsDefaults:[
-                    {
-                        items:[
-                            {
-                                items:[
-                                    {name:"name"},
-                                    {name:"active"}
-                                ],
-                                relation:"OR",
-                            },
-                            {
-                                items:[
-                                    {
-                                        name:"printable"
-                                    }
-                                ],
-                            }
-                        ],
-                        relation:"AND"
-                    }
-                ],
-                filterGroupsActive:false,
-                printableFilter:false,
-                activeFilter:false,
-                dynamicFilter:false,
-                number:0,
-
-            }
-        },
-        computed:{
-            filterGroups(){
-                  return this.filterGroupsActive?this.filterGroupsDefaults:[];
+              },
             },
-            rows(){
-
-                let count = 50;
-                const rows = [];
-
-                const chance = new Chance();
-
-                for(let i = 0; i < count; i++){
-                    const printable = Math.random() >= 0.5;
-                    const active = Math.random() >= 0.5;
-                    const name = chance.name({ nationality: 'en' });
-                    const age = chance.age();
-
-                    rows.push(
-                        {
-                            cells:[
-                                {
-                                    text:name
-                                },
-                                {
-                                    text:age
-                                },
-                                {
-                                    component:{
-                                        name:"font-awesome-icon",
-                                        props: {
-                                            icon: (printable ? "check" : "times")
-                                        }
-                                    }
-                                },
-                                {
-                                    component:{
-                                        name:"font-awesome-icon",
-                                        props: {
-                                            icon: (active ? "check" : "times")
-                                        }
-                                    }
-                                },
-
-                            ],
-                            filters: {
-                                active: active,
-                                printable: printable,
-                                name:name,
-                            }
-                        });
-                }
-
-                return rows;
-
-
-            }
-        },
-        watch:{
-            activeFilter(val){
-                if(val){
-                    this.$set(this.filters,"active",true);
-                }else{
-                    this.$delete(this.filters,"active");
-                }
-
+            {
+              component: {
+                name: "font-awesome-icon",
+                props: {
+                  icon: active ? "check" : "times",
+                },
+              },
             },
-            printableFilter(val){
-                if(val){
-                    this.$set(this.filters,"printable",true);
-                }else{
-                    this.$delete(this.filters,"printable");
-                }
-            },
+          ],
+          filters: {
+            active: active,
+            printable: printable,
+            name: name,
+          },
+        });
+      }
 
-            dynamicFilter(val){
-                if(val){
-                    this.$set(this.filters,"name",{
-                        operator:"matches",
-                        values:new RegExp("Ma")
-                    });
-                }else{
-                    this.$delete(this.filters,"name");
-                }
-            },
+      return rows;
+    },
+  },
+  watch: {
+    activeFilter(val) {
+      if (val) {
+        this.$set(this.filters, "active", true);
+      } else {
+        this.$delete(this.filters, "active");
+      }
+    },
+    printableFilter(val) {
+      if (val) {
+        this.$set(this.filters, "printable", true);
+      } else {
+        this.$delete(this.filters, "printable");
+      }
+    },
 
-
-
-        },
-        methods:{
-            visibleRows(rows){
-                this.number = rows.length;
-            }
-        }
-
-    }
+    dynamicFilter(val) {
+      if (val) {
+        this.$set(this.filters, "name", {
+          operator: "matches",
+          values: new RegExp("Ma"),
+        });
+      } else {
+        this.$delete(this.filters, "name");
+      }
+    },
+  },
+  methods: {
+    visibleRows(rows) {
+      this.number = rows.length;
+    },
+  },
+};
 </script>

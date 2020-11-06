@@ -1,43 +1,50 @@
 <template>
+  <div class="content">
+    <p class="alert alert-info">
+      <font-awesome-icon class="mr-2" icon="info-circle"></font-awesome-icon>
+      Interact with the table to so when events get fired
+    </p>
 
-    <div class="content">
-        <p class="alert alert-info">
-            <font-awesome-icon class="mr-2" icon="info-circle"></font-awesome-icon>
-            Interact with the table to so when events get fired
-        </p>
+    <div class="list-group mb-3" v-if="this.eventsLog.length">
+      <div
+        :key="index"
+        class="list-group-item"
+        v-for="(event, index) in eventsLog"
+        :class="{ 'bg-info text-white': index === eventsLog.length - 1 }"
+      >
+        Event {{ event.event }} was fired with data:
+        <div>{{ event.data }}</div>
+      </div>
+    </div>
 
+    <VueQuintable
+      @update:sort="eventListener"
+      @update:page="eventListener"
+      @update:search="eventListener"
+      @update:rows-per-page="eventListener"
+      @click:row="eventListener"
+      @click:cell="eventListener"
+      @expand:row="eventListener"
+      @filtered:rows="eventListener"
+      @hover:row="eventListener"
+      @collapse:row="eventListener"
+      @change:breakpoints="eventListener"
+      :config="config"
+      :rows="rows"
+    >
+    </VueQuintable>
 
-        <div class="list-group mb-3" v-if="this.eventsLog.length">
-
-            <div :key="index" class="list-group-item" v-for="(event,index) in eventsLog" :class="{'bg-info text-white':index === eventsLog.length - 1}">
-                Event {{event.event}} was fired with data:
-                <div>{{event.data}}</div>
-            </div>
-        </div>
-
-
-
-        <VueQuintable
-                @update:sort="eventListener"
-                @update:page="eventListener"
-                @update:search="eventListener"
-                @update:rows-per-page="eventListener"
-                @click:row="eventListener"
-                @click:cell="eventListener"
-                @expand:row="eventListener"
-                @filtered:rows="eventListener"
-                @hover:row="eventListener"
-                @collapse:row="eventListener"
-                @change:breakpoints="eventListener"
-                :config="config"
-                :rows="rows">
-
-        </VueQuintable>
-
-        <b-button v-b-toggle.code-basic variant="secondary"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code </b-button>
-        <b-collapse id="code-basic" class="mt-2">
-            <!-- @formatter:off -->
-            <pre data-toolbar-order="copy-to-clipboard"><code class="language-markup">&lt;template&gt;
+    <b-button v-b-toggle.code-basic variant="secondary"
+      ><font-awesome-icon icon="chevron-up"></font-awesome-icon
+      ><font-awesome-icon icon="chevron-down"></font-awesome-icon>
+      <span class="show ml-2">Show</span
+      ><span class="hide ml-2">Hide</span> Code
+    </b-button>
+    <b-collapse id="code-basic" class="mt-2">
+      <!-- @formatter:off -->
+      <pre
+        data-toolbar-order="copy-to-clipboard"
+      ><code class="language-markup">&lt;template&gt;
         &lt;VueQuintable
                 @update:sort=&quot;eventListener&quot;
                 @update:page=&quot;eventListener&quot;
@@ -111,8 +118,6 @@
                 }
 
                 return rows;
-
-
             }
         },
         methods:{
@@ -125,88 +130,83 @@
     }
 &lt;/script&gt;</code></pre>
 
-            <!-- @formatter:on -->
-
-        </b-collapse>
-    </div>
-
+      <!-- @formatter:on -->
+    </b-collapse>
+  </div>
 </template>
 <script>
-    import VueQuintable from "../components/VueQuintable.vue"
-    import Chance from "chance";
+import VueQuintable from "../components/VueQuintable.vue";
+import Chance from "chance";
 
-    export default {
-        components:{
-            VueQuintable
-        },
-        data() {
-            return {
-                config: {
-                    columns: [
-                        {
-                            headline: "Name",
-                        }, {
-                            headline: "Age",
-                            sort:true,
-                        }, {
-                            headline: "Birth Place",
-                        }, {
-                            headline: "Job",
-                            breakpoint:"all"
-                        }
-                    ],
-                    pagination:5,
-                    rowsSelect:true,
-                    search:true,
-                },
-                eventsLog:[],
+export default {
+  components: {
+    VueQuintable,
+  },
+  data() {
+    return {
+      config: {
+        columns: [
+          {
+            headline: "Name",
+          },
+          {
+            headline: "Age",
+            sort: true,
+          },
+          {
+            headline: "Birth Place",
+          },
+          {
+            headline: "Job",
+            breakpoint: "all",
+          },
+        ],
+        pagination: 5,
+        rowsSelect: true,
+        search: true,
+      },
+      eventsLog: [],
+    };
+  },
+  computed: {
+    rows() {
+      let count = 20;
+      const rows = [];
 
-            }
-        },
-        computed:{
-            rows(){
+      const chance = new Chance();
 
-                let count = 20;
-                const rows = [];
+      for (let i = 0; i < count; i++) {
+        rows.push([
+          {
+            text: chance.name({ nationality: "en" }),
+          },
+          {
+            text: chance.age(),
+          },
+          {
+            text: chance.city(),
+          },
+          {
+            text: chance.profession(),
+          },
+        ]);
+      }
 
-                const chance = new Chance();
+      return rows;
+    },
+  },
+  methods: {
+    eventListener(data, event) {
+      const eventsLog = this.eventsLog;
+      eventsLog.push({ event: event, data: JSON.stringify(data) });
+      this.eventsLog = eventsLog;
 
-                for(let i = 0; i < count; i++){
-                    rows.push([
-                        {
-                            text:chance.name({ nationality: 'en' })
-                        },
-                        {
-                            text:chance.age()
-                        },
-                        {
-                            text:chance.city()
-                        },
-                        {
-                            text:chance.profession()
-                        },
-                    ]);
-                }
-
-                return rows;
-
-
-            }
-        },
-        methods:{
-            eventListener(data,event){
-
-                const eventsLog = this.eventsLog;
-                eventsLog.push({event:event,data:JSON.stringify(data)});
-                this.eventsLog = eventsLog;
-
-                if(this.eventsLog.length >5){
-                    const eventsLog = this.eventsLog;
-                    eventsLog.splice(0,1);
-                    this.eventsLog = eventsLog;
-                }
-
-            }
-        }
-    }
+      if (this.eventsLog.length > 5) {
+        const eventsLog = this.eventsLog;
+        eventsLog.splice(0, 1);
+        this.eventsLog = eventsLog;
+      }
+    },
+  },
+};
 </script>

@@ -1,63 +1,112 @@
 <template>
+  <div class="content">
+    <p class="alert alert-info">
+      <font-awesome-icon class="mr-2" icon="info-circle"></font-awesome-icon>
+      Use buttons to add/remove/move rows or Drag&Drop [<a
+        target="_blank"
+        href="https://github.com/cameronhimself/vue-drag-drop"
+        >vue-drag-drop</a
+      >].
+    </p>
 
-    <div class="content">
-        <p class="alert alert-info">
-            <font-awesome-icon class="mr-2" icon="info-circle"></font-awesome-icon>
-            Use buttons to add/remove/move rows or Drag&Drop [<a target="_blank" href="https://github.com/cameronhimself/vue-drag-drop">vue-drag-drop</a>].
-        </p>
+    <VueQuintable
+      :table-classes="tableClasses"
+      :config="config"
+      :rows="rows"
+      @component:event="componentListener"
+    >
+      <template v-slot:header>
+        <div class="row">
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="index">Index</label>
+              <v-select
+                id="index"
+                :options="indexes"
+                v-model="index"
+                :clearable="false"
+              ></v-select>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input
+                id="name"
+                v-model="name"
+                type="text"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="age">Age</label>
+              <v-select
+                id="age"
+                :options="ages"
+                v-model="age"
+                placeholder="Select Age..."
+              ></v-select>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="city">City</label>
+              <input
+                id="city"
+                v-model="city"
+                type="text"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="job">Job</label>
+              <input id="job" v-model="job" type="text" class="form-control" />
+            </div>
+          </div>
+          <div class="col-md-2">
+            <label><wbr /></label>
+            <div class="form-group">
+              <span class="btn btn-info" @click="addRow"
+                ><font-awesome-icon icon="plus"></font-awesome-icon> Add
+                Row</span
+              >
+            </div>
+          </div>
+        </div>
+      </template>
+    </VueQuintable>
 
-        <VueQuintable :table-classes="tableClasses" :config="config" :rows="rows" @component:event="componentListener">
+    <b-button v-b-toggle.code-basic variant="secondary" class="mr-2 mb-1"
+      ><font-awesome-icon icon="chevron-up"></font-awesome-icon
+      ><font-awesome-icon icon="chevron-down"></font-awesome-icon>
+      <span class="show ml-2">Show</span
+      ><span class="hide ml-2">Hide</span> Code for App</b-button
+    >
+    <b-button
+      v-b-toggle.code-component-drag
+      variant="secondary"
+      class="mr-2 mb-1"
+      ><font-awesome-icon icon="chevron-up"></font-awesome-icon
+      ><font-awesome-icon icon="chevron-down"></font-awesome-icon>
+      <span class="show ml-2">Show</span
+      ><span class="hide ml-2">Hide</span> Code Drag Component</b-button
+    >
+    <b-button v-b-toggle.code-component variant="secondary" class="mb-1"
+      ><font-awesome-icon icon="chevron-up"></font-awesome-icon
+      ><font-awesome-icon icon="chevron-down"></font-awesome-icon>
+      <span class="show ml-2">Show</span
+      ><span class="hide ml-2">Hide</span> Code Actions Component</b-button
+    >
 
-            <template v-slot:header>
-                <div class="row">
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label for="index" >Index</label>
-                            <v-select id="index" :options="indexes" v-model="index" :clearable="false"></v-select>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label for="name" >Name</label>
-                            <input id="name" v-model="name" type="text" class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label for="age" >Age</label>
-                            <v-select id="age" :options="ages" v-model="age" placeholder="Select Age..."></v-select>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label for="city" >City</label>
-                            <input id="city" v-model="city" type="text" class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label for="job" >Job</label>
-                            <input id="job" v-model="job" type="text" class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <label><wbr></label>
-                        <div class="form-group">
-                            <span class="btn btn-info" @click="addRow"><font-awesome-icon icon="plus"></font-awesome-icon> Add Row</span>
-                        </div>
-                    </div>
-                </div>
-            </template>
-
-        </VueQuintable>
-
-        <b-button v-b-toggle.code-basic variant="secondary" class="mr-2 mb-1"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code  for App</b-button>
-        <b-button v-b-toggle.code-component-drag variant="secondary" class="mr-2 mb-1"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code  Drag Component</b-button>
-        <b-button v-b-toggle.code-component variant="secondary" class="mb-1"><font-awesome-icon icon="chevron-up"></font-awesome-icon><font-awesome-icon icon="chevron-down"></font-awesome-icon> <span class="show ml-2">Show</span><span class="hide ml-2">Hide</span> Code  Actions Component</b-button>
-
-        <b-collapse id="code-basic" class="mt-2">
-            <!-- @formatter:off -->
-            <pre data-toolbar-order="copy-to-clipboard"><code class="language-markup">&lt;template&gt;
+    <b-collapse id="code-basic" class="mt-2">
+      <!-- @formatter:off -->
+      <pre
+        data-toolbar-order="copy-to-clipboard"
+      ><code class="language-markup">&lt;template&gt;
        &lt;VueQuintable :table-classes="tableClasses" :config=&quot;config&quot; :rows=&quot;rows&quot; @component:event=&quot;componentListener&quot;&gt;
 
             &lt;template v-slot:header&gt;
@@ -158,7 +207,6 @@
                 rowCount:10,
                 dragging:false,
             }
-
         },
         computed:{
             tableClasses() {
@@ -176,7 +224,6 @@
             }
         },
         created(){
-
             Array.range = (start, end) =&gt; Array.from({length: (end - start)}, (v, k) =&gt; k + start);
 
             const rows = [];
@@ -191,7 +238,6 @@
                             props:{
                                 index:i,
                             },
-
                         }
                     },
                     {
@@ -214,16 +260,13 @@
                                 first:i===0,
                                 last:i===this.rowCount -1,
                             },
-
                         }
                     }
                 ]);
             }
-
             this.rows = rows;
         },
         methods:{
-
             updateIndexes(){
                 this.rows = this.rows.map((row,index)=&gt;{
                     row[5].component.props.index = index;
@@ -233,7 +276,6 @@
                     return row;
                 });
             },
-
             componentListener(data){
                 if(data.type === &quot;delete-row&quot;){
                     this.rows.splice(data.index,1);
@@ -247,7 +289,6 @@
                     this.dragging = false;
                 }
             },
-
              move(old_index, new_index) {
                 if (new_index &gt;= this.rows.length) {
                     var k = new_index - this.rows.length + 1;
@@ -257,10 +298,8 @@
                 }
                 this.rows.splice(new_index, 0, this.rows.splice(old_index, 1)[0]);
                 this.updateIndexes();
-
              },
             addRow(){
-
                 if(!this.name || !this.age || !this.city || !this.job){
                      alert(&quot;You have to fill out all inputs&quot;);
                      return;
@@ -313,7 +352,6 @@
                 this.rowCount ++;
 
                 this.updateIndexes();
-
             }
         }
     }
@@ -348,12 +386,13 @@
     }
 
 &lt;/style&gt;</code></pre>
+    </b-collapse>
 
-        </b-collapse>
-
-        <b-collapse id="code-component" class="mt-2">
-            <!-- @formatter:off -->
-            <pre data-toolbar-order="copy-to-clipboard"><code class="language-markup">&lt;template&gt;
+    <b-collapse id="code-component" class="mt-2">
+      <!-- @formatter:off -->
+      <pre
+        data-toolbar-order="copy-to-clipboard"
+      ><code class="language-markup">&lt;template&gt;
     &lt;div class=&quot;content&quot;&gt;
         &lt;div class=&quot;btn-group mr-2&quot;&gt;
             &lt;div class=&quot;btn btn-info&quot; :disabled=&quot;first&quot; :class=&quot;{disabled:first}&quot; @click=&quot;moveRow('up')&quot;&gt;
@@ -448,11 +487,12 @@
 
 
 </code></pre>
-
-        </b-collapse>
-        <b-collapse id="code-component-drag" class="mt-2">
-            <!-- @formatter:off -->
-            <pre data-toolbar-order="copy-to-clipboard"><code class="language-markup">&lt;template&gt;
+    </b-collapse>
+    <b-collapse id="code-component-drag" class="mt-2">
+      <!-- @formatter:off -->
+      <pre
+        data-toolbar-order="copy-to-clipboard"
+      ><code class="language-markup">&lt;template&gt;
     &lt;drag class=&quot;d-inline-block&quot; :transfer-data=&quot;{ index: index }&quot; :effect-allowed=&quot;['move']&quot;
           drop-effect=&quot;move&quot; @dragend=&quot;dragend&quot; @dragstart=&quot;dragstart&quot;&gt;
         &lt;div class=&quot;btn  p-2&quot;&gt;
@@ -493,254 +533,242 @@
     }
 &lt;/script&gt;</code></pre>
 
-            <!-- @formatter:on -->
-
-        </b-collapse>
-    </div>
-
+      <!-- @formatter:on -->
+    </b-collapse>
+  </div>
 </template>
 <script>
-    import VueQuintable from "../components/VueQuintable.vue"
-    import DragComponent from "./DragComponent.vue"
-    import ActionsComponent from "./ActionsComponent.vue"
-    import Vue from "vue"
+import VueQuintable from "../components/VueQuintable.vue";
+import DragComponent from "./DragComponent.vue";
+import ActionsComponent from "./ActionsComponent.vue";
+import Vue from "vue";
 
+Vue.component(
+  "actions-component",
+  ActionsComponent.default || ActionsComponent
+);
 
-    Vue.component(
-        "actions-component",
-        ActionsComponent.default || ActionsComponent
-    );
+Vue.component("drag-component", DragComponent.default || DragComponent);
 
-    Vue.component(
-        "drag-component",
-        DragComponent.default || DragComponent
-    );
+import Chance from "chance";
 
-    import Chance from "chance";
+export default {
+  components: {
+    VueQuintable,
+  },
+  data() {
+    return {
+      config: {
+        columns: [
+          {
+            headline: "",
+          },
+          {
+            headline: "Name",
+          },
+          {
+            headline: "Age",
+            breakpoint: "md",
+          },
+          {
+            headline: "Birth Place",
+            breakpoint: "lg",
+          },
+          {
+            headline: "Job",
+            breakpoint: "lg",
+          },
+          {
+            headline: "Actions",
+            breakpoint: "sm",
+          },
+        ],
+      },
+      rows: [],
+      index: 1,
+      name: "",
+      age: null,
+      city: "",
+      job: "",
+      rowCount: 10,
+      dragging: false,
+    };
+  },
+  computed: {
+    tableClasses() {
+      return this.dragging ? "dragging" : "";
+    },
 
-    export default {
-        components:{
-            VueQuintable
-        },
-        data() {
-            return {
-                config: {
-                    columns: [
-                        {
-                            headline: "",
-                        },{
-                            headline: "Name",
-                        }, {
-                            headline: "Age",
-                            breakpoint:"md",
-                        }, {
-                            headline: "Birth Place",
-                            breakpoint:"lg",
-                        }, {
-                            headline: "Job",
-                            breakpoint:"lg",
-                        },{
-                            headline:"Actions",
-                            breakpoint:"sm",
-                        }
-                    ],
-                },
-                rows:[],
-                index:1,
-                name:"",
-                age:null,
-                city:"",
-                job:"",
-                rowCount:10,
-                dragging:false,
-            }
+    ages() {
+      return Array.range(1, 99);
+    },
 
-        },
-        computed:{
-            tableClasses() {
-                return this.dragging ? "dragging" : "";
+    indexes() {
+      return this.rows.map((row, index) => {
+        return index + 1;
+      });
+    },
+  },
+  created() {
+    Array.range = (start, end) =>
+      Array.from({ length: end - start }, (v, k) => k + start);
+
+    const rows = [];
+
+    const chance = new Chance();
+
+    for (let i = 0; i < this.rowCount; i++) {
+      rows.push([
+        {
+          component: {
+            name: "drag-component",
+            props: {
+              index: i,
             },
-
-            ages() {
-                return Array.range(1, 99);
-            },
-
-            indexes(){
-                return this.rows.map((row,index)=>{
-                    return index+1;
-                });
-            }
+          },
         },
-        created(){
-
-            Array.range = (start, end) => Array.from({length: (end - start)}, (v, k) => k + start);
-
-            const rows = [];
-
-            const chance = new Chance();
-
-            for(let i = 0; i < this.rowCount; i++){
-                rows.push([
-                    {
-                        component:{
-                            name:"drag-component",
-                            props:{
-                                index:i,
-                            },
-
-                        }
-                    },
-                    {
-                        text:chance.name({ nationality: 'en' })
-                    },
-                    {
-                        text:chance.age()
-                    },
-                    {
-                        text:chance.city()
-                    },
-                    {
-                        text:chance.profession()
-                    },
-                    {
-                        component:{
-                            name:"actions-component",
-                            props:{
-                                index:i,
-                                first:i===0,
-                                last:i===this.rowCount -1,
-                            },
-
-                        }
-                    }
-                ]);
-            }
-
-            this.rows = rows;
+        {
+          text: chance.name({ nationality: "en" }),
         },
-        methods:{
-
-            updateIndexes(){
-                this.rows = this.rows.map((row,index)=>{
-                    row[5].component.props.index = index;
-                    row[5].component.props.first = index === 0;
-                    row[5].component.props.last = index === this.rowCount - 1;
-                    row[0].component.props.index = index;
-                    return row;
-                });
+        {
+          text: chance.age(),
+        },
+        {
+          text: chance.city(),
+        },
+        {
+          text: chance.profession(),
+        },
+        {
+          component: {
+            name: "actions-component",
+            props: {
+              index: i,
+              first: i === 0,
+              last: i === this.rowCount - 1,
             },
-
-            componentListener(data){
-                if(data.type === "delete-row"){
-                    this.rows.splice(data.index,1);
-                    this.rowCount--;
-                    this.updateIndexes();
-                }else if(data.type === "move-row"){
-                    this.move(data.index,data.to);
-                }else if(data.type === "dragstart"){
-                    this.dragging = true;
-                }else if(data.type === "dragend"){
-                    this.dragging = false;
-                }
-            },
-
-             move(old_index, new_index) {
-                if (new_index >= this.rows.length) {
-                    var k = new_index - this.rows.length + 1;
-                    while (k--) {
-                        this.rows.push(undefined);
-                    }
-                }
-                this.rows.splice(new_index, 0, this.rows.splice(old_index, 1)[0]);
-                this.updateIndexes();
-
-             },
-            addRow(){
-
-                if(!this.name || !this.age || !this.city || !this.job){
-                     alert("You have to fill out all inputs");
-                     return;
-                }
-
-                const data = [
-                    {
-                        component:{
-                            name:"drag-component",
-                            props:{
-                                index:this.index - 1,
-                            },
-
-                        }
-                    },
-                    {
-                        text:this.name
-                    },
-                    {
-                        text:this.age
-                    },
-                    {
-                        text:this.city
-                    },
-                    {
-                        text:this.job
-                    },
-                    {
-                        component:{
-                            name:"actions-component",
-                            props:{
-                                index:this.index - 1,
-                            },
-
-                        }
-                    }
-                ];
-
-                if(this.index === this.rowCount){
-                    this.rows.push(data);
-                }else{
-                    this.rows.splice(this.index - 1 , 0, data);
-                }
-
-                this.index = 1;
-                this.name = "";
-                this.age = null;
-                this.city = "";
-                this.job = "";
-                this.rowCount ++;
-
-                this.updateIndexes();
-
-            }
-        }
+          },
+        },
+      ]);
     }
+
+    this.rows = rows;
+  },
+  methods: {
+    updateIndexes() {
+      this.rows = this.rows.map((row, index) => {
+        row[5].component.props.index = index;
+        row[5].component.props.first = index === 0;
+        row[5].component.props.last = index === this.rowCount - 1;
+        row[0].component.props.index = index;
+        return row;
+      });
+    },
+
+    componentListener(data) {
+      if (data.type === "delete-row") {
+        this.rows.splice(data.index, 1);
+        this.rowCount--;
+        this.updateIndexes();
+      } else if (data.type === "move-row") {
+        this.move(data.index, data.to);
+      } else if (data.type === "dragstart") {
+        this.dragging = true;
+      } else if (data.type === "dragend") {
+        this.dragging = false;
+      }
+    },
+
+    move(old_index, new_index) {
+      if (new_index >= this.rows.length) {
+        var k = new_index - this.rows.length + 1;
+        while (k--) {
+          this.rows.push(undefined);
+        }
+      }
+      this.rows.splice(new_index, 0, this.rows.splice(old_index, 1)[0]);
+      this.updateIndexes();
+    },
+    addRow() {
+      if (!this.name || !this.age || !this.city || !this.job) {
+        alert("You have to fill out all inputs");
+        return;
+      }
+
+      const data = [
+        {
+          component: {
+            name: "drag-component",
+            props: {
+              index: this.index - 1,
+            },
+          },
+        },
+        {
+          text: this.name,
+        },
+        {
+          text: this.age,
+        },
+        {
+          text: this.city,
+        },
+        {
+          text: this.job,
+        },
+        {
+          component: {
+            name: "actions-component",
+            props: {
+              index: this.index - 1,
+            },
+          },
+        },
+      ];
+
+      if (this.index === this.rowCount) {
+        this.rows.push(data);
+      } else {
+        this.rows.splice(this.index - 1, 0, data);
+      }
+
+      this.index = 1;
+      this.name = "";
+      this.age = null;
+      this.city = "";
+      this.job = "";
+      this.rowCount++;
+
+      this.updateIndexes();
+    },
+  },
+};
 </script>
 
 <style>
-    .vue-quintable.dragging .vue-quintable-cell{
-        position: relative;
-    }
+.vue-quintable.dragging .vue-quintable-cell {
+  position: relative;
+}
 
-    .vue-quintable.dragging .vue-quintable-cell:after{
-        content: "";
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(255,255,255,0.75);
-        left: 0;
-        top: 0;
-        pointer-events: none;
-        z-index: 2;
-    }
+.vue-quintable.dragging .vue-quintable-cell:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.75);
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  z-index: 2;
+}
 
-    .vue-quintable.dragging .vue-quintable-cell.actions .drop-element{
-        position: relative;
-        z-index: 3;
+.vue-quintable.dragging .vue-quintable-cell.actions .drop-element {
+  position: relative;
+  z-index: 3;
+}
 
-    }
-
-    .vue-quintable.dragging .vue-quintable-cell.actions .drop-element .card{
-        background-color: #28a745;
-        color: #fff;
-    }
-
+.vue-quintable.dragging .vue-quintable-cell.actions .drop-element .card {
+  background-color: #28a745;
+  color: #fff;
+}
 </style>
