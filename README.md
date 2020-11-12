@@ -362,7 +362,7 @@ Vue.component(
 | operator | String       | No       | Operator for comparing. The defined operators are:<br />*equal, greater, less, greaterEqual, lessEqual, startsWith, endsWith, contains, notContains, matches* |
 | compare  | Function     | No       | Custom compare function. See Below.                          |
 
-This example shows selected values for **active**, **printable**, **first_name**, **middle_name**, and **last_name **filters. Operators can be:
+This example shows selected values for **active**, **printable**, **first_name**, **middle_name**, and **last_name** filters. Operators can be:
 
 ```javascript
 {
