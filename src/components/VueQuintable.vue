@@ -2641,8 +2641,13 @@ export default {
 				let aValue = cellsA[i].sortValue?cellsA[i].sortValue:cellsA[i].html?cellsA[i].html:cellsA[i].text;
 				let bValue = cellsB[i].sortValue?cellsB[i].sortValue:cellsB[i].html?cellsB[i].html:cellsB[i].text;
 
-				aValue = aValue.toLowerCase();
-				bValue = bValue.toLowerCase();
+				if(typeof aValue === "string"){
+            aValue = aValue.toLowerCase();
+        }
+
+        if(typeof bValue === "string"){
+          bValue = bValue.toLowerCase();
+        }
 
 				if(currentKey.asc){
 					return aValue > bValue ? 1 : (aValue < bValue ? -1 : ( keys[index+1] ? compare(a, b, keys, index + 1):1));
