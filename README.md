@@ -93,9 +93,21 @@ You can define some slots to customize the table as you want to.
 - footer
 - no-results
 - loading
+- cell-complete
+- cell-content
+- generated-cell-complete
+- generated-cell-content
+- sticky-cell-complete
+- sticky-cell-content
 
 ```html
 <template v-slot:header>Your HTML-Code</template>
+
+<template v-slot:cell-content="context">
+	<button>
+        {{context.cell.text}}
+    </button>
+</template>
 ```
 
 
