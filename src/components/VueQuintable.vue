@@ -1420,7 +1420,7 @@ export default {
 								break;
 							}
 
-							if((textVal + "").toLowerCase().indexOf(this.query) !== -1 ){
+							if((textVal + "").toLowerCase().indexOf((this.query + "").toLowerCase()) !== -1 ){
 							  match = true;
 							  break;
 							}
@@ -1435,7 +1435,7 @@ export default {
 							  break;
 							}
 
-							 if((row.keywords[k] + "").toLowerCase().indexOf(this.query) !== -1 ){
+							 if((row.keywords[k] + "").toLowerCase().indexOf((this.query + "").toLowerCase()) !== -1 ){
 								 match = true;
 								 break;
 							 }
