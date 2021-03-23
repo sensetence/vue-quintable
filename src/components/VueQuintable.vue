@@ -30,7 +30,7 @@
 								</template>
 							</p-check>
 							<label v-else class="mb-0 mt-0">
-								<input  type="checkbox" v-model="allSelectedProperty"  @change="checkAll()">
+								<input  type="checkbox" v-model="allSelectedProperty" @change="checkAll()">
 							</label>
 						</template>
 					</th>
@@ -1652,9 +1652,9 @@ export default {
 			  }
 
 			  if (!this.configFinal.selectAllRows) {
-				  this.allSelectedCustom = counter === this.visibleRows.filter(x => x).length;
+				  this.allSelectedCustom = counter && counter === this.visibleRows.filter(x => x).length;
 			  } else {
-				  this.allSelectedCustom = counter === this.rowsFinal.length;
+				  this.allSelectedCustom = counter && counter === this.rowsFinal.length;
 			  }
 
 		  } else {
@@ -1948,9 +1948,9 @@ export default {
 	   *
 	   */
 	  pageSort(){
-		  this.currentSortIndexes = {};
-		  this.resetSorts();
-		  this.recomputeEssentials();
+        this.currentSortIndexes = {};
+        this.resetSorts();
+        this.recomputeEssentials();
 	  },
 
 	  /**
@@ -1958,21 +1958,18 @@ export default {
 	   *
 	   */
       sortOrder:{
-      	immediate:true,
-      	handler(){
-
-	      this.currentSortIndexes = {};
-          for(let i = 0;i<this.sortOrder.length;i++){
-
-          	  if(typeof this.sortOrder[i] === "object"){
-				  this.setSortColumn(this.sortOrder[i].index,this.sortOrder[i].asc);
-			  }else if(typeof this.sortOrder[i] === "number"){
-				  this.setSortColumn(this.sortOrder[i]);
-			  }
-          }
-		}
+            immediate:true,
+            handler(){
+                this.currentSortIndexes = {};
+                  for(let i = 0;i<this.sortOrder.length;i++){
+                      if(typeof this.sortOrder[i] === "object"){
+                          this.setSortColumn(this.sortOrder[i].index,this.sortOrder[i].asc);
+                      }else if(typeof this.sortOrder[i] === "number"){
+                          this.setSortColumn(this.sortOrder[i]);
+                      }
+                  }
+            }
       },
-
 
   },
   methods:{
@@ -2044,7 +2041,6 @@ export default {
 	   * @param index index of selected row
 	   */
 	  checkListener(bool,index){
-
 		  let tmp = this.selected.slice().map((checked,i)=>{
 		  		return !!checked || !!this.rowsFinal[i].disableSelect;
 		  });
@@ -2062,7 +2058,7 @@ export default {
 			  }
 		  }else{
 			  if(tmp.indexOf(false) === -1 ){
-				  this.allSelectedProperty = false;
+				  this.allSelectedProperty = true;
 			  } else {
 				  this.allSelectedProperty = false;
 			  }
@@ -2222,9 +2218,9 @@ export default {
 			if(value){
 
 				if(!this.configFinal.selectAllRows){
-					this.allSelectedCustom = counter === this.visibleRows.filter(x => x).length;
+					this.allSelectedCustom = counter && counter === this.visibleRows.filter(x => x).length;
 				}else{
-					this.allSelectedCustom = counter === this.rowsFinal.length;
+					this.allSelectedCustom = counter && counter === this.rowsFinal.length;
 				}
 			}
 	  },
@@ -2966,9 +2962,9 @@ export default {
 			}
 		}
 
-		if(!this.configFinal.selectAllRows && counter === this.visibleRows.filter(x => x).length){
+		if(!this.configFinal.selectAllRows && counter && counter === this.visibleRows.filter(x => x).length){
 			this.allSelectedCustom = true;
-		}else if(this.configFinal.selectAllRows  && counter === this.rowsFinal.length){
+		}else if(this.configFinal.selectAllRows && counter && counter === this.rowsFinal.length){
 			this.allSelectedCustom = true;
 		}
 
