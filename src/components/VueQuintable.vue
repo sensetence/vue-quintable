@@ -2264,6 +2264,23 @@ export default {
   },
 
   watch: {
+    rowsFinal: {
+      handler(val) {
+        if (val && val.length) {
+          for (let i = 0; i < val.length; i++) {
+            let cells = val[i].cells ? val[i].cells : val[i];
+            if (cells.length !== this.config.columns.length) {
+              console.error(
+                `Row cell count on index ${i} doesn't fit for column config! expected: ${this.config.columns.length}, got: ${cells.length}`,
+                val[i]
+              );
+            }
+          }
+        }
+      },
+      immediate: true,
+    },
+
     /**
      * Check if some rows should be selected due to an outside change
      *
