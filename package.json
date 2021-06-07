@@ -31,7 +31,6 @@
     "uuid": "^3.4.0",
     "vue": "^2.6.12",
     "vue-drag-drop": "^1.1.4",
-    "vue-recomputed": "0.0.1",
     "vue-select": "^3.11.2"
   },
   "devDependencies": {
