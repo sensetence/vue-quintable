@@ -16,16 +16,37 @@ These instructions will get you running VueQuintable for your project for develo
 
 VueQuintable is a [vue.js](https://vuejs.org/) package and uses [bootstrap](https://getbootstrap.com/) by default. Please install both before using the package. If you want to use [ajax](https://de.wikipedia.org/wiki/Ajax_(Programmierung)) functionalities please install [axios](https://github.com/axios/axios) as it is used by VueQuintable.
 
-```
+*npm:*
+
+```shell
 npm install --save vue bootstrap-vue
 npm install --save axios
 ```
 
+*yarn:*
+
+```shell
+yarn add vue bootstrap-vue 
+yarn add axios
+```
+
+
+
 ### Installing
+
+*npm:*
 
 ```shell
 npm install --save @quintet/vue-quintable
 ```
+
+*yarn:*
+
+```shell
+yarn add @quintet/vue-quintable
+```
+
+
 
 ### Integration
 

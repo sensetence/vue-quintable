@@ -5,13 +5,24 @@ module.exports = {
   },
   'extends': [
     'plugin:vue/essential',
-    'eslint:recommended'
+    'prettier',
+    'plugin:prettier/recommended',
+    'eslint:recommended',
   ],
+
+  plugins: ['prettier'],
+
   rules: {
     'vue/no-unused-components':0,
     'no-console': 0,
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-      "no-mixed-spaces-and-tabs": 0, // disable rule
+    'no-mixed-spaces-and-tabs': 0, // disable rule
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto'
+      }
+    ]
 
   },
   parserOptions: {
