@@ -1148,17 +1148,6 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 /***/ }),
 
-/***/ "3393":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueQuintable_vue_vue_type_style_index_0_id_b4485cda_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("397c");
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueQuintable_vue_vue_type_style_index_0_id_b4485cda_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueQuintable_vue_vue_type_style_index_0_id_b4485cda_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* unused harmony reexport * */
-
-
-/***/ }),
-
 /***/ "342f":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1315,13 +1304,6 @@ module.exports = (
     })()
 );
 
-
-/***/ }),
-
-/***/ "397c":
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
 
 /***/ }),
 
@@ -1498,6 +1480,13 @@ module.exports = function (it) {
   return isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : classof(it) == 'RegExp');
 };
 
+
+/***/ }),
+
+/***/ "4679":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
 
 /***/ }),
 
@@ -2139,6 +2128,66 @@ var classof = __webpack_require__("c6b6");
 var global = __webpack_require__("da84");
 
 module.exports = classof(global.process) == 'process';
+
+
+/***/ }),
+
+/***/ "60da":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var DESCRIPTORS = __webpack_require__("83ab");
+var fails = __webpack_require__("d039");
+var objectKeys = __webpack_require__("df75");
+var getOwnPropertySymbolsModule = __webpack_require__("7418");
+var propertyIsEnumerableModule = __webpack_require__("d1e7");
+var toObject = __webpack_require__("7b0b");
+var IndexedObject = __webpack_require__("44ad");
+
+var nativeAssign = Object.assign;
+var defineProperty = Object.defineProperty;
+
+// `Object.assign` method
+// https://tc39.es/ecma262/#sec-object.assign
+module.exports = !nativeAssign || fails(function () {
+  // should have correct order of operations (Edge bug)
+  if (DESCRIPTORS && nativeAssign({ b: 1 }, nativeAssign(defineProperty({}, 'a', {
+    enumerable: true,
+    get: function () {
+      defineProperty(this, 'b', {
+        value: 3,
+        enumerable: false
+      });
+    }
+  }), { b: 2 })).b !== 1) return true;
+  // should work with symbols and should have deterministic property order (V8 bug)
+  var A = {};
+  var B = {};
+  /* global Symbol -- required for testing */
+  var symbol = Symbol();
+  var alphabet = 'abcdefghijklmnopqrst';
+  A[symbol] = 7;
+  alphabet.split('').forEach(function (chr) { B[chr] = chr; });
+  return nativeAssign({}, A)[symbol] != 7 || objectKeys(nativeAssign({}, B)).join('') != alphabet;
+}) ? function assign(target, source) { // eslint-disable-line no-unused-vars -- required for `.length`
+  var T = toObject(target);
+  var argumentsLength = arguments.length;
+  var index = 1;
+  var getOwnPropertySymbols = getOwnPropertySymbolsModule.f;
+  var propertyIsEnumerable = propertyIsEnumerableModule.f;
+  while (argumentsLength > index) {
+    var S = IndexedObject(arguments[index++]);
+    var keys = getOwnPropertySymbols ? objectKeys(S).concat(getOwnPropertySymbols(S)) : objectKeys(S);
+    var length = keys.length;
+    var j = 0;
+    var key;
+    while (length > j) {
+      key = keys[j++];
+      if (!DESCRIPTORS || propertyIsEnumerable.call(S, key)) T[key] = S[key];
+    }
+  } return T;
+} : nativeAssign;
 
 
 /***/ }),
@@ -3692,7 +3741,7 @@ module.exports = function (argument) {
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"ee715f3e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/VueQuintable.vue?vue&type=template&id=b4485cda&scoped=true&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"aede12a6-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/VueQuintable.vue?vue&type=template&id=36d92c94&scoped=true&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"table-wrapper"},[_c('div',{staticClass:"breakpoints"},[_c('div',{ref:"xs"}),_c('div',{ref:"sm",staticClass:"d-none d-sm-block"}),_c('div',{ref:"md",staticClass:"d-none d-md-block"}),_c('div',{ref:"lg",staticClass:"d-none d-lg-block"}),_c('div',{ref:"xl",staticClass:"d-none d-xl-block"})]),_c('div',{staticClass:"header slot slot-header"},[_vm._t("header")],2),(_vm.configFinal.search)?_c('div',{staticClass:"mb-3"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.query),expression:"query"}],staticClass:"form-control",attrs:{"type":"search","placeholder":_vm.configFinal.searchPlaceholder},domProps:{"value":(_vm.query)},on:{"input":function($event){if($event.target.composing){ return; }_vm.query=$event.target.value}}})]):_vm._e(),_c('div',{ref:"height-wrapper",staticClass:"clearfix"},[(!_vm.ajaxLoading)?_c('table',{staticClass:"vue-quintable table",class:_vm.tableClasses},[(_vm.configFinal.headlines.length)?_c('thead',[_c('tr',{staticClass:"vue-quintable-header-row"},[(_vm.hasGeneratedRows && !_vm.configFinal.hideRowToggle)?_c('th',{staticClass:"placeholder toggle-th"}):_vm._e(),(_vm.configFinal.select && _vm.configFinal.selectPosition === 'pre')?_c('th',{staticClass:"select-th pre"},[(_vm.configFinal.selectAll && !_vm.noRows)?[(_vm.configFinal.prettySelect)?_c('p-check',{staticClass:"p-icon p-smooth",attrs:{"name":"check"},on:{"change":function($event){return _vm.checkAll()}},model:{value:(_vm.allSelectedProperty),callback:function ($$v) {_vm.allSelectedProperty=$$v},expression:"allSelectedProperty"}},[_c('template',{slot:"extra"},[_c('span',[(_vm.allSelectedProperty)?_c('font-awesome-icon',{staticClass:"text-success icon-check",attrs:{"icon":"check"}}):_vm._e()],1),_c('span',[(_vm.someSelected && !_vm.allSelectedProperty)?_c('font-awesome-icon',{staticClass:"text-success icon-check",attrs:{"icon":"square"}}):_vm._e()],1)])],2):_c('label',{staticClass:"mb-0 mt-0"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.allSelectedProperty),expression:"allSelectedProperty"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.allSelectedProperty)?_vm._i(_vm.allSelectedProperty,null)>-1:(_vm.allSelectedProperty)},on:{"change":[function($event){var $$a=_vm.allSelectedProperty,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.allSelectedProperty=$$a.concat([$$v]))}else{$$i>-1&&(_vm.allSelectedProperty=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.allSelectedProperty=$$c}},function($event){return _vm.checkAll()}]}})])]:_vm._e()],2):_vm._e(),_vm._l((_vm.configFinal.headlines),function(headline,hIndex){return _c('th',{directives:[{name:"show",rawName:"v-show",value:(
               ((_vm.configFinal.columns[hIndex] &&
                 !_vm.configFinal.columns[hIndex].breakpoint) ||
@@ -3744,22 +3793,26 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
                   ) === -1 &&
                   _vm.configFinal.columns[cIndex].breakpoint !== 'all' &&
                   !_vm.configFinal.stickyCols[cIndex]
-                )?[_vm._t("cell-complete",[(_vm.rowsFinal[rIndex].tooltip && cIndex === 0)?_c('b-tooltip',{attrs:{"target":'vue-quintable-' + _vm.uuid + '-row-' + rIndex,"triggers":"hover","placement":"top"}},[_c('span',{domProps:{"innerHTML":_vm._s(_vm.rowsFinal[rIndex].tooltip)}})]):_vm._e(),(cell.tooltip)?_c('b-tooltip',{attrs:{"target":'vue-quintable-' +
+                )?[_vm._t('cell-complete' + (_vm.identifier ? '-' + _vm.identifier : ''),[(_vm.rowsFinal[rIndex].tooltip && cIndex === 0)?_c('b-tooltip',{attrs:{"target":'vue-quintable-' + _vm.uuid + '-row-' + rIndex,"triggers":"hover","placement":"top"}},[_c('span',{domProps:{"innerHTML":_vm._s(_vm.rowsFinal[rIndex].tooltip)}})]):_vm._e(),(cell.tooltip)?_c('b-tooltip',{attrs:{"target":'vue-quintable-' +
                       _vm.uuid +
                       '-cell-' +
                       rIndex +
                       '-' +
-                      cIndex,"triggers":"hover","placement":"left"}},[_c('span',{domProps:{"innerHTML":_vm._s(cell.tooltip)}})]):_vm._e(),_vm._t("cell-content",[(_vm.configFinal.columns[cIndex].cellFormatter)?[(cell.quintable)?_c('div',{staticClass:"cell-inner"},[_c('VueQuintable',{staticClass:"quintable-sub-table",attrs:{"table-classes":cell.quintable.tableClasses,"nested":true,"config":cell.quintable.config,"rows":cell.quintable.rows,"verbose":_vm.verbose,"filter-groups":cell.quintable.filterGroups
+                      cIndex,"triggers":"hover","placement":"left"}},[_c('span',{domProps:{"innerHTML":_vm._s(cell.tooltip)}})]):_vm._e(),_vm._t('cell-content' + (_vm.identifier ? '-' + _vm.identifier : ''),[(_vm.configFinal.columns[cIndex].cellFormatter)?[(cell.quintable)?_c('div',{staticClass:"cell-inner"},[_c('VueQuintable',{staticClass:"quintable-sub-table",attrs:{"table-classes":cell.quintable.tableClasses,"nested":true,"identifier":cell.quintable.identifier
+                              ? cell.quintable.identifier
+                              : _vm.generateIdentifier(),"config":cell.quintable.config,"rows":cell.quintable.rows,"verbose":_vm.verbose,"filter-groups":cell.quintable.filterGroups
                               ? cell.quintable.filterGroups
                               : [],"filters":cell.quintable.filters
                               ? cell.quintable.filters
-                              : {}},model:{value:(cell.quintable.value),callback:function ($$v) {_vm.$set(cell.quintable, "value", $$v)},expression:"cell.quintable.value"}})],1):(cell.component)?_c('div',{staticClass:"cell-inner"},[_c(cell.component.name,_vm._b({tag:"component",on:{"action":_vm.handleComponentEvent}},'component',cell.component.props,false))],1):(
+                              : {}},model:{value:(cell.quintable.value),callback:function ($$v) {_vm.$set(cell.quintable, "value", $$v)},expression:"cell.quintable.value"}},[_vm._l((_vm.$slots),function(_,slot){return [_c('template',{slot:slot},[_vm._t(slot)],2)]})],2)],1):(cell.component)?_c('div',{staticClass:"cell-inner"},[_c(cell.component.name,_vm._b({tag:"component",on:{"action":_vm.handleComponentEvent}},'component',cell.component.props,false))],1):(
                           _vm.cellFormatters(cIndex, cell).type === 'html'
-                        )?_c('div',{staticClass:"cell-inner",domProps:{"innerHTML":_vm._s(_vm.cellFormatters(cIndex, cell).value)}}):_c('div',{staticClass:"cell-inner"},[_vm._v(" "+_vm._s(_vm.cellFormatters(cIndex, cell).value)+" ")])]:[(cell.html)?_c('div',{staticClass:"cell-inner",domProps:{"innerHTML":_vm._s(cell.html)}}):_vm._e(),(cell.text)?_c('div',{staticClass:"cell-inner"},[_vm._v(" "+_vm._s(cell.text)+" ")]):_vm._e(),(cell.quintable)?_c('div',{staticClass:"cell-inner"},[_c('VueQuintable',{staticClass:"quintable-sub-table",attrs:{"table-classes":cell.quintable.tableClasses,"nested":true,"config":cell.quintable.config,"rows":cell.quintable.rows,"verbose":_vm.verbose,"filter-groups":cell.quintable.filterGroups
+                        )?_c('div',{staticClass:"cell-inner",domProps:{"innerHTML":_vm._s(_vm.cellFormatters(cIndex, cell).value)}}):_c('div',{staticClass:"cell-inner"},[_vm._v(" "+_vm._s(_vm.cellFormatters(cIndex, cell).value)+" ")])]:[(cell.html)?_c('div',{staticClass:"cell-inner",domProps:{"innerHTML":_vm._s(cell.html)}}):_vm._e(),(cell.text)?_c('div',{staticClass:"cell-inner"},[_vm._v(" "+_vm._s(cell.text)+" ")]):_vm._e(),(cell.quintable)?_c('div',{staticClass:"cell-inner"},[_c('VueQuintable',{staticClass:"quintable-sub-table",attrs:{"table-classes":cell.quintable.tableClasses,"nested":true,"identifier":cell.quintable.identifier
+                              ? cell.quintable.identifier
+                              : _vm.generateIdentifier(),"config":cell.quintable.config,"rows":cell.quintable.rows,"verbose":_vm.verbose,"filter-groups":cell.quintable.filterGroups
                               ? cell.quintable.filterGroups
                               : [],"filters":cell.quintable.filters
                               ? cell.quintable.filters
-                              : {}},model:{value:(cell.quintable.value),callback:function ($$v) {_vm.$set(cell.quintable, "value", $$v)},expression:"cell.quintable.value"}})],1):_vm._e(),(cell.component)?_c('div',{staticClass:"cell-inner"},[_c(cell.component.name,_vm._b({tag:"component",on:{"action":_vm.handleComponentEvent}},'component',cell.component.props,false))],1):_vm._e()]],{"cell":cell})],{"cell":cell})]:_vm._e()],2)}),(
+                              : {}},model:{value:(cell.quintable.value),callback:function ($$v) {_vm.$set(cell.quintable, "value", $$v)},expression:"cell.quintable.value"}},[_vm._l((_vm.$slots),function(_,slot){return [_c('template',{slot:slot},[_vm._t(slot)],2)]})],2)],1):_vm._e(),(cell.component)?_c('div',{staticClass:"cell-inner"},[_c(cell.component.name,_vm._b({tag:"component",on:{"action":_vm.handleComponentEvent}},'component',cell.component.props,false))],1):_vm._e()]],{"cell":cell})],{"cell":cell})]:_vm._e()],2)}),(
                 _vm.configFinal.select && _vm.configFinal.selectPosition === 'post'
               )?_c('td',{staticClass:"select-td post",class:{ 'disabled-select': _vm.rowsFinal[rIndex].disableSelect }},[(!_vm.rowsFinal[rIndex].disableSelect)?[(_vm.configFinal.prettySelect)?_c('p-check',{staticClass:"p-icon",attrs:{"name":"check"},on:{"change":function($event){return _vm.checkListener($event, rIndex)}},model:{value:(_vm.selected[rIndex]),callback:function ($$v) {_vm.$set(_vm.selected, rIndex, $$v)},expression:"selected[rIndex]"}},[_c('template',{slot:"extra"},[_c('span',[(_vm.selected[rIndex])?_c('font-awesome-icon',{staticClass:"text-success icon-check",attrs:{"icon":"check"}}):_vm._e()],1)])],2):_c('label',{staticClass:"mb-0 mt-0"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.selected[rIndex]),expression:"selected[rIndex]"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.selected[rIndex])?_vm._i(_vm.selected[rIndex],null)>-1:(_vm.selected[rIndex])},on:{"change":[function($event){var $$a=_vm.selected[rIndex],$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.$set(_vm.selected, rIndex, $$a.concat([$$v])))}else{$$i>-1&&(_vm.$set(_vm.selected, rIndex, $$a.slice(0,$$i).concat($$a.slice($$i+1))))}}else{_vm.$set(_vm.selected, rIndex, $$c)}},function($event){return _vm.checkListener($event, rIndex)}]}})])]:_vm._e()],2):_vm._e()],2),(
               (_vm.generatedRows[rIndex] || _vm.stickyRows[rIndex]) &&
@@ -3807,22 +3860,28 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
                           cIndex,staticClass:"generated-content-cell",class:_vm.cellClassesParsed[rIndex][cIndex] +
                           (_vm.showHeadlines[cIndex] ? ' text-right' : ''),attrs:{"colspan":!_vm.showHeadlines[cIndex] && !_vm.configFinal.sorts[cIndex]
                             ? '2'
-                            : '1'},on:{"click":function($event){return _vm.onCellClick(cell)}}},[_vm._t("generated-cell-complete",[(cell.tooltip)?_c('b-tooltip',{attrs:{"target":'vue-quintable-' +
+                            : '1'},on:{"click":function($event){return _vm.onCellClick(cell)}}},[_vm._t('generated-cell-complete' +
+                            (_vm.identifier ? '-' + _vm.identifier : ''),[(cell.tooltip)?_c('b-tooltip',{attrs:{"target":'vue-quintable-' +
                               _vm.uuid +
                               '-generated-row-cell-' +
                               rIndex +
                               '-' +
-                              cIndex,"triggers":"hover","placement":"top"}},[_c('span',{domProps:{"innerHTML":_vm._s(cell.tooltip)}})]):_vm._e(),_vm._t("generated-cell-content",[(_vm.configFinal.columns[cIndex].cellFormatter)?[(cell.quintable)?_c('div',{staticClass:"cell-inner"},[_c('VueQuintable',{staticClass:"quintable-sub-table",attrs:{"table-classes":cell.quintable.tableClasses,"nested":true,"config":cell.quintable.config,"rows":cell.quintable.rows,"verbose":_vm.verbose,"filter-groups":cell.quintable.filterGroups
+                              cIndex,"triggers":"hover","placement":"top"}},[_c('span',{domProps:{"innerHTML":_vm._s(cell.tooltip)}})]):_vm._e(),_vm._t('generated-cell-content' +
+                              (_vm.identifier ? '-' + _vm.identifier : ''),[(_vm.configFinal.columns[cIndex].cellFormatter)?[(cell.quintable)?_c('div',{staticClass:"cell-inner"},[_c('VueQuintable',{staticClass:"quintable-sub-table",attrs:{"table-classes":cell.quintable.tableClasses,"nested":true,"identifier":cell.quintable.identifier
+                                      ? cell.quintable.identifier
+                                      : _vm.generateIdentifier(),"config":cell.quintable.config,"rows":cell.quintable.rows,"verbose":_vm.verbose,"filter-groups":cell.quintable.filterGroups
                                       ? cell.quintable.filterGroups
                                       : [],"filters":cell.quintable.filters
                                       ? cell.quintable.filters
-                                      : {}},model:{value:(cell.quintable.value),callback:function ($$v) {_vm.$set(cell.quintable, "value", $$v)},expression:"cell.quintable.value"}})],1):(cell.component)?_c('div',{staticClass:"cell-inner"},[_c(cell.component.name,_vm._b({tag:"component",on:{"action":_vm.handleComponentEvent}},'component',cell.component.props,false))],1):(
+                                      : {}},model:{value:(cell.quintable.value),callback:function ($$v) {_vm.$set(cell.quintable, "value", $$v)},expression:"cell.quintable.value"}},[_vm._l((_vm.$slots),function(_,slot){return [_c('template',{slot:slot},[_vm._t(slot)],2)]})],2)],1):(cell.component)?_c('div',{staticClass:"cell-inner"},[_c(cell.component.name,_vm._b({tag:"component",on:{"action":_vm.handleComponentEvent}},'component',cell.component.props,false))],1):(
                                   _vm.cellFormatters(cIndex, cell).type === 'html'
-                                )?_c('div',{staticClass:"cell-inner",domProps:{"innerHTML":_vm._s(_vm.cellFormatters(cIndex, cell).value)}}):_c('div',{staticClass:"cell-inner"},[_vm._v(" "+_vm._s(_vm.cellFormatters(cIndex, cell).value)+" ")])]:[(cell.html)?_c('div',{staticClass:"cell-inner",domProps:{"innerHTML":_vm._s(cell.html)}}):_vm._e(),(cell.text)?_c('div',{staticClass:"cell-inner"},[_vm._v(" "+_vm._s(cell.text)+" ")]):_vm._e(),(cell.quintable)?_c('div',{staticClass:"cell-inner"},[_c('VueQuintable',{staticClass:"quintable-sub-table",attrs:{"table-classes":cell.quintable.tableClasses,"nested":true,"config":cell.quintable.config,"rows":cell.quintable.rows,"verbose":_vm.verbose,"filter-groups":cell.quintable.filterGroups
+                                )?_c('div',{staticClass:"cell-inner",domProps:{"innerHTML":_vm._s(_vm.cellFormatters(cIndex, cell).value)}}):_c('div',{staticClass:"cell-inner"},[_vm._v(" "+_vm._s(_vm.cellFormatters(cIndex, cell).value)+" ")])]:[(cell.html)?_c('div',{staticClass:"cell-inner",domProps:{"innerHTML":_vm._s(cell.html)}}):_vm._e(),(cell.text)?_c('div',{staticClass:"cell-inner"},[_vm._v(" "+_vm._s(cell.text)+" ")]):_vm._e(),(cell.quintable)?_c('div',{staticClass:"cell-inner"},[_c('VueQuintable',{staticClass:"quintable-sub-table",attrs:{"table-classes":cell.quintable.tableClasses,"nested":true,"identifier":cell.quintable.identifier
+                                      ? cell.quintable.identifier
+                                      : _vm.generateIdentifier(),"config":cell.quintable.config,"rows":cell.quintable.rows,"verbose":_vm.verbose,"filter-groups":cell.quintable.filterGroups
                                       ? cell.quintable.filterGroups
                                       : [],"filters":cell.quintable.filters
                                       ? cell.quintable.filters
-                                      : {}},model:{value:(cell.quintable.value),callback:function ($$v) {_vm.$set(cell.quintable, "value", $$v)},expression:"cell.quintable.value"}})],1):_vm._e(),(cell.component)?_c('div',{staticClass:"cell-inner"},[_c(cell.component.name,_vm._b({tag:"component",on:{"action":_vm.handleComponentEvent}},'component',cell.component.props,false))],1):_vm._e()]],{"cell":cell})],{"cell":cell})],2)])}),_vm._l((_vm.stickyRows[rIndex]),function(cell,cIndex){return _c('tr',{key:'vue-quintable-' +
+                                      : {}},model:{value:(cell.quintable.value),callback:function ($$v) {_vm.$set(cell.quintable, "value", $$v)},expression:"cell.quintable.value"}},[_vm._l((_vm.$slots),function(_,slot){return [_c('template',{slot:slot},[_vm._t(slot)],2)]})],2)],1):_vm._e(),(cell.component)?_c('div',{staticClass:"cell-inner"},[_c(cell.component.name,_vm._b({tag:"component",on:{"action":_vm.handleComponentEvent}},'component',cell.component.props,false))],1):_vm._e()]],{"cell":cell})],{"cell":cell})],2)])}),_vm._l((_vm.stickyRows[rIndex]),function(cell,cIndex){return _c('tr',{key:'vue-quintable-' +
                         _vm.uuid +
                         '-sticky-row-cell-' +
                         rIndex +
@@ -3849,29 +3908,35 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
                           '-sticky-cell-' +
                           rIndex +
                           '-' +
-                          cIndex,staticClass:"text-right",on:{"click":function($event){return _vm.onCellClick(cell)}}},[_vm._t("sticky-cell-complete",[(cell.tooltip)?_c('b-tooltip',{attrs:{"target":'vue-quintable-' +
+                          cIndex,staticClass:"text-right",on:{"click":function($event){return _vm.onCellClick(cell)}}},[_vm._t('sticky-cell-complete' +
+                            (_vm.identifier ? '-' + _vm.identifier : ''),[(cell.tooltip)?_c('b-tooltip',{attrs:{"target":'vue-quintable-' +
                               _vm.uuid +
                               '-sticky-row-cell-' +
                               rIndex +
                               '-' +
-                              cIndex,"triggers":"hover","placement":"top"}},[_c('span',{domProps:{"innerHTML":_vm._s(cell.tooltip)}})]):_vm._e(),_vm._t("sticky-cell-content",[(_vm.configFinal.columns[cIndex].cellFormatter)?[(cell.quintable)?_c('div',{staticClass:"cell-inner"},[_c('VueQuintable',{staticClass:"quintable-sub-table",attrs:{"table-classes":cell.quintable.tableClasses,"nested":true,"config":cell.quintable.config,"rows":cell.quintable.rows,"verbose":_vm.verbose,"filter-groups":cell.quintable.filterGroups
+                              cIndex,"triggers":"hover","placement":"top"}},[_c('span',{domProps:{"innerHTML":_vm._s(cell.tooltip)}})]):_vm._e(),_vm._t('sticky-cell-content' +
+                              (_vm.identifier ? '-' + _vm.identifier : ''),[(_vm.configFinal.columns[cIndex].cellFormatter)?[(cell.quintable)?_c('div',{staticClass:"cell-inner"},[_c('VueQuintable',{staticClass:"quintable-sub-table",attrs:{"table-classes":cell.quintable.tableClasses,"nested":true,"identifier":cell.quintable.identifier
+                                      ? cell.quintable.identifier
+                                      : _vm.generateIdentifier(),"config":cell.quintable.config,"rows":cell.quintable.rows,"verbose":_vm.verbose,"filter-groups":cell.quintable.filterGroups
                                       ? cell.quintable.filterGroups
                                       : [],"filters":cell.quintable.filters
                                       ? cell.quintable.filters
-                                      : {}},model:{value:(cell.quintable.value),callback:function ($$v) {_vm.$set(cell.quintable, "value", $$v)},expression:"cell.quintable.value"}})],1):(cell.component)?_c('div',{staticClass:"cell-inner"},[_c(cell.component.name,_vm._b({tag:"component",on:{"action":_vm.handleComponentEvent}},'component',cell.component.props,false))],1):(
+                                      : {}},model:{value:(cell.quintable.value),callback:function ($$v) {_vm.$set(cell.quintable, "value", $$v)},expression:"cell.quintable.value"}},[_vm._l((_vm.$slots),function(_,slot){return [_c('template',{slot:slot},[_vm._t(slot)],2)]})],2)],1):(cell.component)?_c('div',{staticClass:"cell-inner"},[_c(cell.component.name,_vm._b({tag:"component",on:{"action":_vm.handleComponentEvent}},'component',cell.component.props,false))],1):(
                                   _vm.cellFormatters(cIndex, cell).type === 'html'
-                                )?_c('div',{staticClass:"cell-inner",domProps:{"innerHTML":_vm._s(_vm.cellFormatters(cIndex, cell).value)}}):_c('div',{staticClass:"cell-inner"},[_vm._v(" "+_vm._s(_vm.cellFormatters(cIndex, cell).value)+" ")])]:[(cell.html)?_c('div',{staticClass:"cell-inner",domProps:{"innerHTML":_vm._s(cell.html)}}):_vm._e(),(cell.text)?_c('div',{staticClass:"cell-inner"},[_vm._v(" "+_vm._s(cell.text)+" ")]):_vm._e(),(cell.quintable)?_c('div',{staticClass:"cell-inner"},[_c('VueQuintable',{staticClass:"quintable-sub-table",attrs:{"table-classes":cell.quintable.tableClasses,"nested":true,"config":cell.quintable.config,"rows":cell.quintable.rows,"verbose":_vm.verbose,"filter-groups":cell.quintable.filterGroups
+                                )?_c('div',{staticClass:"cell-inner",domProps:{"innerHTML":_vm._s(_vm.cellFormatters(cIndex, cell).value)}}):_c('div',{staticClass:"cell-inner"},[_vm._v(" "+_vm._s(_vm.cellFormatters(cIndex, cell).value)+" ")])]:[(cell.html)?_c('div',{staticClass:"cell-inner",domProps:{"innerHTML":_vm._s(cell.html)}}):_vm._e(),(cell.text)?_c('div',{staticClass:"cell-inner"},[_vm._v(" "+_vm._s(cell.text)+" ")]):_vm._e(),(cell.quintable)?_c('div',{staticClass:"cell-inner"},[_c('VueQuintable',{staticClass:"quintable-sub-table",attrs:{"table-classes":cell.quintable.tableClasses,"nested":true,"identifier":cell.quintable.identifier
+                                      ? cell.quintable.identifier
+                                      : _vm.generateIdentifier(),"config":cell.quintable.config,"rows":cell.quintable.rows,"verbose":_vm.verbose,"filter-groups":cell.quintable.filterGroups
                                       ? cell.quintable.filterGroups
                                       : [],"filters":cell.quintable.filters
                                       ? cell.quintable.filters
-                                      : {}},model:{value:(cell.quintable.value),callback:function ($$v) {_vm.$set(cell.quintable, "value", $$v)},expression:"cell.quintable.value"}})],1):_vm._e(),(cell.component)?_c('div',{staticClass:"cell-inner"},[_c(cell.component.name,_vm._b({tag:"component",on:{"action":_vm.handleComponentEvent}},'component',cell.component.props,false))],1):_vm._e()]],{"cell":cell})],{"cell":cell})],2)])})],2)])])]):_vm._e()]:_vm._e()]})],2)]):_vm._e(),(_vm.noRows && !_vm.ajaxLoading)?[_c('div',{staticClass:"clearfix slot-no-results slot"},[_vm._t("no-results",[_c('div',{staticClass:"text-center p-3"},[_c('em',{domProps:{"innerHTML":_vm._s(_vm.configFinal.emptyPlaceholder)}})])]),_c('hr')],2)]:_vm._e()],2),(_vm.ajaxLoading)?_c('div',{staticClass:"slot-loading slot"},[_vm._t("loading",[_c('div',{staticClass:"loader-wrapper",style:('height:' + _vm.loaderHeight + 'px;')},[_c('div',{staticClass:"loader text-center py-4"},[_c('font-awesome-icon',{staticClass:"ajax-loader",attrs:{"icon":"circle-notch","spin":""}})],1)])])],2):_vm._e(),_c('div',{staticClass:"clearfix"},[_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-lg-4"},[(_vm.configFinal.multiSortSelect || _vm.configFinal.pageSortSelect)?_c('div',{staticClass:"pb-lg-0 pb-3 float-left"},[(_vm.configFinal.multiSortSelect)?_c('span',{class:_vm.configFinal.pageSort ? 'mr-3' : ''},[_c('p-check',{staticClass:"p-switch",attrs:{"value":"true"},model:{value:(_vm.multiSort),callback:function ($$v) {_vm.multiSort=$$v},expression:"multiSort"}},[_vm._v(_vm._s(_vm.configFinal.multiSortPlaceholder))])],1):_vm._e(),(_vm.configFinal.pageSortSelect)?_c('p-check',{staticClass:"p-switch",attrs:{"value":"true"},model:{value:(_vm.pageSort),callback:function ($$v) {_vm.pageSort=$$v},expression:"pageSort"}},[_vm._v(_vm._s(_vm.configFinal.pageSortPlaceholder))]):_vm._e()],1):_vm._e()]),_c('div',{staticClass:"col-lg-8"},[(_vm.configFinal && _vm.configFinal.pagination)?_c('div',{staticClass:"float-lg-right mr-3 pagination-container"},[(_vm.configFinal.rowsSelect)?_c('div',{staticClass:"mb-2 d-inline-block mr-3 align-middle"},[_c('span',{staticClass:"d-inline-block align-middle mr-2",domProps:{"innerHTML":_vm._s(_vm.configFinal.rowsPlaceholder)}}),_c('v-select',{staticClass:"d-inline-block align-middle",attrs:{"options":_vm.paginationOptionsFilled,"clearable":false},model:{value:(_vm.currentRowsPerPageProperty),callback:function ($$v) {_vm.currentRowsPerPageProperty=$$v},expression:"currentRowsPerPageProperty"}})],1):_vm._e(),(_vm.configFinal && _vm.configFinal.pagination && _vm.pages > 1)?_c('nav',{staticClass:"d-inline-block align-middle mb-2",class:{ 'mr-3': _vm.numberOfVisibleRows, disabled: _vm.ajaxLoading }},[_c('ul',{staticClass:"pagination mb-0"},[(_vm.pages > _vm.pageRange)?_c('li',{staticClass:"page-item",class:{ disabled: _vm.currentPage <= 1 },on:{"click":function($event){return _vm.gotoPage('first')}}},[_c('span',{staticClass:"page-link"},[_c('font-awesome-icon',{attrs:{"icon":"angle-double-left"}})],1)]):_vm._e(),_c('li',{staticClass:"page-item",class:{ disabled: _vm.currentPage <= 1 },on:{"click":function($event){return _vm.gotoPage('prev')}}},[_c('span',{staticClass:"page-link"},[_c('font-awesome-icon',{attrs:{"icon":"angle-left"}})],1)]),(_vm.pageRange < _vm.pages && _vm.visiblePages[0] > 1)?_c('li',{staticClass:"page-item",on:{"click":function($event){return _vm.updatePageOffset(-1)}}},[_c('span',{staticClass:"page-link"},[_vm._v(" ... ")])]):_vm._e(),_vm._l((_vm.visiblePages),function(page){return _c('li',{key:'pagination-item-' + page,staticClass:"page-item",class:{ active: page === _vm.currentPage },on:{"click":function($event){return _vm.gotoPage(page)}}},[_c('span',{staticClass:"page-link"},[_vm._v(" "+_vm._s(page)+" ")])])}),(
+                                      : {}},model:{value:(cell.quintable.value),callback:function ($$v) {_vm.$set(cell.quintable, "value", $$v)},expression:"cell.quintable.value"}},[_vm._l((_vm.$slots),function(_,slot){return [_c('template',{slot:slot},[_vm._t(slot)],2)]})],2)],1):_vm._e(),(cell.component)?_c('div',{staticClass:"cell-inner"},[_c(cell.component.name,_vm._b({tag:"component",on:{"action":_vm.handleComponentEvent}},'component',cell.component.props,false))],1):_vm._e()]],{"cell":cell})],{"cell":cell})],2)])})],2)])])]):_vm._e()]:_vm._e()]})],2)]):_vm._e(),(_vm.noRows && !_vm.ajaxLoading)?[_c('div',{staticClass:"clearfix slot-no-results slot"},[_vm._t("no-results",[_c('div',{staticClass:"text-center p-3"},[_c('em',{domProps:{"innerHTML":_vm._s(_vm.configFinal.emptyPlaceholder)}})])]),_c('hr')],2)]:_vm._e()],2),(_vm.ajaxLoading)?_c('div',{staticClass:"slot-loading slot"},[_vm._t("loading",[_c('div',{staticClass:"loader-wrapper",style:('height:' + _vm.loaderHeight + 'px;')},[_c('div',{staticClass:"loader text-center py-4"},[_c('font-awesome-icon',{staticClass:"ajax-loader",attrs:{"icon":"circle-notch","spin":""}})],1)])])],2):_vm._e(),_c('div',{staticClass:"clearfix"},[_c('div',{staticClass:"row"},[_c('div',{staticClass:"col-lg-4"},[(_vm.configFinal.multiSortSelect || _vm.configFinal.pageSortSelect)?_c('div',{staticClass:"pb-lg-0 pb-3 float-left"},[(_vm.configFinal.multiSortSelect)?_c('span',{class:_vm.configFinal.pageSort ? 'mr-3' : ''},[_c('p-check',{staticClass:"p-switch",attrs:{"value":"true"},model:{value:(_vm.multiSort),callback:function ($$v) {_vm.multiSort=$$v},expression:"multiSort"}},[_vm._v(_vm._s(_vm.configFinal.multiSortPlaceholder))])],1):_vm._e(),(_vm.configFinal.pageSortSelect)?_c('p-check',{staticClass:"p-switch",attrs:{"value":"true"},model:{value:(_vm.pageSort),callback:function ($$v) {_vm.pageSort=$$v},expression:"pageSort"}},[_vm._v(_vm._s(_vm.configFinal.pageSortPlaceholder))]):_vm._e()],1):_vm._e()]),_c('div',{staticClass:"col-lg-8"},[(_vm.configFinal && _vm.configFinal.pagination)?_c('div',{staticClass:"float-lg-right mr-3 pagination-container"},[(_vm.configFinal.rowsSelect)?_c('div',{staticClass:"mb-2 d-inline-block mr-3 align-middle"},[_c('span',{staticClass:"d-inline-block align-middle mr-2",domProps:{"innerHTML":_vm._s(_vm.configFinal.rowsPlaceholder)}}),_c('v-select',{staticClass:"d-inline-block align-middle",attrs:{"options":_vm.paginationOptionsFilled,"clearable":false},model:{value:(_vm.currentRowsPerPageProperty),callback:function ($$v) {_vm.currentRowsPerPageProperty=$$v},expression:"currentRowsPerPageProperty"}})],1):_vm._e(),(_vm.configFinal && _vm.configFinal.pagination && _vm.pages > 1)?_c('nav',{staticClass:"d-inline-block align-middle mb-2",class:{ 'mr-3': _vm.numberOfVisibleRows, disabled: _vm.ajaxLoading }},[_c('ul',{staticClass:"pagination mb-0"},[(_vm.pages > _vm.pageRange)?_c('li',{staticClass:"page-item",class:{ disabled: _vm.currentPage <= 1 },on:{"click":function($event){return _vm.gotoPage('first')}}},[_c('span',{staticClass:"page-link"},[_c('font-awesome-icon',{attrs:{"icon":"angle-double-left"}})],1)]):_vm._e(),_c('li',{staticClass:"page-item",class:{ disabled: _vm.currentPage <= 1 },on:{"click":function($event){return _vm.gotoPage('prev')}}},[_c('span',{staticClass:"page-link"},[_c('font-awesome-icon',{attrs:{"icon":"angle-left"}})],1)]),(_vm.pageRange < _vm.pages && _vm.visiblePages[0] > 1)?_c('li',{staticClass:"page-item",on:{"click":function($event){return _vm.updatePageOffset(-1)}}},[_c('span',{staticClass:"page-link"},[_vm._v(" ... ")])]):_vm._e(),_vm._l((_vm.visiblePages),function(page){return _c('li',{key:'pagination-item-' + page,staticClass:"page-item",class:{ active: page === _vm.currentPage },on:{"click":function($event){return _vm.gotoPage(page)}}},[_c('span',{staticClass:"page-link"},[_vm._v(" "+_vm._s(page)+" ")])])}),(
                   _vm.pageRange < _vm.pages &&
                   _vm.visiblePages[_vm.visiblePages.length - 1] < _vm.pages
                 )?_c('li',{staticClass:"page-item",on:{"click":function($event){return _vm.updatePageOffset(1)}}},[_c('span',{staticClass:"page-link"},[_vm._v(" ... ")])]):_vm._e(),_c('li',{staticClass:"page-item",class:{ disabled: _vm.pages === _vm.currentPage },on:{"click":function($event){return _vm.gotoPage('next')}}},[_c('span',{staticClass:"page-link"},[_c('font-awesome-icon',{attrs:{"icon":"angle-right"}})],1)]),(_vm.pages > _vm.pageRange)?_c('li',{staticClass:"page-item",class:{ disabled: _vm.pages === _vm.currentPage },on:{"click":function($event){return _vm.gotoPage('last')}}},[_c('span',{staticClass:"page-link"},[_c('font-awesome-icon',{attrs:{"icon":"angle-double-right"}})],1)]):_vm._e()],2)]):_vm._e(),(_vm.numberOfVisibleRows)?_c('span',{staticClass:"d-inline-block align-middle mb-2"},[_vm._v(_vm._s(_vm.firstVisibleRow)+"-"+_vm._s(_vm.lastVisibleRow)+" of "+_vm._s(_vm.numberOfVisibleRows))]):_vm._e()]):_vm._e()])])]),_c('div',{staticClass:"footer slot slot-footer"},[_vm._t("footer")],2)])}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=template&id=b4485cda&scoped=true&
+// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=template&id=36d92c94&scoped=true&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.symbol.js
 var es_symbol = __webpack_require__("a4d3");
@@ -3888,10 +3953,14 @@ var es_symbol_iterator = __webpack_require__("d28b");
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.iterator.js
 var es_string_iterator = __webpack_require__("3ca3");
 
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.iterator.js
+var es_array_iterator = __webpack_require__("e260");
+
 // EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom-collections.iterator.js
 var web_dom_collections_iterator = __webpack_require__("ddb0");
 
 // CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/typeof.js
+
 
 
 
@@ -3961,6 +4030,9 @@ var es_array_slice = __webpack_require__("fb6a");
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.function.name.js
 var es_function_name = __webpack_require__("b0c0");
 
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.assign.js
+var es_object_assign = __webpack_require__("cca6");
+
 // EXTERNAL MODULE: ./node_modules/fuzzy.js/fuzzy.js
 var fuzzy = __webpack_require__("dd2f");
 var fuzzy_default = /*#__PURE__*/__webpack_require__.n(fuzzy);
@@ -3993,6 +4065,108 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
 
 
 
+
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -5103,6 +5277,10 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
     },
     axios: {
       type: Function
+    },
+    identifier: {
+      type: String,
+      default: null
     }
   },
   data: function data() {
@@ -7478,6 +7656,9 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
       if (JSON.stringify(this.hiddenBreakpoints) !== JSON.stringify(breakpoints)) {
         this.hiddenBreakpoints = breakpoints;
       }
+    },
+    generateIdentifier: function generateIdentifier() {
+      return v4_default()();
     }
   },
   created: function created() {
@@ -7528,8 +7709,8 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
 });
 // CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_VueQuintablevue_type_script_lang_js_ = (VueQuintablevue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=0&id=b4485cda&scoped=true&lang=css&
-var VueQuintablevue_type_style_index_0_id_b4485cda_scoped_true_lang_css_ = __webpack_require__("3393");
+// EXTERNAL MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=0&id=36d92c94&scoped=true&lang=css&
+var VueQuintablevue_type_style_index_0_id_36d92c94_scoped_true_lang_css_ = __webpack_require__("eb75");
 
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 /* globals __VUE_SSR_CONTEXT__ */
@@ -7646,7 +7827,7 @@ var component = normalizeComponent(
   staticRenderFns,
   false,
   null,
-  "b4485cda",
+  "36d92c94",
   null
   
 )
@@ -16468,6 +16649,21 @@ module.exports = function (it) {
 
 /***/ }),
 
+/***/ "cca6":
+/***/ (function(module, exports, __webpack_require__) {
+
+var $ = __webpack_require__("23e7");
+var assign = __webpack_require__("60da");
+
+// `Object.assign` method
+// https://tc39.es/ecma262/#sec-object.assign
+$({ target: 'Object', stat: true, forced: Object.assign !== assign }, {
+  assign: assign
+});
+
+
+/***/ }),
+
 /***/ "ce4e":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17650,6 +17846,17 @@ var classof = __webpack_require__("c6b6");
 module.exports = Array.isArray || function isArray(arg) {
   return classof(arg) == 'Array';
 };
+
+
+/***/ }),
+
+/***/ "eb75":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueQuintable_vue_vue_type_style_index_0_id_36d92c94_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("4679");
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueQuintable_vue_vue_type_style_index_0_id_36d92c94_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_6_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_6_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueQuintable_vue_vue_type_style_index_0_id_36d92c94_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* unused harmony reexport * */
 
 
 /***/ }),

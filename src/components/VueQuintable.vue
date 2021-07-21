@@ -281,7 +281,12 @@
                     !configFinal.stickyCols[cIndex]
                   "
                 >
-                  <slot :cell="cell" name="cell-complete">
+                  <slot
+                    :cell="cell"
+                    :name="
+                      'cell-complete' + (identifier ? '-' + identifier : '')
+                    "
+                  >
                     <b-tooltip
                       :target="'vue-quintable-' + uuid + '-row-' + rIndex"
                       triggers="hover"
@@ -307,7 +312,12 @@
                       <span v-html="cell.tooltip"></span>
                     </b-tooltip>
 
-                    <slot :cell="cell" name="cell-content">
+                    <slot
+                      :cell="cell"
+                      :name="
+                        'cell-content' + (identifier ? '-' + identifier : '')
+                      "
+                    >
                       <template
                         v-if="configFinal.columns[cIndex].cellFormatter"
                       >
@@ -316,6 +326,11 @@
                             :table-classes="cell.quintable.tableClasses"
                             class="quintable-sub-table"
                             :nested="true"
+                            :identifier="
+                              cell.quintable.identifier
+                                ? cell.quintable.identifier
+                                : generateIdentifier()
+                            "
                             :config="cell.quintable.config"
                             :rows="cell.quintable.rows"
                             :verbose="verbose"
@@ -330,7 +345,13 @@
                                 : {}
                             "
                             v-model="cell.quintable.value"
-                          />
+                          >
+                            <template v-for="(_, slot) in $slots">
+                              <template :slot="slot">
+                                <slot :name="slot"> </slot>
+                              </template>
+                            </template>
+                          </VueQuintable>
                         </div>
                         <div class="cell-inner" v-else-if="cell.component">
                           <component
@@ -364,6 +385,11 @@
                             :table-classes="cell.quintable.tableClasses"
                             class="quintable-sub-table"
                             :nested="true"
+                            :identifier="
+                              cell.quintable.identifier
+                                ? cell.quintable.identifier
+                                : generateIdentifier()
+                            "
                             :config="cell.quintable.config"
                             :rows="cell.quintable.rows"
                             :verbose="verbose"
@@ -378,7 +404,13 @@
                                 : {}
                             "
                             v-model="cell.quintable.value"
-                          />
+                          >
+                            <template v-for="(_, slot) in $slots">
+                              <template :slot="slot">
+                                <slot :name="slot"> </slot>
+                              </template>
+                            </template>
+                          </VueQuintable>
                         </div>
                         <div class="cell-inner" v-if="cell.component">
                           <component
@@ -564,7 +596,13 @@
                             cIndex
                           "
                         >
-                          <slot :cell="cell" name="generated-cell-complete">
+                          <slot
+                            :cell="cell"
+                            :name="
+                              'generated-cell-complete' +
+                              (identifier ? '-' + identifier : '')
+                            "
+                          >
                             <b-tooltip
                               :target="
                                 'vue-quintable-' +
@@ -581,7 +619,13 @@
                               <span v-html="cell.tooltip"></span>
                             </b-tooltip>
 
-                            <slot :cell="cell" name="generated-cell-content">
+                            <slot
+                              :cell="cell"
+                              :name="
+                                'generated-cell-content' +
+                                (identifier ? '-' + identifier : '')
+                              "
+                            >
                               <template
                                 v-if="configFinal.columns[cIndex].cellFormatter"
                               >
@@ -590,6 +634,11 @@
                                     :table-classes="cell.quintable.tableClasses"
                                     class="quintable-sub-table"
                                     :nested="true"
+                                    :identifier="
+                                      cell.quintable.identifier
+                                        ? cell.quintable.identifier
+                                        : generateIdentifier()
+                                    "
                                     :config="cell.quintable.config"
                                     :rows="cell.quintable.rows"
                                     :verbose="verbose"
@@ -604,7 +653,13 @@
                                         : {}
                                     "
                                     v-model="cell.quintable.value"
-                                  />
+                                  >
+                                    <template v-for="(_, slot) in $slots">
+                                      <template :slot="slot">
+                                        <slot :name="slot"> </slot>
+                                      </template>
+                                    </template>
+                                  </VueQuintable>
                                 </div>
                                 <div
                                   class="cell-inner"
@@ -641,6 +696,11 @@
                                     :table-classes="cell.quintable.tableClasses"
                                     class="quintable-sub-table"
                                     :nested="true"
+                                    :identifier="
+                                      cell.quintable.identifier
+                                        ? cell.quintable.identifier
+                                        : generateIdentifier()
+                                    "
                                     :config="cell.quintable.config"
                                     :rows="cell.quintable.rows"
                                     :verbose="verbose"
@@ -655,7 +715,13 @@
                                         : {}
                                     "
                                     v-model="cell.quintable.value"
-                                  />
+                                  >
+                                    <template v-for="(_, slot) in $slots">
+                                      <template :slot="slot">
+                                        <slot :name="slot"> </slot>
+                                      </template>
+                                    </template>
+                                  </VueQuintable>
                                 </div>
                                 <div class="cell-inner" v-if="cell.component">
                                   <component
@@ -761,7 +827,13 @@
                             cIndex
                           "
                         >
-                          <slot :cell="cell" name="sticky-cell-complete">
+                          <slot
+                            :cell="cell"
+                            :name="
+                              'sticky-cell-complete' +
+                              (identifier ? '-' + identifier : '')
+                            "
+                          >
                             <b-tooltip
                               :target="
                                 'vue-quintable-' +
@@ -778,7 +850,13 @@
                               <span v-html="cell.tooltip"></span>
                             </b-tooltip>
 
-                            <slot :cell="cell" name="sticky-cell-content">
+                            <slot
+                              :cell="cell"
+                              :name="
+                                'sticky-cell-content' +
+                                (identifier ? '-' + identifier : '')
+                              "
+                            >
                               <template
                                 v-if="configFinal.columns[cIndex].cellFormatter"
                               >
@@ -787,6 +865,11 @@
                                     :table-classes="cell.quintable.tableClasses"
                                     class="quintable-sub-table"
                                     :nested="true"
+                                    :identifier="
+                                      cell.quintable.identifier
+                                        ? cell.quintable.identifier
+                                        : generateIdentifier()
+                                    "
                                     :config="cell.quintable.config"
                                     :rows="cell.quintable.rows"
                                     :verbose="verbose"
@@ -801,7 +884,13 @@
                                         : {}
                                     "
                                     v-model="cell.quintable.value"
-                                  />
+                                  >
+                                    <template v-for="(_, slot) in $slots">
+                                      <template :slot="slot">
+                                        <slot :name="slot"> </slot>
+                                      </template>
+                                    </template>
+                                  </VueQuintable>
                                 </div>
                                 <div
                                   class="cell-inner"
@@ -838,6 +927,11 @@
                                     :table-classes="cell.quintable.tableClasses"
                                     class="quintable-sub-table"
                                     :nested="true"
+                                    :identifier="
+                                      cell.quintable.identifier
+                                        ? cell.quintable.identifier
+                                        : generateIdentifier()
+                                    "
                                     :config="cell.quintable.config"
                                     :rows="cell.quintable.rows"
                                     :verbose="verbose"
@@ -852,7 +946,13 @@
                                         : {}
                                     "
                                     v-model="cell.quintable.value"
-                                  />
+                                  >
+                                    <template v-for="(_, slot) in $slots">
+                                      <template :slot="slot">
+                                        <slot :name="slot"> </slot>
+                                      </template>
+                                    </template>
+                                  </VueQuintable>
                                 </div>
                                 <div class="cell-inner" v-if="cell.component">
                                   <component
@@ -1112,6 +1212,10 @@ export default {
     },
     axios: {
       type: Function,
+    },
+    identifier: {
+      type: String,
+      default: null,
     },
   },
   data() {
@@ -3663,6 +3767,9 @@ export default {
       ) {
         this.hiddenBreakpoints = breakpoints;
       }
+    },
+    generateIdentifier() {
+      return randomUUID();
     },
   },
   created() {
