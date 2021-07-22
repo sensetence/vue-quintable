@@ -346,11 +346,12 @@
                             "
                             v-model="cell.quintable.value"
                           >
-                            <template v-for="(_, slot) in $slots">
-                              <template :slot="slot">
-                                <slot :name="slot"> </slot>
-                              </template>
-                            </template>
+                            <template
+                              v-for="slot in Object.keys($scopedSlots)"
+                              :slot="slot"
+                              slot-scope="scope"
+                              ><slot :name="slot" v-bind="scope"
+                            /></template>
                           </VueQuintable>
                         </div>
                         <div class="cell-inner" v-else-if="cell.component">
@@ -405,11 +406,12 @@
                             "
                             v-model="cell.quintable.value"
                           >
-                            <template v-for="(_, slot) in $slots">
-                              <template :slot="slot">
-                                <slot :name="slot"> </slot>
-                              </template>
-                            </template>
+                            <template
+                              v-for="slot in Object.keys($scopedSlots)"
+                              :slot="slot"
+                              slot-scope="scope"
+                              ><slot :name="slot" v-bind="scope"
+                            /></template>
                           </VueQuintable>
                         </div>
                         <div class="cell-inner" v-if="cell.component">
@@ -654,11 +656,12 @@
                                     "
                                     v-model="cell.quintable.value"
                                   >
-                                    <template v-for="(_, slot) in $slots">
-                                      <template :slot="slot">
-                                        <slot :name="slot"> </slot>
-                                      </template>
-                                    </template>
+                                    <template
+                                      v-for="slot in Object.keys($scopedSlots)"
+                                      :slot="slot"
+                                      slot-scope="scope"
+                                      ><slot :name="slot" v-bind="scope"
+                                    /></template>
                                   </VueQuintable>
                                 </div>
                                 <div
@@ -716,11 +719,12 @@
                                     "
                                     v-model="cell.quintable.value"
                                   >
-                                    <template v-for="(_, slot) in $slots">
-                                      <template :slot="slot">
-                                        <slot :name="slot"> </slot>
-                                      </template>
-                                    </template>
+                                    <template
+                                      v-for="slot in Object.keys($scopedSlots)"
+                                      :slot="slot"
+                                      slot-scope="scope"
+                                      ><slot :name="slot" v-bind="scope"
+                                    /></template>
                                   </VueQuintable>
                                 </div>
                                 <div class="cell-inner" v-if="cell.component">
@@ -885,11 +889,12 @@
                                     "
                                     v-model="cell.quintable.value"
                                   >
-                                    <template v-for="(_, slot) in $slots">
-                                      <template :slot="slot">
-                                        <slot :name="slot"> </slot>
-                                      </template>
-                                    </template>
+                                    <template
+                                      v-for="slot in Object.keys($scopedSlots)"
+                                      :slot="slot"
+                                      slot-scope="scope"
+                                      ><slot :name="slot" v-bind="scope"
+                                    /></template>
                                   </VueQuintable>
                                 </div>
                                 <div
@@ -947,11 +952,12 @@
                                     "
                                     v-model="cell.quintable.value"
                                   >
-                                    <template v-for="(_, slot) in $slots">
-                                      <template :slot="slot">
-                                        <slot :name="slot"> </slot>
-                                      </template>
-                                    </template>
+                                    <template
+                                      v-for="slot in Object.keys($scopedSlots)"
+                                      :slot="slot"
+                                      slot-scope="scope"
+                                      ><slot :name="slot" v-bind="scope"
+                                    /></template>
                                   </VueQuintable>
                                 </div>
                                 <div class="cell-inner" v-if="cell.component">

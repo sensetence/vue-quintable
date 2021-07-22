@@ -124,9 +124,9 @@ You can define some slots to customize the table as you want to.
 ```html
 <template v-slot:header>Your HTML-Code</template>
 
-<template v-slot:cell-content="context">
+<template v-slot:cell-content="{cell}">
     <button>
-        {{context.cell.text}}
+        {{cell.text}}
     </button>
 </template>
 ```
