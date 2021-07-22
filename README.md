@@ -131,6 +131,16 @@ You can define some slots to customize the table as you want to.
 </template>
 ```
 
+If you want to use slots in nested table you should use the *identifier* option for the nested table. If done so (e.g. "nested-identifier") you can use slots like the following:
+
+```html
+<template v-slot:cell-content-nested-identifier="{cell}">
+    <button>
+        {{cell.text}}
+    </button>
+</template>
+```
+
 
 
 ## Events
@@ -181,6 +191,7 @@ The following will give you an overview how to configure the VueQuintable for yo
 | axios           | Object        | no                          | Pass a configured axios instance to be used for ajax functionalities. Only relevant if ajax is used. Recommendation: set it to the current time using new Date() for update |
 | updated         | Boolean\|Date | no                          | Property to trigger reload on current page. Only relevant if ajax is used. |
 | verbose         | Boolean       | no                          | Default is false. Set to true to see debug informations on developer tools in your Browser. |
+| identifier      | String        | no                          | Default is null, for nested tables default is a random string. Use for slots of nested tables |
 
 #### Property *config* properties
 
