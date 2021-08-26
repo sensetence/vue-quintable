@@ -5,7 +5,7 @@
 
 # VueQuintable
 
-VueQuintable is a table wrapper for Vue.js. It is build with bootstrap 5.0. High configurable, easy to use, flexible and responsive.
+VueQuintable is a table wrapper for Vue.js 2.x. It is build with bootstrap 5.x. High configurable, easy to use, flexible and responsive.
 
 [Demo](https://quintet.io/vue-quintable-demo/) 
 
