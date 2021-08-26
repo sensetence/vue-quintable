@@ -1,7 +1,7 @@
 <img alt="vue-quintable" src="https://quintet.io/vue-quintable-demo/vue-table.png" width="265" height="222">
 
-| :warning:  VueQuintable version 2.x is for bootstrap 5.x. If you want to use bootstrap 4.x please install latest 1.x VueQuintable version |
-| ------------------------------------------------------------ |
+| :warning:  VueQuintable version 2.x is for bootstrap 5.x. If you want to use bootstrap 4.x please install latest 1.x VueQuintable version:warning: |
+| :----------------------------------------------------------- |
 
 # VueQuintable
 
