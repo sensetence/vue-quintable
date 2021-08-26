@@ -1,18 +1,22 @@
 <template>
   <div class="content">
     <p class="alert alert-info">
-      <font-awesome-icon class="mr-2" icon="info-circle"></font-awesome-icon>
+      <font-awesome-icon class="me-2" icon="info-circle"></font-awesome-icon>
       Nested VueQuintable
     </p>
     <VueQuintable :config="config" :rows="rows"></VueQuintable>
 
-    <b-button v-b-toggle.code-basic variant="secondary"
-      ><font-awesome-icon icon="chevron-up"></font-awesome-icon
+    <button
+      class="btn btn-secondary"
+      data-bs-toggle="collapse"
+      data-bs-target="#code-basic"
+    >
+      <font-awesome-icon icon="chevron-up"></font-awesome-icon
       ><font-awesome-icon icon="chevron-down"></font-awesome-icon>
-      <span class="show ml-2">Show</span
-      ><span class="hide ml-2">Hide</span> Code
-    </b-button>
-    <b-collapse id="code-basic" class="mt-2">
+      <span class="show ms-2">Show</span
+      ><span class="hide ms-2">Hide</span> Code
+    </button>
+    <div id="code-basic" class="mt-2 collapse show">
       <!-- @formatter:off -->
       <pre
         data-toolbar-order="copy-to-clipboard"
@@ -130,7 +134,7 @@
 &lt;/script&gt;</code></pre>
 
       <!-- @formatter:on -->
-    </b-collapse>
+    </div>
   </div>
 </template>
 <script>

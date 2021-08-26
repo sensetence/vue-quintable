@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <p class="alert alert-info">
-      <font-awesome-icon class="mr-2" icon="info-circle"></font-awesome-icon>
+      <font-awesome-icon class="me-2" icon="info-circle"></font-awesome-icon>
       Hover and click on headlines for sorting
     </p>
 
@@ -11,13 +11,17 @@
       :rows="rows"
     ></VueQuintable>
 
-    <b-button v-b-toggle.code-basic variant="secondary" class="mt-3"
-      ><font-awesome-icon icon="chevron-up"></font-awesome-icon
+    <button
+      class="btn btn-secondary mt-3"
+      data-bs-toggle="collapse"
+      data-bs-target="#code-basic"
+    >
+      <font-awesome-icon icon="chevron-up"></font-awesome-icon
       ><font-awesome-icon icon="chevron-down"></font-awesome-icon>
-      <span class="show ml-2">Show</span
-      ><span class="hide ml-2">Hide</span> Code
-    </b-button>
-    <b-collapse id="code-basic" class="mt-2">
+      <span class="show ms-2">Show</span
+      ><span class="hide ms-2">Hide</span> Code
+    </button>
+    <div id="code-basic" class="mt-2 collapse show">
       <!-- @formatter:off -->
       <pre
         data-toolbar-order="copy-to-clipboard"
@@ -86,7 +90,7 @@
                             text:chance.city()
                         },
                         {
-                            html:&quot;&lt;span class\&quot;mr-2\&quot;&gt;&quot; + chance.profession() +&quot;&lt;/span&gt;&lt;em&gt;&quot;+ &quot;[&quot;+randSortValue+&quot;]&lt;/em&gt;&quot;,
+                            html:&quot;&lt;span class\&quot;me-2\&quot;&gt;&quot; + chance.profession() +&quot;&lt;/span&gt;&lt;em&gt;&quot;+ &quot;[&quot;+randSortValue+&quot;]&lt;/em&gt;&quot;,
                             sortValue: randSortValue
                         },
                     ]);
@@ -101,7 +105,7 @@
 &lt;/script&gt;</code></pre>
 
       <!-- @formatter:on -->
-    </b-collapse>
+    </div>
   </div>
 </template>
 <script>
@@ -168,7 +172,7 @@ export default {
           },
           {
             html:
-              '<span class="mr-2">' +
+              '<span class="me-2">' +
               chance.profession() +
               "</span><em>" +
               "[" +

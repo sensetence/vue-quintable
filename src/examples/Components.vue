@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <p class="alert alert-info">
-      <font-awesome-icon class="mr-2" icon="info-circle"></font-awesome-icon>
+      <font-awesome-icon class="me-2" icon="info-circle"></font-awesome-icon>
       Rows are calculated and passed as a computed property
     </p>
     <VueQuintable
@@ -10,20 +10,28 @@
       @component:event="onComponentEvent"
     ></VueQuintable>
 
-    <b-button v-b-toggle.code-basic variant="secondary" class="mr-2 mb-1"
-      ><font-awesome-icon icon="chevron-up"></font-awesome-icon
-      ><font-awesome-icon icon="chevron-down"></font-awesome-icon>
-      <span class="show ml-2">Show</span
-      ><span class="hide ml-2">Hide</span> Code for App</b-button
+    <button
+      class="btn btn-secondary mb-1 me-2"
+      data-bs-toggle="collapse"
+      data-bs-target="#code-basic"
     >
-    <b-button v-b-toggle.code-component variant="secondary" class="mb-1"
-      ><font-awesome-icon icon="chevron-up"></font-awesome-icon
+      <font-awesome-icon icon="chevron-up"></font-awesome-icon
       ><font-awesome-icon icon="chevron-down"></font-awesome-icon>
-      <span class="show ml-2">Show</span
-      ><span class="hide ml-2">Hide</span> Code Component</b-button
+      <span class="show ms-2">Show</span
+      ><span class="hide ms-2">Hide</span> Code for App
+    </button>
+    <button
+      class="btn btn-secondary mb-1"
+      data-bs-toggle="collapse"
+      data-bs-target="#code-component"
     >
+      <font-awesome-icon icon="chevron-up"></font-awesome-icon
+      ><font-awesome-icon icon="chevron-down"></font-awesome-icon>
+      <span class="show ms-2">Show</span
+      ><span class="hide ms-2">Hide</span> Code Component
+    </button>
 
-    <b-collapse id="code-basic" class="mt-2">
+    <div id="code-basic" class="mt-2 collapse show">
       <!-- @formatter:off -->
       <pre
         data-toolbar-order="copy-to-clipboard"
@@ -117,16 +125,16 @@
 &lt;/script&gt;</code></pre>
 
       <!-- @formatter:on -->
-    </b-collapse>
+    </div>
 
-    <b-collapse id="code-component" class="mt-2">
+    <div id="code-component" class="mt-2 collapse show">
       <!-- @formatter:off -->
       <pre
         data-toolbar-order="copy-to-clipboard"
       ><code class="language-markup">&lt;template&gt;
     &lt;div class=&quot;checkbox-wrapper&quot;&gt;
         &lt;div&gt;
-            &lt;span class=&quot;mr-2&quot; v-html="name"&gt;&lt;/span&gt;
+            &lt;span class=&quot;me-2&quot; v-html="name"&gt;&lt;/span&gt;
             &lt;p-check v-model=&quot;checked&quot; @change=&quot;toggleCheck&quot;&gt;&lt;wbr&gt;&lt;/p-check&gt;
         &lt;/div&gt;
     &lt;/div&gt;
@@ -166,7 +174,7 @@
 &lt;/script&gt;</code></pre>
 
       <!-- @formatter:on -->
-    </b-collapse>
+    </div>
   </div>
 </template>
 <script>

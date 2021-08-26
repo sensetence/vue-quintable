@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <p class="alert alert-info">
-      <font-awesome-icon class="mr-2" icon="info-circle"></font-awesome-icon>
+      <font-awesome-icon class="me-2" icon="info-circle"></font-awesome-icon>
       Customized with configured slots
     </p>
     <VueQuintable :config="config" :rows="rows">
@@ -26,7 +26,7 @@
       </template>
       <template v-slot:footer>
         <div class="text-center py-3 px-3 mt-3 bg-info text-white">
-          Copyright © 2020 by Quintet Consulting UG (haftungsbeschränkt)
+          Copyright © 2021 by Quintet Consulting UG (haftungsbeschränkt)
         </div>
       </template>
       <template v-slot:no-results>
@@ -36,13 +36,17 @@
       </template>
     </VueQuintable>
 
-    <b-button class="mt-3" v-b-toggle.code-basic variant="secondary"
-      ><font-awesome-icon icon="chevron-up"></font-awesome-icon
+    <button
+      class="btn btn-secondary mt-3"
+      data-bs-toggle="collapse"
+      data-bs-target="#code-basic"
+    >
+      <font-awesome-icon icon="chevron-up"></font-awesome-icon
       ><font-awesome-icon icon="chevron-down"></font-awesome-icon>
-      <span class="show ml-2">Show</span
-      ><span class="hide ml-2">Hide</span> Code
-    </b-button>
-    <b-collapse id="code-basic" class="mt-2">
+      <span class="show ms-2">Show</span
+      ><span class="hide ms-2">Hide</span> Code
+    </button>
+    <div id="code-basic" class="mt-2 collapse show">
       <!-- @formatter:off -->
       <pre
         data-toolbar-order="copy-to-clipboard"
@@ -150,7 +154,7 @@
 &#x3C;/script&#x3E;</code></pre>
 
       <!-- @formatter:on -->
-    </b-collapse>
+    </div>
   </div>
 </template>
 <script>

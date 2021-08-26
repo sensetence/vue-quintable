@@ -1,23 +1,23 @@
 <template>
   <div class="content">
     <p class="alert alert-info">
-      <font-awesome-icon class="mr-2" icon="info-circle"></font-awesome-icon>
+      <font-awesome-icon class="me-2" icon="info-circle"></font-awesome-icon>
       Toggle switches to hide/show columns
     </p>
     <VueQuintable :dynamicConfig="dynamicConfig" :config="config" :rows="rows">
       <template v-slot:header>
-        <div class="form-group">
+        <div class="mb-3">
           <p-check class="p-switch" v-model="hideAge">Hide Age Column</p-check>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
           <p-check class="p-switch" v-model="hideJob">Hide Job Column</p-check>
         </div>
-        <div class="form-group">
+        <div class="mb-3">
           <p-check class="p-switch" v-model="hideColumns"
             >Hide empty columns automatically</p-check
           >
         </div>
-        <div class="form-group">
+        <div class="mb-3">
           <v-select
             v-model="ignoreSortingColumns"
             :reduce="(option) => option.value"
@@ -28,29 +28,33 @@
       </template>
     </VueQuintable>
 
-    <b-button v-b-toggle.code-basic variant="secondary"
-      ><font-awesome-icon icon="chevron-up"></font-awesome-icon
+    <button
+      class="btn btn-secondary"
+      data-bs-toggle="collapse"
+      data-bs-target="#code-basic"
+    >
+      <font-awesome-icon icon="chevron-up"></font-awesome-icon
       ><font-awesome-icon icon="chevron-down"></font-awesome-icon>
-      <span class="show ml-2">Show</span
-      ><span class="hide ml-2">Hide</span> Code
-    </b-button>
-    <b-collapse id="code-basic" class="mt-2">
+      <span class="show ms-2">Show</span
+      ><span class="hide ms-2">Hide</span> Code
+    </button>
+    <div id="code-basic" class="mt-2 collapse show">
       <!-- @formatter:off -->
       <pre
         data-toolbar-order="copy-to-clipboard"
       ><code class="language-markup">&lt;template&gt;
         &lt;VueQuintable :dynamicConfig=&quot;dynamicConfig&quot; :config=&quot;config&quot; :rows=&quot;rows&quot;&gt;
             &lt;template v-slot:header&gt;
-                &lt;div class=&quot;form-group&quot;&gt;
+                &lt;div class=&quot;mb-3&quot;&gt;
                     &lt;p-check class=&quot;p-switch&quot; v-model=&quot;hideAge&quot;&gt;Hide Age Column&lt;/p-check&gt;
                 &lt;/div&gt;
-                &lt;div class=&quot;form-group&quot;&gt;
+                &lt;div class=&quot;mb-3&quot;&gt;
                     &lt;p-check class=&quot;p-switch&quot; v-model=&quot;hideJob&quot;&gt;Hide Job Column&lt;/p-check&gt;
                 &lt;/div&gt;
-                &lt;div class=&quot;form-group&quot;&gt;
+                &lt;div class=&quot;mb-3&quot;&gt;
                     &lt;p-check class=&quot;p-switch&quot; v-model=&quot;hideColumns&quot;&gt;Hide empty columns automatically&lt;/p-check&gt;
                 &lt;/div&gt;
-                &lt;div class=&quot;form-group&quot;&gt;
+                &lt;div class=&quot;mb-3&quot;&gt;
                     &lt;v-select v-model=&quot;ignoreSortingColumns&quot; :reduce=&quot;option=&gt;option.value&quot; :options=&quot;ignoreOptions&quot; :clearable=&quot;false&quot;&gt;&lt;/v-select&gt;
                 &lt;/div&gt;
             &lt;/template&gt;
@@ -177,7 +181,7 @@
 &lt;/script&gt;</code></pre>
 
       <!-- @formatter:on -->
-    </b-collapse>
+    </div>
   </div>
 </template>
 <script>

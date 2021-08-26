@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <div class="btn-group mr-2">
+    <div class="btn-group me-2">
       <div
         class="btn btn-info"
         :disabled="first"
@@ -18,7 +18,7 @@
         <font-awesome-icon icon="chevron-down"></font-awesome-icon>
       </div>
     </div>
-    <div class="btn btn-danger mr-2" @click="deleteRow" title="Delete Row">
+    <div class="btn btn-danger me-2" @click="deleteRow" title="Delete Row">
       <font-awesome-icon icon="times"></font-awesome-icon>
     </div>
 

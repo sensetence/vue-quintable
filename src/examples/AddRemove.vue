@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <p class="alert alert-info">
-      <font-awesome-icon class="mr-2" icon="info-circle"></font-awesome-icon>
+      <font-awesome-icon class="me-2" icon="info-circle"></font-awesome-icon>
       Use buttons to add/remove/move rows or Drag&Drop [<a
         target="_blank"
         href="https://github.com/cameronhimself/vue-drag-drop"
@@ -18,10 +18,9 @@
       <template v-slot:header>
         <div class="row">
           <div class="col-md-2">
-            <div class="form-group">
-              <label for="index">Index</label>
+            <div class="mb-3">
+              <label>Index</label>
               <v-select
-                id="index"
                 :options="indexes"
                 v-model="index"
                 :clearable="false"
@@ -29,7 +28,7 @@
             </div>
           </div>
           <div class="col-md-2">
-            <div class="form-group">
+            <div class="mb-3">
               <label for="name">Name</label>
               <input
                 id="name"
@@ -40,10 +39,9 @@
             </div>
           </div>
           <div class="col-md-2">
-            <div class="form-group">
-              <label for="age">Age</label>
+            <div class="mb-3">
+              <label>Age</label>
               <v-select
-                id="age"
                 :options="ages"
                 v-model="age"
                 placeholder="Select Age..."
@@ -51,7 +49,7 @@
             </div>
           </div>
           <div class="col-md-2">
-            <div class="form-group">
+            <div class="mb-3">
               <label for="city">City</label>
               <input
                 id="city"
@@ -62,14 +60,14 @@
             </div>
           </div>
           <div class="col-md-2">
-            <div class="form-group">
+            <div class="mb-3">
               <label for="job">Job</label>
               <input id="job" v-model="job" type="text" class="form-control" />
             </div>
           </div>
           <div class="col-md-2">
             <label><wbr /></label>
-            <div class="form-group">
+            <div class="mb-3">
               <span class="btn btn-info" @click="addRow"
                 ><font-awesome-icon icon="plus"></font-awesome-icon> Add
                 Row</span
@@ -80,29 +78,38 @@
       </template>
     </VueQuintable>
 
-    <b-button v-b-toggle.code-basic variant="secondary" class="mr-2 mb-1"
-      ><font-awesome-icon icon="chevron-up"></font-awesome-icon
-      ><font-awesome-icon icon="chevron-down"></font-awesome-icon>
-      <span class="show ml-2">Show</span
-      ><span class="hide ml-2">Hide</span> Code for App</b-button
+    <button
+      class="btn btn-secondary me-2 mb-1"
+      data-bs-toggle="collapse"
+      data-bs-target="#code-basic"
     >
-    <b-button
-      v-b-toggle.code-component-drag
-      variant="secondary"
-      class="mr-2 mb-1"
-      ><font-awesome-icon icon="chevron-up"></font-awesome-icon
+      <font-awesome-icon icon="chevron-up"></font-awesome-icon
       ><font-awesome-icon icon="chevron-down"></font-awesome-icon>
-      <span class="show ml-2">Show</span
-      ><span class="hide ml-2">Hide</span> Code Drag Component</b-button
+      <span class="show ms-2">Show</span
+      ><span class="hide ms-2">Hide</span> Code for App
+    </button>
+    <button
+      class="btn btn-secondary me-2 mb-1"
+      data-bs-toggle="collapse"
+      data-bs-target="#code-component"
     >
-    <b-button v-b-toggle.code-component variant="secondary" class="mb-1"
-      ><font-awesome-icon icon="chevron-up"></font-awesome-icon
+      <font-awesome-icon icon="chevron-up"></font-awesome-icon
       ><font-awesome-icon icon="chevron-down"></font-awesome-icon>
-      <span class="show ml-2">Show</span
-      ><span class="hide ml-2">Hide</span> Code Actions Component</b-button
+      <span class="show ms-2">Show</span
+      ><span class="hide ms-2">Hide</span> Code Drag Component
+    </button>
+    <button
+      class="btn btn-secondary mb-1"
+      data-bs-toggle="collapse"
+      data-bs-target="#code-component-drag"
     >
+      <font-awesome-icon icon="chevron-up"></font-awesome-icon
+      ><font-awesome-icon icon="chevron-down"></font-awesome-icon>
+      <span class="show ms-2">Show</span
+      ><span class="hide ms-2">Hide</span> Code Actions Component
+    </button>
 
-    <b-collapse id="code-basic" class="mt-2">
+    <div id="code-basic" class="mt-2 collapse show">
       <!-- @formatter:off -->
       <pre
         data-toolbar-order="copy-to-clipboard"
@@ -112,38 +119,38 @@
             &lt;template v-slot:header&gt;
                 &lt;div class=&quot;row&quot;&gt;
                     &lt;div class=&quot;col-md-2&quot;&gt;
-                        &lt;div class=&quot;form-group&quot;&gt;
+                        &lt;div class=&quot;mb-3&quot;&gt;
                             &lt;label for=&quot;index&quot; &gt;Index&lt;/label&gt;
                             &lt;v-select id=&quot;index&quot; :options=&quot;indexes&quot; v-model=&quot;index&quot; :clearable=&quot;false&quot;&gt;&lt;/v-select&gt;
                         &lt;/div&gt;
                     &lt;/div&gt;
                     &lt;div class=&quot;col-md-2&quot;&gt;
-                        &lt;div class=&quot;form-group&quot;&gt;
+                        &lt;div class=&quot;mb-3&quot;&gt;
                             &lt;label for=&quot;name&quot; &gt;Name&lt;/label&gt;
                             &lt;input id=&quot;name&quot; v-model=&quot;name&quot; type=&quot;text&quot; class=&quot;form-control&quot;&gt;
                         &lt;/div&gt;
                     &lt;/div&gt;
                     &lt;div class=&quot;col-md-2&quot;&gt;
-                        &lt;div class=&quot;form-group&quot;&gt;
+                        &lt;div class=&quot;mb-3&quot;&gt;
                             &lt;label for=&quot;age&quot; &gt;Age&lt;/label&gt;
                             &lt;v-select id=&quot;age&quot; :options=&quot;ages&quot; v-model=&quot;age&quot; placeholder=&quot;Select Age...&quot;&gt;&lt;/v-select&gt;
                         &lt;/div&gt;
                     &lt;/div&gt;
                     &lt;div class=&quot;col-md-2&quot;&gt;
-                        &lt;div class=&quot;form-group&quot;&gt;
+                        &lt;div class=&quot;mb-3&quot;&gt;
                             &lt;label for=&quot;city&quot; &gt;City&lt;/label&gt;
                             &lt;input id=&quot;city&quot; v-model=&quot;city&quot; type=&quot;text&quot; class=&quot;form-control&quot;&gt;
                         &lt;/div&gt;
                     &lt;/div&gt;
                     &lt;div class=&quot;col-md-2&quot;&gt;
-                        &lt;div class=&quot;form-group&quot;&gt;
+                        &lt;div class=&quot;mb-3&quot;&gt;
                             &lt;label for=&quot;job&quot; &gt;Job&lt;/label&gt;
                             &lt;input id=&quot;job&quot; v-model=&quot;job&quot; type=&quot;text&quot; class=&quot;form-control&quot;&gt;
                         &lt;/div&gt;
                     &lt;/div&gt;
                     &lt;div class=&quot;col-md-2&quot;&gt;
                         &lt;label&gt;&lt;wbr&gt;&lt;/label&gt;
-                        &lt;div class=&quot;form-group&quot;&gt;
+                        &lt;div class=&quot;mb-3&quot;&gt;
                             &lt;span class=&quot;btn btn-info&quot; @click=&quot;addRow&quot;&gt;&lt;font-awesome-icon icon=&quot;plus&quot;&gt;&lt;/font-awesome-icon&gt; Add Row&lt;/span&gt;
                         &lt;/div&gt;
                     &lt;/div&gt;
@@ -397,15 +404,15 @@
     }
 
 &lt;/style&gt;</code></pre>
-    </b-collapse>
+    </div>
 
-    <b-collapse id="code-component" class="mt-2">
+    <div id="code-component" class="mt-2 collapse show">
       <!-- @formatter:off -->
       <pre
         data-toolbar-order="copy-to-clipboard"
       ><code class="language-markup">&lt;template&gt;
     &lt;div class=&quot;content&quot;&gt;
-        &lt;div class=&quot;btn-group mr-2&quot;&gt;
+        &lt;div class=&quot;btn-group me-2&quot;&gt;
             &lt;div class=&quot;btn btn-info&quot; :disabled=&quot;first&quot; :class=&quot;{disabled:first}&quot; @click=&quot;moveRow('up')&quot;&gt;
                 &lt;font-awesome-icon icon=&quot;chevron-up&quot;&gt;&lt;/font-awesome-icon&gt;
             &lt;/div&gt;
@@ -413,7 +420,7 @@
                 &lt;font-awesome-icon icon=&quot;chevron-down&quot;&gt;&lt;/font-awesome-icon&gt;
             &lt;/div&gt;
        &lt;/div&gt;
-        &lt;div class=&quot;btn btn-danger mr-2&quot; @click=&quot;deleteRow&quot; title=&quot;Delete Row&quot;&gt;
+        &lt;div class=&quot;btn btn-danger me-2&quot; @click=&quot;deleteRow&quot; title=&quot;Delete Row&quot;&gt;
             &lt;font-awesome-icon icon=&quot;times&quot;&gt;&lt;/font-awesome-icon&gt;
         &lt;/div&gt;
 
@@ -498,8 +505,8 @@
 
 
 </code></pre>
-    </b-collapse>
-    <b-collapse id="code-component-drag" class="mt-2">
+    </div>
+    <div id="code-component-drag" class="mt-2 collapse show">
       <!-- @formatter:off -->
       <pre
         data-toolbar-order="copy-to-clipboard"
@@ -545,7 +552,7 @@
 &lt;/script&gt;</code></pre>
 
       <!-- @formatter:on -->
-    </b-collapse>
+    </div>
   </div>
 </template>
 <script>
@@ -677,11 +684,13 @@ export default {
     },
 
     componentListener(data) {
+      console.log(data);
       if (data.type === "delete-row") {
         this.rows.splice(data.index, 1);
         this.rowCount--;
         this.updateIndexes();
       } else if (data.type === "move-row") {
+        this.dragging = false;
         this.move(data.index, data.to);
       } else if (data.type === "dragstart") {
         this.dragging = true;

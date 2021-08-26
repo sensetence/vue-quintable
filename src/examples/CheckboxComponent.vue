@@ -1,7 +1,7 @@
 <template>
   <div class="checkbox-wrapper">
     <div>
-      <span class="mr-2">{{ name }}</span>
+      <span class="me-2">{{ name }}</span>
       <p-check v-model="checked" @change="toggleCheck"><wbr /></p-check>
     </div>
   </div>

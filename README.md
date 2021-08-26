@@ -4,7 +4,7 @@
 
 # VueQuintable
 
-VueQuintable is a table wrapper for Vue.js. It is build with bootstrap 4.0. High configurable, easy to use, flexible and responsive.
+VueQuintable is a table wrapper for Vue.js. It is build with bootstrap 5.0. High configurable, easy to use, flexible and responsive.
 
 [Demo](https://quintet.io/vue-quintable-demo/) 
 
@@ -19,14 +19,12 @@ VueQuintable is a [vue.js](https://vuejs.org/) package and uses [bootstrap](http
 *npm:*
 
 ```shell
-npm install --save vue bootstrap-vue
 npm install --save axios
 ```
 
 *yarn:*
 
 ```shell
-yarn add vue bootstrap-vue 
 yarn add axios
 ```
 
@@ -37,12 +35,16 @@ yarn add axios
 *npm:*
 
 ```shell
+npm install --save bootstrap
+npm install --save @popperjs/core
 npm install --save @quintet/vue-quintable
 ```
 
 *yarn:*
 
 ```shell
+yarn add bootstrap
+yarn add @popperjs/core
 yarn add @quintet/vue-quintable
 ```
 
@@ -54,11 +56,7 @@ yarn add @quintet/vue-quintable
 import Vue from 'vue'
 
 //use bootstrap
-import BootstrapVue from 'bootstrap-vue'
-Vue.use(BootstrapVue)
-//use bootstrap css
 import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import "@quintet/vue-quintable/dist/vue-quintable.css"
 import VueTable from '@quintet/vue-quintable'
@@ -241,7 +239,7 @@ The following will give you an overview how to configure the VueQuintable for yo
 | breakpoint             | String   | "xs"\|"sm"\|"md"\|"lg"\|"xl"\|"all" | -                                             | Bootstrap breakpoint from which descending the column will be displayed as additional row |
 | showHeadlineBreakpoint | String   | "xs"\|"sm"\|"md"\|"lg"\|"xl"\|"all" | *headline* is set                             | Bootstrap breakpoint from which descending the columns headline will be shown |
 | hideHeadlineBreakpoint | String   | "xs"\|"sm"\|"md"\|"lg"\|"xl"\|"all" | *headline* is set                             | Bootstrap breakpoint from which descending the columns headline will be hidden |
-| align                  | String   | "left"\|"right"\|"center"           | -                                             | Text alignment for whole column                              |
+| align                  | String   | "start"\|"end"\|"center"           | -                                             | Text alignment for whole column                              |
 | alwaysExpanded         | Boolean  | true\|false                         | *breakpoint* is set                           | If set to true, the additional columns row will be always expanded if the breakpoint is reached |
 | sticky                 | Boolean  | true\|false                         | *breakpoint* is not set                       | If set to true,  this column will be always displayed as additional row and will be expanded always |
 | cellFormatter          | Function | String\|Object                      | -                                             | Function for complex custom cell formatting. The cell will be passed as function parameter. Has to return a string handled as text or an object with String value and String type{"html","text"} |
@@ -259,7 +257,7 @@ The following will give you an overview how to configure the VueQuintable for yo
 | keywords      | String[]                          | *search* is enabled                             | Additional keywords which will match a search query          | null    |
 | classes       | String                            | -                                               | Additional CSS classes for row                               | null    |
 | filters       | Object                            | *filters* are set                               | Filters with filter name(s) and value(s), which will match selected filter(s) | null    |
-| align         | String{"left"\|"right"\|"center"} | -                                               | Text alignment for whole row, this will be overwritten by *columns* align value | "left"  |
+| align         | String{"start"\|"end"\|"center"} | -                                               | Text alignment for whole row, this will be overwritten by *columns* align value | "start"  |
 
 ##### Property *cells* for property *rows* properties
 
@@ -299,7 +297,7 @@ Lets have a look on a example for *rows* and *cells*
             {
                 html:"<b>Max</b> Mustermann",
                 classes:"special-td",
-                align:"right",
+                align:"end",
              },
             {
                 component:{

@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <p class="alert alert-info">
-      <font-awesome-icon class="mr-2" icon="info-circle"></font-awesome-icon>
+      <font-awesome-icon class="me-2" icon="info-circle"></font-awesome-icon>
       Pagination and sorting will be handled by server side via ajax
     </p>
 
@@ -30,13 +30,17 @@
     </div>
     <div class="clearfix"></div>
 
-    <b-button v-b-toggle.code-basic variant="secondary" class="mt-3"
-      ><font-awesome-icon icon="chevron-up"></font-awesome-icon
+    <button
+      class="btn btn-secondary mt-3"
+      data-bs-toggle="collapse"
+      data-bs-target="#code-basic"
+    >
+      <font-awesome-icon icon="chevron-up"></font-awesome-icon
       ><font-awesome-icon icon="chevron-down"></font-awesome-icon>
-      <span class="show ml-2">Show</span
-      ><span class="hide ml-2">Hide</span> Code
-    </b-button>
-    <b-collapse id="code-basic" class="mt-2">
+      <span class="show ms-2">Show</span
+      ><span class="hide ms-2">Hide</span> Code
+    </button>
+    <div id="code-basic" class="mt-2 collapse show">
       <!-- @formatter:off -->
       <pre data-toolbar-order="copy-to-clipboard">
              <code class="language-markup">
@@ -163,7 +167,7 @@
         </pre>
 
       <!-- @formatter:on -->
-    </b-collapse>
+    </div>
   </div>
 </template>
 <script>

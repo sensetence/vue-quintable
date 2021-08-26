@@ -50,6 +50,7 @@ import Components from "./examples/Components.vue";
 import Nested from "./examples/Nested.vue";
 import Slots from "./examples/Slots.vue";
 import AddRemove from "./examples/AddRemove.vue";
+import Tooltips from "./examples/Tooltips.vue";
 import Hidden from "./examples/Hidden.vue";
 import ComputedRows from "./examples/ComputedRows.vue";
 import CellFormatters from "./examples/Formatter.vue";
@@ -99,6 +100,7 @@ export default {
     Pagination,
     Sort,
     Binded,
+    Tooltips,
     Select,
     Filters,
     Components,
@@ -149,6 +151,10 @@ export default {
         {
           value: "BreakpointsAdvanced",
           label: "Breakpoints Advanced Example",
+        },
+        {
+          value: "Tooltips",
+          label: "Tooltips",
         },
         {
           value: "Ajax",

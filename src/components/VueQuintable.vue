@@ -29,10 +29,10 @@
         <thead v-if="configFinal.headlines.length">
           <tr class="vue-quintable-header-row">
             <th
-              class="placeholder toggle-th"
+              class="placeholder-th toggle-th"
               v-if="hasGeneratedRows && !configFinal.hideRowToggle"
             >
-              &nbsp;
+              <wbr />
             </th>
             <th
               v-if="configFinal.select && configFinal.selectPosition === 'pre'"
@@ -96,7 +96,7 @@
                 v-if="showHeadlines[hIndex]"
               ></span>
               <span class="headline" v-else><wbr /></span>
-              <span class="sorting-icon ml-2" v-if="configFinal.sorts[hIndex]">
+              <span class="sorting-icon ms-2" v-if="configFinal.sorts[hIndex]">
                 <font-awesome-icon
                   v-if="!currentSortIndexes[hIndex]"
                   icon="sort"
@@ -120,7 +120,7 @@
                 <span
                   v-if="currentSortIndexes[hIndex]"
                   @click.stop.prevent="removeSort(hIndex)"
-                  class="ml-1 text-muted"
+                  class="ms-1 text-muted"
                 >
                   <span
                     class="badge bg-info text-white"
@@ -176,6 +176,10 @@
           <template v-for="rIndex in visibleRowIndexes">
             <tr
               class="vue-quintable-row"
+              v-quintooltip="{
+                placement: 'top',
+                content: rowsFinal[rIndex].tooltip,
+              }"
               :style="hiddenColumns[rIndex] > 0 ? 'cursor:pointer;' : ''"
               :ref="'row-highlighted-on-hover-' + rIndex"
               :key="
@@ -245,6 +249,10 @@
 
               <td
                 class="vue-quintable-cell"
+                v-quintooltip="{
+                  placement: 'left',
+                  content: cell.tooltip,
+                }"
                 :class="
                   cellClassesParsed[rIndex][cIndex] +
                   ' ' +
@@ -287,31 +295,6 @@
                       'cell-complete' + (identifier ? '-' + identifier : '')
                     "
                   >
-                    <b-tooltip
-                      :target="'vue-quintable-' + uuid + '-row-' + rIndex"
-                      triggers="hover"
-                      v-if="rowsFinal[rIndex].tooltip && cIndex === 0"
-                      placement="top"
-                    >
-                      <span v-html="rowsFinal[rIndex].tooltip"></span>
-                    </b-tooltip>
-
-                    <b-tooltip
-                      :target="
-                        'vue-quintable-' +
-                        uuid +
-                        '-cell-' +
-                        rIndex +
-                        '-' +
-                        cIndex
-                      "
-                      triggers="hover"
-                      v-if="cell.tooltip"
-                      placement="left"
-                    >
-                      <span v-html="cell.tooltip"></span>
-                    </b-tooltip>
-
                     <slot
                       :cell="cell"
                       :name="
@@ -493,6 +476,10 @@
                     <tbody>
                       <tr
                         class="generated-row-cell"
+                        v-quintooltip="{
+                          placement: 'top',
+                          content: cell.tooltip,
+                        }"
                         :class="
                           configFinal.columnClasses[cIndex] +
                           ' ' +
@@ -533,7 +520,7 @@
                           >
                           </strong>
                           <span
-                            class="sorting-icon ml-2 cursor-pointer"
+                            class="sorting-icon ms-2 cursor-pointer"
                             v-if="
                               configFinal.sorts[cIndex] && hoveredRow === rIndex
                             "
@@ -562,7 +549,7 @@
                             <span
                               v-if="currentSortIndexes[cIndex]"
                               @click.stop.prevent="removeSort(cIndex)"
-                              class="ml-1 text-muted"
+                              class="ms-1 text-muted"
                             >
                               <span
                                 class="badge bg-info text-white"
@@ -585,7 +572,7 @@
                           "
                           :class="
                             cellClassesParsed[rIndex][cIndex] +
-                            (showHeadlines[cIndex] ? ' text-right' : '')
+                            (showHeadlines[cIndex] ? ' text-end' : '')
                           "
                           class="generated-content-cell"
                           @click="onCellClick(cell)"
@@ -605,22 +592,6 @@
                               (identifier ? '-' + identifier : '')
                             "
                           >
-                            <b-tooltip
-                              :target="
-                                'vue-quintable-' +
-                                uuid +
-                                '-generated-row-cell-' +
-                                rIndex +
-                                '-' +
-                                cIndex
-                              "
-                              triggers="hover"
-                              v-if="cell.tooltip"
-                              placement="top"
-                            >
-                              <span v-html="cell.tooltip"></span>
-                            </b-tooltip>
-
                             <slot
                               :cell="cell"
                               :name="
@@ -741,6 +712,10 @@
                       </tr>
                       <tr
                         v-for="(cell, cIndex) in stickyRows[rIndex]"
+                        v-quintooltip="{
+                          content: cell.tooltip,
+                          placement: 'top',
+                        }"
                         :key="
                           'vue-quintable-' +
                           uuid +
@@ -776,7 +751,7 @@
                             v-if="showHeadlines[cIndex]"
                           ></strong>
                           <span
-                            class="sorting-icon ml-2 cursor-pointer"
+                            class="sorting-icon ms-2 cursor-pointer"
                             v-if="
                               configFinal.sorts[cIndex] && hoveredRow === rIndex
                             "
@@ -805,7 +780,7 @@
                             <span
                               v-if="currentSortIndexes[cIndex]"
                               @click.stop.prevent="removeSort(cIndex)"
-                              class="ml-1 text-muted"
+                              class="ms-1 text-muted"
                             >
                               <span
                                 class="badge bg-info text-white"
@@ -820,7 +795,7 @@
                           </span>
                         </td>
                         <td
-                          class="text-right"
+                          class="text-end"
                           @click="onCellClick(cell)"
                           :key="
                             'vue-quintable-' +
@@ -838,22 +813,6 @@
                               (identifier ? '-' + identifier : '')
                             "
                           >
-                            <b-tooltip
-                              :target="
-                                'vue-quintable-' +
-                                uuid +
-                                '-sticky-row-cell-' +
-                                rIndex +
-                                '-' +
-                                cIndex
-                              "
-                              triggers="hover"
-                              v-if="cell.tooltip"
-                              placement="top"
-                            >
-                              <span v-html="cell.tooltip"></span>
-                            </b-tooltip>
-
                             <slot
                               :cell="cell"
                               :name="
@@ -1007,11 +966,11 @@
       <div class="row">
         <div class="col-lg-4">
           <div
-            class="pb-lg-0 pb-3 float-left"
+            class="pb-lg-0 pb-3 float-start"
             v-if="configFinal.multiSortSelect || configFinal.pageSortSelect"
           >
             <span
-              :class="configFinal.pageSort ? 'mr-3' : ''"
+              :class="configFinal.pageSort ? 'me-3' : ''"
               v-if="configFinal.multiSortSelect"
               ><p-check class="p-switch" v-model="multiSort" value="true">{{
                 configFinal.multiSortPlaceholder
@@ -1028,15 +987,15 @@
         </div>
         <div class="col-lg-8">
           <div
-            class="float-lg-right mr-3 pagination-container"
+            class="float-lg-end me-3 pagination-container"
             v-if="configFinal && configFinal.pagination"
           >
             <div
               v-if="configFinal.rowsSelect"
-              class="mb-2 d-inline-block mr-3 align-middle"
+              class="mb-2 d-inline-block me-3 align-middle"
             >
               <span
-                class="d-inline-block align-middle mr-2"
+                class="d-inline-block align-middle me-2"
                 v-html="configFinal.rowsPlaceholder"
               ></span>
               <v-select
@@ -1049,7 +1008,7 @@
             <nav
               v-if="configFinal && configFinal.pagination && pages > 1"
               class="d-inline-block align-middle mb-2"
-              :class="{ 'mr-3': numberOfVisibleRows, disabled: ajaxLoading }"
+              :class="{ 'me-3': numberOfVisibleRows, disabled: ajaxLoading }"
             >
               <ul class="pagination mb-0">
                 <li
@@ -1145,8 +1104,37 @@ import fuzzy from "fuzzy.js";
 import axios from "axios";
 import randomUUID from "uuid/v4";
 
+import { Tooltip } from "bootstrap";
+
+const state = new WeakMap();
+
 export default {
   name: "VueQuintable",
+  directives: {
+    quintooltip: {
+      bind: function bsTooltipCreate(el, binding) {
+        if (!binding.value.content) {
+          return;
+        }
+
+        const tooltip = new Tooltip(el, {
+          title: binding.value.content,
+          placement: binding.value.placement || "top",
+          trigger: binding.value.trigger || "hover",
+          html: binding.value.html || true,
+        });
+
+        state.set(el, tooltip);
+      },
+      unbind(el) {
+        const tooltip = state.get(el);
+        if (tooltip) {
+          tooltip.dispose();
+        }
+        state.delete(el);
+      },
+    },
+  },
   props: {
     rows: {
       type: Array,
