@@ -9,6 +9,8 @@ import "vue-select/dist/vue-select.css";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
+import VTooltip from "v-tooltip";
+
 import {
   faCheck,
   faSort,
@@ -48,6 +50,11 @@ let install = function (Vue) {
   Vue.component("p-check", PrettyCheck);
   Vue.component("font-awesome-icon", FontAwesomeIcon);
   Vue.component("VueQuintable", VueQuintable);
+  Vue.use(VTooltip, {
+    defaultTemplate:
+      '<div class="quintable-tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+    defaultClass: "",
+  });
 };
 
 // Create module definition for Vue.use()

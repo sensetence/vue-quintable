@@ -17,6 +17,9 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import vueSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 
+import VTooltip from "v-tooltip";
+console.log(VTooltip);
+
 import {
   faCheck,
   faSort,
@@ -59,6 +62,11 @@ Vue.component("v-select", vueSelect);
 Vue.component("p-check", PrettyCheck);
 Vue.component("p-radio", PrettyRadio);
 Vue.component("font-awesome-icon", FontAwesomeIcon);
+Vue.use(VTooltip, {
+  defaultTemplate:
+    '<div class="quintable-tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+  defaultClass: "",
+});
 
 /** COMMON END **/
 

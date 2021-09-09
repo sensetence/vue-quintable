@@ -176,9 +176,11 @@
           <template v-for="rIndex in visibleRowIndexes">
             <tr
               class="vue-quintable-row"
-              v-quintooltip="{
+              v-tooltip="{
                 placement: 'top',
                 content: rowsFinal[rIndex].tooltip,
+                trigger: rowsFinal[rIndex].tooltip ? 'hover' : 'manual',
+                offset: 5,
               }"
               :style="hiddenColumns[rIndex] > 0 ? 'cursor:pointer;' : ''"
               :ref="'row-highlighted-on-hover-' + rIndex"
@@ -249,9 +251,10 @@
 
               <td
                 class="vue-quintable-cell"
-                v-quintooltip="{
+                v-tooltip="{
                   placement: 'left',
                   content: cell.tooltip,
+                  trigger: cell.tooltip ? 'hover' : 'manual',
                 }"
                 :class="
                   cellClassesParsed[rIndex][cIndex] +
@@ -476,9 +479,10 @@
                     <tbody>
                       <tr
                         class="generated-row-cell"
-                        v-quintooltip="{
+                        v-tooltip="{
                           placement: 'top',
                           content: cell.tooltip,
+                          trigger: cell.tooltip ? 'hover' : 'manual',
                         }"
                         :class="
                           configFinal.columnClasses[cIndex] +
@@ -712,9 +716,10 @@
                       </tr>
                       <tr
                         v-for="(cell, cIndex) in stickyRows[rIndex]"
-                        v-quintooltip="{
+                        v-tooltip="{
                           content: cell.tooltip,
                           placement: 'top',
+                          trigger: cell.tooltip ? 'hover' : 'manual',
                         }"
                         :key="
                           'vue-quintable-' +
@@ -1104,37 +1109,8 @@ import fuzzy from "fuzzy.js";
 import axios from "axios";
 import randomUUID from "uuid/v4";
 
-import { Tooltip } from "bootstrap";
-
-const state = new WeakMap();
-
 export default {
   name: "VueQuintable",
-  directives: {
-    quintooltip: {
-      bind: function bsTooltipCreate(el, binding) {
-        if (!binding.value.content) {
-          return;
-        }
-
-        const tooltip = new Tooltip(el, {
-          title: binding.value.content,
-          placement: binding.value.placement || "top",
-          trigger: binding.value.trigger || "hover",
-          html: binding.value.html || true,
-        });
-
-        state.set(el, tooltip);
-      },
-      unbind(el) {
-        const tooltip = state.get(el);
-        if (tooltip) {
-          tooltip.dispose();
-        }
-        state.delete(el);
-      },
-    },
-  },
   props: {
     rows: {
       type: Array,
@@ -3929,5 +3905,117 @@ export default {
 nav.disabled {
   pointer-events: none;
   opacity: 0.75;
+}
+</style>
+
+<style>
+.tooltip-arrow {
+  z-index: 1;
+}
+
+.quintable-tooltip {
+  display: block !important;
+  z-index: 10000;
+}
+
+.quintable-tooltip .tooltip-inner {
+  background: black;
+  color: white;
+  border-radius: 4px;
+  padding: 5px 10px 4px;
+}
+
+.quintable-tooltip .tooltip-arrow {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  position: absolute;
+  margin: 5px;
+  border-color: black;
+  z-index: 1;
+}
+
+.quintable-tooltip[x-placement^="top"] {
+  margin-bottom: 5px;
+}
+
+.quintable-tooltip[x-placement^="top"] .tooltip-arrow {
+  border-width: 5px 5px 0 5px;
+  border-left-color: transparent !important;
+  border-right-color: transparent !important;
+  border-bottom-color: transparent !important;
+  bottom: -5px;
+  left: calc(50% - 5px);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.quintable-tooltip[x-placement^="bottom"] {
+  margin-top: 5px;
+}
+
+.quintable-tooltip[x-placement^="bottom"] .tooltip-arrow {
+  border-width: 0 5px 5px 5px;
+  border-left-color: transparent !important;
+  border-right-color: transparent !important;
+  border-top-color: transparent !important;
+  top: -5px;
+  left: calc(50% - 5px);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.quintable-tooltip[x-placement^="right"] {
+  margin-left: 5px;
+}
+
+.quintable-tooltip[x-placement^="right"] .tooltip-arrow {
+  border-width: 5px 5px 5px 0;
+  border-left-color: transparent !important;
+  border-top-color: transparent !important;
+  border-bottom-color: transparent !important;
+  left: -5px;
+  top: calc(50% - 5px);
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.quintable-tooltip[x-placement^="left"] {
+  margin-right: 5px;
+}
+
+.quintable-tooltip[x-placement^="left"] .tooltip-arrow {
+  border-width: 5px 0 5px 5px;
+  border-top-color: transparent !important;
+  border-right-color: transparent !important;
+  border-bottom-color: transparent !important;
+  right: -5px;
+  top: calc(50% - 5px);
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.quintable-tooltip.popover .popover-inner {
+  background: #f9f9f9;
+  color: black;
+  padding: 24px;
+  border-radius: 5px;
+  box-shadow: 0 5px 30px rgba(black, 0.1);
+}
+
+.quintable-tooltip.popover .popover-arrow {
+  border-color: #f9f9f9;
+}
+
+.quintable-tooltip[aria-hidden="true"] {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.15s, visibility 0.15s;
+}
+
+.quintable-tooltip[aria-hidden="false"] {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.15s;
 }
 </style>
