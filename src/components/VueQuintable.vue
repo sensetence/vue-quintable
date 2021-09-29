@@ -3826,6 +3826,8 @@ export default {
 
 .table-wrapper .pretty {
   background: #fff;
+  margin-right: 0 !important;
+  width: 16px;
 }
 
 .footer {
@@ -3837,9 +3839,6 @@ export default {
   border-top: none;
 }
 
-.pretty {
-  margin-right: 0 !important;
-}
 
 .sort-header {
   cursor: pointer;
