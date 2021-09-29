@@ -670,9 +670,7 @@ The response has to be the following structure:
 
 ## License
 
-VueQuintable is free for everyone to use in personal projects (MIT License).
-
-If you want to include VueQuintable within a commercial project or product you will need to purchase one of our commercial licenses. Commercial Licenses are  priced per project which can be an internal application, a website, or a even  a product, for example. You can purchase licenses on our website: https://quintet.io/vuequintable-license/ 
+VueQuintable is free for everyone to use in any project (MIT License).
 
 ## Authors
 
