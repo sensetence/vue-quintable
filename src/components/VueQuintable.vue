@@ -3616,7 +3616,9 @@ export default {
         this.resetSelect();
       }
 
-      this.loaderHeight = this.$refs["height-wrapper"].clientHeight;
+      this.loaderHeight = this.$refs["height-wrapper"]
+        ? this.$refs["height-wrapper"].clientHeight
+        : 0;
 
       this.fetching = true;
 
@@ -3838,7 +3840,6 @@ export default {
 .table th {
   border-top: none;
 }
-
 
 .sort-header {
   cursor: pointer;
