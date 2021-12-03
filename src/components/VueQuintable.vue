@@ -2441,18 +2441,6 @@ export default {
     },
 
     /**
-     * Emit event for ajax rows
-     *
-     */
-    ajaxRows(val, old) {
-      this.$emit(
-        "ajax:rows",
-        { rows: val, old: old, all: this.ajaxAll },
-        "ajax:rows"
-      );
-    },
-
-    /**
      * Reset page and select if filtering/search is active
      *
      */
@@ -3441,6 +3429,14 @@ export default {
           bValue = bValue.toLowerCase();
         }
 
+        if (!isNaN(aValue)) {
+          aValue = parseFloat(aValue);
+        }
+
+        if (!isNaN(bValue)) {
+          bValue = parseFloat(bValue);
+        }
+
         if (currentKey.asc) {
           return aValue > bValue
             ? 1
@@ -3659,6 +3655,12 @@ export default {
           this.ajaxPages = Math.max(
             1,
             Math.ceil(response.data.all / this.currentRowsPerPage)
+          );
+
+          this.$emit(
+            "ajax:rows",
+            { rows: response.data.rows, old: this.ajaxRows, all: this.ajaxAll },
+            "ajax:rows"
           );
 
           if (response.data.all) {
