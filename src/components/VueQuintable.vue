@@ -3410,16 +3410,20 @@ export default {
         let cellsA = a.cells ? a.cells : a;
         let cellsB = b.cells ? b.cells : b;
 
-        let aValue = cellsA[i].sortValue
-          ? cellsA[i].sortValue
-          : cellsA[i].html
-          ? cellsA[i].html
-          : cellsA[i].text;
-        let bValue = cellsB[i].sortValue
-          ? cellsB[i].sortValue
-          : cellsB[i].html
-          ? cellsB[i].html
-          : cellsB[i].text;
+        let aValue =
+          typeof cellsA[i].sortValue !== "undefined" &&
+          cellsA[i].sortValue !== null
+            ? cellsA[i].sortValue
+            : cellsA[i].html
+            ? cellsA[i].html
+            : cellsA[i].text;
+        let bValue =
+          typeof cellsB[i].sortValue !== "undefined" &&
+          cellsB[i].sortValue !== null
+            ? cellsB[i].sortValue
+            : cellsB[i].html
+            ? cellsB[i].html
+            : cellsB[i].text;
 
         if (typeof aValue === "string") {
           aValue = aValue.toLowerCase();
@@ -3431,9 +3435,17 @@ export default {
 
         if (!isNaN(aValue)) {
           aValue = parseFloat(aValue);
+        } else if (typeof aValue === "string" && aValue.match(/^-?\d+$/)) {
+          aValue = parseFloat(aValue);
+        } else if (typeof aValue === "string" && aValue.match(/^\d+\.\d+$/)) {
+          aValue = parseFloat(aValue);
         }
 
         if (!isNaN(bValue)) {
+          bValue = parseFloat(bValue);
+        } else if (typeof bValue === "string" && bValue.match(/^-?\d+$/)) {
+          bValue = parseFloat(bValue);
+        } else if (typeof bValue === "string" && bValue.match(/^\d+\.\d+$/)) {
           bValue = parseFloat(bValue);
         }
 
