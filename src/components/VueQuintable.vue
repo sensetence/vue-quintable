@@ -1,6 +1,6 @@
 <template>
-  <div class="table-wrapper">
-    <div class="breakpoints">
+  <div class="table-wrapper quintable">
+    <div class="breakpoints quintable--breakpoints">
       <div ref="xs"></div>
       <div ref="sm" class="d-none d-sm-block"></div>
       <div ref="md" class="d-none d-md-block"></div>
@@ -8,11 +8,11 @@
       <div ref="xl" class="d-none d-xl-block"></div>
     </div>
 
-    <div class="header slot slot-header">
+    <div class="header slot slot-header quintable--header">
       <slot name="header"></slot>
     </div>
 
-    <div v-if="configFinal.search" class="mb-3">
+    <div v-if="configFinal.search" class="mb-3 quintable--search-container">
       <input
         type="search"
         :placeholder="configFinal.searchPlaceholder"
@@ -20,23 +20,37 @@
         class="form-control"
       />
     </div>
-    <div class="clearfix" ref="height-wrapper">
+    <div class="clearfix quintable--table-container" ref="height-wrapper">
       <table
-        class="vue-quintable table"
+        class="vue-quintable table quintable--table-container--table"
         :class="tableClasses"
         v-if="!ajaxLoading"
       >
         <thead v-if="configFinal.headlines.length">
-          <tr class="vue-quintable-header-row">
+          <tr
+            class="
+              vue-quintable-header-row
+              quintable--table-container--table--header-row
+            "
+          >
             <th
-              class="placeholder-th toggle-th"
+              class="
+                placeholder-th
+                toggle-th
+                quintable--table-container--table--header-row--placeholder-th
+              "
               v-if="hasGeneratedRows && !configFinal.hideRowToggle"
             >
               <wbr />
             </th>
             <th
               v-if="configFinal.select && configFinal.selectPosition === 'pre'"
-              class="select-th pre"
+              class="
+                select-th
+                pre
+                quintable--table-container--table--header-row--select-th
+                quintable--table-container--table--header-row--select-th--pre
+              "
             >
               <template v-if="configFinal.selectAll && !noRows">
                 <p-check
@@ -91,12 +105,29 @@
               @click="setSortColumn(hIndex)"
             >
               <span
-                class="headline"
+                class="
+                  headline
+                  quintable--table-container--table--header-row--th--headline
+                "
                 v-html="headline"
                 v-if="showHeadlines[hIndex]"
               ></span>
-              <span class="headline" v-else><wbr /></span>
-              <span class="sorting-icon ms-2" v-if="configFinal.sorts[hIndex]">
+              <span
+                class="
+                  headline
+                  quintable--table-container--table--header-row--th--headline
+                "
+                v-else
+                ><wbr
+              /></span>
+              <span
+                class="
+                  sorting-icon
+                  ms-2
+                  quintable--table-container--table--header-row--th--sorting-icon
+                "
+                v-if="configFinal.sorts[hIndex]"
+              >
                 <font-awesome-icon
                   v-if="!currentSortIndexes[hIndex]"
                   icon="sort"
@@ -136,7 +167,12 @@
             </th>
             <th
               v-if="configFinal.select && configFinal.selectPosition === 'post'"
-              class="select-th post"
+              class="
+                select-th
+                post
+                quintable--table-container--table--header-row--select-th
+                quintable--table-container--table--header-row--select-th--post
+              "
             >
               <template v-if="configFinal.selectAll && !noRows">
                 <p-check
@@ -172,10 +208,16 @@
             </th>
           </tr>
         </thead>
-        <tbody @mouseleave="onMouseleaveTable">
+        <tbody
+          @mouseleave="onMouseleaveTable"
+          class="quintable--table-container--table--tbody"
+        >
           <template v-for="rIndex in visibleRowIndexes">
             <tr
-              class="vue-quintable-row"
+              class="
+                vue-quintable-row
+                quintable--table-container--table--tbody--row
+              "
               v-tooltip="{
                 placement: 'top',
                 content: rowsFinal[rIndex].tooltip,
@@ -207,7 +249,10 @@
               @mouseenter="onMouseenterRow(rIndex)"
             >
               <td
-                class="toggle toggle-td"
+                class="
+                  toggle toggle-td
+                  quintable--table-container--table--tbody--row--toggle-td
+                "
                 v-if="hasGeneratedRows && !configFinal.hideRowToggle"
               >
                 <span v-if="hiddenColumns[rIndex] > 0">
@@ -219,7 +264,12 @@
                 v-if="
                   configFinal.select && configFinal.selectPosition === 'pre'
                 "
-                class="select-td pre"
+                class="
+                  select-td
+                  pre
+                  quintable--table-container--table--tbody--row--select-td
+                  quintable--table-container--table--tbody--row--select-td--pre
+                "
                 :class="{ 'disabled-select': rowsFinal[rIndex].disableSelect }"
               >
                 <template v-if="!rowsFinal[rIndex].disableSelect">
@@ -250,7 +300,10 @@
               </td>
 
               <td
-                class="vue-quintable-cell"
+                class="
+                  vue-quintable-cell
+                  quintable--table-container--table--tbody--row--cell
+                "
                 v-tooltip="{
                   placement: 'left',
                   content: cell.tooltip,
@@ -307,10 +360,20 @@
                       <template
                         v-if="configFinal.columns[cIndex].cellFormatter"
                       >
-                        <div class="cell-inner" v-if="cell.quintable">
+                        <div
+                          class="
+                            cell-inner
+                            quintable--table-container--table--tbody--row--cell--inner-cell
+                            quintable--table-container--table--tbody--row--cell--inner-cell--quintable
+                          "
+                          v-if="cell.quintable"
+                        >
                           <VueQuintable
                             :table-classes="cell.quintable.tableClasses"
-                            class="quintable-sub-table"
+                            class="
+                              quintable-sub-table
+                              quintable--table-container--table--tbody--row--cell--inner-cell--quintable--sub-table
+                            "
                             :nested="true"
                             :identifier="
                               cell.quintable.identifier
@@ -340,7 +403,14 @@
                             /></template>
                           </VueQuintable>
                         </div>
-                        <div class="cell-inner" v-else-if="cell.component">
+                        <div
+                          class="
+                            cell-inner
+                            quintable--table-container--table--tbody--row--cell--inner-cell
+                            quintable--table-container--table--tbody--row--cell--inner-cell--component
+                          "
+                          v-else-if="cell.component"
+                        >
                           <component
                             :is="cell.component.name"
                             v-bind="cell.component.props"
@@ -348,29 +418,61 @@
                           ></component>
                         </div>
                         <div
-                          class="cell-inner"
+                          class="
+                            cell-inner
+                            quintable--table-container--table--tbody--row--cell--inner-cell
+                            quintable--table-container--table--tbody--row--cell--inner-cell--formatted-html
+                          "
                           v-else-if="
                             cellFormatters(cIndex, cell).type === 'html'
                           "
                           v-html="cellFormatters(cIndex, cell).value"
                         ></div>
-                        <div class="cell-inner" v-else>
+                        <div
+                          class="
+                            cell-inner
+                            quintable--table-container--table--tbody--row--cell--inner-cell
+                            quintable--table-container--table--tbody--row--cell--inner-cell--formatted-value
+                          "
+                          v-else
+                        >
                           {{ cellFormatters(cIndex, cell).value }}
                         </div>
                       </template>
                       <template v-else>
                         <div
-                          class="cell-inner"
+                          class="
+                            cell-inner
+                            quintable--table-container--table--tbody--row--cell--inner-cell
+                            quintable--table-container--table--tbody--row--cell--inner-cell-html
+                          "
                           v-if="cell.html"
                           v-html="cell.html"
                         ></div>
-                        <div class="cell-inner" v-if="cell.text">
+                        <div
+                          class="
+                            cell-inner
+                            quintable--table-container--table--tbody--row--cell--inner-cell
+                            quintable--table-container--table--tbody--row--cell--inner-cell--text
+                          "
+                          v-if="cell.text"
+                        >
                           {{ cell.text }}
                         </div>
-                        <div class="cell-inner" v-if="cell.quintable">
+                        <div
+                          class="
+                            cell-inner
+                            quintable--table-container--table--tbody--row--cell--inner-cell
+                            quintable--table-container--table--tbody--row--cell--inner-cell--quintable
+                          "
+                          v-if="cell.quintable"
+                        >
                           <VueQuintable
                             :table-classes="cell.quintable.tableClasses"
-                            class="quintable-sub-table"
+                            class="
+                              quintable-sub-table
+                              quintable--table-container--table--tbody--row--cell--inner-cell--quintable--sub-table
+                            "
                             :nested="true"
                             :identifier="
                               cell.quintable.identifier
@@ -400,7 +502,14 @@
                             /></template>
                           </VueQuintable>
                         </div>
-                        <div class="cell-inner" v-if="cell.component">
+                        <div
+                          class="
+                            cell-inner
+                            quintable--table-container--table--tbody--row--cell--inner-cell
+                            quintable--table-container--table--tbody--row--cell--inner-cell--component
+                          "
+                          v-if="cell.component"
+                        >
                           <component
                             :is="cell.component.name"
                             v-bind="cell.component.props"
@@ -417,7 +526,12 @@
                 v-if="
                   configFinal.select && configFinal.selectPosition === 'post'
                 "
-                class="select-td post"
+                class="
+                  select-td
+                  post
+                  quintable--table-container--table--tbody--row--select-td
+                  quintable--table-container--table--tbody--row--select-td--post
+                "
                 :class="{ 'disabled-select': rowsFinal[rIndex].disableSelect }"
               >
                 <template v-if="!rowsFinal[rIndex].disableSelect">
@@ -465,7 +579,10 @@
                   '-' +
                   generatedUpdatedKey
                 "
-                class="generated-row"
+                class="
+                  generated-row
+                  quintable--table-container--table--tbody--generated-row
+                "
                 :class="hoveredRow === rIndex ? configFinal.hoverClass : ''"
                 v-if="
                   (generatedUpdatedKey &&
@@ -475,10 +592,20 @@
                 "
               >
                 <td :colspan="configFinal.number + 1" class="">
-                  <table class="table mb-0 generated-table">
+                  <table
+                    class="
+                      table
+                      mb-0
+                      generated-table
+                      quintable--table-container--table--tbody--generated-row--generated-table
+                    "
+                  >
                     <tbody>
                       <tr
-                        class="generated-row-cell"
+                        class="
+                          generated-row-cell
+                          quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell
+                        "
                         v-tooltip="{
                           placement: 'top',
                           content: cell.tooltip,
@@ -511,7 +638,10 @@
                         v-for="(cell, cIndex) in generatedRows[rIndex]"
                       >
                         <td
-                          class="generated-headline-cell"
+                          class="
+                            generated-headline-cell
+                            quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-headline-cell
+                          "
                           @click="setSortColumn(cIndex)"
                           v-if="
                             openRows[rIndex] &&
@@ -524,7 +654,12 @@
                           >
                           </strong>
                           <span
-                            class="sorting-icon ms-2 cursor-pointer"
+                            class="
+                              sorting-icon
+                              ms-2
+                              cursor-pointer
+                              quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon
+                            "
                             v-if="
                               configFinal.sorts[cIndex] && hoveredRow === rIndex
                             "
@@ -578,7 +713,10 @@
                             cellClassesParsed[rIndex][cIndex] +
                             (showHeadlines[cIndex] ? ' text-end' : '')
                           "
-                          class="generated-content-cell"
+                          class="
+                            generated-content-cell
+                            quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-content-cell
+                          "
                           @click="onCellClick(cell)"
                           :key="
                             'vue-quintable-' +
@@ -606,10 +744,20 @@
                               <template
                                 v-if="configFinal.columns[cIndex].cellFormatter"
                               >
-                                <div class="cell-inner" v-if="cell.quintable">
+                                <div
+                                  class="
+                                    cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner--quintable
+                                  "
+                                  v-if="cell.quintable"
+                                >
                                   <VueQuintable
                                     :table-classes="cell.quintable.tableClasses"
-                                    class="quintable-sub-table"
+                                    class="
+                                      quintable-sub-table
+                                      quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner--quintable--sub-table
+                                    "
                                     :nested="true"
                                     :identifier="
                                       cell.quintable.identifier
@@ -640,7 +788,11 @@
                                   </VueQuintable>
                                 </div>
                                 <div
-                                  class="cell-inner"
+                                  class="
+                                    cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner--component
+                                  "
                                   v-else-if="cell.component"
                                 >
                                   <component
@@ -650,29 +802,61 @@
                                   ></component>
                                 </div>
                                 <div
-                                  class="cell-inner"
+                                  class="
+                                    cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner--formatted-html
+                                  "
                                   v-else-if="
                                     cellFormatters(cIndex, cell).type === 'html'
                                   "
                                   v-html="cellFormatters(cIndex, cell).value"
                                 ></div>
-                                <div class="cell-inner" v-else>
+                                <div
+                                  class="
+                                    cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner--formatted-value
+                                  "
+                                  v-else
+                                >
                                   {{ cellFormatters(cIndex, cell).value }}
                                 </div>
                               </template>
                               <template v-else>
                                 <div
-                                  class="cell-inner"
+                                  class="
+                                    cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner--html
+                                  "
                                   v-if="cell.html"
                                   v-html="cell.html"
                                 ></div>
-                                <div class="cell-inner" v-if="cell.text">
+                                <div
+                                  class="
+                                    cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner--text
+                                  "
+                                  v-if="cell.text"
+                                >
                                   {{ cell.text }}
                                 </div>
-                                <div class="cell-inner" v-if="cell.quintable">
+                                <div
+                                  class="
+                                    cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner-quintable
+                                  "
+                                  v-if="cell.quintable"
+                                >
                                   <VueQuintable
                                     :table-classes="cell.quintable.tableClasses"
-                                    class="quintable-sub-table"
+                                    class="
+                                      quintable-sub-table
+                                      quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner--quintable--sub-table
+                                    "
                                     :nested="true"
                                     :identifier="
                                       cell.quintable.identifier
@@ -702,7 +886,14 @@
                                     /></template>
                                   </VueQuintable>
                                 </div>
-                                <div class="cell-inner" v-if="cell.component">
+                                <div
+                                  class="
+                                    cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner--component
+                                  "
+                                  v-if="cell.component"
+                                >
                                   <component
                                     :is="cell.component.name"
                                     v-bind="cell.component.props"
@@ -742,10 +933,18 @@
                           ' ' +
                           (hoveredRow === rIndex ? configFinal.hoverClass : '')
                         "
-                        class="generated-row-cell sticky-row-cell"
+                        class="
+                          generated-row-cell
+                          sticky-row-cell
+                          quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell
+                        "
                       >
                         <td
-                          class="generated-headline-cell sticky-headline-cell"
+                          class="
+                            generated-headline-cell
+                            sticky-headline-cell
+                            quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-headline-cell
+                          "
                           @click="setSortColumn(cIndex)"
                           v-if="
                             showHeadlines[cIndex] || configFinal.sorts[cIndex]
@@ -756,7 +955,12 @@
                             v-if="showHeadlines[cIndex]"
                           ></strong>
                           <span
-                            class="sorting-icon ms-2 cursor-pointer"
+                            class="
+                              sorting-icon
+                              ms-2
+                              cursor-pointer
+                              quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sorting-icon
+                            "
                             v-if="
                               configFinal.sorts[cIndex] && hoveredRow === rIndex
                             "
@@ -800,7 +1004,10 @@
                           </span>
                         </td>
                         <td
-                          class="text-end"
+                          class="
+                            text-end
+                            quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell
+                          "
                           @click="onCellClick(cell)"
                           :key="
                             'vue-quintable-' +
@@ -828,10 +1035,20 @@
                               <template
                                 v-if="configFinal.columns[cIndex].cellFormatter"
                               >
-                                <div class="cell-inner" v-if="cell.quintable">
+                                <div
+                                  class="
+                                    cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--quintable
+                                  "
+                                  v-if="cell.quintable"
+                                >
                                   <VueQuintable
                                     :table-classes="cell.quintable.tableClasses"
-                                    class="quintable-sub-table"
+                                    class="
+                                      quintable-sub-table
+                                      quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--quintable--sub-table
+                                    "
                                     :nested="true"
                                     :identifier="
                                       cell.quintable.identifier
@@ -862,7 +1079,11 @@
                                   </VueQuintable>
                                 </div>
                                 <div
-                                  class="cell-inner"
+                                  class="
+                                    cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--component
+                                  "
                                   v-else-if="cell.component"
                                 >
                                   <component
@@ -872,29 +1093,61 @@
                                   ></component>
                                 </div>
                                 <div
-                                  class="cell-inner"
+                                  class="
+                                    cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--formatted-html
+                                  "
                                   v-else-if="
                                     cellFormatters(cIndex, cell).type === 'html'
                                   "
                                   v-html="cellFormatters(cIndex, cell).value"
                                 ></div>
-                                <div class="cell-inner" v-else>
+                                <div
+                                  class="
+                                    cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--formatted-value
+                                  "
+                                  v-else
+                                >
                                   {{ cellFormatters(cIndex, cell).value }}
                                 </div>
                               </template>
                               <template v-else>
                                 <div
-                                  class="cell-inner"
+                                  class="
+                                    cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--text
+                                  "
                                   v-if="cell.html"
                                   v-html="cell.html"
                                 ></div>
-                                <div class="cell-inner" v-if="cell.text">
+                                <div
+                                  class="
+                                    cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--html
+                                  "
+                                  v-if="cell.text"
+                                >
                                   {{ cell.text }}
                                 </div>
-                                <div class="cell-inner" v-if="cell.quintable">
+                                <div
+                                  class="
+                                    cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--quintable
+                                  "
+                                  v-if="cell.quintable"
+                                >
                                   <VueQuintable
                                     :table-classes="cell.quintable.tableClasses"
-                                    class="quintable-sub-table"
+                                    class="
+                                      quintable-sub-table
+                                      quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--quintable--sub-table
+                                    "
                                     :nested="true"
                                     :identifier="
                                       cell.quintable.identifier
@@ -924,7 +1177,13 @@
                                     /></template>
                                   </VueQuintable>
                                 </div>
-                                <div class="cell-inner" v-if="cell.component">
+                                <div
+                                  class="
+                                    cell-inner
+                                    quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--component
+                                  "
+                                  v-if="cell.component"
+                                >
                                   <component
                                     :is="cell.component.name"
                                     v-bind="cell.component.props"
@@ -946,9 +1205,21 @@
       </table>
 
       <template v-if="noRows && !ajaxLoading">
-        <div class="clearfix slot-no-results slot">
+        <div
+          class="
+            clearfix
+            slot-no-results slot
+            quintable--table-container--no-results
+          "
+        >
           <slot name="no-results">
-            <div class="text-center p-3">
+            <div
+              class="
+                text-center
+                p-3
+                quintable--table-container--no-results--results
+              "
+            >
               <em v-html="configFinal.emptyPlaceholder"></em>
             </div>
           </slot>
@@ -957,54 +1228,106 @@
       </template>
     </div>
 
-    <div v-if="ajaxLoading" class="slot-loading slot">
+    <div v-if="ajaxLoading" class="slot-loading slot quintable--loading">
       <slot name="loading">
-        <div class="loader-wrapper" :style="'height:' + loaderHeight + 'px;'">
-          <div class="loader text-center py-4">
-            <font-awesome-icon icon="circle-notch" spin class="ajax-loader" />
+        <div
+          class="loader-wrapper quintable--loading--loader-wrapper"
+          :style="'height:' + loaderHeight + 'px;'"
+        >
+          <div
+            class="
+              loader
+              text-center
+              py-4
+              quintable--loading--loader-wrapper--loader
+            "
+          >
+            <font-awesome-icon
+              icon="circle-notch"
+              spin
+              class="
+                ajax-loader
+                quintable--loading--loader-wrapper--loader--ajax-loader
+              "
+            />
           </div>
         </div>
       </slot>
     </div>
 
-    <div class="clearfix">
+    <div class="clearfix quintable--table-footer-container">
       <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-4 quintable--table-footer-container--sort-container">
           <div
-            class="pb-lg-0 pb-3 float-start"
+            class="
+              pb-lg-0 pb-3
+              float-start
+              quintable--table-footer-container--sort-container--sort-select
+            "
             v-if="configFinal.multiSortSelect || configFinal.pageSortSelect"
           >
             <span
               :class="configFinal.pageSort ? 'me-3' : ''"
               v-if="configFinal.multiSortSelect"
-              ><p-check class="p-switch" v-model="multiSort" value="true">{{
-                configFinal.multiSortPlaceholder
-              }}</p-check></span
+              ><p-check
+                class="
+                  p-switch
+                  quintable--table-footer-container--sort-container--sort-select--multi-sort-select
+                "
+                v-model="multiSort"
+                value="true"
+                >{{ configFinal.multiSortPlaceholder }}</p-check
+              ></span
             >
             <p-check
               v-if="configFinal.pageSortSelect"
-              class="p-switch"
+              class="
+                p-switch
+                quintable--table-footer-container--sort-container--sort-select--page-sort-select
+              "
               v-model="pageSort"
               value="true"
               >{{ configFinal.pageSortPlaceholder }}</p-check
             >
           </div>
         </div>
-        <div class="col-lg-8">
+        <div
+          class="col-lg-8 quintable--table-footer-container--pagination-wrapper"
+        >
           <div
-            class="float-lg-end me-3 pagination-container"
+            class="
+              float-lg-end
+              me-3
+              pagination-container
+              quintable--table-footer-container--pagination-wrapper--pagination-container
+            "
             v-if="configFinal && configFinal.pagination"
           >
             <div
               v-if="configFinal.rowsSelect"
-              class="mb-2 d-inline-block me-3 align-middle"
+              class="
+                mb-2
+                d-inline-block
+                me-3
+                align-middle
+                quintable--table-footer-container--pagination-wrapper--pagination-container--rows-select
+              "
             >
               <span
-                class="d-inline-block align-middle me-2"
+                class="
+                  d-inline-block
+                  align-middle
+                  me-2
+                  quintable--table-footer-container--pagination-wrapper--pagination-container--rows-select--placeholder
+                "
                 v-html="configFinal.rowsPlaceholder"
               ></span>
               <v-select
-                class="d-inline-block align-middle"
+                class="
+                  d-inline-block
+                  align-middle
+                  quintable--table-footer-container--pagination-wrapper--pagination-container--rows-select--select
+                "
                 :options="paginationOptionsFilled"
                 v-model="currentRowsPerPageProperty"
                 :clearable="false"
@@ -1012,10 +1335,21 @@
             </div>
             <nav
               v-if="configFinal && configFinal.pagination && pages > 1"
-              class="d-inline-block align-middle mb-2"
+              class="
+                d-inline-block
+                align-middle
+                mb-2
+                quintable--table-footer-container--pagination-wrapper--pagination-container--nav
+              "
               :class="{ 'me-3': numberOfVisibleRows, disabled: ajaxLoading }"
             >
-              <ul class="pagination mb-0">
+              <ul
+                class="
+                  pagination
+                  mb-0
+                  quintable--table-footer-container--pagination-wrapper--pagination-container--nav--pagination
+                "
+              >
                 <li
                   class="page-item"
                   v-if="pages > pageRange"
@@ -1089,7 +1423,12 @@
             </nav>
 
             <span
-              class="d-inline-block align-middle mb-2"
+              class="
+                d-inline-block
+                align-middle
+                mb-2
+                quintable--table-footer-container--pagination-wrapper--pagination-container--visible-rows
+              "
               v-if="numberOfVisibleRows"
               >{{ firstVisibleRow }}-{{ lastVisibleRow }} of
               {{ numberOfVisibleRows }}</span
@@ -1098,7 +1437,7 @@
         </div>
       </div>
     </div>
-    <div class="footer slot slot-footer">
+    <div class="footer slot slot-footer quintable--footer">
       <slot name="footer"></slot>
     </div>
   </div>
@@ -1184,6 +1523,10 @@ export default {
       type: Function,
     },
     identifier: {
+      type: String,
+      default: null,
+    },
+    initialSearchTerm: {
       type: String,
       default: null,
     },
@@ -1985,7 +2328,9 @@ export default {
         }
 
         classes.push(
-          iClasses.join(" ") + " " + this.configFinal.columnClasses[i]
+          iClasses.join(" ") +
+            "  quintable--table-container--table--header-row--th " +
+            this.configFinal.columnClasses[i]
         );
       }
       return classes;
@@ -3790,6 +4135,10 @@ export default {
     ) {
       this.allSelectedCustom = true;
     }
+
+    if (this.initialSearchTerm) {
+      this.query = this.initialSearchTerm;
+    }
   },
   mounted() {
     if (this.configFinal.ajaxUrl) {
@@ -3840,10 +4189,11 @@ export default {
   background: rgba(0, 0, 0, 0.1);
 }
 
-.table-wrapper .pretty {
+.table-wrapper .select-th .pretty,
+.table-wrapper .select-td .pretty {
   background: #fff;
   margin-right: 0 !important;
-  width: 16px;
+  width: 18px;
 }
 
 .footer {

@@ -178,19 +178,20 @@ The following will give you an overview how to configure the VueQuintable for yo
 
 ### Table Properties
 
-| Parameter       | Type          | Required                    | Description                                                  |
-| --------------- | ------------- | --------------------------- | ------------------------------------------------------------ |
-| config          | Object        | yes                         | The table configuration object. See details below.           |
-| rows            | Array         | yes (if no ajax url is set) | Table rows containing all cells. See details below.          |
-| preSelectedRows | Array         | no                          | Array of objects{key,value} to set selection of rows from outside. You have to set the key to an unique property of the row e.g. an id and the value to the actual properties' value of the row. If done so, the row will be (pre-) selected. Note: This won't work initially, for initial select use *config.defaultSelected* or *row.selected* properties |
-| dynamicConfig   | Boolean       | no                          | If set to true the Table wont be re-initialized and re-rendered if some values inside the *config* property are changed. This is useful to dynamically set *config* values for columns |
-| filters         | Object        | no                          | The active filters for displaying rows. This has to be an object with filter name as key and filter value as value. Additionally a set of operators can be passed. See example below. |
-| filter-groups   | Array         | no                          | Filter groups with relations. See example below.             |
-| sort-order      | Object        | no                          | Set sorting values and order by default or on the fly. See examples below. |
-| axios           | Object        | no                          | Pass a configured axios instance to be used for ajax functionalities. Only relevant if ajax is used. Recommendation: set it to the current time using new Date() for update |
-| updated         | Boolean\|Date | no                          | Property to trigger reload on current page. Only relevant if ajax is used. |
-| verbose         | Boolean       | no                          | Default is false. Set to true to see debug informations on developer tools in your Browser. |
-| identifier      | String        | no                          | Default is null, for nested tables default is a random string. Use for slots of nested tables |
+| Parameter         | Type          | Required                    | Description                                                  |
+| ----------------- | ------------- | --------------------------- | ------------------------------------------------------------ |
+| config            | Object        | yes                         | The table configuration object. See details below.           |
+| rows              | Array         | yes (if no ajax url is set) | Table rows containing all cells. See details below.          |
+| preSelectedRows   | Array         | no                          | Array of objects{key,value} to set selection of rows from outside. You have to set the key to an unique property of the row e.g. an id and the value to the actual properties' value of the row. If done so, the row will be (pre-) selected. Note: This won't work initially, for initial select use *config.defaultSelected* or *row.selected* properties |
+| dynamicConfig     | Boolean       | no                          | If set to true the Table wont be re-initialized and re-rendered if some values inside the *config* property are changed. This is useful to dynamically set *config* values for columns |
+| filters           | Object        | no                          | The active filters for displaying rows. This has to be an object with filter name as key and filter value as value. Additionally a set of operators can be passed. See example below. |
+| filter-groups     | Array         | no                          | Filter groups with relations. See example below.             |
+| sort-order        | Object        | no                          | Set sorting values and order by default or on the fly. See examples below. |
+| axios             | Object        | no                          | Pass a configured axios instance to be used for ajax functionalities. Only relevant if ajax is used. Recommendation: set it to the current time using new Date() for update |
+| updated           | Boolean\|Date | no                          | Property to trigger reload on current page. Only relevant if ajax is used. |
+| verbose           | Boolean       | no                          | Default is false. Set to true to see debug informations on developer tools in your Browser. |
+| identifier        | String        | no                          | Default is null, for nested tables default is a random string. Use for slots of nested tables |
+| initialSearchTerm | String        | no                          | Default is null, initial search term if search is enabled    |
 
 #### Property *config* properties
 
