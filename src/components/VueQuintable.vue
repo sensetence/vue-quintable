@@ -12,16 +12,31 @@
       <slot name="header"></slot>
     </div>
 
-    <div v-if="configFinal.search" class="mb-3 quintable--search-container row">
+    <div
+      v-if="configFinal.search"
+      class="mb-3 quintable--search-container"
+      :class="configFinal.searchContainerClass"
+    >
       <slot name="before-search"></slot>
-      <div :class="configFinal.searchClass">
-        <input
-          type="search"
-          :placeholder="configFinal.searchPlaceholder"
-          v-model="query"
-          class="form-control"
-        />
-      </div>
+      <slot
+        name="search"
+        :value="query"
+        :setSearchQuery="setSearchQuery"
+        :placeholder="configFinal.searchPlaceholder"
+        :search-class="configFinal.searchClass"
+      >
+        <div
+          class="quintable--search-container--input-container"
+          :class="configFinal.searchClass"
+        >
+          <input
+            type="search"
+            :placeholder="configFinal.searchPlaceholder"
+            v-model="query"
+            class="form-control"
+          />
+        </div>
+      </slot>
       <slot name="after-search"></slot>
     </div>
     <div class="slot slot-after-search quintable--after-search-container">
@@ -1832,6 +1847,11 @@ export default {
         searchClass = this.config.searchClass;
       }
 
+      let searchContainerClass = "row";
+      if (this.config.searchContainerClass) {
+        searchContainerClass = this.config.searchContainerClass;
+      }
+
       let number = 0;
       let headlines = [];
       let breakpoints = [];
@@ -1946,6 +1966,7 @@ export default {
         hideRowToggle: hideRowToggle,
         selectPosition: selectPosition,
         searchClass: searchClass,
+        searchContainerClass: searchContainerClass,
       };
     },
 
@@ -3042,6 +3063,14 @@ export default {
     },
   },
   methods: {
+    /**
+     * sets search query from outside (search slot)
+     *
+     */
+    setSearchQuery(query) {
+      this.query = query;
+    },
+
     /**
      * checks if the passed cell is empty for one or all rows
      *

@@ -32,6 +32,17 @@
         </div>
       </template>
 
+      <template v-slot:search="{ placeholder, value, setSearchQuery }">
+        <div class="col-md-8">
+          <input
+            type="search"
+            :placeholder="placeholder"
+            class="form-control"
+            @input="setSearchQuery($event.target.value)"
+          />
+        </div>
+      </template>
+
       <template v-slot:after-search>
         <div class="col-md-2">
           <button type="button" class="btn btn-secondary w-100 text-center">
