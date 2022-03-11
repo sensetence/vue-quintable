@@ -110,6 +110,7 @@ These points will convince you that VueQuintable is the last table plugin you wi
 You can define some slots to customize the table as you want to.
 
 - header
+- after-search
 - footer
 - no-results
 - loading

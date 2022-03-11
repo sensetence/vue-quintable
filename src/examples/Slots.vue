@@ -16,7 +16,6 @@
         </div>
       </template>
       <template v-slot:header>
-        <p-check class="p-switch" v-model="showRows">Toggle Rows</p-check>
         <hr />
         <div class="alert alert-primary">
           <div class="text-center">
@@ -24,6 +23,29 @@
           </div>
         </div>
       </template>
+
+      <template v-slot:before-search>
+        <div class="col-md-2">
+          <button type="button" class="btn btn-primary w-100 text-center">
+            Button before search
+          </button>
+        </div>
+      </template>
+
+      <template v-slot:after-search>
+        <div class="col-md-2">
+          <button type="button" class="btn btn-secondary w-100 text-center">
+            Button after search
+          </button>
+        </div>
+      </template>
+
+      <template v-slot:after-search-container>
+        <hr />
+        <p-check class="p-switch" v-model="showRows">Toggle Rows</p-check>
+        <hr />
+      </template>
+
       <template v-slot:footer>
         <div class="text-center py-3 px-3 mt-3 bg-info text-white">
           Copyright © 2021 by Quintet Consulting UG (haftungsbeschränkt)
@@ -105,9 +127,10 @@
                             breakpoint:&#x22;md&#x22;,
                         }
                     ],
+                    searchClass:"col-md-8",
+                    showRows:true,
+                    search: true,
                 },
-
-                showRows:true,
             }
         },
         computed:{
@@ -184,8 +207,9 @@ export default {
             breakpoint: "md",
           },
         ],
+        search: true,
+        searchClass: "col-md-8",
       },
-
       showRows: true,
     };
   },

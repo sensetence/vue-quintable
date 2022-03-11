@@ -12,13 +12,20 @@
       <slot name="header"></slot>
     </div>
 
-    <div v-if="configFinal.search" class="mb-3 quintable--search-container">
-      <input
-        type="search"
-        :placeholder="configFinal.searchPlaceholder"
-        v-model="query"
-        class="form-control"
-      />
+    <div v-if="configFinal.search" class="mb-3 quintable--search-container row">
+      <slot name="before-search"></slot>
+      <div :class="configFinal.searchClass">
+        <input
+          type="search"
+          :placeholder="configFinal.searchPlaceholder"
+          v-model="query"
+          class="form-control"
+        />
+      </div>
+      <slot name="after-search"></slot>
+    </div>
+    <div class="slot slot-after-search quintable--after-search-container">
+      <slot name="after-search-container"></slot>
     </div>
     <div class="clearfix quintable--table-container" ref="height-wrapper">
       <table
@@ -1820,6 +1827,11 @@ export default {
         pageRange = this.config.pageRange;
       }
 
+      let searchClass = "col-12";
+      if (this.config.searchClass) {
+        searchClass = this.config.searchClass;
+      }
+
       let number = 0;
       let headlines = [];
       let breakpoints = [];
@@ -1933,6 +1945,7 @@ export default {
         columns: columns,
         hideRowToggle: hideRowToggle,
         selectPosition: selectPosition,
+        searchClass: searchClass,
       };
     },
 
