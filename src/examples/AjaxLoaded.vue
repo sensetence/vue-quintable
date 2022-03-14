@@ -61,7 +61,7 @@
                     this.remoteConfig = null;
                     this.remoteRows = null;
                     this.loading = true;
-                    axios.get("https://quintet.io/vue-quintable-demo/data.php?fetch=true").then((response)=>{
+                    axios.get("https://sensetence.com/vue-quintable-demo/data.php?fetch=true").then((response)=>{
                         this.remoteRows = response.data.rows;
                         this.remoteConfig = response.data.config;
                         this.loading = false;
@@ -101,7 +101,7 @@ export default {
   mounted() {
     this.loading = true;
     axios
-      .get("https://quintet.io/vue-quintable-demo/data.php?fetch=true")
+      .get("https://sensetence.com/vue-quintable-demo/data.php?fetch=true")
       .then((response) => {
         this.remoteRows = response.data.rows;
         this.remoteConfig = response.data.config;
@@ -114,7 +114,7 @@ export default {
       this.remoteRows = null;
       this.loading = true;
       axios
-        .get("https://quintet.io/vue-quintable-demo/data.php?fetch=true")
+        .get("https://sensetence.com/vue-quintable-demo/data.php?fetch=true")
         .then((response) => {
           this.remoteRows = response.data.rows;
           this.remoteConfig = response.data.config;

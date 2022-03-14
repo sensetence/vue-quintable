@@ -59,7 +59,7 @@
 
       <template v-slot:footer>
         <div class="text-center py-3 px-3 mt-3 bg-info text-white">
-          Copyright © 2021 by Quintet Consulting UG (haftungsbeschränkt)
+          Copyright © 2021 by Sensetence UG (haftungsbeschränkt)
         </div>
       </template>
       <template v-slot:no-results>
@@ -102,7 +102,7 @@
         &lt;/template&gt;
         &lt;template v-slot:footer&gt;
             &lt;div class=&quot;text-center py-3 px-3 mt-3 bg-info text-white&quot;&gt;
-                Copyright &#169; 2020 by Quintet Consulting UG (haftungsbeschr&#228;nkt)
+                Copyright &#169; 2020 by Sensetence (haftungsbeschr&#228;nkt)
             &lt;/div&gt;
         &lt;/template&gt;
         &lt;template v-slot:no-results&gt;

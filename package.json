@@ -1,6 +1,6 @@
 {
-  "name": "@quintet/vue-quintable",
-  "version": "2.0.7",
+  "name": "@sensetence/vue-quintable",
+  "version": "2.0.8",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -14,7 +14,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Quintetio/vue-quintable.git"
+    "url": "https://github.com/sensetence/vue-quintable.git"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
@@ -55,7 +55,7 @@
     "webpack": "^4.46.0"
   },
   "license": "MIT",
-  "homepage": "https://quintet.io/vuequintable-post/",
+  "homepage": "https://sensetence.com/vue-quintable/",
   "keywords": [
     "table",
     "tables",

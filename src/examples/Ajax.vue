@@ -58,7 +58,7 @@
                             ],
                             pagination:5,
                             pageSortSelect:true,
-                            ajaxUrl:"https://quintet.io/vue-quintable-demo/data.php"
+                            ajaxUrl:"https://sensetence.com/vue-quintable-demo/data.php"
                         },
                     }
                 },
@@ -125,7 +125,7 @@ export default {
         ],
         pagination: 5,
         pageSortSelect: true,
-        ajaxUrl: "https://quintet.io/vue-quintable-demo/data.php/",
+        ajaxUrl: "https://sensetence.com/vue-quintable-demo/data.php/",
       },
     };
   },

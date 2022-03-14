@@ -31,8 +31,7 @@ For the purposes of this End-User License Agreement:
     by You to a Device, named VueQuintable
 
   * Company (referred to as either "the Company", "We", "Us" or "Our" in this
-    Agreement) refers to Quintet Consulting UG (haftungsbeschränkt), Otto-
-    Lindenmeyer-Str. 28, 86153 Augsburg, Germany.
+    Agreement) refers to Sensetence UG (haftungsbeschränkt), Konrad-Adenauer-Allee 25, 86150 Augsburg, Germany.
 
   * Content refers to content such as text, images, or other information that
     can be posted, uploaded, linked to or otherwise made available by You,
@@ -300,5 +299,5 @@ Contact Us
 
 If you have any questions about this Agreement, You can contact Us:
 
-  * By email: info@quintet.io
+  * By email: info@sensetence.com
 

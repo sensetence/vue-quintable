@@ -1,4 +1,4 @@
-<img alt="vue-quintable" src="https://quintet.io/vue-quintable-demo/vue-table.png" width="265" height="222">
+<img alt="vue-quintable" src="https://sensetence.com/vue-quintable-demo/vue-table.png" width="265" height="222">
 
 | :warning:  VueQuintable version 2.x is for bootstrap 5.x. If you want to use bootstrap 4.x please install latest 1.x VueQuintable version:warning: |
 | :----------------------------------------------------------: |
@@ -7,7 +7,7 @@
 
 VueQuintable is a table wrapper for Vue.js 2.x. It is build with bootstrap 5.x. High configurable, easy to use, flexible and responsive.
 
-[Demo](https://quintet.io/vue-quintable-demo/) 
+[Demo](https://sensetence.com/vue-quintable-demo/) 
 
 ## Getting Started
 
@@ -38,7 +38,7 @@ yarn add axios
 ```shell
 npm install --save bootstrap
 npm install --save @popperjs/core
-npm install --save @quintet/vue-quintable
+npm install --save @sensetence/vue-quintable
 ```
 
 *yarn:*
@@ -46,7 +46,7 @@ npm install --save @quintet/vue-quintable
 ```shell
 yarn add bootstrap
 yarn add @popperjs/core
-yarn add @quintet/vue-quintable
+yarn add @sensetence/vue-quintable
 ```
 
 
@@ -59,8 +59,8 @@ import Vue from 'vue'
 //use bootstrap
 import 'bootstrap/dist/css/bootstrap.css'
 
-import "@quintet/vue-quintable/dist/vue-quintable.css"
-import VueTable from '@quintet/vue-quintable'
+import "@sensetence/vue-quintable/dist/vue-quintable.css"
+import VueTable from '@sensetence/vue-quintable'
 Vue.use(VueTable);
 ```
 
@@ -69,7 +69,7 @@ Vue.use(VueTable);
 You can either install VueQuintable via bower
 
 ```shell
-bower install --save https://github.com/Quintetio/vue-quintable
+bower install --save https://github.com/sensetence/vue-quintable
 ```
 
 or just download the source and include the scripts and styles in dist folder to use VueQuintable for your browser page.
@@ -680,4 +680,4 @@ VueQuintable is free for everyone to use in any project (MIT License).
 
 ## Authors
 
-Quintet Consulting UG - Samuel Zeitler
+Sensetence UG - Samuel Zeitler

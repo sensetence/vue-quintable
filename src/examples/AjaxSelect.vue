@@ -105,7 +105,7 @@
                     selectPosition: &quot;pre&quot;,
                     selectAll: true,
                     prettySelect: true,
-                    ajaxUrl:&quot;https://quintet.io/vue-quintable-demo/data.php/&quot;,
+                    ajaxUrl:&quot;https://sensetence.com/vue-quintable-demo/data.php/&quot;,
 
                 },
 
@@ -221,7 +221,7 @@ export default {
         selectPosition: "pre",
         selectAll: true,
         prettySelect: true,
-        ajaxUrl: "https://quintet.io/vue-quintable-demo/data.php/",
+        ajaxUrl: "https://sensetence.com/vue-quintable-demo/data.php/",
       },
     };
   },
