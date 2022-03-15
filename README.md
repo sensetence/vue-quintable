@@ -3,6 +3,13 @@
 | :warning:  VueQuintable version 2.x is for bootstrap 5.x. If you want to use bootstrap 4.x please install latest 1.x VueQuintable version:warning: |
 | :----------------------------------------------------------: |
 
+| :exclamation:  The `@sensetence/vue-quintable` module is the successor of `@quintet/vue-quintable`. Please note that future development and bug fixes will be provided in the ` @sensetence/vue-quintable` module only. :exclamation: |
+| :----------------------------------------------------------: |
+
+
+
+
+
 # VueQuintable
 
 VueQuintable is a table wrapper for Vue.js 2.x. It is build with bootstrap 5.x. High configurable, easy to use, flexible and responsive.
