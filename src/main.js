@@ -18,7 +18,6 @@ import vueSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 
 import VTooltip from "v-tooltip";
-console.log(VTooltip);
 
 import {
   faCheck,

@@ -1852,6 +1852,15 @@ export default {
         searchContainerClass = this.config.searchContainerClass;
       }
 
+      let requestMethod = "GET";
+      if (
+        this.config.requestMethod &&
+        typeof this.config.requestMethod === "string" &&
+        ["POST", "GET"].includes(this.config.requestMethod.toUpperCase())
+      ) {
+        requestMethod = this.config.requestMethod.toUpperCase();
+      }
+
       let number = 0;
       let headlines = [];
       let breakpoints = [];
@@ -1967,6 +1976,7 @@ export default {
         selectPosition: selectPosition,
         searchClass: searchClass,
         searchContainerClass: searchContainerClass,
+        requestMethod: requestMethod,
       };
     },
 
@@ -4033,10 +4043,17 @@ export default {
 
       this.cancelSource = this.axiosFinal.CancelToken.source();
 
+      const headers = {
+        "Content-Type": "application/json",
+      };
+
       this.axiosFinal
-        .get(this.configFinal.ajaxUrl, {
-          params: params,
+        .request(this.configFinal.ajaxUrl, {
+          method: this.configFinal.requestMethod,
+          params: this.configFinal.requestMethod === "GET" ? params : null,
+          data: this.configFinal.requestMethod === "POST" ? params : null,
           cancelToken: this.cancelSource.token,
+          headers,
         })
         .then((response) => {
           if (

@@ -98,6 +98,13 @@
                             headline: &quot;Job Title&quot;,
                             breakpoint: &quot;md&quot;,
 
+                        }, {
+                            headline: &quot;City&quot;,
+                            breakpoint: &quot;md&quot;,
+                        }, {
+                            headline: &quot;Address&quot;,
+                            breakpoint: &quot;md&quot;,
+
                         }
                     ],
                     pagination:5,
@@ -213,6 +220,14 @@ export default {
           },
           {
             headline: "Job Title",
+            breakpoint: "md",
+          },
+          {
+            headline: "City",
+            breakpoint: "md",
+          },
+          {
+            headline: "Address",
             breakpoint: "md",
           },
         ],

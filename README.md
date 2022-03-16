@@ -238,7 +238,8 @@ The following will give you an overview how to configure the VueQuintable for yo
 | pageSort               | Boolean                         | no       | *sort* is enabled on at least one column                     | If set to true sorting on current page enabled               | false            | true                                  |
 | pageSortSelect         | Boolean                         | no       | *sort* is enabled on at least one column                     | If set to true user will be allowed to enable and disable *page sort* | false            | true                                  |
 | pageSortPlaceholder    | String                          | no       | *sort* is enabled on at least one column and *page sort select* is enabled | Placeholder for page sort description                        | "Page sort"      | "Toggle page"                         |
-| ajaxUrl                | String\|Boolean                 | no       | -                                                            | If set ajax will be useed for search/filter/sort/pagination  | false            | "http://your.server.url/api/endpoint" |
+| ajaxUrl                | String\|Boolean                 | no       | -                                                            | If set ajax will be used for search/filter/sort/pagination  | false            | "http://your.server.url/api/endpoint" |
+| requestMethod          | String{"GET"\|"POST"}             | no       | *ajaxUrl* is set                                             | Request method for ajax request                             | "GET"            | "POST" |
 
 ##### Property *columns* for property *config* properties
 

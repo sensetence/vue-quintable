@@ -54,11 +54,19 @@
                                     headline: "Job Title",
                                     breakpoint: "md",
                                     sort: true,
+                                }, {
+                                    headline: &quot;City&quot;,
+                                    breakpoint: &quot;md&quot;,
+                                }, {
+                                    headline: &quot;Address&quot;,
+                                    breakpoint: &quot;md&quot;,
+
                                 }
                             ],
                             pagination:5,
                             pageSortSelect:true,
-                            ajaxUrl:"https://sensetence.com/vue-quintable-demo/data.php"
+                            ajaxUrl:"https://sensetence.com/vue-quintable-demo/data.php",
+                            requestMethod: "POST",
                         },
                     }
                 },
@@ -122,10 +130,19 @@ export default {
             breakpoint: "md",
             sort: true,
           },
+          {
+            headline: "City",
+            breakpoint: "md",
+          },
+          {
+            headline: "Address",
+            breakpoint: "md",
+          },
         ],
         pagination: 5,
         pageSortSelect: true,
-        ajaxUrl: "https://sensetence.com/vue-quintable-demo/data.php/",
+        ajaxUrl: "https://sensetence.com/vue-quintable-demo/data.php",
+        requestMethod: "POST",
       },
     };
   },
