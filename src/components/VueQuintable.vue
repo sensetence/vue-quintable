@@ -1900,7 +1900,18 @@ export default {
           }
 
           if (this.config.columns[i] && this.config.columns[i].sort) {
-            sorts[i] = true;
+            if (
+              this.config.columns[i].firstSortDirection &&
+              typeof this.config.columns[i].firstSortDirection === "string" &&
+              ["DESC", "ASC"].includes(
+                this.config.columns[i].firstSortDirection.toUpperCase()
+              )
+            ) {
+              sorts[i] =
+                this.config.columns[i].firstSortDirection.toUpperCase();
+            } else {
+              sorts[i] = true;
+            }
           } else {
             sorts[i] = false;
           }
@@ -3713,7 +3724,10 @@ export default {
         item = {
           headline: this.configFinal.headlines[index],
           index: index,
-          asc: true,
+          asc:
+            this.configFinal.sorts[index] === true
+              ? true
+              : this.configFinal.sorts[index] === "ASC",
           order: this.numberOfSorts,
         };
       } else {

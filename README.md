@@ -251,6 +251,7 @@ The following will give you an overview how to configure the VueQuintable for yo
 | hidden                 | Boolean  | true\|false                         | -                                             | If set to true the column will not be displayed in any case. Highly recommended to use only when *dynamicConfig* is set to to true. |
 | ignoreEmpty            | Boolean  | true\|false                         | *config* property *hideEmptyColumns*  enabled | The column will never be hidden automatically due to emptiness |
 | sort                   | Boolean  | true\|false                         | -                                             | If set to true, this column will be sortable                 |
+| firstSortDirection | String | "ASC"\|"DESC" | *sort* is set | Indicates the first direction of sorting when sort is activated for a column by clicking on the sort header. Default: "ASC" |
 | breakpoint             | String   | "xs"\|"sm"\|"md"\|"lg"\|"xl"\|"all" | -                                             | Bootstrap breakpoint from which descending the column will be displayed as additional row |
 | showHeadlineBreakpoint | String   | "xs"\|"sm"\|"md"\|"lg"\|"xl"\|"all" | *headline* is set                             | Bootstrap breakpoint from which descending the columns headline will be shown |
 | hideHeadlineBreakpoint | String   | "xs"\|"sm"\|"md"\|"lg"\|"xl"\|"all" | *headline* is set                             | Bootstrap breakpoint from which descending the columns headline will be hidden |

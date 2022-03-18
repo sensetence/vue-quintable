@@ -48,9 +48,11 @@
 
                         }, {
                             headline: "Birth Place",
+                            sort: true,
                         }, {
                             headline: "Job",
-                            sort:true
+                            sort:true,
+                            firstSortDirection: "DESC",
                         }
                     ],
                     multiSort:true,
@@ -129,10 +131,12 @@ export default {
           },
           {
             headline: "Birth Place",
+            sort: true,
           },
           {
             headline: "Job",
             sort: true,
+            firstSortDirection: "DESC",
           },
         ],
         multiSort: false,
