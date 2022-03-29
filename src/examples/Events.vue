@@ -92,6 +92,7 @@
                     pagination:5,
                     rowsSelect:true,
                     search:true,
+                    searchLength: 2,
                 }
 
             }
@@ -170,6 +171,7 @@ export default {
         pagination: 5,
         rowsSelect: true,
         search: true,
+        searchLength: 2,
       },
       eventsLog: [],
     };

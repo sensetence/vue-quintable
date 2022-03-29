@@ -1586,6 +1586,7 @@ export default {
       uuid: randomUUID(),
       loaderHeight: 0,
       defaultOperator: "equal",
+      lastSearchQueryUpdated: null,
       operatorFunctions: {
         equal: (a, b) => {
           return b === a;
@@ -2907,8 +2908,15 @@ export default {
         this.loadViaAjax(true, "QUERY");
       }
 
-      if (val.length >= this.configFinal.searchLength) {
+      if (
+        val.length >= this.configFinal.searchLength &&
+        this.lastSearchQueryUpdated !== val
+      ) {
         this.$emit("update:search", val, "update:search");
+        this.lastSearchQueryUpdated = val;
+      } else if (this.lastSearchQueryUpdated !== null) {
+        this.lastSearchQueryUpdated = null;
+        this.$emit("update:search", null, "update:search");
       }
 
       if (this.pageSort) {
