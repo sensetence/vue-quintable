@@ -2377,6 +2377,13 @@ module.exports = version;
 
 /***/ }),
 
+/***/ "2d27":
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
 /***/ "2d7c":
 /***/ (function(module, exports) {
 
@@ -4857,6 +4864,71 @@ module.exports = nativeCreate;
 
 /***/ }),
 
+/***/ "60da":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var DESCRIPTORS = __webpack_require__("83ab");
+var uncurryThis = __webpack_require__("e330");
+var call = __webpack_require__("c65b");
+var fails = __webpack_require__("d039");
+var objectKeys = __webpack_require__("df75");
+var getOwnPropertySymbolsModule = __webpack_require__("7418");
+var propertyIsEnumerableModule = __webpack_require__("d1e7");
+var toObject = __webpack_require__("7b0b");
+var IndexedObject = __webpack_require__("44ad");
+
+// eslint-disable-next-line es/no-object-assign -- safe
+var $assign = Object.assign;
+// eslint-disable-next-line es/no-object-defineproperty -- required for testing
+var defineProperty = Object.defineProperty;
+var concat = uncurryThis([].concat);
+
+// `Object.assign` method
+// https://tc39.es/ecma262/#sec-object.assign
+module.exports = !$assign || fails(function () {
+  // should have correct order of operations (Edge bug)
+  if (DESCRIPTORS && $assign({ b: 1 }, $assign(defineProperty({}, 'a', {
+    enumerable: true,
+    get: function () {
+      defineProperty(this, 'b', {
+        value: 3,
+        enumerable: false
+      });
+    }
+  }), { b: 2 })).b !== 1) return true;
+  // should work with symbols and should have deterministic property order (V8 bug)
+  var A = {};
+  var B = {};
+  // eslint-disable-next-line es/no-symbol -- safe
+  var symbol = Symbol();
+  var alphabet = 'abcdefghijklmnopqrst';
+  A[symbol] = 7;
+  alphabet.split('').forEach(function (chr) { B[chr] = chr; });
+  return $assign({}, A)[symbol] != 7 || objectKeys($assign({}, B)).join('') != alphabet;
+}) ? function assign(target, source) { // eslint-disable-line no-unused-vars -- required for `.length`
+  var T = toObject(target);
+  var argumentsLength = arguments.length;
+  var index = 1;
+  var getOwnPropertySymbols = getOwnPropertySymbolsModule.f;
+  var propertyIsEnumerable = propertyIsEnumerableModule.f;
+  while (argumentsLength > index) {
+    var S = IndexedObject(arguments[index++]);
+    var keys = getOwnPropertySymbols ? concat(objectKeys(S), getOwnPropertySymbols(S)) : objectKeys(S);
+    var length = keys.length;
+    var j = 0;
+    var key;
+    while (length > j) {
+      key = keys[j++];
+      if (!DESCRIPTORS || call(propertyIsEnumerable, S, key)) T[key] = S[key];
+    }
+  } return T;
+} : $assign;
+
+
+/***/ }),
+
 /***/ "60ed":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6341,17 +6413,6 @@ function stackGet(key) {
 }
 
 module.exports = stackGet;
-
-
-/***/ }),
-
-/***/ "8092":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueQuintable_vue_vue_type_style_index_0_id_4c0d7c1c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("d27f");
-/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueQuintable_vue_vue_type_style_index_0_id_4c0d7c1c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueQuintable_vue_vue_type_style_index_0_id_4c0d7c1c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* unused harmony reexport * */
 
 
 /***/ }),
@@ -8219,23 +8280,24 @@ module.exports = function (METHOD_NAME, argument) {
 
 "use strict";
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"163d9554-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/VueQuintable.vue?vue&type=template&id=4c0d7c1c&scoped=true&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"table-wrapper quintable"},[_c('div',{staticClass:"breakpoints quintable--breakpoints"},[_c('div',{ref:"xs"}),_c('div',{ref:"sm",staticClass:"d-none d-sm-block"}),_c('div',{ref:"md",staticClass:"d-none d-md-block"}),_c('div',{ref:"lg",staticClass:"d-none d-lg-block"}),_c('div',{ref:"xl",staticClass:"d-none d-xl-block"})]),_c('div',{staticClass:"header slot slot-header quintable--header"},[_vm._t("header")],2),(_vm.configFinal.search)?_c('div',{staticClass:"mb-3 quintable--search-container",class:_vm.configFinal.searchContainerClass},[_vm._t("before-search"),_vm._t("search",function(){return [_c('div',{staticClass:"quintable--search-container--input-container",class:_vm.configFinal.searchClass},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.query),expression:"query"}],staticClass:"form-control",attrs:{"type":"search","placeholder":_vm.configFinal.searchPlaceholder},domProps:{"value":(_vm.query)},on:{"input":function($event){if($event.target.composing){ return; }_vm.query=$event.target.value}}})])]},{"value":_vm.query,"setSearchQuery":_vm.setSearchQuery,"placeholder":_vm.configFinal.searchPlaceholder,"searchClass":_vm.configFinal.searchClass}),_vm._t("after-search")],2):_vm._e(),_c('div',{staticClass:"slot slot-after-search quintable--after-search-container"},[_vm._t("after-search-container")],2),_c('div',{ref:"height-wrapper",staticClass:"clearfix quintable--table-container"},[(!_vm.ajaxLoading)?_c('table',{staticClass:"vue-quintable table quintable--table-container--table",class:_vm.tableClasses},[(_vm.configFinal.headlines.length)?_c('thead',[_c('tr',{staticClass:"\n            vue-quintable-header-row\n            quintable--table-container--table--header-row\n          "},[(_vm.hasGeneratedRows && !_vm.configFinal.hideRowToggle)?_c('th',{staticClass:"\n              placeholder-th\n              toggle-th\n              quintable--table-container--table--header-row--placeholder-th\n            "},[_c('wbr')]):_vm._e(),(_vm.configFinal.select && _vm.configFinal.selectPosition === 'pre')?_c('th',{staticClass:"\n              select-th\n              pre\n              quintable--table-container--table--header-row--select-th\n              quintable--table-container--table--header-row--select-th--pre\n            "},[(_vm.configFinal.selectAll && !_vm.noRows)?[(_vm.configFinal.prettySelect)?_c('p-check',{staticClass:"p-icon p-smooth",attrs:{"name":"check"},on:{"change":function($event){return _vm.checkAll()}},model:{value:(_vm.allSelectedProperty),callback:function ($$v) {_vm.allSelectedProperty=$$v},expression:"allSelectedProperty"}},[_c('template',{slot:"extra"},[_c('span',[(_vm.allSelectedProperty)?_c('font-awesome-icon',{staticClass:"text-success icon-check",attrs:{"icon":"check"}}):_vm._e()],1),_c('span',[(_vm.someSelected && !_vm.allSelectedProperty)?_c('font-awesome-icon',{staticClass:"text-success icon-check",attrs:{"icon":"square"}}):_vm._e()],1)])],2):_c('label',{staticClass:"mb-0 mt-0"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.allSelectedProperty),expression:"allSelectedProperty"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.allSelectedProperty)?_vm._i(_vm.allSelectedProperty,null)>-1:(_vm.allSelectedProperty)},on:{"change":[function($event){var $$a=_vm.allSelectedProperty,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.allSelectedProperty=$$a.concat([$$v]))}else{$$i>-1&&(_vm.allSelectedProperty=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.allSelectedProperty=$$c}},function($event){return _vm.checkAll()}]}})])]:_vm._e()],2):_vm._e(),_vm._l((_vm.configFinal.headlines),function(headline,hIndex){return _c('th',{directives:[{name:"show",rawName:"v-show",value:(
-              ((_vm.configFinal.columns[hIndex] &&
-                !_vm.configFinal.columns[hIndex].breakpoint) ||
-                _vm.hiddenBreakpoints.findIndex(
-                  function (x) { return _vm.configFinal.columns[hIndex] &&
-                    x === _vm.configFinal.columns[hIndex].breakpoint; }
-                ) === -1) &&
-              !_vm.configFinal.columns[hIndex].sticky &&
-              !_vm.configFinal.hiddenCols[hIndex] &&
-              !_vm.emptyColumns[hIndex]
-            ),expression:"\n              ((configFinal.columns[hIndex] &&\n                !configFinal.columns[hIndex].breakpoint) ||\n                hiddenBreakpoints.findIndex(\n                  (x) =>\n                    configFinal.columns[hIndex] &&\n                    x === configFinal.columns[hIndex].breakpoint\n                ) === -1) &&\n              !configFinal.columns[hIndex].sticky &&\n              !configFinal.hiddenCols[hIndex] &&\n              !emptyColumns[hIndex]\n            "}],key:'headline-' + hIndex,class:_vm.headerClass[hIndex],attrs:{"title":_vm.configFinal.columns[hIndex].title},on:{"click":function($event){return _vm.setSortColumn(hIndex)}}},[(_vm.showHeadlines[hIndex])?_c('span',{staticClass:"\n                headline\n                quintable--table-container--table--header-row--th--headline\n              ",domProps:{"innerHTML":_vm._s(headline)}}):_c('span',{staticClass:"\n                headline\n                quintable--table-container--table--header-row--th--headline\n              "},[_c('wbr')]),(_vm.configFinal.sorts[hIndex])?_c('span',{staticClass:"\n                sorting-icon\n                ms-2\n                quintable--table-container--table--header-row--th--sorting-icon\n              "},[(!_vm.currentSortIndexes[hIndex])?_c('font-awesome-icon',{staticClass:"text-primary",attrs:{"icon":"sort"}}):_vm._e(),(
-                  _vm.currentSortIndexes[hIndex] && _vm.currentSortIndexes[hIndex].asc
-                )?_c('font-awesome-icon',{staticClass:"text-primary",attrs:{"icon":"sort-amount-down-alt"}}):_vm._e(),(
-                  _vm.currentSortIndexes[hIndex] &&
-                  !_vm.currentSortIndexes[hIndex].asc
-                )?_c('font-awesome-icon',{staticClass:"text-primary",attrs:{"icon":"sort-amount-down"}}):_vm._e(),(_vm.currentSortIndexes[hIndex])?_c('span',{staticClass:"ms-1 text-muted",on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.removeSort(hIndex)}}},[(_vm.numberOfSorts > 1)?_c('span',{staticClass:"badge bg-info text-white"},[_vm._v(" "+_vm._s(_vm.currentSortIndexes[hIndex].order + 1)+" ")]):_c('small',[_c('font-awesome-icon',{attrs:{"icon":"times"}})],1)]):_vm._e()],1):_vm._e()])}),(_vm.configFinal.select && _vm.configFinal.selectPosition === 'post')?_c('th',{staticClass:"\n              select-th\n              post\n              quintable--table-container--table--header-row--select-th\n              quintable--table-container--table--header-row--select-th--post\n            "},[(_vm.configFinal.selectAll && !_vm.noRows)?[(_vm.configFinal.prettySelect)?_c('p-check',{staticClass:"p-icon p-smooth",attrs:{"name":"check"},on:{"change":function($event){return _vm.checkAll()}},model:{value:(_vm.allSelectedProperty),callback:function ($$v) {_vm.allSelectedProperty=$$v},expression:"allSelectedProperty"}},[_c('template',{slot:"extra"},[_c('span',[(_vm.allSelectedProperty)?_c('font-awesome-icon',{staticClass:"text-success icon-check",attrs:{"icon":"check"}}):_vm._e()],1),_c('span',[(_vm.someSelected && !_vm.allSelectedProperty)?_c('font-awesome-icon',{staticClass:"text-success icon-check",attrs:{"icon":"square"}}):_vm._e()],1)])],2):_c('label',{staticClass:"mb-0 mt-0"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.allSelectedProperty),expression:"allSelectedProperty"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.allSelectedProperty)?_vm._i(_vm.allSelectedProperty,null)>-1:(_vm.allSelectedProperty)},on:{"change":[function($event){var $$a=_vm.allSelectedProperty,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.allSelectedProperty=$$a.concat([$$v]))}else{$$i>-1&&(_vm.allSelectedProperty=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.allSelectedProperty=$$c}},function($event){return _vm.checkAll()}]}})])]:_vm._e()],2):_vm._e()],2)]):_vm._e(),_c('tbody',{staticClass:"quintable--table-container--table--tbody",on:{"mouseleave":_vm.onMouseleaveTable}},[_vm._l((_vm.visibleRowIndexes),function(rIndex){return [_c('tr',{directives:[{name:"tooltip",rawName:"v-tooltip",value:({
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"163d9554-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--1-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/VueQuintable.vue?vue&type=template&id=06d9fd12&scoped=true&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"table-wrapper quintable"},[_c('div',{staticClass:"breakpoints quintable--breakpoints"},[_c('div',{ref:"xs"}),_c('div',{ref:"sm",staticClass:"d-none d-sm-block"}),_c('div',{ref:"md",staticClass:"d-none d-md-block"}),_c('div',{ref:"lg",staticClass:"d-none d-lg-block"}),_c('div',{ref:"xl",staticClass:"d-none d-xl-block"})]),_c('div',{staticClass:"header slot slot-header quintable--header"},[_vm._t("header")],2),(_vm.configFinal.search)?_c('div',{staticClass:"mb-3 quintable--search-container",class:_vm.configFinal.searchContainerClass},[_vm._t("before-search"),_vm._t("search",function(){return [_c('div',{staticClass:"quintable--search-container--input-container",class:_vm.configFinal.searchClass},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.query),expression:"query"}],staticClass:"form-control",attrs:{"type":"search","placeholder":_vm.configFinal.searchPlaceholder},domProps:{"value":(_vm.query)},on:{"input":function($event){if($event.target.composing){ return; }_vm.query=$event.target.value}}})])]},{"value":_vm.query,"setSearchQuery":_vm.setSearchQuery,"placeholder":_vm.configFinal.searchPlaceholder,"searchClass":_vm.configFinal.searchClass}),_vm._t("after-search")],2):_vm._e(),_c('div',{staticClass:"slot slot-after-search quintable--after-search-container"},[_vm._t("after-search-container")],2),_c('div',{ref:"height-wrapper",staticClass:"clearfix quintable--table-container"},[(!_vm.ajaxLoading)?_c('table',{staticClass:"vue-quintable table quintable--table-container--table",class:_vm.tableClasses},[(_vm.configFinal.headlines.length)?_c('thead',[_c('tr',{staticClass:"\n            vue-quintable-header-row\n            quintable--table-container--table--header-row\n          "},[(_vm.hasGeneratedRows && !_vm.configFinal.hideRowToggle)?_c('th',{staticClass:"\n              placeholder-th\n              toggle-th\n              quintable--table-container--table--header-row--placeholder-th\n            "},[_c('wbr')]):_vm._e(),(_vm.configFinal.select && _vm.configFinal.selectPosition === 'pre')?_c('th',{staticClass:"\n              select-th\n              pre\n              quintable--table-container--table--header-row--select-th\n              quintable--table-container--table--header-row--select-th--pre\n            "},[(_vm.configFinal.selectAll && !_vm.noRows)?[(_vm.configFinal.prettySelect)?_c('p-check',{staticClass:"p-icon p-smooth",attrs:{"name":"check"},on:{"change":function($event){return _vm.checkAll()}},model:{value:(_vm.allSelectedProperty),callback:function ($$v) {_vm.allSelectedProperty=$$v},expression:"allSelectedProperty"}},[_c('template',{slot:"extra"},[_c('span',[(_vm.allSelectedProperty)?_c('font-awesome-icon',{staticClass:"text-success icon-check",attrs:{"icon":"check"}}):_vm._e()],1),_c('span',[(_vm.someSelected && !_vm.allSelectedProperty)?_c('font-awesome-icon',{staticClass:"text-success icon-check",attrs:{"icon":"square"}}):_vm._e()],1)])],2):_c('label',{staticClass:"mb-0 mt-0"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.allSelectedProperty),expression:"allSelectedProperty"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.allSelectedProperty)?_vm._i(_vm.allSelectedProperty,null)>-1:(_vm.allSelectedProperty)},on:{"change":[function($event){var $$a=_vm.allSelectedProperty,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.allSelectedProperty=$$a.concat([$$v]))}else{$$i>-1&&(_vm.allSelectedProperty=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.allSelectedProperty=$$c}},function($event){return _vm.checkAll()}]}})])]:_vm._e()],2):_vm._e(),_vm._l((_vm.configFinal.headlines),function(headline,hIndex){return [(
+                ((_vm.configFinal.columns[hIndex] &&
+                  !_vm.configFinal.columns[hIndex].breakpoint) ||
+                  _vm.hiddenBreakpoints.findIndex(
+                    function (x) { return _vm.configFinal.columns[hIndex] &&
+                      x === _vm.configFinal.columns[hIndex].breakpoint; }
+                  ) === -1) &&
+                !_vm.configFinal.columns[hIndex].sticky &&
+                !_vm.configFinal.hiddenCols[hIndex] &&
+                !_vm.emptyColumns[hIndex]
+              )?_c('th',{key:'headline-' + hIndex,class:_vm.headerClass[hIndex],attrs:{"title":_vm.configFinal.columns[hIndex].title},on:{"click":function($event){return _vm.setSortColumn(hIndex)}}},[(_vm.showHeadlines[hIndex])?_c('span',{staticClass:"\n                  headline\n                  quintable--table-container--table--header-row--th--headline\n                ",domProps:{"innerHTML":_vm._s(headline)}}):_c('span',{staticClass:"\n                  headline\n                  quintable--table-container--table--header-row--th--headline\n                "},[_c('wbr')]),(_vm.configFinal.sorts[hIndex])?_c('span',{staticClass:"\n                  sorting-icon\n                  ms-2\n                  quintable--table-container--table--header-row--th--sorting-icon\n                "},[(!_vm.currentSortIndexes[hIndex])?_c('font-awesome-icon',{staticClass:"text-primary",attrs:{"icon":"sort"}}):_vm._e(),(
+                    _vm.currentSortIndexes[hIndex] &&
+                    _vm.currentSortIndexes[hIndex].asc
+                  )?_c('font-awesome-icon',{staticClass:"text-primary",attrs:{"icon":"sort-amount-down-alt"}}):_vm._e(),(
+                    _vm.currentSortIndexes[hIndex] &&
+                    !_vm.currentSortIndexes[hIndex].asc
+                  )?_c('font-awesome-icon',{staticClass:"text-primary",attrs:{"icon":"sort-amount-down"}}):_vm._e(),(_vm.currentSortIndexes[hIndex])?_c('span',{staticClass:"ms-1 text-muted",on:{"click":function($event){$event.stopPropagation();$event.preventDefault();return _vm.removeSort(hIndex)}}},[(_vm.numberOfSorts > 1)?_c('span',{staticClass:"badge bg-info text-white"},[_vm._v(" "+_vm._s(_vm.currentSortIndexes[hIndex].order + 1)+" ")]):_c('small',[_c('font-awesome-icon',{attrs:{"icon":"times"}})],1)]):_vm._e()],1):_vm._e()]):_vm._e()]}),(_vm.configFinal.select && _vm.configFinal.selectPosition === 'post')?_c('th',{staticClass:"\n              select-th\n              post\n              quintable--table-container--table--header-row--select-th\n              quintable--table-container--table--header-row--select-th--post\n            "},[(_vm.configFinal.selectAll && !_vm.noRows)?[(_vm.configFinal.prettySelect)?_c('p-check',{staticClass:"p-icon p-smooth",attrs:{"name":"check"},on:{"change":function($event){return _vm.checkAll()}},model:{value:(_vm.allSelectedProperty),callback:function ($$v) {_vm.allSelectedProperty=$$v},expression:"allSelectedProperty"}},[_c('template',{slot:"extra"},[_c('span',[(_vm.allSelectedProperty)?_c('font-awesome-icon',{staticClass:"text-success icon-check",attrs:{"icon":"check"}}):_vm._e()],1),_c('span',[(_vm.someSelected && !_vm.allSelectedProperty)?_c('font-awesome-icon',{staticClass:"text-success icon-check",attrs:{"icon":"square"}}):_vm._e()],1)])],2):_c('label',{staticClass:"mb-0 mt-0"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.allSelectedProperty),expression:"allSelectedProperty"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.allSelectedProperty)?_vm._i(_vm.allSelectedProperty,null)>-1:(_vm.allSelectedProperty)},on:{"change":[function($event){var $$a=_vm.allSelectedProperty,$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.allSelectedProperty=$$a.concat([$$v]))}else{$$i>-1&&(_vm.allSelectedProperty=$$a.slice(0,$$i).concat($$a.slice($$i+1)))}}else{_vm.allSelectedProperty=$$c}},function($event){return _vm.checkAll()}]}})])]:_vm._e()],2):_vm._e()],2)]):_vm._e(),_c('tbody',{staticClass:"quintable--table-container--table--tbody",on:{"mouseleave":_vm.onMouseleaveTable}},[_vm._l((_vm.visibleRowIndexes),function(rIndex){return [_c('tr',{directives:[{name:"tooltip",rawName:"v-tooltip",value:({
               placement: 'top',
               content: _vm.rowsFinal[rIndex].tooltip,
               trigger: _vm.rowsFinal[rIndex].tooltip ? 'hover' : 'manual',
@@ -8256,23 +8318,9 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
                 _vm.configFinal.select && _vm.configFinal.selectPosition === 'pre'
               )?_c('td',{staticClass:"\n                select-td\n                pre\n                quintable--table-container--table--tbody--row--select-td\n                quintable--table-container--table--tbody--row--select-td--pre\n              ",class:{ 'disabled-select': _vm.rowsFinal[rIndex].disableSelect }},[(!_vm.rowsFinal[rIndex].disableSelect)?[(_vm.configFinal.prettySelect)?_c('p-check',{staticClass:"p-icon",attrs:{"name":"check"},on:{"change":function($event){return _vm.checkListener($event, rIndex)}},model:{value:(_vm.selected[rIndex]),callback:function ($$v) {_vm.$set(_vm.selected, rIndex, $$v)},expression:"selected[rIndex]"}},[_c('template',{slot:"extra"},[_c('span',[(_vm.selected[rIndex])?_c('font-awesome-icon',{staticClass:"text-success icon-check",attrs:{"icon":"check"}}):_vm._e()],1)])],2):_c('label',{staticClass:"mb-0 mt-0"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.selected[rIndex]),expression:"selected[rIndex]"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.selected[rIndex])?_vm._i(_vm.selected[rIndex],null)>-1:(_vm.selected[rIndex])},on:{"change":[function($event){var $$a=_vm.selected[rIndex],$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.$set(_vm.selected, rIndex, $$a.concat([$$v])))}else{$$i>-1&&(_vm.$set(_vm.selected, rIndex, $$a.slice(0,$$i).concat($$a.slice($$i+1))))}}else{_vm.$set(_vm.selected, rIndex, $$c)}},function($event){return _vm.checkListener($event, rIndex)}]}})])]:_vm._e()],2):_vm._e(),_vm._l((_vm.rowsFinal[rIndex].cells
                 ? _vm.rowsFinal[rIndex].cells
-                : _vm.rowsFinal[rIndex]),function(cell,cIndex){return _c('td',{directives:[{name:"tooltip",rawName:"v-tooltip",value:({
-                placement: 'left',
-                content: cell.tooltip,
-                trigger: cell.tooltip ? 'hover' : 'manual',
-              }),expression:"{\n                placement: 'left',\n                content: cell.tooltip,\n                trigger: cell.tooltip ? 'hover' : 'manual',\n              }"},{name:"show",rawName:"v-show",value:(
-                !_vm.configFinal.hiddenCols[cIndex] &&
-                !_vm.emptyColumns[cIndex] &&
-                _vm.configFinal.columns[cIndex] &&
-                cell &&
-                _vm.hiddenBreakpoints.findIndex(
-                  function (x) { return x === _vm.configFinal.columns[cIndex].breakpoint; }
-                ) === -1 &&
-                _vm.configFinal.columns[cIndex].breakpoint !== 'all' &&
-                !_vm.configFinal.stickyCols[cIndex]
-              ),expression:"\n                !configFinal.hiddenCols[cIndex] &&\n                !emptyColumns[cIndex] &&\n                configFinal.columns[cIndex] &&\n                cell &&\n                hiddenBreakpoints.findIndex(\n                  (x) => x === configFinal.columns[cIndex].breakpoint\n                ) === -1 &&\n                configFinal.columns[cIndex].breakpoint !== 'all' &&\n                !configFinal.stickyCols[cIndex]\n              "}],key:'vue-quintable-' + _vm.uuid + '-cell-' + rIndex + '-' + cIndex,staticClass:"\n                vue-quintable-cell\n                quintable--table-container--table--tbody--row--cell\n              ",class:_vm.cellClassesParsed[rIndex][cIndex] +
-                ' ' +
-                _vm.configFinal.columnClasses[cIndex],attrs:{"id":'vue-quintable-' + _vm.uuid + '-cell-' + rIndex + '-' + cIndex},on:{"click":function($event){return _vm.onCellClick(cell)}}},[(
+                : _vm.rowsFinal[rIndex]),function(cell,cIndex){return [(
+                  !_vm.configFinal.hiddenCols[cIndex] &&
+                  !_vm.emptyColumns[cIndex] &&
                   _vm.configFinal.columns[cIndex] &&
                   cell &&
                   _vm.hiddenBreakpoints.findIndex(
@@ -8280,21 +8328,35 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
                   ) === -1 &&
                   _vm.configFinal.columns[cIndex].breakpoint !== 'all' &&
                   !_vm.configFinal.stickyCols[cIndex]
-                )?[_vm._t('cell-complete' + (_vm.identifier ? '-' + _vm.identifier : ''),function(){return [_vm._t('cell-content' + (_vm.identifier ? '-' + _vm.identifier : ''),function(){return [(_vm.configFinal.columns[cIndex].cellFormatter)?[(cell.quintable)?_c('div',{staticClass:"\n                          cell-inner\n                          quintable--table-container--table--tbody--row--cell--inner-cell\n                          quintable--table-container--table--tbody--row--cell--inner-cell--quintable\n                        "},[_c('VueQuintable',{staticClass:"\n                            quintable-sub-table\n                            quintable--table-container--table--tbody--row--cell--inner-cell--quintable--sub-table\n                          ",attrs:{"table-classes":cell.quintable.tableClasses,"nested":true,"identifier":cell.quintable.identifier
-                              ? cell.quintable.identifier
-                              : _vm.generateIdentifier(),"config":cell.quintable.config,"rows":cell.quintable.rows,"verbose":_vm.verbose,"filter-groups":cell.quintable.filterGroups
-                              ? cell.quintable.filterGroups
-                              : [],"filters":cell.quintable.filters
-                              ? cell.quintable.filters
-                              : {}},scopedSlots:_vm._u([_vm._l((Object.keys(_vm.$scopedSlots)),function(slot){return {key:slot,fn:function(scope){return [_vm._t(slot,null,null,scope)]}}})],null,true),model:{value:(cell.quintable.value),callback:function ($$v) {_vm.$set(cell.quintable, "value", $$v)},expression:"cell.quintable.value"}})],1):(cell.component)?_c('div',{staticClass:"\n                          cell-inner\n                          quintable--table-container--table--tbody--row--cell--inner-cell\n                          quintable--table-container--table--tbody--row--cell--inner-cell--component\n                        "},[_c(cell.component.name,_vm._b({tag:"component",on:{"action":_vm.handleComponentEvent}},'component',cell.component.props,false))],1):(
-                          _vm.cellFormatters(cIndex, cell).type === 'html'
-                        )?_c('div',{staticClass:"\n                          cell-inner\n                          quintable--table-container--table--tbody--row--cell--inner-cell\n                          quintable--table-container--table--tbody--row--cell--inner-cell--formatted-html\n                        ",domProps:{"innerHTML":_vm._s(_vm.cellFormatters(cIndex, cell).value)}}):_c('div',{staticClass:"\n                          cell-inner\n                          quintable--table-container--table--tbody--row--cell--inner-cell\n                          quintable--table-container--table--tbody--row--cell--inner-cell--formatted-value\n                        "},[_vm._v(" "+_vm._s(_vm.cellFormatters(cIndex, cell).value)+" ")])]:[(cell.html)?_c('div',{staticClass:"\n                          cell-inner\n                          quintable--table-container--table--tbody--row--cell--inner-cell\n                          quintable--table-container--table--tbody--row--cell--inner-cell-html\n                        ",domProps:{"innerHTML":_vm._s(cell.html)}}):_vm._e(),(cell.text)?_c('div',{staticClass:"\n                          cell-inner\n                          quintable--table-container--table--tbody--row--cell--inner-cell\n                          quintable--table-container--table--tbody--row--cell--inner-cell--text\n                        "},[_vm._v(" "+_vm._s(cell.text)+" ")]):_vm._e(),(cell.quintable)?_c('div',{staticClass:"\n                          cell-inner\n                          quintable--table-container--table--tbody--row--cell--inner-cell\n                          quintable--table-container--table--tbody--row--cell--inner-cell--quintable\n                        "},[_c('VueQuintable',{staticClass:"\n                            quintable-sub-table\n                            quintable--table-container--table--tbody--row--cell--inner-cell--quintable--sub-table\n                          ",attrs:{"table-classes":cell.quintable.tableClasses,"nested":true,"identifier":cell.quintable.identifier
-                              ? cell.quintable.identifier
-                              : _vm.generateIdentifier(),"config":cell.quintable.config,"rows":cell.quintable.rows,"verbose":_vm.verbose,"filter-groups":cell.quintable.filterGroups
-                              ? cell.quintable.filterGroups
-                              : [],"filters":cell.quintable.filters
-                              ? cell.quintable.filters
-                              : {}},scopedSlots:_vm._u([_vm._l((Object.keys(_vm.$scopedSlots)),function(slot){return {key:slot,fn:function(scope){return [_vm._t(slot,null,null,scope)]}}})],null,true),model:{value:(cell.quintable.value),callback:function ($$v) {_vm.$set(cell.quintable, "value", $$v)},expression:"cell.quintable.value"}})],1):_vm._e(),(cell.component)?_c('div',{staticClass:"\n                          cell-inner\n                          quintable--table-container--table--tbody--row--cell--inner-cell\n                          quintable--table-container--table--tbody--row--cell--inner-cell--component\n                        "},[_c(cell.component.name,_vm._b({tag:"component",on:{"action":_vm.handleComponentEvent}},'component',cell.component.props,false))],1):_vm._e()]]},{"cell":cell})]},{"cell":cell})]:_vm._e()],2)}),(
+                )?_c('td',{directives:[{name:"tooltip",rawName:"v-tooltip",value:({
+                  placement: 'left',
+                  content: cell.tooltip,
+                  trigger: cell.tooltip ? 'hover' : 'manual',
+                }),expression:"{\n                  placement: 'left',\n                  content: cell.tooltip,\n                  trigger: cell.tooltip ? 'hover' : 'manual',\n                }"}],key:'vue-quintable-' + _vm.uuid + '-cell-' + rIndex + '-' + cIndex,staticClass:"\n                  vue-quintable-cell\n                  quintable--table-container--table--tbody--row--cell\n                ",class:_vm.cellClassesParsed[rIndex][cIndex] +
+                  ' ' +
+                  _vm.configFinal.columnClasses[cIndex],attrs:{"id":'vue-quintable-' + _vm.uuid + '-cell-' + rIndex + '-' + cIndex},on:{"click":function($event){return _vm.onCellClick(cell)}}},[(
+                    _vm.configFinal.columns[cIndex] &&
+                    cell &&
+                    _vm.hiddenBreakpoints.findIndex(
+                      function (x) { return x === _vm.configFinal.columns[cIndex].breakpoint; }
+                    ) === -1 &&
+                    _vm.configFinal.columns[cIndex].breakpoint !== 'all' &&
+                    !_vm.configFinal.stickyCols[cIndex]
+                  )?[_vm._t('cell-complete' + (_vm.identifier ? '-' + _vm.identifier : ''),function(){return [_vm._t('cell-content' + (_vm.identifier ? '-' + _vm.identifier : ''),function(){return [(_vm.configFinal.columns[cIndex].cellFormatter)?[(cell.quintable)?_c('div',{staticClass:"\n                            cell-inner\n                            quintable--table-container--table--tbody--row--cell--inner-cell\n                            quintable--table-container--table--tbody--row--cell--inner-cell--quintable\n                          "},[_c('VueQuintable',{staticClass:"\n                              quintable-sub-table\n                              quintable--table-container--table--tbody--row--cell--inner-cell--quintable--sub-table\n                            ",attrs:{"table-classes":cell.quintable.tableClasses,"nested":true,"identifier":cell.quintable.identifier
+                                ? cell.quintable.identifier
+                                : _vm.generateIdentifier(),"config":cell.quintable.config,"rows":cell.quintable.rows,"verbose":_vm.verbose,"filter-groups":cell.quintable.filterGroups
+                                ? cell.quintable.filterGroups
+                                : [],"filters":cell.quintable.filters
+                                ? cell.quintable.filters
+                                : {}},scopedSlots:_vm._u([_vm._l((Object.keys(_vm.$scopedSlots)),function(slot){return {key:slot,fn:function(scope){return [_vm._t(slot,null,null,scope)]}}})],null,true),model:{value:(cell.quintable.value),callback:function ($$v) {_vm.$set(cell.quintable, "value", $$v)},expression:"cell.quintable.value"}})],1):(cell.component)?_c('div',{staticClass:"\n                            cell-inner\n                            quintable--table-container--table--tbody--row--cell--inner-cell\n                            quintable--table-container--table--tbody--row--cell--inner-cell--component\n                          "},[_c(cell.component.name,_vm._b({tag:"component",on:{"action":_vm.handleComponentEvent}},'component',cell.component.props,false))],1):(
+                            _vm.cellFormatters(cIndex, cell).type === 'html'
+                          )?_c('div',{staticClass:"\n                            cell-inner\n                            quintable--table-container--table--tbody--row--cell--inner-cell\n                            quintable--table-container--table--tbody--row--cell--inner-cell--formatted-html\n                          ",domProps:{"innerHTML":_vm._s(_vm.cellFormatters(cIndex, cell).value)}}):_c('div',{staticClass:"\n                            cell-inner\n                            quintable--table-container--table--tbody--row--cell--inner-cell\n                            quintable--table-container--table--tbody--row--cell--inner-cell--formatted-value\n                          "},[_vm._v(" "+_vm._s(_vm.cellFormatters(cIndex, cell).value)+" ")])]:[(cell.html)?_c('div',{staticClass:"\n                            cell-inner\n                            quintable--table-container--table--tbody--row--cell--inner-cell\n                            quintable--table-container--table--tbody--row--cell--inner-cell-html\n                          ",domProps:{"innerHTML":_vm._s(cell.html)}}):_vm._e(),(cell.text)?_c('div',{staticClass:"\n                            cell-inner\n                            quintable--table-container--table--tbody--row--cell--inner-cell\n                            quintable--table-container--table--tbody--row--cell--inner-cell--text\n                          "},[_vm._v(" "+_vm._s(cell.text)+" ")]):_vm._e(),(cell.quintable)?_c('div',{staticClass:"\n                            cell-inner\n                            quintable--table-container--table--tbody--row--cell--inner-cell\n                            quintable--table-container--table--tbody--row--cell--inner-cell--quintable\n                          "},[_c('VueQuintable',{staticClass:"\n                              quintable-sub-table\n                              quintable--table-container--table--tbody--row--cell--inner-cell--quintable--sub-table\n                            ",attrs:{"table-classes":cell.quintable.tableClasses,"nested":true,"identifier":cell.quintable.identifier
+                                ? cell.quintable.identifier
+                                : _vm.generateIdentifier(),"config":cell.quintable.config,"rows":cell.quintable.rows,"verbose":_vm.verbose,"filter-groups":cell.quintable.filterGroups
+                                ? cell.quintable.filterGroups
+                                : [],"filters":cell.quintable.filters
+                                ? cell.quintable.filters
+                                : {}},scopedSlots:_vm._u([_vm._l((Object.keys(_vm.$scopedSlots)),function(slot){return {key:slot,fn:function(scope){return [_vm._t(slot,null,null,scope)]}}})],null,true),model:{value:(cell.quintable.value),callback:function ($$v) {_vm.$set(cell.quintable, "value", $$v)},expression:"cell.quintable.value"}})],1):_vm._e(),(cell.component)?_c('div',{staticClass:"\n                            cell-inner\n                            quintable--table-container--table--tbody--row--cell--inner-cell\n                            quintable--table-container--table--tbody--row--cell--inner-cell--component\n                          "},[_c(cell.component.name,_vm._b({tag:"component",on:{"action":_vm.handleComponentEvent}},'component',cell.component.props,false))],1):_vm._e()]]},{"cell":cell})]},{"cell":cell})]:_vm._e()],2):_vm._e()]}),(
                 _vm.configFinal.select && _vm.configFinal.selectPosition === 'post'
               )?_c('td',{staticClass:"\n                select-td\n                post\n                quintable--table-container--table--tbody--row--select-td\n                quintable--table-container--table--tbody--row--select-td--post\n              ",class:{ 'disabled-select': _vm.rowsFinal[rIndex].disableSelect }},[(!_vm.rowsFinal[rIndex].disableSelect)?[(_vm.configFinal.prettySelect)?_c('p-check',{staticClass:"p-icon",attrs:{"name":"check"},on:{"change":function($event){return _vm.checkListener($event, rIndex)}},model:{value:(_vm.selected[rIndex]),callback:function ($$v) {_vm.$set(_vm.selected, rIndex, $$v)},expression:"selected[rIndex]"}},[_c('template',{slot:"extra"},[_c('span',[(_vm.selected[rIndex])?_c('font-awesome-icon',{staticClass:"text-success icon-check",attrs:{"icon":"check"}}):_vm._e()],1)])],2):_c('label',{staticClass:"mb-0 mt-0"},[_c('input',{directives:[{name:"model",rawName:"v-model",value:(_vm.selected[rIndex]),expression:"selected[rIndex]"}],attrs:{"type":"checkbox"},domProps:{"checked":Array.isArray(_vm.selected[rIndex])?_vm._i(_vm.selected[rIndex],null)>-1:(_vm.selected[rIndex])},on:{"change":[function($event){var $$a=_vm.selected[rIndex],$$el=$event.target,$$c=$$el.checked?(true):(false);if(Array.isArray($$a)){var $$v=null,$$i=_vm._i($$a,$$v);if($$el.checked){$$i<0&&(_vm.$set(_vm.selected, rIndex, $$a.concat([$$v])))}else{$$i>-1&&(_vm.$set(_vm.selected, rIndex, $$a.slice(0,$$i).concat($$a.slice($$i+1))))}}else{_vm.$set(_vm.selected, rIndex, $$c)}},function($event){return _vm.checkListener($event, rIndex)}]}})])]:_vm._e()],2):_vm._e()],2),(
               (_vm.generatedRows[rIndex] || _vm.stickyRows[rIndex]) &&
@@ -8416,7 +8478,7 @@ var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._sel
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=template&id=4c0d7c1c&scoped=true&
+// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=template&id=06d9fd12&scoped=true&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.symbol.js
 var es_symbol = __webpack_require__("a4d3");
@@ -8519,6 +8581,9 @@ var es_array_slice = __webpack_require__("fb6a");
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.function.name.js
 var es_function_name = __webpack_require__("b0c0");
 
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.assign.js
+var es_object_assign = __webpack_require__("cca6");
+
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.match.js
 var es_string_match = __webpack_require__("466d");
 
@@ -8560,6 +8625,14 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
 
 
 
+
+
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -12595,8 +12668,8 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
 });
 // CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_VueQuintablevue_type_script_lang_js_ = (VueQuintablevue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=0&id=4c0d7c1c&scoped=true&lang=css&
-var VueQuintablevue_type_style_index_0_id_4c0d7c1c_scoped_true_lang_css_ = __webpack_require__("8092");
+// EXTERNAL MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=0&id=06d9fd12&scoped=true&lang=css&
+var VueQuintablevue_type_style_index_0_id_06d9fd12_scoped_true_lang_css_ = __webpack_require__("b786");
 
 // EXTERNAL MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=1&lang=css&
 var VueQuintablevue_type_style_index_1_lang_css_ = __webpack_require__("9d85");
@@ -12717,7 +12790,7 @@ var component = normalizeComponent(
   staticRenderFns,
   false,
   null,
-  "4c0d7c1c",
+  "06d9fd12",
   null
   
 )
@@ -14206,6 +14279,17 @@ function assignMergeValue(object, key, value) {
 }
 
 module.exports = assignMergeValue;
+
+
+/***/ }),
+
+/***/ "b786":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueQuintable_vue_vue_type_style_index_0_id_06d9fd12_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("2d27");
+/* harmony import */ var _node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueQuintable_vue_vue_type_style_index_0_id_06d9fd12_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_mini_css_extract_plugin_dist_loader_js_ref_7_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_7_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_7_oneOf_1_2_node_modules_cache_loader_dist_cjs_js_ref_1_0_node_modules_vue_loader_lib_index_js_vue_loader_options_VueQuintable_vue_vue_type_style_index_0_id_06d9fd12_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* unused harmony reexport * */
 
 
 /***/ }),
@@ -22241,6 +22325,22 @@ module.exports = function (it) {
 
 /***/ }),
 
+/***/ "cca6":
+/***/ (function(module, exports, __webpack_require__) {
+
+var $ = __webpack_require__("23e7");
+var assign = __webpack_require__("60da");
+
+// `Object.assign` method
+// https://tc39.es/ecma262/#sec-object.assign
+// eslint-disable-next-line es/no-object-assign -- required for testing
+$({ target: 'Object', stat: true, forced: Object.assign !== assign }, {
+  assign: assign
+});
+
+
+/***/ }),
+
 /***/ "cd9d":
 /***/ (function(module, exports) {
 
@@ -22451,13 +22551,6 @@ exports.f = NASHORN_BUG ? function propertyIsEnumerable(V) {
   return !!descriptor && descriptor.enumerable;
 } : $propertyIsEnumerable;
 
-
-/***/ }),
-
-/***/ "d27f":
-/***/ (function(module, exports, __webpack_require__) {
-
-// extracted by mini-css-extract-plugin
 
 /***/ }),
 

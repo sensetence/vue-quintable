@@ -106,87 +106,88 @@
                 </label>
               </template>
             </th>
-
-            <th
-              v-for="(headline, hIndex) in configFinal.headlines"
-              v-show="
-                ((configFinal.columns[hIndex] &&
-                  !configFinal.columns[hIndex].breakpoint) ||
-                  hiddenBreakpoints.findIndex(
-                    (x) =>
-                      configFinal.columns[hIndex] &&
-                      x === configFinal.columns[hIndex].breakpoint
-                  ) === -1) &&
-                !configFinal.columns[hIndex].sticky &&
-                !configFinal.hiddenCols[hIndex] &&
-                !emptyColumns[hIndex]
-              "
-              :class="headerClass[hIndex]"
-              :title="configFinal.columns[hIndex].title"
-              :key="'headline-' + hIndex"
-              @click="setSortColumn(hIndex)"
-            >
-              <span
-                class="
-                  headline
-                  quintable--table-container--table--header-row--th--headline
+            <template v-for="(headline, hIndex) in configFinal.headlines">
+              <th
+                v-if="
+                  ((configFinal.columns[hIndex] &&
+                    !configFinal.columns[hIndex].breakpoint) ||
+                    hiddenBreakpoints.findIndex(
+                      (x) =>
+                        configFinal.columns[hIndex] &&
+                        x === configFinal.columns[hIndex].breakpoint
+                    ) === -1) &&
+                  !configFinal.columns[hIndex].sticky &&
+                  !configFinal.hiddenCols[hIndex] &&
+                  !emptyColumns[hIndex]
                 "
-                v-html="headline"
-                v-if="showHeadlines[hIndex]"
-              ></span>
-              <span
-                class="
-                  headline
-                  quintable--table-container--table--header-row--th--headline
-                "
-                v-else
-                ><wbr
-              /></span>
-              <span
-                class="
-                  sorting-icon
-                  ms-2
-                  quintable--table-container--table--header-row--th--sorting-icon
-                "
-                v-if="configFinal.sorts[hIndex]"
+                :class="headerClass[hIndex]"
+                :title="configFinal.columns[hIndex].title"
+                :key="'headline-' + hIndex"
+                @click="setSortColumn(hIndex)"
               >
-                <font-awesome-icon
-                  v-if="!currentSortIndexes[hIndex]"
-                  icon="sort"
-                  class="text-primary"
-                />
-                <font-awesome-icon
-                  v-if="
-                    currentSortIndexes[hIndex] && currentSortIndexes[hIndex].asc
-                  "
-                  icon="sort-amount-down-alt"
-                  class="text-primary"
-                />
-                <font-awesome-icon
-                  v-if="
-                    currentSortIndexes[hIndex] &&
-                    !currentSortIndexes[hIndex].asc
-                  "
-                  icon="sort-amount-down"
-                  class="text-primary"
-                />
                 <span
-                  v-if="currentSortIndexes[hIndex]"
-                  @click.stop.prevent="removeSort(hIndex)"
-                  class="ms-1 text-muted"
+                  class="
+                    headline
+                    quintable--table-container--table--header-row--th--headline
+                  "
+                  v-html="headline"
+                  v-if="showHeadlines[hIndex]"
+                ></span>
+                <span
+                  class="
+                    headline
+                    quintable--table-container--table--header-row--th--headline
+                  "
+                  v-else
+                  ><wbr
+                /></span>
+                <span
+                  class="
+                    sorting-icon
+                    ms-2
+                    quintable--table-container--table--header-row--th--sorting-icon
+                  "
+                  v-if="configFinal.sorts[hIndex]"
                 >
+                  <font-awesome-icon
+                    v-if="!currentSortIndexes[hIndex]"
+                    icon="sort"
+                    class="text-primary"
+                  />
+                  <font-awesome-icon
+                    v-if="
+                      currentSortIndexes[hIndex] &&
+                      currentSortIndexes[hIndex].asc
+                    "
+                    icon="sort-amount-down-alt"
+                    class="text-primary"
+                  />
+                  <font-awesome-icon
+                    v-if="
+                      currentSortIndexes[hIndex] &&
+                      !currentSortIndexes[hIndex].asc
+                    "
+                    icon="sort-amount-down"
+                    class="text-primary"
+                  />
                   <span
-                    class="badge bg-info text-white"
-                    v-if="numberOfSorts > 1"
+                    v-if="currentSortIndexes[hIndex]"
+                    @click.stop.prevent="removeSort(hIndex)"
+                    class="ms-1 text-muted"
                   >
-                    {{ currentSortIndexes[hIndex].order + 1 }}
+                    <span
+                      class="badge bg-info text-white"
+                      v-if="numberOfSorts > 1"
+                    >
+                      {{ currentSortIndexes[hIndex].order + 1 }}
+                    </span>
+                    <small v-else>
+                      <font-awesome-icon icon="times" />
+                    </small>
                   </span>
-                  <small v-else>
-                    <font-awesome-icon icon="times" />
-                  </small>
                 </span>
-              </span>
-            </th>
+              </th>
+            </template>
             <th
               v-if="configFinal.select && configFinal.selectPosition === 'post'"
               class="
@@ -321,43 +322,29 @@
                 </template>
               </td>
 
-              <td
-                class="
-                  vue-quintable-cell
-                  quintable--table-container--table--tbody--row--cell
-                "
-                v-tooltip="{
-                  placement: 'left',
-                  content: cell.tooltip,
-                  trigger: cell.tooltip ? 'hover' : 'manual',
-                }"
-                :class="
-                  cellClassesParsed[rIndex][cIndex] +
-                  ' ' +
-                  configFinal.columnClasses[cIndex]
-                "
-                v-show="
-                  !configFinal.hiddenCols[cIndex] &&
-                  !emptyColumns[cIndex] &&
-                  configFinal.columns[cIndex] &&
-                  cell &&
-                  hiddenBreakpoints.findIndex(
-                    (x) => x === configFinal.columns[cIndex].breakpoint
-                  ) === -1 &&
-                  configFinal.columns[cIndex].breakpoint !== 'all' &&
-                  !configFinal.stickyCols[cIndex]
-                "
-                @click="onCellClick(cell)"
-                :key="
-                  'vue-quintable-' + uuid + '-cell-' + rIndex + '-' + cIndex
-                "
-                :id="'vue-quintable-' + uuid + '-cell-' + rIndex + '-' + cIndex"
+              <template
                 v-for="(cell, cIndex) in rowsFinal[rIndex].cells
                   ? rowsFinal[rIndex].cells
                   : rowsFinal[rIndex]"
               >
-                <template
+                <td
+                  class="
+                    vue-quintable-cell
+                    quintable--table-container--table--tbody--row--cell
+                  "
+                  v-tooltip="{
+                    placement: 'left',
+                    content: cell.tooltip,
+                    trigger: cell.tooltip ? 'hover' : 'manual',
+                  }"
+                  :class="
+                    cellClassesParsed[rIndex][cIndex] +
+                    ' ' +
+                    configFinal.columnClasses[cIndex]
+                  "
                   v-if="
+                    !configFinal.hiddenCols[cIndex] &&
+                    !emptyColumns[cIndex] &&
                     configFinal.columns[cIndex] &&
                     cell &&
                     hiddenBreakpoints.findIndex(
@@ -366,183 +353,202 @@
                     configFinal.columns[cIndex].breakpoint !== 'all' &&
                     !configFinal.stickyCols[cIndex]
                   "
+                  @click="onCellClick(cell)"
+                  :key="
+                    'vue-quintable-' + uuid + '-cell-' + rIndex + '-' + cIndex
+                  "
+                  :id="
+                    'vue-quintable-' + uuid + '-cell-' + rIndex + '-' + cIndex
+                  "
                 >
-                  <slot
-                    :cell="cell"
-                    :name="
-                      'cell-complete' + (identifier ? '-' + identifier : '')
+                  <template
+                    v-if="
+                      configFinal.columns[cIndex] &&
+                      cell &&
+                      hiddenBreakpoints.findIndex(
+                        (x) => x === configFinal.columns[cIndex].breakpoint
+                      ) === -1 &&
+                      configFinal.columns[cIndex].breakpoint !== 'all' &&
+                      !configFinal.stickyCols[cIndex]
                     "
                   >
                     <slot
                       :cell="cell"
                       :name="
-                        'cell-content' + (identifier ? '-' + identifier : '')
+                        'cell-complete' + (identifier ? '-' + identifier : '')
                       "
                     >
-                      <template
-                        v-if="configFinal.columns[cIndex].cellFormatter"
+                      <slot
+                        :cell="cell"
+                        :name="
+                          'cell-content' + (identifier ? '-' + identifier : '')
+                        "
                       >
-                        <div
-                          class="
-                            cell-inner
-                            quintable--table-container--table--tbody--row--cell--inner-cell
-                            quintable--table-container--table--tbody--row--cell--inner-cell--quintable
-                          "
-                          v-if="cell.quintable"
+                        <template
+                          v-if="configFinal.columns[cIndex].cellFormatter"
                         >
-                          <VueQuintable
-                            :table-classes="cell.quintable.tableClasses"
+                          <div
                             class="
-                              quintable-sub-table
-                              quintable--table-container--table--tbody--row--cell--inner-cell--quintable--sub-table
+                              cell-inner
+                              quintable--table-container--table--tbody--row--cell--inner-cell
+                              quintable--table-container--table--tbody--row--cell--inner-cell--quintable
                             "
-                            :nested="true"
-                            :identifier="
-                              cell.quintable.identifier
-                                ? cell.quintable.identifier
-                                : generateIdentifier()
-                            "
-                            :config="cell.quintable.config"
-                            :rows="cell.quintable.rows"
-                            :verbose="verbose"
-                            :filter-groups="
-                              cell.quintable.filterGroups
-                                ? cell.quintable.filterGroups
-                                : []
-                            "
-                            :filters="
-                              cell.quintable.filters
-                                ? cell.quintable.filters
-                                : {}
-                            "
-                            v-model="cell.quintable.value"
+                            v-if="cell.quintable"
                           >
-                            <template
-                              v-for="slot in Object.keys($scopedSlots)"
-                              :slot="slot"
-                              slot-scope="scope"
-                              ><slot :name="slot" v-bind="scope"
-                            /></template>
-                          </VueQuintable>
-                        </div>
-                        <div
-                          class="
-                            cell-inner
-                            quintable--table-container--table--tbody--row--cell--inner-cell
-                            quintable--table-container--table--tbody--row--cell--inner-cell--component
-                          "
-                          v-else-if="cell.component"
-                        >
-                          <component
-                            :is="cell.component.name"
-                            v-bind="cell.component.props"
-                            @action="handleComponentEvent"
-                          ></component>
-                        </div>
-                        <div
-                          class="
-                            cell-inner
-                            quintable--table-container--table--tbody--row--cell--inner-cell
-                            quintable--table-container--table--tbody--row--cell--inner-cell--formatted-html
-                          "
-                          v-else-if="
-                            cellFormatters(cIndex, cell).type === 'html'
-                          "
-                          v-html="cellFormatters(cIndex, cell).value"
-                        ></div>
-                        <div
-                          class="
-                            cell-inner
-                            quintable--table-container--table--tbody--row--cell--inner-cell
-                            quintable--table-container--table--tbody--row--cell--inner-cell--formatted-value
-                          "
-                          v-else
-                        >
-                          {{ cellFormatters(cIndex, cell).value }}
-                        </div>
-                      </template>
-                      <template v-else>
-                        <div
-                          class="
-                            cell-inner
-                            quintable--table-container--table--tbody--row--cell--inner-cell
-                            quintable--table-container--table--tbody--row--cell--inner-cell-html
-                          "
-                          v-if="cell.html"
-                          v-html="cell.html"
-                        ></div>
-                        <div
-                          class="
-                            cell-inner
-                            quintable--table-container--table--tbody--row--cell--inner-cell
-                            quintable--table-container--table--tbody--row--cell--inner-cell--text
-                          "
-                          v-if="cell.text"
-                        >
-                          {{ cell.text }}
-                        </div>
-                        <div
-                          class="
-                            cell-inner
-                            quintable--table-container--table--tbody--row--cell--inner-cell
-                            quintable--table-container--table--tbody--row--cell--inner-cell--quintable
-                          "
-                          v-if="cell.quintable"
-                        >
-                          <VueQuintable
-                            :table-classes="cell.quintable.tableClasses"
+                            <VueQuintable
+                              :table-classes="cell.quintable.tableClasses"
+                              class="
+                                quintable-sub-table
+                                quintable--table-container--table--tbody--row--cell--inner-cell--quintable--sub-table
+                              "
+                              :nested="true"
+                              :identifier="
+                                cell.quintable.identifier
+                                  ? cell.quintable.identifier
+                                  : generateIdentifier()
+                              "
+                              :config="cell.quintable.config"
+                              :rows="cell.quintable.rows"
+                              :verbose="verbose"
+                              :filter-groups="
+                                cell.quintable.filterGroups
+                                  ? cell.quintable.filterGroups
+                                  : []
+                              "
+                              :filters="
+                                cell.quintable.filters
+                                  ? cell.quintable.filters
+                                  : {}
+                              "
+                              v-model="cell.quintable.value"
+                            >
+                              <template
+                                v-for="slot in Object.keys($scopedSlots)"
+                                :slot="slot"
+                                slot-scope="scope"
+                                ><slot :name="slot" v-bind="scope"
+                              /></template>
+                            </VueQuintable>
+                          </div>
+                          <div
                             class="
-                              quintable-sub-table
-                              quintable--table-container--table--tbody--row--cell--inner-cell--quintable--sub-table
+                              cell-inner
+                              quintable--table-container--table--tbody--row--cell--inner-cell
+                              quintable--table-container--table--tbody--row--cell--inner-cell--component
                             "
-                            :nested="true"
-                            :identifier="
-                              cell.quintable.identifier
-                                ? cell.quintable.identifier
-                                : generateIdentifier()
-                            "
-                            :config="cell.quintable.config"
-                            :rows="cell.quintable.rows"
-                            :verbose="verbose"
-                            :filter-groups="
-                              cell.quintable.filterGroups
-                                ? cell.quintable.filterGroups
-                                : []
-                            "
-                            :filters="
-                              cell.quintable.filters
-                                ? cell.quintable.filters
-                                : {}
-                            "
-                            v-model="cell.quintable.value"
+                            v-else-if="cell.component"
                           >
-                            <template
-                              v-for="slot in Object.keys($scopedSlots)"
-                              :slot="slot"
-                              slot-scope="scope"
-                              ><slot :name="slot" v-bind="scope"
-                            /></template>
-                          </VueQuintable>
-                        </div>
-                        <div
-                          class="
-                            cell-inner
-                            quintable--table-container--table--tbody--row--cell--inner-cell
-                            quintable--table-container--table--tbody--row--cell--inner-cell--component
-                          "
-                          v-if="cell.component"
-                        >
-                          <component
-                            :is="cell.component.name"
-                            v-bind="cell.component.props"
-                            @action="handleComponentEvent"
-                          ></component>
-                        </div>
-                      </template>
+                            <component
+                              :is="cell.component.name"
+                              v-bind="cell.component.props"
+                              @action="handleComponentEvent"
+                            ></component>
+                          </div>
+                          <div
+                            class="
+                              cell-inner
+                              quintable--table-container--table--tbody--row--cell--inner-cell
+                              quintable--table-container--table--tbody--row--cell--inner-cell--formatted-html
+                            "
+                            v-else-if="
+                              cellFormatters(cIndex, cell).type === 'html'
+                            "
+                            v-html="cellFormatters(cIndex, cell).value"
+                          ></div>
+                          <div
+                            class="
+                              cell-inner
+                              quintable--table-container--table--tbody--row--cell--inner-cell
+                              quintable--table-container--table--tbody--row--cell--inner-cell--formatted-value
+                            "
+                            v-else
+                          >
+                            {{ cellFormatters(cIndex, cell).value }}
+                          </div>
+                        </template>
+                        <template v-else>
+                          <div
+                            class="
+                              cell-inner
+                              quintable--table-container--table--tbody--row--cell--inner-cell
+                              quintable--table-container--table--tbody--row--cell--inner-cell-html
+                            "
+                            v-if="cell.html"
+                            v-html="cell.html"
+                          ></div>
+                          <div
+                            class="
+                              cell-inner
+                              quintable--table-container--table--tbody--row--cell--inner-cell
+                              quintable--table-container--table--tbody--row--cell--inner-cell--text
+                            "
+                            v-if="cell.text"
+                          >
+                            {{ cell.text }}
+                          </div>
+                          <div
+                            class="
+                              cell-inner
+                              quintable--table-container--table--tbody--row--cell--inner-cell
+                              quintable--table-container--table--tbody--row--cell--inner-cell--quintable
+                            "
+                            v-if="cell.quintable"
+                          >
+                            <VueQuintable
+                              :table-classes="cell.quintable.tableClasses"
+                              class="
+                                quintable-sub-table
+                                quintable--table-container--table--tbody--row--cell--inner-cell--quintable--sub-table
+                              "
+                              :nested="true"
+                              :identifier="
+                                cell.quintable.identifier
+                                  ? cell.quintable.identifier
+                                  : generateIdentifier()
+                              "
+                              :config="cell.quintable.config"
+                              :rows="cell.quintable.rows"
+                              :verbose="verbose"
+                              :filter-groups="
+                                cell.quintable.filterGroups
+                                  ? cell.quintable.filterGroups
+                                  : []
+                              "
+                              :filters="
+                                cell.quintable.filters
+                                  ? cell.quintable.filters
+                                  : {}
+                              "
+                              v-model="cell.quintable.value"
+                            >
+                              <template
+                                v-for="slot in Object.keys($scopedSlots)"
+                                :slot="slot"
+                                slot-scope="scope"
+                                ><slot :name="slot" v-bind="scope"
+                              /></template>
+                            </VueQuintable>
+                          </div>
+                          <div
+                            class="
+                              cell-inner
+                              quintable--table-container--table--tbody--row--cell--inner-cell
+                              quintable--table-container--table--tbody--row--cell--inner-cell--component
+                            "
+                            v-if="cell.component"
+                          >
+                            <component
+                              :is="cell.component.name"
+                              v-bind="cell.component.props"
+                              @action="handleComponentEvent"
+                            ></component>
+                          </div>
+                        </template>
+                      </slot>
                     </slot>
-                  </slot>
-                </template>
-              </td>
+                  </template>
+                </td>
+              </template>
 
               <td
                 v-if="
@@ -4445,7 +4451,7 @@ nav.disabled {
   color: black;
   padding: 24px;
   border-radius: 5px;
-  box-shadow: 0 5px 30px rgba(black, 0.1);
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
 }
 
 .quintable-tooltip.popover .popover-arrow {
