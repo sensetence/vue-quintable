@@ -21,6 +21,7 @@
       <slot
         name="search"
         :value="query"
+        :loading="loading"
         :setSearchQuery="setSearchQuery"
         :placeholder="configFinal.searchPlaceholder"
         :search-class="configFinal.searchClass"
@@ -1503,6 +1504,12 @@ export default {
         return [];
       },
     },
+    selectedRows: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
     preSelectedRows: {
       type: Array,
       default() {
@@ -1566,7 +1573,7 @@ export default {
       generatedUpdatedKey: Date.now(),
       hoveredRow: null,
       allSelectedCustom: null,
-      selected: [],
+      selected: {},
       stickyRows: {},
       openRows: {},
       sortedIndexes: {},
@@ -1592,6 +1599,7 @@ export default {
       uuid: randomUUID(),
       loaderHeight: 0,
       defaultOperator: "equal",
+      queryAjaxTimeout: null,
       lastSearchQueryUpdated: null,
       operatorFunctions: {
         equal: (a, b) => {
@@ -1648,6 +1656,7 @@ export default {
           return regex.test(b);
         },
       },
+      storedState: {},
     };
   },
 
@@ -1697,6 +1706,11 @@ export default {
       let select = false;
       if (this.config.select) {
         select = true;
+      }
+
+      let ajaxRequestDelay = 250;
+      if (this.config.ajaxRequestDelay) {
+        ajaxRequestDelay = this.config.ajaxRequestDelay;
       }
 
       let hoverClass = "bg-muted";
@@ -1823,7 +1837,7 @@ export default {
       }
 
       let selectAllRows = false;
-      if (this.config.selectAll && this.config.selectAllRows) {
+      if (this.config.selectAllRows) {
         selectAllRows = true;
       }
 
@@ -1832,6 +1846,29 @@ export default {
           "Option selectAllRows was deactivated automatically because ajaxUrl is set!"
         );
         selectAllRows = false;
+      }
+
+      let storeState = false;
+      if (this.config.storeState) {
+        storeState = true;
+      }
+
+      if (!this.identifier && this.config.storeState) {
+        console.warn(
+          "Option storeState was deactivated automatically because table identifier is not set!"
+        );
+        storeState = false;
+      }
+
+      const testLocalStorage = "test-local-storage";
+      try {
+        localStorage.setItem(testLocalStorage, testLocalStorage);
+        localStorage.removeItem(testLocalStorage);
+      } catch (e) {
+        console.warn(
+          "Option storeState was deactivated automatically because local storage is not available!"
+        );
+        storeState = false;
       }
 
       let defaultSelected = false;
@@ -1995,6 +2032,8 @@ export default {
         searchClass: searchClass,
         searchContainerClass: searchContainerClass,
         requestMethod: requestMethod,
+        storeState: storeState,
+        ajaxRequestDelay: ajaxRequestDelay,
       };
     },
 
@@ -2320,7 +2359,7 @@ export default {
      *
      */
     someSelected() {
-      return this.selected.filter((x) => x).length > 0;
+      return Object.values(this.selected).filter((x) => x).length > 0;
     },
 
     /**
@@ -2482,7 +2521,7 @@ export default {
      *
      */
     filterActive() {
-      return this.filters && Object.keys(this.filters).length;
+      return this.filtersFinal && Object.keys(this.filtersFinal).length;
     },
 
     /**
@@ -2596,14 +2635,14 @@ export default {
               relation: this.configFinal.filterRelation,
             };
 
-            for (let filter in this.filters) {
-              if (this.filters.hasOwnProperty(filter)) {
+            for (let filter in this.filtersFinal) {
+              if (this.filtersFinal.hasOwnProperty(filter)) {
                 group.items.push({ name: filter });
               }
             }
 
             match = this.doFilteringForGroup(
-              this.filters,
+              this.filtersFinal,
               this.rowsFinal[i].filters,
               group
             );
@@ -2742,6 +2781,12 @@ export default {
 
       return cols;
     },
+    filtersFinal() {
+      if (!this.configFinal.storeState || !this.storedState.filters) {
+        return this.filters;
+      }
+      return this.storedState.filters;
+    },
   },
 
   watch: {
@@ -2809,8 +2854,11 @@ export default {
     filters: {
       handler() {
         if (this.configFinal.ajaxUrl) {
+          const clear = !(
+            this.configFinal.storeState && this.storedState.filters
+          );
           this.pageSort = false;
-          this.loadViaAjax(true, "FILTERS");
+          this.loadViaAjax(clear, clear, "FILTERS");
         }
 
         if (this.pageSort) {
@@ -2818,8 +2866,19 @@ export default {
           this.resetSorts();
           this.recomputeEssentials();
         }
+
+        if (this.configFinal.storeState) {
+          this.$delete(this.storedState, "filters");
+          localStorage.setItem(
+            `vue-quintable-${this.identifier}-filters`,
+            JSON.stringify(this.filtersFinal)
+          );
+        }
       },
       deep: true,
+    },
+    filtersFinal(val) {
+      this.$emit("update:filters", val);
     },
     /**
      * Trigger reload current page without changing filter/search/page from outside
@@ -2831,9 +2890,9 @@ export default {
       }
 
       if (val && val.clear) {
-        this.loadViaAjax(true);
+        this.loadViaAjax(true, true, "UPDATED");
       } else if (val) {
-        this.loadViaAjax();
+        this.loadViaAjax(false, true, "UPDATED");
       }
     },
 
@@ -2863,7 +2922,7 @@ export default {
         if (this.currentPage !== 1) {
           this.currentPage = 1;
         } else {
-          this.resetSelect();
+          this.resetSelect("filteredRows watcher");
         }
 
         const rows = [];
@@ -2911,7 +2970,11 @@ export default {
 
       if (this.configFinal.ajaxUrl) {
         this.pageSort = false;
-        this.loadViaAjax(true, "QUERY");
+        const clear = !(this.configFinal.storeState && this.storedState.query);
+        clearTimeout(this.queryAjaxTimeout);
+        this.queryAjaxTimeout = setTimeout(() => {
+          this.loadViaAjax(clear, clear, "QUERY");
+        }, this.configFinal.ajaxRequestDelay);
       }
 
       if (
@@ -2930,6 +2993,14 @@ export default {
         this.resetSorts();
         this.recomputeEssentials();
       }
+
+      if (this.configFinal.storeState) {
+        this.$delete(this.storedState, "query");
+        localStorage.setItem(
+          `vue-quintable-${this.identifier}-query`,
+          this.query
+        );
+      }
     },
 
     /**
@@ -2939,15 +3010,27 @@ export default {
     currentRowsPerPage(val) {
       this.$emit("update:rows-per-page", val, "update:rows-per-page");
 
+      const clear = !(
+        this.configFinal.storeState && this.storedState["rows-per-page"]
+      );
+
+      if (this.configFinal.storeState) {
+        this.$delete(this.storedState, "rows-per-page");
+        localStorage.setItem(
+          `vue-quintable-${this.identifier}-rows-per-page`,
+          this.currentRowsPerPage
+        );
+      }
+
       if (this.configFinal.ajaxUrl) {
-        this.loadViaAjax(true, "PAGE_ROWS");
+        this.loadViaAjax(clear, clear, "PAGE_ROWS");
         return;
       }
 
       if (this.currentPage !== 1) {
         this.currentPage = 1;
       } else if (!this.configFinal.selectAllRows) {
-        this.resetSelect();
+        this.resetSelect("currentRowsPerPage watcher");
       }
     },
 
@@ -2986,7 +3069,7 @@ export default {
       this.$forceUpdate();
 
       if (this.configFinal.ajaxUrl) {
-        this.loadViaAjax(false, "CONFIG");
+        this.loadViaAjax(false, true, "CONFIG");
       }
 
       if (this.configFinal.defaultSelected) {
@@ -2998,22 +3081,33 @@ export default {
      * Prepare the selected rows array for passing to the event and emits it
      *
      */
-    selected(val) {
-      let selected = [];
-      for (let index in this.sortedIndexes) {
-        if (this.sortedIndexes.hasOwnProperty(index)) {
-          index = parseInt(index);
-          if (val[index]) {
-            const row = this.rowsFinal[this.sortedIndexes[index]];
+    selected: {
+      handler(val) {
+        let selected = [];
+        for (let index in this.sortedIndexes) {
+          if (this.sortedIndexes.hasOwnProperty(index)) {
+            index = parseInt(index);
+            if (val[index]) {
+              const row = this.rowsFinal[this.sortedIndexes[index]];
 
-            if (!row.disableSelect) {
-              selected.push(row);
+              if (!row.disableSelect) {
+                selected.push(row);
+              }
             }
           }
-        }
-      }
 
-      this.$emit("input", selected);
+          if (this.configFinal.storeState) {
+            localStorage.setItem(
+              `vue-quintable-${this.identifier}-selected-rows`,
+              JSON.stringify(val)
+            );
+          }
+
+          this.$emit("input", selected);
+          this.$emit("update:selected-rows", selected);
+        }
+      },
+      deep: true,
     },
 
     /**
@@ -3025,14 +3119,26 @@ export default {
 
       this.$emit("update:page", val, "update:page");
 
+      const clear = !(
+        this.configFinal.storeState && this.storedState["current-page"]
+      );
+
+      if (this.configFinal.storeState) {
+        this.$delete(this.storedState, "current-page");
+        localStorage.setItem(
+          `vue-quintable-${this.identifier}-current-page`,
+          this.currentPage
+        );
+      }
+
       if (this.configFinal.ajaxUrl) {
-        this.resetSelect();
-        this.loadViaAjax(false, "PAGE");
+        this.resetSelect("currentPage watcher ajax");
+        this.loadViaAjax(false, clear, "PAGE");
         return;
       }
 
       if (!this.configFinal.selectAllRows) {
-        this.resetSelect();
+        this.resetSelect("currentPage watcher");
       }
 
       if (this.pageSort) {
@@ -3180,9 +3286,18 @@ export default {
      * @param index index of selected row
      */
     checkListener(bool, index) {
-      let tmp = this.selected.slice().map((checked, i) => {
-        return !!checked || !!this.rowsFinal[i].disableSelect;
-      });
+      let tmp = Object.keys(this.selected)
+        .slice()
+        .map((key) => {
+          console.log(this.rowsFinal[parseInt(key)]);
+          return (
+            !!this.selected[key] ||
+            !!(
+              this.rowsFinal[parseInt(key)] &&
+              this.rowsFinal[parseInt(key)].disableSelect
+            )
+          );
+        });
 
       tmp[index] = !!bool;
 
@@ -3338,7 +3453,7 @@ export default {
         }
 
         if (this.configFinal.ajaxUrl && !this.pageSort) {
-          this.loadViaAjax(true, "SORT");
+          this.loadViaAjax(true, true, "SORT");
         }
       } else {
         this.sort();
@@ -3404,7 +3519,7 @@ export default {
       for (let i = 0; i < this.filterGroups.length; i++) {
         results.push(
           this.doFilteringForGroup(
-            this.filters,
+            this.filtersFinal,
             filterValues,
             this.filterGroups[i]
           )
@@ -3755,6 +3870,13 @@ export default {
 
       this.$set(this.currentSortIndexes, index, item);
 
+      if (this.configFinal.storeState) {
+        localStorage.setItem(
+          `vue-quintable-${this.identifier}-sort-indexes`,
+          JSON.stringify(this.currentSortIndexes)
+        );
+      }
+
       this.$emit("update:sort", this.currentSortIndexes, "update:sort");
 
       this.sort();
@@ -3764,9 +3886,9 @@ export default {
      * The actual sorting process. Sort by sorting value or the inner text/html of the cells
      *
      */
-    sort() {
+    sort(preventReset = false) {
       if (this.configFinal.ajaxUrl && !this.pageSort) {
-        this.loadViaAjax(true, "SORT");
+        this.loadViaAjax(!preventReset, !preventReset, "SORT");
         return;
       }
 
@@ -3921,12 +4043,12 @@ export default {
         this.sortedIndexes[i] = parseInt(finalRows[i].index);
       }
 
-      if (!this.pageSort) {
+      if (!this.pageSort && !preventReset) {
         this.currentPage = 1;
       }
 
-      if (!this.configFinal.selectAllRows && !this.pageSort) {
-        this.resetSelect();
+      if (!this.configFinal.selectAllRows && !this.pageSort && !preventReset) {
+        this.resetSelect("sort method");
       }
 
       this.recomputeEssentials();
@@ -3959,21 +4081,21 @@ export default {
         }
 
         if (typeof this.stickyRows[i] !== "object") {
-          this.stickyRows[i] = {};
+          this.$set(this.stickyRows, i, {});
         }
 
         if (typeof this.sortedIndexes[i] === "undefined") {
-          this.sortedIndexes[i] = parseInt(i);
+          this.$set(this.sortedIndexes, i, i);
         }
 
         if (typeof this.selected[i] === "undefined") {
-          this.selected[i] = false;
+          this.$set(this.selected, i, false);
         }
 
         if (this.configFinal.expandedAll || this.rowsFinal[i].expanded) {
-          this.openRows[i] = true;
+          this.$set(this.openRows, i, true);
         } else {
-          this.openRows[i] = false;
+          this.$set(this.openRows, i, false);
         }
       }
     },
@@ -3982,8 +4104,10 @@ export default {
      * Clear all relevant lists to ensure re-initialization
      *
      */
-    clearLists() {
-      this.selected = [];
+    clearLists(clearSelected = true) {
+      if (clearSelected) {
+        this.selected = {};
+      }
       this.stickyRows = {};
 
       this.openRows = {};
@@ -3994,7 +4118,10 @@ export default {
      * Clear all row selections
      *
      */
-    resetSelect() {
+    resetSelect(accessor) {
+      if (this.DEBUG) {
+        console.log("CALLED FROM:", accessor);
+      }
       this.allSelectedProperty = false;
 
       for (let i = 0; i < this.rowsFinal.length; i++) {
@@ -4007,7 +4134,11 @@ export default {
      * @param clear
      * @param accessor
      */
-    loadViaAjax(clear = false, accessor = null) {
+    loadViaAjax(
+      clearSortAndPage = false,
+      clearSelected = true,
+      accessor = null
+    ) {
       if (this.DEBUG) {
         console.log("CALLED FROM:", accessor);
       }
@@ -4041,12 +4172,13 @@ export default {
         this.cancelSource.cancel("Operation canceled by the user.");
       }
 
-      this.clearLists();
+      this.clearLists(clearSelected);
+
       this.ajaxRows = [];
 
-      if (clear) {
+      if (clearSortAndPage) {
         this.currentPage = 1;
-        this.resetSelect();
+        this.resetSelect("loadViaAjax method");
       }
 
       this.loaderHeight = this.$refs["height-wrapper"]
@@ -4057,7 +4189,7 @@ export default {
 
       let params = {
         search: query,
-        filters: this.filters,
+        filters: this.filtersFinal,
         perPage: this.currentRowsPerPage,
         page: this.currentPage,
         sort:
@@ -4191,6 +4323,49 @@ export default {
     },
   },
   created() {
+    if (this.configFinal.storeState) {
+      const filters = localStorage.getItem(
+        `vue-quintable-${this.identifier}-filters`
+      );
+      if (filters) {
+        this.$set(this.storedState, "filters", JSON.parse(filters));
+      }
+
+      const query = localStorage.getItem(
+        `vue-quintable-${this.identifier}-query`
+      );
+      if (query) {
+        this.$set(this.storedState, "query", query);
+      }
+
+      const rowsPerPage = localStorage.getItem(
+        `vue-quintable-${this.identifier}-rows-per-page`
+      );
+      if (rowsPerPage) {
+        this.$set(this.storedState, "rows-per-page", parseInt(rowsPerPage));
+      }
+
+      const selectedRows = localStorage.getItem(
+        `vue-quintable-${this.identifier}-selected-rows`
+      );
+      if (selectedRows) {
+        this.$set(this.storedState, "selected-rows", JSON.parse(selectedRows));
+      }
+
+      const page = localStorage.getItem(
+        `vue-quintable-${this.identifier}-current-page`
+      );
+      if (page) {
+        this.$set(this.storedState, "current-page", parseInt(page));
+      }
+
+      const sortIndexes = localStorage.getItem(
+        `vue-quintable-${this.identifier}-sort-indexes`
+      );
+      if (sortIndexes) {
+        this.$set(this.storedState, "sort-indexes", JSON.parse(sortIndexes));
+      }
+    }
     this.initLists();
 
     //Pre-select rows in case
@@ -4226,10 +4401,44 @@ export default {
     if (this.initialSearchTerm) {
       this.query = this.initialSearchTerm;
     }
+
+    if (this.storedState.query) {
+      this.query = this.storedState.query;
+    }
+
+    if (this.storedState["rows-per-page"]) {
+      this.customRowsPerPage = this.storedState["rows-per-page"];
+    }
+
+    if (this.storedState["sort-indexes"]) {
+      this.currentSortIndexes = this.storedState["sort-indexes"];
+      this.sort(true);
+    }
+
+    if (this.storedState["selected-rows"]) {
+      this.$nextTick(() => {
+        this.selected = this.storedState["selected-rows"];
+        const counter = Object.values(this.selected).filter((x) => x).length;
+        if (!this.configFinal.selectAllRows) {
+          this.allSelectedCustom =
+            counter && counter === this.visibleRows.filter((x) => x).length;
+        } else {
+          this.allSelectedCustom = counter && counter === this.rowsFinal.length;
+        }
+      });
+    }
+
+    if (this.storedState["current-page"]) {
+      this.$nextTick(() => {
+        this.currentPage = this.storedState["current-page"];
+      });
+    }
+
+    //TODO: ajax get rows WHEN? and how to prevent trigger it again
   },
   mounted() {
     if (this.configFinal.ajaxUrl) {
-      this.loadViaAjax(false, "MOUNTED");
+      this.loadViaAjax(false, true, "MOUNTED");
     }
 
     if (this.configFinal.defaultSelected) {

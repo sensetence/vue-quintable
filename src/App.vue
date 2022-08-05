@@ -33,9 +33,7 @@
 </template>
 
 <script>
-// import VueQuintable from "./components/VueQuintable.vue"
 import axiosCustom from "axios";
-import Vue from "vue";
 
 import Basic from "./examples/Basic.vue";
 import Select from "./examples/Select.vue";
@@ -57,6 +55,8 @@ import CellFormatters from "./examples/Formatter.vue";
 import Ajax from "./examples/Ajax.vue";
 import AjaxSelect from "./examples/AjaxSelect.vue";
 import BreakpointsAdvanced from "./examples/BreakpointsAdvanced.vue";
+import StoreState from "./examples/StoreState.vue";
+import AjaxStoreState from "./examples/AjaxStoreState.vue";
 
 import Prism from "prismjs";
 import "prismjs/themes/prism-okaidia.css";
@@ -66,15 +66,16 @@ import "prismjs/plugins/toolbar/prism-toolbar.css";
 import "prismjs/plugins/toolbar/prism-toolbar.min.js";
 import "prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js";
 
-import Tester from "./examples/CheckboxComponent.vue";
-
-Vue.component(
-  "tester",
-  // Look for the component options on `.default`, which will
-  // exist if the component was exported with `export default`,
-  // otherwise fall back to module's root.
-  Tester.default || Tester
-);
+// import Vue from "vue";
+// import Tester from "./examples/CheckboxComponent.vue";
+//
+// Vue.component(
+//   "tester",
+//   // Look for the component options on `.default`, which will
+//   // exist if the component was exported with `export default`,
+//   // otherwise fall back to module's root.
+//   Tester.default || Tester
+// );
 
 axiosCustom.interceptors.request.use(
   (config) => {
@@ -111,6 +112,8 @@ export default {
     AddRemove,
     ComputedRows,
     CellFormatters,
+    StoreState,
+    AjaxStoreState,
   },
 
   data() {
@@ -199,6 +202,14 @@ export default {
         {
           value: "Nested",
           label: "Nested Example",
+        },
+        {
+          value: "StoreState",
+          label: "Store State",
+        },
+        {
+          value: "AjaxStoreState",
+          label: "Ajax Store State",
         },
       ],
     };

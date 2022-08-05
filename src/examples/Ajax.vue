@@ -140,6 +140,7 @@ export default {
           },
         ],
         pagination: 5,
+        search: true,
         pageSortSelect: true,
         ajaxUrl: "https://sensetence.com/vue-quintable-demo/data.php",
         requestMethod: "POST",
