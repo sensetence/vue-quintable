@@ -683,7 +683,8 @@ The response has to be the following structure:
 ### Good to know
 
 - Links won't trigger expanded rows to collapse. Also you can prevent collapse parent row by define an element with the class "prevent-toggle"
-- VueQuintable uses v-model for selected rows
+- VueQuintable uses v-model for selected rows, its also possible to use selected.sync (best practice)
+- If you use the storeState property, filters have to be updated vie filters.sync
 
 ## License
 
