@@ -161,8 +161,8 @@
 &lt;/template&gt;
 &lt;script&gt;
     import VueQuintable from &quot;../components/VueQuintable.vue&quot;
-    import DragComponent from &quot;./DragComponent.vue&quot;
-    import ActionsComponent from &quot;./ActionsComponent.vue&quot;
+    import DragComponent from &quot;./components/DragComponent.vue&quot;
+    import ActionsComponent from &quot;./components/ActionsComponent.vue&quot;
     import Vue from &quot;vue&quot;
 
 
@@ -557,8 +557,8 @@
 </template>
 <script>
 import VueQuintable from "../components/VueQuintable.vue";
-import DragComponent from "./DragComponent.vue";
-import ActionsComponent from "./ActionsComponent.vue";
+import DragComponent from "./components/DragComponent.vue";
+import ActionsComponent from "./components/ActionsComponent.vue";
 import Vue from "vue";
 
 Vue.component(

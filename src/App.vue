@@ -35,28 +35,28 @@
 <script>
 import axiosCustom from "axios";
 
-import Basic from "./examples/Basic.vue";
-import Select from "./examples/Select.vue";
-import Pagination from "./examples/Pagination.vue";
-import Sort from "./examples/Sort.vue";
-import Breakpoints from "./examples/Breakpoints.vue";
-import Binded from "./examples/Binded.vue";
-import Events from "./examples/Events.vue";
-import AjaxLoaded from "./examples/AjaxLoaded.vue";
-import Filters from "./examples/Filters.vue";
-import Components from "./examples/Components.vue";
-import Nested from "./examples/Nested.vue";
-import Slots from "./examples/Slots.vue";
-import AddRemove from "./examples/AddRemove.vue";
-import Tooltips from "./examples/Tooltips.vue";
-import Hidden from "./examples/Hidden.vue";
-import ComputedRows from "./examples/ComputedRows.vue";
-import CellFormatters from "./examples/Formatter.vue";
-import Ajax from "./examples/Ajax.vue";
-import AjaxSelect from "./examples/AjaxSelect.vue";
-import BreakpointsAdvanced from "./examples/BreakpointsAdvanced.vue";
-import StoreState from "./examples/StoreState.vue";
-import AjaxStoreState from "./examples/AjaxStoreState.vue";
+import BasicExample from "./examples/BasicExample.vue";
+import SelectExample from "./examples/SelectExample.vue";
+import PaginationExample from "./examples/PaginationExample.vue";
+import SortExample from "./examples/SortExample.vue";
+import BreakpointsExample from "./examples/BreakpointsExample.vue";
+import BindedExample from "./examples/BindedExample.vue";
+import EventsExample from "./examples/EventsExample.vue";
+import AjaxLoadedExample from "./examples/AjaxLoadedExample.vue";
+import FiltersExample from "./examples/FiltersExample.vue";
+import ComponentsExample from "./examples/ComponentsExample.vue";
+import NestedExample from "./examples/NestedExample.vue";
+import SlotsExample from "./examples/SlotsExample.vue";
+import AddRemoveExample from "./examples/AddRemoveExample.vue";
+import TooltipsExample from "./examples/TooltipsExample.vue";
+import HiddenExample from "./examples/HiddenExample.vue";
+import ComputedRowsExample from "./examples/ComputedRowsExample.vue";
+import CellFormattersExample from "./examples/FormatterExample.vue";
+import AjaxExample from "./examples/AjaxExample.vue";
+import AjaxSelectExample from "./examples/AjaxSelectExample.vue";
+import BreakpointsAdvancedExample from "./examples/BreakpointsAdvancedExample.vue";
+import StoreStateExample from "./examples/StoreStateExample.vue";
+import AjaxStoreStateExample from "./examples/AjaxStoreStateExample.vue";
 
 import Prism from "prismjs";
 import "prismjs/themes/prism-okaidia.css";
@@ -92,123 +92,123 @@ export default {
   name: "app",
   components: {
     // VueQuintable,
-    Basic,
-    Breakpoints,
-    AjaxSelect,
-    BreakpointsAdvanced,
-    Ajax,
-    AjaxLoaded,
-    Pagination,
-    Sort,
-    Binded,
-    Tooltips,
-    Select,
-    Filters,
-    Components,
-    Events,
-    Nested,
-    Slots,
-    Hidden,
-    AddRemove,
-    ComputedRows,
-    CellFormatters,
-    StoreState,
-    AjaxStoreState,
+    BasicExample,
+    BreakpointsExample,
+    AjaxSelectExample,
+    BreakpointsAdvancedExample,
+    AjaxExample,
+    AjaxLoadedExample,
+    PaginationExample,
+    SortExample,
+    BindedExample,
+    TooltipsExample,
+    SelectExample,
+    FiltersExample,
+    ComponentsExample,
+    EventsExample,
+    NestedExample,
+    SlotsExample,
+    HiddenExample,
+    AddRemoveExample,
+    ComputedRowsExample,
+    CellFormattersExample,
+    StoreStateExample,
+    AjaxStoreStateExample,
   },
 
   data() {
     return {
       example: {
-        value: "Basic",
+        value: "BasicExample",
         label: "Basic Example",
       },
       examples: [
         {
-          value: "Basic",
+          value: "BasicExample",
           label: "Basic Example",
         },
         {
-          value: "ComputedRows",
+          value: "ComputedRowsExample",
           label: "Computed Rows Example",
         },
         {
-          value: "Pagination",
+          value: "PaginationExample",
           label: "Pagination Example",
         },
         {
-          value: "Sort",
+          value: "SortExample",
           label: "Sort Example",
         },
         {
-          value: "Select",
+          value: "SelectExample",
           label: "Select Example",
         },
         {
-          value: "CellFormatters",
+          value: "CellFormattersExample",
           label: "Cell Formatters Example",
         },
         {
-          value: "Breakpoints",
+          value: "BreakpointsExample",
           label: "Breakpoints Example",
         },
         {
-          value: "BreakpointsAdvanced",
+          value: "BreakpointsAdvancedExample",
           label: "Breakpoints Advanced Example",
         },
         {
-          value: "Tooltips",
+          value: "TooltipsExample",
           label: "Tooltips",
         },
         {
-          value: "Ajax",
+          value: "AjaxExample",
           label: "Ajax Example",
         },
         {
-          value: "AjaxSelect",
+          value: "AjaxSelectExample",
           label: "Ajax + Select Example",
         },
         {
-          value: "AjaxLoaded",
+          value: "AjaxLoadedExample",
           label: "Ajax Loaded Example",
         },
         {
-          value: "Events",
+          value: "EventsExample",
           label: "Events Example",
         },
         {
-          value: "Slots",
+          value: "SlotsExample",
           label: "Slots Example",
         },
         {
-          value: "Binded",
+          value: "BindedExample",
           label: "Vue-binded Example",
         },
         {
-          value: "Filters",
+          value: "FiltersExample",
           label: "Filter Example",
         },
         {
-          value: "Components",
+          value: "ComponentsExample",
           label: "Component Example",
         },
         {
-          value: "Hidden",
+          value: "HiddenExample",
           label: "Hide/Show Example",
         },
         {
-          value: "AddRemove",
+          value: "AddRemoveExample",
           label: "Add/Remove/Move Example",
         },
         {
-          value: "Nested",
+          value: "NestedExample",
           label: "Nested Example",
         },
         {
-          value: "StoreState",
+          value: "StoreStateExample",
           label: "Store State",
         },
         {
-          value: "AjaxStoreState",
+          value: "AjaxStoreStateExample",
           label: "Ajax Store State",
         },
       ],

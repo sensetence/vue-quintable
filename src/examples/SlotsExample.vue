@@ -36,6 +36,7 @@
         <div class="col-md-8">
           <input
             type="search"
+            :value="value"
             :placeholder="placeholder"
             class="form-control"
             @input="setSearchQuery($event.target.value)"

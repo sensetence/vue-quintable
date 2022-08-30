@@ -41,7 +41,7 @@
 &lt;script&gt;
 
     import VueQuintable from &quot;../components/VueQuintable.vue&quot;
-    import CheckboxComponent from &quot;./CheckboxComponent.vue&quot;
+    import CheckboxComponent from &quot;./components/CheckboxComponent.vue&quot;
     import Vue from &quot;vue&quot;
 
 
@@ -179,7 +179,7 @@
 </template>
 <script>
 import VueQuintable from "../components/VueQuintable.vue";
-import CheckboxComponent from "./CheckboxComponent.vue";
+import CheckboxComponent from "./components/CheckboxComponent.vue";
 import Vue from "vue";
 
 Vue.component(

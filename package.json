@@ -5,17 +5,13 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build-bundle": "node pack.js",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "build-bundle": "node pack.js"
   },
   "main": "./dist/vue-quintable.common.js",
   "files": [
     "dist/*"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/sensetence/vue-quintable.git"
-  },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
@@ -29,32 +25,31 @@
     "prismjs": "^1.23.0",
     "uuid": "^3.4.0",
     "v-tooltip": "^2.1.3",
-    "vue": "^2.6.12",
+    "vue": "^2.7.1",
     "vue-drag-drop": "^1.1.4",
     "vue-select": "^3.11.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.16",
+    "@babel/eslint-parser": "^7.12.16",
     "@babel/polyfill": "^7.12.1",
     "@popperjs/core": "^2.9.3",
-    "@vue/cli-plugin-babel": "^4.5.12",
-    "@vue/cli-plugin-eslint": "^4.5.12",
-    "@vue/cli-service": "^4.5.12",
-    "babel-eslint": "^10.1.0",
+    "@vue/cli-plugin-babel": "~5.0.8",
+    "@vue/cli-plugin-eslint": "~5.0.8",
+    "@vue/cli-service": "~5.0.8",
     "bootstrap": "^5.1.0",
-    "eslint": "^5.16.0",
+    "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-vue": "^5.0.0",
+    "eslint-plugin-vue": "^9.4.0",
     "mutationobserver-shim": "^0.3.7",
     "portal-vue": "^2.1.7",
     "prettier": "2.3.1",
     "pretty-checkbox-vue": "^1.1.9",
     "sass": "^1.49.9",
     "sass-loader": "^8.0.2",
-    "vue-template-compiler": "^2.6.12",
     "webpack": "^4.46.0"
   },
-  "license": "MIT",
   "homepage": "https://sensetence.com/vue-quintable/",
   "keywords": [
     "table",
@@ -68,5 +63,10 @@
     "vue-datasource",
     "vue-table",
     "vue-quintable"
-  ]
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sensetence/vue-quintable.git"
+  }
 }

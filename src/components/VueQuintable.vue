@@ -2058,7 +2058,7 @@ export default {
         let onlyVisibleSortedRows = {};
 
         for (let index in this.sortedIndexes) {
-          if (this.sortedIndexes.hasOwnProperty(index)) {
+          if (Object.prototype.hasOwnProperty.call(this.sortedIndexes, index)) {
             index = parseInt(index);
             if (this.filteredRows[this.sortedIndexes[index]]) {
               onlyVisibleSortedRows[index] = this.sortedIndexes[index];
@@ -2071,7 +2071,9 @@ export default {
 
         let counter = 0;
         for (let index in onlyVisibleSortedRows) {
-          if (onlyVisibleSortedRows.hasOwnProperty(index)) {
+          if (
+            Object.prototype.hasOwnProperty.call(onlyVisibleSortedRows, index)
+          ) {
             index = parseInt(index);
             if (counter < borderHigh && counter >= borderLow) {
               visible[onlyVisibleSortedRows[index]] = true;
@@ -2101,7 +2103,7 @@ export default {
           }
         } else {
           for (let i in this.sortedIndexes) {
-            if (this.sortedIndexes.hasOwnProperty(i)) {
+            if (Object.prototype.hasOwnProperty.call(this.sortedIndexes, i)) {
               if (this.visibleRows[this.sortedIndexes[i]]) {
                 rows.push(this.sortedIndexes[i]);
               }
@@ -2158,7 +2160,7 @@ export default {
               }
             }
           }
-
+          // eslint-disable-next-line
           this.$set(this.stickyRows, x, stickyCells);
           generatedRows[x] = generatedCells;
         }
@@ -2249,7 +2251,7 @@ export default {
      */
     hasGeneratedRows() {
       for (let row in this.generatedRows) {
-        if (this.generatedRows.hasOwnProperty(row)) {
+        if (Object.prototype.hasOwnProperty.call(this.generatedRows, row)) {
           if (Object.keys(this.generatedRows[row]).length) {
             return true;
           }
@@ -2399,7 +2401,9 @@ export default {
       let columns = {};
 
       for (let index in this.currentSortIndexes) {
-        if (this.currentSortIndexes.hasOwnProperty(index)) {
+        if (
+          Object.prototype.hasOwnProperty.call(this.currentSortIndexes, index)
+        ) {
           columns[index] = this.configFinal.columns[index];
         }
       }
@@ -2636,7 +2640,9 @@ export default {
             };
 
             for (let filter in this.filtersFinal) {
-              if (this.filtersFinal.hasOwnProperty(filter)) {
+              if (
+                Object.prototype.hasOwnProperty.call(this.filtersFinal, filter)
+              ) {
                 group.items.push({ name: filter });
               }
             }
@@ -3089,7 +3095,7 @@ export default {
       handler(val) {
         let selected = [];
         for (let index in this.sortedIndexes) {
-          if (this.sortedIndexes.hasOwnProperty(index)) {
+          if (Object.prototype.hasOwnProperty.call(this.sortedIndexes, index)) {
             index = parseInt(index);
             if (val[index]) {
               const row = this.rowsFinal[this.sortedIndexes[index]];
@@ -3163,7 +3169,10 @@ export default {
         let currentIndex;
         for (let index in this.currentSortIndexes) {
           if (
-            this.currentSortIndexes.hasOwnProperty(index) &&
+            Object.prototype.hasOwnProperty.call(
+              this.currentSortIndexes,
+              index
+            ) &&
             this.currentSortIndexes[index].order === 0
           ) {
             currentItem = this.currentSortIndexes[index];
@@ -3437,7 +3446,7 @@ export default {
      */
     removeSort(index) {
       for (let i in this.currentSortIndexes) {
-        if (this.currentSortIndexes.hasOwnProperty(i)) {
+        if (Object.prototype.hasOwnProperty.call(this.currentSortIndexes, i)) {
           let item = this.currentSortIndexes[i];
           if (item.order > this.currentSortIndexes[index].order) {
             item.order--;
@@ -3483,7 +3492,7 @@ export default {
       let counter = 0;
 
       for (let index in this.sortedIndexes) {
-        if (this.sortedIndexes.hasOwnProperty(index)) {
+        if (Object.prototype.hasOwnProperty.call(this.sortedIndexes, index)) {
           index = parseInt(index);
           if (
             (!this.configFinal.selectAllRows &&
@@ -3606,7 +3615,7 @@ export default {
 
       if (group.relation === "AND") {
         for (let key in filters) {
-          if (filters.hasOwnProperty(key)) {
+          if (Object.prototype.hasOwnProperty.call(filters, key)) {
             if (
               this.filterGroups.length &&
               !this.findInFilterGroups(key, this.filterGroups)
@@ -3690,7 +3699,7 @@ export default {
         return found;
       } else if (group.relation === "OR" || group.items) {
         for (let key in filters) {
-          if (filters.hasOwnProperty(key)) {
+          if (Object.prototype.hasOwnProperty.call(filters, key)) {
             if (
               this.filterGroups.length &&
               !this.findInFilterGroups(key, this.filterGroups)
@@ -3939,7 +3948,9 @@ export default {
 
       let sortableIndexes = [];
       for (let index in this.currentSortIndexes) {
-        if (this.currentSortIndexes.hasOwnProperty(index)) {
+        if (
+          Object.prototype.hasOwnProperty.call(this.currentSortIndexes, index)
+        ) {
           let data = this.currentSortIndexes[index];
           data.index = index;
           sortableIndexes.push(data);
