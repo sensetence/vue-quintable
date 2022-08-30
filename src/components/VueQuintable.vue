@@ -4236,19 +4236,21 @@ export default {
             Math.ceil(response.data.all / this.currentRowsPerPage)
           );
 
-          const old = JSON.parse(JSON.stringify(this.ajaxRows));
+          this.$emit(
+            "ajax:rows",
+            {
+              rows: response.data.rows,
+              old: JSON.parse(JSON.stringify(this.ajaxRows)),
+              all: this.ajaxAll,
+            },
+            "ajax:rows"
+          );
 
           if (response.data.all) {
             this.ajaxRows = response.data.rows;
-            this.checkStoredSelectedRows(true);
+            // this.checkStoredSelectedRows(true);
             this.initLists();
           }
-
-          this.$emit(
-            "ajax:rows",
-            { rows: this.ajaxRows, old: old, all: this.ajaxAll },
-            "ajax:rows"
-          );
 
           this.fetching = false;
         })
@@ -4328,6 +4330,10 @@ export default {
       return randomUUID();
     },
     checkStoredSelectedRows(deleteStore = false) {
+      if (this.storedState["pre-selected-rows"]) {
+        //TODO
+      }
+
       if (this.storedState["selected-rows"]) {
         this.selected = JSON.parse(
           JSON.stringify(this.storedState["selected-rows"])
