@@ -48,7 +48,7 @@
     "pretty-checkbox-vue": "^1.1.9",
     "sass": "^1.49.9",
     "sass-loader": "^8.0.2",
-    "webpack": "^4.46.0"
+    "webpack": "^5.74.0"
   },
   "homepage": "https://sensetence.com/vue-quintable/",
   "keywords": [
