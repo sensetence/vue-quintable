@@ -2812,6 +2812,10 @@ export default {
      *
      */
     preSelectedRows(val) {
+      if (!val) {
+        return;
+      }
+
       for (let i = 0; i < this.rowsFinal.length; i++) {
         this.$set(this.selected, i, false);
       }
@@ -3095,17 +3099,17 @@ export default {
               }
             }
           }
-
-          if (this.configFinal.storeState) {
-            localStorage.setItem(
-              `vue-quintable-${this.identifier}-selected-rows`,
-              JSON.stringify(val)
-            );
-          }
-
-          this.$emit("input", selected);
-          this.$emit("update:selected-rows", selected);
         }
+
+        if (this.configFinal.storeState) {
+          localStorage.setItem(
+            `vue-quintable-${this.identifier}-selected-rows`,
+            JSON.stringify(val)
+          );
+        }
+
+        this.$emit("input", selected);
+        this.$emit("update:selected-rows", selected);
       },
       deep: true,
     },
@@ -3289,7 +3293,6 @@ export default {
       let tmp = Object.keys(this.selected)
         .slice()
         .map((key) => {
-          console.log(this.rowsFinal[parseInt(key)]);
           return (
             !!this.selected[key] ||
             !!(
@@ -3525,7 +3528,7 @@ export default {
           )
         );
 
-        if (i < this.filterGroups.length - 1) {
+        if (this.DEBUG && i < this.filterGroups.length - 1) {
           console.log(this.configFinal.filterGroupRelation);
         }
       }
@@ -4233,16 +4236,19 @@ export default {
             Math.ceil(response.data.all / this.currentRowsPerPage)
           );
 
-          this.$emit(
-            "ajax:rows",
-            { rows: response.data.rows, old: this.ajaxRows, all: this.ajaxAll },
-            "ajax:rows"
-          );
+          const old = JSON.parse(JSON.stringify(this.ajaxRows));
 
           if (response.data.all) {
             this.ajaxRows = response.data.rows;
+            this.checkStoredSelectedRows(true);
             this.initLists();
           }
+
+          this.$emit(
+            "ajax:rows",
+            { rows: this.ajaxRows, old: old, all: this.ajaxAll },
+            "ajax:rows"
+          );
 
           this.fetching = false;
         })
@@ -4320,6 +4326,23 @@ export default {
     },
     generateIdentifier() {
       return randomUUID();
+    },
+    checkStoredSelectedRows(deleteStore = false) {
+      if (this.storedState["selected-rows"]) {
+        this.selected = JSON.parse(
+          JSON.stringify(this.storedState["selected-rows"])
+        );
+        const counter = Object.values(this.selected).filter((x) => x).length;
+        if (!this.configFinal.selectAllRows) {
+          this.allSelectedCustom =
+            counter && counter === this.visibleRows.filter((x) => x).length;
+        } else {
+          this.allSelectedCustom = counter && counter === this.rowsFinal.length;
+        }
+        if (deleteStore) {
+          this.$delete(this.storedState, "selected-rows");
+        }
+      }
     },
   },
   created() {
@@ -4415,26 +4438,12 @@ export default {
       this.sort(true);
     }
 
-    if (this.storedState["selected-rows"]) {
-      this.$nextTick(() => {
-        this.selected = this.storedState["selected-rows"];
-        const counter = Object.values(this.selected).filter((x) => x).length;
-        if (!this.configFinal.selectAllRows) {
-          this.allSelectedCustom =
-            counter && counter === this.visibleRows.filter((x) => x).length;
-        } else {
-          this.allSelectedCustom = counter && counter === this.rowsFinal.length;
-        }
-      });
-    }
-
     if (this.storedState["current-page"]) {
       this.$nextTick(() => {
         this.currentPage = this.storedState["current-page"];
       });
     }
-
-    //TODO: ajax get rows WHEN? and how to prevent trigger it again
+    this.$nextTick(this.checkStoredSelectedRows);
   },
   mounted() {
     if (this.configFinal.ajaxUrl) {
