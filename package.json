@@ -24,7 +24,7 @@
     "chance": "^1.1.7",
     "core-js": "^3.9.1",
     "fuzzy.js": "^0.1.0",
-    "moment-timezone": "^0.5.33",
+    "moment-timezone": "^0.5.35",
     "node-gyp": "^6.1.0",
     "prismjs": "^1.23.0",
     "uuid": "^3.4.0",
