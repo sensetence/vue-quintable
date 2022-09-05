@@ -1459,7 +1459,8 @@
                 quintable--table-footer-container--pagination-wrapper--pagination-container--visible-rows
               "
               v-if="numberOfVisibleRows"
-              >{{ firstVisibleRow }}-{{ lastVisibleRow }} of
+              >{{ firstVisibleRow }}-{{ lastVisibleRow }}
+              {{ configFinal.numberOfVisibleRowsFillerWord }}
               {{ numberOfVisibleRows }}</span
             >
           </div>
@@ -1701,6 +1702,13 @@ export default {
           this.paginationOptions[
             Math.min(i - 1, this.paginationOptions.length - 1)
           ];
+      }
+
+      let numberOfVisibleRowsFillerWord = "of";
+
+      if (this.config.numberOfVisibleRowsFillerWord) {
+        numberOfVisibleRowsFillerWord =
+          this.config.numberOfVisibleRowsFillerWord;
       }
 
       let select = false;
@@ -2018,6 +2026,7 @@ export default {
         hideEmptyColumns: hideEmptyColumns,
         ignoreSortEmptyColumns: ignoreSortEmptyColumns,
         pagination: pagination,
+        numberOfVisibleRowsFillerWord: numberOfVisibleRowsFillerWord,
         select: select,
         selectAll: selectAll,
         selectAllRows: selectAllRows,
