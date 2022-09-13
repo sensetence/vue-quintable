@@ -3566,7 +3566,7 @@ export default {
      * Initialize nested object lists
      *
      */
-    initList() {
+    initLists() {
       if (!this.rowsFinal) {
         return;
       }
