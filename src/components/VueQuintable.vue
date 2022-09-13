@@ -1649,11 +1649,16 @@ export default {
 
         let onlyVisibleSortedRows = {};
 
-        for (let index in this.sortedIndexes) {
+        for (let i in this.sortedIndexes) {
+          const index = i.toString();
           if (this.sortedIndexes.hasOwnProperty(index)) {
-            index = parseInt(index);
             if (this.filteredRows[this.sortedIndexes[index]]) {
-              onlyVisibleSortedRows[index] = this.sortedIndexes[index];
+              this.$set(
+                onlyVisibleSortedRows,
+                index,
+                this.sortedIndexes[index]
+              );
+              // onlyVisibleSortedRows[index] = this.sortedIndexes[index];
             }
           }
         }
@@ -1693,9 +1698,10 @@ export default {
           }
         } else {
           for (let i in this.sortedIndexes) {
-            if (this.sortedIndexes.hasOwnProperty(i)) {
-              if (this.visibleRows[this.sortedIndexes[i]]) {
-                rows.push(this.sortedIndexes[i]);
+            const index = i.toString();
+            if (this.sortedIndexes.hasOwnProperty(index)) {
+              if (this.visibleRows[this.sortedIndexes[index]]) {
+                rows.push(this.sortedIndexes[index]);
               }
             }
           }
@@ -2509,9 +2515,12 @@ export default {
 
         const rows = [];
         for (let i = 0; i < val.length; i++) {
+          const index = i.toString();
           if (val[i]) {
             rows.push(
-              this.rowsFinal[this.sortedIndexes[i] ? this.sortedIndexes[i] : i]
+              this.rowsFinal[
+                this.sortedIndexes[index] ? this.sortedIndexes[index] : i
+              ]
             );
           }
         }
@@ -2590,6 +2599,7 @@ export default {
      *
      */
     rows() {
+      this.clearLists();
       this.initLists();
 
       this.$nextTick(() => {
@@ -2635,9 +2645,9 @@ export default {
     selected(val) {
       let selected = [];
       for (let index in this.sortedIndexes) {
+        const i = parseInt(index);
         if (this.sortedIndexes.hasOwnProperty(index)) {
-          index = parseInt(index);
-          if (val[index]) {
+          if (val[i]) {
             const row = this.rowsFinal[this.sortedIndexes[index]];
 
             if (!row.disableSelect) {
@@ -2887,19 +2897,21 @@ export default {
         "prevent-toggle"
       );
 
+      const index = rowIndex.toString();
+
       if (this.hiddenColumns[rowIndex] && !isLink && !shouldPrevent) {
         if (!this.openRows[rowIndex]) {
           this.$set(this.openRows, rowIndex, true);
           this.$emit(
             "expand:row",
-            this.rowsFinal[this.sortedIndexes[rowIndex]],
+            this.rowsFinal[this.sortedIndexes[index]],
             "expand:row"
           );
         } else {
           this.$set(this.openRows, rowIndex, false);
           this.$emit(
             "expand:row",
-            this.rowsFinal[this.sortedIndexes[rowIndex]],
+            this.rowsFinal[this.sortedIndexes[index]],
             "collapse:row"
           );
         }
@@ -2973,7 +2985,8 @@ export default {
 
     resetSorts() {
       for (let i = 0; i < this.rowsFinal.length; i++) {
-        this.sortedIndexes[i] = parseInt(i);
+        const index = i.toString();
+        this.$set(this.sortedIndexes, index, i);
       }
     },
 
@@ -2991,8 +3004,8 @@ export default {
       let counter = 0;
 
       for (let index in this.sortedIndexes) {
+        index = index.toString();
         if (this.sortedIndexes.hasOwnProperty(index)) {
-          index = parseInt(index);
           if (
             (!this.configFinal.selectAllRows &&
               this.visibleRows[this.sortedIndexes[index]]) ||
@@ -3353,8 +3366,9 @@ export default {
       if (!this.configFinal.sorts[index]) {
         return;
       }
-
       let item;
+
+      index = parseInt(index);
 
       if (!this.currentSortIndexes[index]) {
         if (!this.multiSort) {
@@ -3422,10 +3436,11 @@ export default {
         }
 
         if (Object.keys(this.sortedIndexes).length) {
-          sortedIndexesBefore = Object.assign({}, this.sortedIndexes);
+          sortedIndexesBefore = JSON.parse(JSON.stringify(this.sortedIndexes));
         } else {
           for (let i = 0; i < allRows.length; i++) {
-            sortedIndexesBefore[i] = i;
+            this.$set(sortedIndexesBefore, i.toString(), i);
+            // sortedIndexesBefore[i] = i;
           }
         }
       } else {
@@ -3505,23 +3520,26 @@ export default {
       let counterRows = 0;
       let counterAdded = 0;
       for (let i = 0; i < allRows.length; i++) {
+        const index = i.toString();
         if (this.pageSort && visibleIndexes.indexOf(i) !== -1) {
           if (counterRows < this.configFinal.pagination) {
             finalRows.push(rows[counterAdded]);
             counterAdded++;
           } else {
-            finalRows.push(allRows[sortedIndexesBefore[i]]);
+            finalRows.push(allRows[sortedIndexesBefore[index]]);
           }
           counterRows++;
         } else if (this.pageSort) {
-          finalRows.push(allRows[sortedIndexesBefore[i]]);
+          finalRows.push(allRows[sortedIndexesBefore[index]]);
         } else {
           finalRows.push(rows[i]);
         }
       }
 
       for (let i = 0; i < finalRows.length; i++) {
-        this.sortedIndexes[i] = parseInt(finalRows[i].index);
+        const index = i.toString();
+        this.$set(this.sortedIndexes, index, parseInt(finalRows[i].index));
+        // this.sortedIndexes[i] =  parseInt(finalRows[i].index);
       }
 
       if (!this.pageSort) {
@@ -3551,12 +3569,13 @@ export default {
      * Initialize nested object lists
      *
      */
-    initLists() {
+    initList() {
       if (!this.rowsFinal) {
         return;
       }
 
       for (let i = 0; i < this.rowsFinal.length; i++) {
+        const index = i.toString();
         if (typeof this.generatedRows[i] !== "object") {
           this.generatedRows[i] = {};
         }
@@ -3565,8 +3584,9 @@ export default {
           this.stickyRows[i] = {};
         }
 
-        if (typeof this.sortedIndexes[i] === "undefined") {
-          this.sortedIndexes[i] = parseInt(i);
+        if (typeof this.sortedIndexes[index] === "undefined") {
+          this.$set(this.sortedIndexes, index, parseInt(i));
+          // this.sortedIndexes[i] = parseInt(i);
         }
 
         if (typeof this.selected[i] === "undefined") {
