@@ -1658,7 +1658,6 @@ export default {
                 index,
                 this.sortedIndexes[index]
               );
-              // onlyVisibleSortedRows[index] = this.sortedIndexes[index];
             }
           }
         }
@@ -3440,7 +3439,6 @@ export default {
         } else {
           for (let i = 0; i < allRows.length; i++) {
             this.$set(sortedIndexesBefore, i.toString(), i);
-            // sortedIndexesBefore[i] = i;
           }
         }
       } else {
@@ -3539,7 +3537,6 @@ export default {
       for (let i = 0; i < finalRows.length; i++) {
         const index = i.toString();
         this.$set(this.sortedIndexes, index, parseInt(finalRows[i].index));
-        // this.sortedIndexes[i] =  parseInt(finalRows[i].index);
       }
 
       if (!this.pageSort) {
@@ -3586,7 +3583,6 @@ export default {
 
         if (typeof this.sortedIndexes[index] === "undefined") {
           this.$set(this.sortedIndexes, index, parseInt(i));
-          // this.sortedIndexes[i] = parseInt(i);
         }
 
         if (typeof this.selected[i] === "undefined") {
