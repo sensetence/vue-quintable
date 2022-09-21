@@ -3108,7 +3108,7 @@ export default {
         let selected = [];
         for (let index in this.sortedIndexes) {
           if (Object.prototype.hasOwnProperty.call(this.sortedIndexes, index)) {
-            if (val[index]) {
+            if (val[this.sortedIndexes[index]]) {
               const row = this.rowsFinal[this.sortedIndexes[index]];
               if (!row.disableSelect) {
                 selected.push(row);
