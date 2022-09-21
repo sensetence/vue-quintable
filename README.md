@@ -1,4 +1,4 @@
-<img alt="vue-quintable" src="https://quintet.io/vue-quintable-demo/vue-table.png" width="265" height="222">
+<img alt="vue-quintable" src="https://sensetence.com/vue-quintable-demo/vue-table.png" width="265" height="222">
 
 
 
@@ -6,7 +6,7 @@
 
 VueQuintable is a table wrapper for Vue.js. It is build with bootstrap 4.0. High configurable, easy to use, flexible and responsive.
 
-[Demo](https://quintet.io/vue-quintable-demo/) 
+[Demo](https://sensetence.com/vue-quintable-demo/) 
 
 ## Getting Started
 
@@ -70,7 +70,7 @@ Vue.use(VueTable);
 You can either install VueQuintable via bower
 
 ```shell
-bower install --save https://github.com/Quintetio/vue-quintable
+bower install --save https://github.com/sensetence/vue-quintable
 ```
 
 or just download the source and include the scripts and styles in dist folder to use VueQuintable for your browser page.
@@ -658,12 +658,6 @@ The response has to be the following structure:
 - Links won't trigger expanded rows to collapse. Also you can prevent collapse parent row by define an element with the class "prevent-toggle"
 - VueQuintable uses v-model for selected rows
 
-## License
 
-VueQuintable is free for everyone to use in personal projects (MIT License).
 
-If you want to include VueQuintable within a commercial project or product you will need to purchase one of our commercial licenses. Commercial Licenses are  priced per project which can be an internal application, a website, or a even  a product, for example. You can purchase licenses on our website: https://quintet.io/vuequintable-license/ 
-
-## Authors
-
-Quintet Consulting UG - Samuel Zeitler
+Sensetence UG - Samuel Zeitler
