@@ -2644,7 +2644,6 @@ export default {
     selected(val) {
       let selected = [];
       for (let index in this.sortedIndexes) {
-        const i = parseInt(index);
         if (this.sortedIndexes.hasOwnProperty(index)) {
           if (val[this.sortedIndexes[index]]) {
             const row = this.rowsFinal[this.sortedIndexes[index]];
@@ -3532,8 +3531,6 @@ export default {
           finalRows.push(rows[i]);
         }
       }
-
-      console.log(finalRows);
 
       for (let i = 0; i < finalRows.length; i++) {
         const index = i.toString();

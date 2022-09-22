@@ -1,6 +1,6 @@
 {
   "name": "@quintet/vue-quintable",
-  "version": "1.2.12",
+  "version": "1.2.13",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
