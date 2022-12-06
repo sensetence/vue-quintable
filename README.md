@@ -246,22 +246,22 @@ The following will give you an overview how to configure the VueQuintable for yo
 
 ##### Property *columns* for property *config* properties
 
-| Key                    | Type     | Options/Return                      | Pre-condition                                 | Description                                                  |
+| Key                    | Type     | Options/Return | Pre-condition                                 | Description                                                  |
 | ---------------------- | -------- | ----------------------------------- | --------------------------------------------- | ------------------------------------------------------------ |
-| headline               | String   | -                                   | -                                             | Headline for column                                          |
-| title                  | String   | -                                   | -                                             | Description, displayed on hover the headline                 |
-| classes                | String   | -                                   | -                                             | Space separated css classes string. Will be applied for headlines, cells, generated rows and sticky rows. |
-| hidden                 | Boolean  | true\|false                         | -                                             | If set to true the column will not be displayed in any case. Highly recommended to use only when *dynamicConfig* is set to to true. |
-| ignoreEmpty            | Boolean  | true\|false                         | *config* property *hideEmptyColumns*  enabled | The column will never be hidden automatically due to emptiness |
-| sort                   | Boolean  | true\|false                         | -                                             | If set to true, this column will be sortable                 |
-| firstSortDirection | String | "ASC"\|"DESC" | *sort* is set | Indicates the first direction of sorting when sort is activated for a column by clicking on the sort header. Default: "ASC" |
-| breakpoint             | String   | "xs"\|"sm"\|"md"\|"lg"\|"xl"\|"all" | -                                             | Bootstrap breakpoint from which descending the column will be displayed as additional row |
-| showHeadlineBreakpoint | String   | "xs"\|"sm"\|"md"\|"lg"\|"xl"\|"all" | *headline* is set                             | Bootstrap breakpoint from which descending the columns headline will be shown |
-| hideHeadlineBreakpoint | String   | "xs"\|"sm"\|"md"\|"lg"\|"xl"\|"all" | *headline* is set                             | Bootstrap breakpoint from which descending the columns headline will be hidden |
-| align                  | String   | "start"\|"end"\|"center"           | -                                             | Text alignment for whole column                              |
-| alwaysExpanded         | Boolean  | true\|false                         | *breakpoint* is set                           | If set to true, the additional columns row will be always expanded if the breakpoint is reached |
-| sticky                 | Boolean  | true\|false                         | *breakpoint* is not set                       | If set to true,  this column will be always displayed as additional row and will be expanded always |
-| cellFormatter          | Function | String\|Object                      | -                                             | Function for complex custom cell formatting. The cell will be passed as function parameter. Has to return a string handled as text or an object with String value and String type{"html","text"} |
+| headline               | String   | -              | -                                             | Headline for column                                          |
+| title                  | String   | -              | -                                             | Description, displayed on hover the headline                 |
+| classes                | String   | -              | -                                             | Space separated css classes string. Will be applied for headlines, cells, generated rows and sticky rows. |
+| hidden                 | Boolean  | true\          |false                         | -                                             | If set to true the column will not be displayed in any case. Highly recommended to use only when *dynamicConfig* is set to to true. |
+| ignoreEmpty            | Boolean  | true\          |false                         | *config* property *hideEmptyColumns*  enabled | The column will never be hidden automatically due to emptiness |
+| sort                   | Boolean  | true\          |false                         | -                                             | If set to true, this column will be sortable                 |
+| firstSortDirection | String | "ASC"\         |"DESC" | *sort* is set | Indicates the first direction of sorting when sort is activated for a column by clicking on the sort header. Default: "ASC" |
+| breakpoint             | String   | "xs"\          |"sm"\|"md"\|"lg"\|"xl"\|"xxl"\|"all" | -                                             | Bootstrap breakpoint from which descending the column will be displayed as additional row |
+| showHeadlineBreakpoint | String   | "xs"\          |"sm"\|"md"\|"lg"\|"xl"\|"xxl"\|"all" | *headline* is set                             | Bootstrap breakpoint from which descending the columns headline will be shown |
+| hideHeadlineBreakpoint | String   | "xs"\          |"sm"\|"md"\|"lg"\|"xl"\|"xxl"\|"all" | *headline* is set                             | Bootstrap breakpoint from which descending the columns headline will be hidden |
+| align                  | String   | "start"\       |"end"\|"center"           | -                                             | Text alignment for whole column                              |
+| alwaysExpanded         | Boolean  | true\          |false                         | *breakpoint* is set                           | If set to true, the additional columns row will be always expanded if the breakpoint is reached |
+| sticky                 | Boolean  | true\          |false                         | *breakpoint* is not set                       | If set to true,  this column will be always displayed as additional row and will be expanded always |
+| cellFormatter          | Function | String\        |Object                      | -                                             | Function for complex custom cell formatting. The cell will be passed as function parameter. Has to return a string handled as text or an object with String value and String type{"html","text"} |
 
 
 
