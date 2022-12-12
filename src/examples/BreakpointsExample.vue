@@ -43,6 +43,7 @@
                             breakpoint:"md"
                         }, {
                             headline: "Birth Place",
+                            breakpoint:"xxl"
                         }, {
                             headline: "Job",
                             breakpoint:"xl"
@@ -111,6 +112,7 @@ export default {
           },
           {
             headline: "Birth Place",
+            breakpoint: "xxl",
           },
           {
             headline: "Job",
