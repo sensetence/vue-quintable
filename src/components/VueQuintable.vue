@@ -6,6 +6,7 @@
       <div ref="md" class="d-none d-md-block"></div>
       <div ref="lg" class="d-none d-lg-block"></div>
       <div ref="xl" class="d-none d-xl-block"></div>
+      <div ref="xxl" class="d-none d-xxl-block"></div>
     </div>
 
     <div class="header slot slot-header quintable--header">
@@ -4334,6 +4335,10 @@ export default {
       }
 
       let breakpoints = [];
+      if (!this.elementVisible(this.$refs.xxl)) {
+        breakpoints.push("xxl");
+      }
+
       if (!this.elementVisible(this.$refs.xl)) {
         breakpoints.push("xl");
       }
