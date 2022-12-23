@@ -11,7 +11,18 @@
         </div>
       </template>
       <template v-slot:generated-cell-complete="context">
-        <div class="btn btn-sm btn-info" @click.stop="alert(context.cell.text)">
+        <div
+          class="btn btn-sm btn-warning"
+          @click.stop="alert(context.cell.text)"
+        >
+          {{ context.cell.text }}
+        </div>
+      </template>
+      <template v-slot:sticky-cell-complete="context">
+        <div
+          class="btn btn-sm btn-danger"
+          @click.stop="alert(context.cell.text)"
+        >
           {{ context.cell.text }}
         </div>
       </template>
@@ -90,7 +101,10 @@
             &lt;div class=&quot;btn btn-sm btn-info&quot; @click.stop=&quot;alert(context.cell.text)&quot;&gt;{{context.cell.text}}&lt;/div&gt;
         &lt;/template&gt;
         &lt;template v-slot:generated-cell-complete=&quot;context&quot;&gt;
-            &lt;div class=&quot;btn btn-sm btn-info&quot; @click.stop=&quot;alert(context.cell.text)&quot;&gt;{{context.cell.text}}&lt;/div&gt;
+            &lt;div class=&quot;btn btn-sm btn-warning&quot; @click.stop=&quot;alert(context.cell.text)&quot;&gt;{{context.cell.text}}&lt;/div&gt;
+        &lt;/template&gt;
+        &lt;template v-slot:sticky-cell-complete=&quot;context&quot;&gt;
+            &lt;div class=&quot;btn btn-sm btn-danger&quot; @click.stop=&quot;alert(context.cell.text)&quot;&gt;{{context.cell.text}}&lt;/div&gt;
         &lt;/template&gt;
         &lt;template v-slot:header&gt;
             &lt;p-check class=&quot;p-switch&quot; v-model=&quot;showRows&quot;&gt;Toggle Rows&lt;/p-check&gt;
@@ -133,7 +147,7 @@
                             headline: &#x22;Age&#x22;,
                         }, {
                             headline: &#x22;Birth Place&#x22;,
-                            breakpoint:&#x22;md&#x22;,
+                            sticky:true,
                         }, {
                             headline: &#x22;Job&#x22;,
                             breakpoint:&#x22;md&#x22;,
@@ -212,7 +226,7 @@ export default {
           },
           {
             headline: "Birth Place",
-            breakpoint: "md",
+            sticky: true,
           },
           {
             headline: "Job",

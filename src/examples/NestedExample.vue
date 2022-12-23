@@ -167,6 +167,7 @@ export default {
           },
         ],
       },
+      selectedValues: {},
     };
   },
   computed: {
@@ -199,10 +200,16 @@ export default {
           {
             quintable: {
               tableClasses: "text-center",
+              value: this.selectedValues[i],
+              onUpdateSelect: (selectedRows) => console.log(selectedRows),
+              onClickRow: (row) => console.log(row),
               config: {
                 columns: [
                   {
                     headline: "Country",
+                    cellFormatter: (cell) => {
+                      return { value: "Country: " + cell.text };
+                    },
                   },
                   {
                     headline: "City",
@@ -213,6 +220,7 @@ export default {
                     breakpoint: "xl",
                   },
                 ],
+                select: true,
               },
               rows: [
                 [{ text: "Germany" }, { text: "Berlin" }, { text: timeB }],
