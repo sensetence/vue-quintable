@@ -18,33 +18,26 @@
           ? rowsFinal[rIndex].cells
           : rowsFinal[rIndex]"
       >
-        <div
-          :key="
-            'cell-content-portal-' +
-            rIndex +
-            '-' +
-            cIndex +
-            (identifier ? '-' + identifier : '')
-          "
-        >
+        <div :key="'cell-content-portal-' + rIndex + '-' + cIndex">
           <portal
             :to="
-              'cell-content-portal-target-' +
+              portalIdentifier +
+              '-cell-content-portal-target-' +
               rIndex +
               '-' +
-              cIndex +
-              (identifier ? '-' + identifier : '')
+              cIndex
             "
           >
             <div slot-scope="options">
-              <slot
-                :cell="cell"
-                :name="'cell-complete' + (identifier ? '-' + identifier : '')"
+              <div
+                class="cell-inner"
+                :class="options.path + ' ' + options.path + '--quintable'"
+                v-if="cell.quintable"
               >
-                <slot
-                  :name="'cell-content' + (identifier ? '-' + identifier : '')"
-                  :cell="cell"
-                >
+                Nested support was removed, use slots instead!
+              </div>
+              <slot :cell="cell" v-else :name="'cell-complete'">
+                <slot :name="'cell-content'" :cell="cell">
                   <div
                     class="cell-inner"
                     :class="
@@ -78,133 +71,7 @@
                   >
                     {{ cell.text }}
                   </div>
-                  <div
-                    class="cell-inner"
-                    :class="options.path + ' ' + options.path + '--quintable'"
-                    v-if="cell.quintable"
-                  >
-                    <NestedVueQuintable
-                      :selected-rows="cell.quintable.value"
-                      :cell="cell"
-                      :path="options.path"
-                      :slots="$scopedSlots"
-                      :verbose="verbose"
-                      @click:row="
-                        (data) => {
-                          if (typeof cell.quintable.onClickRow === 'function') {
-                            cell.quintable.onClickRow(data);
-                          }
-                        }
-                      "
-                      @click:cell="
-                        (data) => {
-                          if (
-                            typeof cell.quintable.onClickCell === 'function'
-                          ) {
-                            cell.quintable.onClickCell(data);
-                          }
-                        }
-                      "
-                      @expand:row="
-                        (data) => {
-                          if (
-                            typeof cell.quintable.onExpandRow === 'function'
-                          ) {
-                            cell.quintable.onExpandRow(data);
-                          }
-                        }
-                      "
-                      @collapse:row="
-                        (data) => {
-                          if (
-                            typeof cell.quintable.onCollapseRow === 'function'
-                          ) {
-                            cell.quintable.onCollapseRow(data);
-                          }
-                        }
-                      "
-                      @filtered:rows="
-                        (data) => {
-                          if (
-                            typeof cell.quintable.onFilteredRows === 'function'
-                          ) {
-                            cell.quintable.onFilteredRows(data);
-                          }
-                        }
-                      "
-                      @ajax:rows="
-                        (data) => {
-                          if (typeof cell.quintable.onAjaxRows === 'function') {
-                            cell.quintable.onAjaxRows(data);
-                          }
-                        }
-                      "
-                      @ajax:error="
-                        (data) => {
-                          if (
-                            typeof cell.quintable.onAjaxError === 'function'
-                          ) {
-                            cell.quintable.onAjaxError(data);
-                          }
-                        }
-                      "
-                      @update:perPage="
-                        (data) => {
-                          if (
-                            typeof cell.quintable.onUpdatePerPage === 'function'
-                          ) {
-                            cell.quintable.onUpdatePerPage(data);
-                          }
-                        }
-                      "
-                      @update:page="
-                        (data) => {
-                          if (
-                            typeof cell.quintable.onUpdatePage === 'function'
-                          ) {
-                            cell.quintable.onUpdatePage(data);
-                          }
-                        }
-                      "
-                      @update:search="
-                        (data) => {
-                          if (
-                            typeof cell.quintable.onUpdateSearch === 'function'
-                          ) {
-                            cell.quintable.onUpdateSearch(data);
-                          }
-                        }
-                      "
-                      @update:sort="
-                        (data) => {
-                          if (
-                            typeof cell.quintable.onUpdateSort === 'function'
-                          ) {
-                            cell.quintable.onUpdateSort(data);
-                          }
-                        }
-                      "
-                      @update:select="
-                        (data) => {
-                          if (
-                            typeof cell.quintable.onUpdateSelect === 'function'
-                          ) {
-                            cell.quintable.onUpdateSelect(data);
-                          }
-                        }
-                      "
-                      @component:event="
-                        (data) => {
-                          if (
-                            typeof cell.quintable.onComponentEvent ===
-                            'function'
-                          ) {
-                            cell.quintable.onComponentEvent(data);
-                          }
-                        }
-                      "
-                    ></NestedVueQuintable>
-                  </div>
+
                   <div
                     class="cell-inner"
                     :class="options.path + ' ' + options.path + '--component'"
@@ -585,11 +452,11 @@
                       !configFinal.stickyCols[cIndex]
                     "
                     :name="
-                      'cell-content-portal-target-' +
+                      portalIdentifier +
+                      '-cell-content-portal-target-' +
                       rIndex +
                       '-' +
-                      cIndex +
-                      (identifier ? '-' + identifier : '')
+                      cIndex
                     "
                     :slot-props="{
                       path: 'quintable--table-container--table--tbody--row--cell--inner-cell',
@@ -803,27 +670,15 @@
                             cIndex
                           "
                         >
-                          <slot
-                            :cell="cell"
-                            :name="
-                              'generated-cell-complete' +
-                              (identifier ? '-' + identifier : '')
-                            "
-                          >
-                            <slot
-                              :cell="cell"
-                              :name="
-                                'generated-cell-content' +
-                                (identifier ? '-' + identifier : '')
-                              "
-                            >
+                          <slot :cell="cell" :name="'generated-cell-complete'">
+                            <slot :cell="cell" :name="'generated-cell-content'">
                               <portal-target
                                 :name="
-                                  'cell-content-portal-target-' +
+                                  portalIdentifier +
+                                  '-cell-content-portal-target-' +
                                   rIndex +
                                   '-' +
-                                  cIndex +
-                                  (identifier ? '-' + identifier : '')
+                                  cIndex
                                 "
                                 :slot-props="{
                                   path: 'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner',
@@ -946,27 +801,15 @@
                             cIndex
                           "
                         >
-                          <slot
-                            :cell="cell"
-                            :name="
-                              'sticky-cell-complete' +
-                              (identifier ? '-' + identifier : '')
-                            "
-                          >
-                            <slot
-                              :cell="cell"
-                              :name="
-                                'sticky-cell-content' +
-                                (identifier ? '-' + identifier : '')
-                              "
-                            >
+                          <slot :cell="cell" :name="'sticky-cell-complete'">
+                            <slot :cell="cell" :name="'sticky-cell-content'">
                               <portal-target
                                 :name="
-                                  'cell-content-portal-target-' +
+                                  portalIdentifier +
+                                  '-cell-content-portal-target-' +
                                   rIndex +
                                   '-' +
-                                  cIndex +
-                                  (identifier ? '-' + identifier : '')
+                                  cIndex
                                 "
                                 :slot-props="{
                                   path: 'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner',
@@ -1229,11 +1072,9 @@
 import fuzzy from "fuzzy.js";
 import axios from "axios";
 import randomUUID from "uuid/v4";
-import NestedVueQuintable from "@/components/NestedVueQuintable";
 
 export default {
   name: "VueQuintable",
-  components: { NestedVueQuintable },
   props: {
     rows: {
       type: Array,
@@ -1416,6 +1257,9 @@ export default {
   },
 
   computed: {
+    portalIdentifier() {
+      return randomUUID();
+    },
     /**
      * Just a debug flag
      *

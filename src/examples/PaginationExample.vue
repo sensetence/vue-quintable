@@ -123,7 +123,7 @@ export default {
   },
   computed: {
     rows() {
-      let count = 250;
+      let count = 5000;
       const rows = [];
 
       const chance = new Chance();
