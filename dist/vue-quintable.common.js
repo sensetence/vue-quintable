@@ -15870,11 +15870,14 @@ var es_symbol_description = __webpack_require__(1817);
 var es_object_to_string = __webpack_require__(1539);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.symbol.iterator.js
 var es_symbol_iterator = __webpack_require__(2165);
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.iterator.js
+var es_array_iterator = __webpack_require__(6992);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.iterator.js
 var es_string_iterator = __webpack_require__(8783);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom-collections.iterator.js
 var web_dom_collections_iterator = __webpack_require__(3948);
 ;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/typeof.js
+
 
 
 
@@ -26918,7 +26921,7 @@ var es_array_find_index = __webpack_require__(4553);
 var es_regexp_sticky = __webpack_require__(8386);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.keys.js
 var es_object_keys = __webpack_require__(7941);
-;// CONCATENATED MODULE: ./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib/index.js??clonedRuleSet-40.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/templateLoader.js??ruleSet[1].rules[3]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=template&id=b0b7e5f6&scoped=true&
+;// CONCATENATED MODULE: ./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib/index.js??clonedRuleSet-40.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/templateLoader.js??ruleSet[1].rules[3]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=template&id=17661baa&scoped=true&
 
 
 
@@ -26928,7 +26931,7 @@ var es_object_keys = __webpack_require__(7941);
 
 
 
-var VueQuintablevue_type_template_id_b0b7e5f6_scoped_true_render = function render() {
+var VueQuintablevue_type_template_id_17661baa_scoped_true_render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
@@ -26986,7 +26989,7 @@ var VueQuintablevue_type_template_id_b0b7e5f6_scoped_true_render = function rend
                   domProps: {
                     "innerHTML": _vm._s(cell.html)
                   }
-                }) : _vm._e(), cell.text ? _c('div', {
+                }) : _vm._e(), cell.text + '' ? _c('div', {
                   staticClass: "cell-inner",
                   class: options.path + ' ' + options.path + '--text'
                 }, [_vm._v(" " + _vm._s(cell.text) + " ")]) : _vm._e(), cell.component ? _c('div', {
@@ -26997,7 +27000,7 @@ var VueQuintablevue_type_template_id_b0b7e5f6_scoped_true_render = function rend
                   on: {
                     "action": _vm.handleComponentEvent
                   }
-                }, 'component', cell.component.props, false))], 1) : _vm._e()];
+                }, 'component', cell.component.props, false))], 1) : _c('div', [_c('wbr')])];
               }, {
                 "cell": cell
               })];
@@ -27875,9 +27878,10 @@ var VueQuintablevue_type_template_id_b0b7e5f6_scoped_true_render = function rend
 
 var staticRenderFns = [];
 
-;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=template&id=b0b7e5f6&scoped=true&
+;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=template&id=17661baa&scoped=true&
 
 ;// CONCATENATED MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/typeof.js
+
 
 
 
@@ -29661,7 +29665,7 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
         return _this5.rowsFinal[index];
       }).filter(function (row) {
         var cells = row.cells ? row.cells : row;
-        return cells[i].text || cells[i].html || cells[i].quintable || cells[i].component;
+        return cells[i].text + "" || cells[i].html || cells[i].quintable || cells[i].component;
       }).length <= 0;
     },
 
@@ -30776,15 +30780,15 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
 });
 ;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_VueQuintablevue_type_script_lang_js_ = (VueQuintablevue_type_script_lang_js_); 
-;// CONCATENATED MODULE: ./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-12.use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=style&index=0&id=b0b7e5f6&prod&scoped=true&lang=css&
+;// CONCATENATED MODULE: ./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-12.use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=style&index=0&id=17661baa&prod&scoped=true&lang=css&
 // extracted by mini-css-extract-plugin
 
-;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=0&id=b0b7e5f6&prod&scoped=true&lang=css&
+;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=0&id=17661baa&prod&scoped=true&lang=css&
 
-;// CONCATENATED MODULE: ./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-12.use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=style&index=1&id=b0b7e5f6&prod&lang=css&
+;// CONCATENATED MODULE: ./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-12.use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=style&index=1&id=17661baa&prod&lang=css&
 // extracted by mini-css-extract-plugin
 
-;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=1&id=b0b7e5f6&prod&lang=css&
+;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=1&id=17661baa&prod&lang=css&
 
 ;// CONCATENATED MODULE: ./node_modules/@vue/vue-loader-v15/lib/runtime/componentNormalizer.js
 /* globals __VUE_SSR_CONTEXT__ */
@@ -30896,11 +30900,11 @@ function componentNormalizer_normalizeComponent(
 
 var component = componentNormalizer_normalizeComponent(
   components_VueQuintablevue_type_script_lang_js_,
-  VueQuintablevue_type_template_id_b0b7e5f6_scoped_true_render,
+  VueQuintablevue_type_template_id_17661baa_scoped_true_render,
   staticRenderFns,
   false,
   null,
-  "b0b7e5f6",
+  "17661baa",
   null
   
 )

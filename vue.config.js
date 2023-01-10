@@ -19,4 +19,12 @@ module.exports = {
     },
     port: 8080,
   },
+  configureWebpack: {
+    resolve: {
+      alias: {
+        vue$: path.resolve(__dirname, "node_modules/vue/dist/vue.esm.js"),
+      },
+      symlinks: false, // because the related errors on try to use the `yarn link` in a vue-cli project
+    },
+  },
 };

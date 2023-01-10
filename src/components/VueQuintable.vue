@@ -67,7 +67,7 @@
                   <div
                     class="cell-inner"
                     :class="options.path + ' ' + options.path + '--text'"
-                    v-if="cell.text"
+                    v-if="cell.text + ''"
                   >
                     {{ cell.text }}
                   </div>
@@ -82,6 +82,9 @@
                       v-bind="cell.component.props"
                       @action="handleComponentEvent"
                     ></component>
+                  </div>
+                  <div v-else>
+                    <wbr />
                   </div>
                 </slot>
               </slot>
@@ -2937,7 +2940,7 @@ export default {
           .filter((row) => {
             const cells = row.cells ? row.cells : row;
             return (
-              cells[i].text ||
+              cells[i].text + "" ||
               cells[i].html ||
               cells[i].quintable ||
               cells[i].component
