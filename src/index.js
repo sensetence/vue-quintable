@@ -12,30 +12,46 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import VTooltip from "v-tooltip";
 
 import {
+  faAngleDoubleLeft,
+  faAngleDoubleRight,
+  faAngleLeft,
+  faAngleRight,
+  faCaretDown,
+  faCaretUp,
   faCheck,
+  faChevronDown,
+  faChevronUp,
+  faCircleNotch,
+  faEye,
+  faEyeSlash,
+  faMinus,
+  faPlus,
   faSort,
+  faSortAmountDown,
+  faSortAmountDownAlt,
   faSquare,
   faTimes,
-  faSortAmountDownAlt,
-  faSortAmountDown,
-  faAngleRight,
-  faAngleLeft,
-  faAngleDoubleRight,
-  faAngleDoubleLeft,
-  faCircleNotch,
 } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faCheck);
-library.add(faTimes);
-library.add(faSort);
-library.add(faSquare);
-library.add(faSortAmountDownAlt);
-library.add(faSortAmountDown);
-library.add(faAngleDoubleRight);
 library.add(faAngleDoubleLeft);
-library.add(faAngleRight);
+library.add(faAngleDoubleRight);
 library.add(faAngleLeft);
+library.add(faAngleRight);
+library.add(faCaretDown);
+library.add(faCaretUp);
+library.add(faCheck);
+library.add(faChevronDown);
+library.add(faChevronUp);
 library.add(faCircleNotch);
+library.add(faEye);
+library.add(faEyeSlash);
+library.add(faMinus);
+library.add(faPlus);
+library.add(faSort);
+library.add(faSortAmountDown);
+library.add(faSortAmountDownAlt);
+library.add(faSquare);
+library.add(faTimes);
 
 /** COMMON END **/
 

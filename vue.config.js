@@ -11,12 +11,12 @@ module.exports = {
   publicPath: process.env.BUILD_MODE === "build" ? "/vue-quintable-demo" : "/",
   devServer: {
     server: {
-      type:"https",
-      options:{
+      type: "https",
+      options: {
         key: fs.readFileSync("./certs/example.com+5-key.pem"),
         cert: fs.readFileSync("./certs/example.com+5.pem"),
-      }
+      },
     },
-    port: 8080
+    port: 8080,
   },
 };

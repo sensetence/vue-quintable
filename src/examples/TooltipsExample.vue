@@ -120,7 +120,8 @@ export default {
           },
           {
             headline: "Job",
-            breakpoint: "all",
+            breakpoint: "md",
+            alwaysExpanded: true,
           },
         ],
       },

@@ -3893,71 +3893,6 @@ module.exports = function (it) {
 
 /***/ }),
 
-/***/ 1574:
-/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
-
-"use strict";
-
-var DESCRIPTORS = __webpack_require__(9781);
-var uncurryThis = __webpack_require__(1702);
-var call = __webpack_require__(6916);
-var fails = __webpack_require__(7293);
-var objectKeys = __webpack_require__(1956);
-var getOwnPropertySymbolsModule = __webpack_require__(5181);
-var propertyIsEnumerableModule = __webpack_require__(5296);
-var toObject = __webpack_require__(7908);
-var IndexedObject = __webpack_require__(8361);
-
-// eslint-disable-next-line es/no-object-assign -- safe
-var $assign = Object.assign;
-// eslint-disable-next-line es/no-object-defineproperty -- required for testing
-var defineProperty = Object.defineProperty;
-var concat = uncurryThis([].concat);
-
-// `Object.assign` method
-// https://tc39.es/ecma262/#sec-object.assign
-module.exports = !$assign || fails(function () {
-  // should have correct order of operations (Edge bug)
-  if (DESCRIPTORS && $assign({ b: 1 }, $assign(defineProperty({}, 'a', {
-    enumerable: true,
-    get: function () {
-      defineProperty(this, 'b', {
-        value: 3,
-        enumerable: false
-      });
-    }
-  }), { b: 2 })).b !== 1) return true;
-  // should work with symbols and should have deterministic property order (V8 bug)
-  var A = {};
-  var B = {};
-  // eslint-disable-next-line es/no-symbol -- safe
-  var symbol = Symbol();
-  var alphabet = 'abcdefghijklmnopqrst';
-  A[symbol] = 7;
-  alphabet.split('').forEach(function (chr) { B[chr] = chr; });
-  return $assign({}, A)[symbol] != 7 || objectKeys($assign({}, B)).join('') != alphabet;
-}) ? function assign(target, source) { // eslint-disable-line no-unused-vars -- required for `.length`
-  var T = toObject(target);
-  var argumentsLength = arguments.length;
-  var index = 1;
-  var getOwnPropertySymbols = getOwnPropertySymbolsModule.f;
-  var propertyIsEnumerable = propertyIsEnumerableModule.f;
-  while (argumentsLength > index) {
-    var S = IndexedObject(arguments[index++]);
-    var keys = getOwnPropertySymbols ? concat(objectKeys(S), getOwnPropertySymbols(S)) : objectKeys(S);
-    var length = keys.length;
-    var j = 0;
-    var key;
-    while (length > j) {
-      key = keys[j++];
-      if (!DESCRIPTORS || call(propertyIsEnumerable, S, key)) T[key] = S[key];
-    }
-  } return T;
-} : $assign;
-
-
-/***/ }),
-
 /***/ 30:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
@@ -5888,22 +5823,6 @@ if ($stringify) {
     }
   });
 }
-
-
-/***/ }),
-
-/***/ 9601:
-/***/ (function(__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
-
-var $ = __webpack_require__(2109);
-var assign = __webpack_require__(1574);
-
-// `Object.assign` method
-// https://tc39.es/ecma262/#sec-object.assign
-// eslint-disable-next-line es/no-object-assign -- required for testing
-$({ target: 'Object', stat: true, forced: Object.assign !== assign }, {
-  assign: assign
-});
 
 
 /***/ }),
@@ -15318,14 +15237,11 @@ var es_symbol_description = __webpack_require__(1817);
 var es_object_to_string = __webpack_require__(1539);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.symbol.iterator.js
 var es_symbol_iterator = __webpack_require__(2165);
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.iterator.js
-var es_array_iterator = __webpack_require__(6992);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.iterator.js
 var es_string_iterator = __webpack_require__(8783);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom-collections.iterator.js
 var web_dom_collections_iterator = __webpack_require__(3948);
 ;// CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/typeof.js
-
 
 
 
@@ -26367,7 +26283,7 @@ var es_regexp_sticky = __webpack_require__(8386);
 var es_object_keys = __webpack_require__(7941);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.function.name.js
 var es_function_name = __webpack_require__(8309);
-;// CONCATENATED MODULE: ./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib/index.js??clonedRuleSet-40.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/templateLoader.js??ruleSet[1].rules[3]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=template&id=11308d9e&scoped=true&
+;// CONCATENATED MODULE: ./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib/index.js??clonedRuleSet-40.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/templateLoader.js??ruleSet[1].rules[3]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=template&id=ed74a5e4&scoped=true&
 
 
 
@@ -26377,7 +26293,7 @@ var es_function_name = __webpack_require__(8309);
 
 
 
-var VueQuintablevue_type_template_id_11308d9e_scoped_true_render = function render() {
+var VueQuintablevue_type_template_id_ed74a5e4_scoped_true_render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
@@ -26450,7 +26366,7 @@ var VueQuintablevue_type_template_id_11308d9e_scoped_true_render = function rend
   }, [_vm.configFinal.headlines.length ? _c('thead', [_c('tr', {
     staticClass: "vue-quintable-header-row quintable--table-container--table--header-row"
   }, [_vm.hasGeneratedRows && !_vm.configFinal.hideRowToggle ? _c('th', {
-    staticClass: "placeholder-th toggle-th quintable--table-container--table--header-row--placeholder-th"
+    staticClass: "placeholder-th toggle-th toggle-cell quintable--table-container--table--header-row--placeholder-th"
   }, [_c('wbr')]) : _vm._e(), _vm.configFinal.select && _vm.configFinal.selectPosition === 'pre' ? _c('th', {
     staticClass: "select-th pre quintable--table-container--table--header-row--select-th quintable--table-container--table--header-row--select-th--pre"
   }, [_vm.configFinal.selectAll && !_vm.noRows ? [_vm.configFinal.prettySelect ? _c('p-check', {
@@ -26677,8 +26593,18 @@ var VueQuintablevue_type_template_id_11308d9e_scoped_true_render = function rend
         }
       }
     }, [_vm.hasGeneratedRows && !_vm.configFinal.hideRowToggle ? _c('td', {
-      staticClass: "toggle toggle-td quintable--table-container--table--tbody--row--toggle-td"
-    }, [_vm.hiddenColumns[rIndex] > 0 ? _c('span', [!_vm.openRows[rIndex] ? _c('span', [_vm._v("+")]) : _c('span', [_vm._v("-")])]) : _vm._e()]) : _vm._e(), _vm.configFinal.select && _vm.configFinal.selectPosition === 'pre' ? _c('td', {
+      staticClass: "toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td"
+    }, [_vm.hiddenColumns[rIndex] > 0 ? _c('span', [!_vm.openRows[rIndex] ? _c('span', [_c('font-awesome-icon', {
+      attrs: {
+        "fixed-width": "",
+        "icon": _vm.configFinal.collapsedRowIcon
+      }
+    })], 1) : _c('span', [_c('font-awesome-icon', {
+      attrs: {
+        "fixed-width": "",
+        "icon": _vm.configFinal.expandedRowIcon
+      }
+    })], 1)]) : _vm._e()]) : _vm._e(), _vm.configFinal.select && _vm.configFinal.selectPosition === 'pre' ? _c('td', {
       staticClass: "select-td pre quintable--table-container--table--tbody--row--select-td quintable--table-container--table--tbody--row--select-td--pre",
       class: {
         'disabled-select': _vm.rowsFinal[rIndex].disableSelect
@@ -26937,7 +26863,6 @@ var VueQuintablevue_type_template_id_11308d9e_scoped_true_render = function rend
       ref: 'generated-row-highlighted-on-hover-' + rIndex,
       refInFor: true,
       staticClass: "generated-row quintable--table-container--table--tbody--generated-row",
-      class: _vm.hoveredRow === rIndex ? _vm.configFinal.hoverClass : '',
       on: {
         "mouseenter": function mouseenter($event) {
           return _vm.onMouseenterRow(rIndex);
@@ -26947,36 +26872,31 @@ var VueQuintablevue_type_template_id_11308d9e_scoped_true_render = function rend
         }
       }
     }, [_c('td', {
+      staticClass: "ps-0 pe-0 pt-0",
       attrs: {
         "colspan": _vm.configFinal.number + 1
       }
-    }, [_c('table', {
-      staticClass: "table mb-0 generated-table quintable--table-container--table--tbody--generated-row--generated-table"
-    }, [_c('tbody', [_vm._l(_vm.generatedRows[rIndex], function (cell, cIndex) {
-      return _c('tr', {
+    }, [_c('div', {
+      staticClass: "mb-0 generated-table quintable--table-container--table--tbody--generated-row--generated-table"
+    }, [_c('div', {
+      staticClass: "d-flex generated-row-cell quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell",
+      class: _vm.hoveredRow === rIndex ? _vm.configFinal.hoverClass : ''
+    }, [!_vm.configFinal.hideRowToggle && _vm.generatedRows[rIndex] && Object.keys(_vm.generatedRows[rIndex]).length ? _c('div', {
+      staticClass: "toggle-cell"
+    }) : _vm._e(), _c('div', [_vm._l(_vm.generatedRows[rIndex], function (cell, cIndex) {
+      return _c('div', {
         directives: [{
-          name: "tooltip",
-          rawName: "v-tooltip",
-          value: {
-            placement: 'top',
-            content: cell.tooltip,
-            trigger: cell.tooltip ? 'hover' : 'manual'
-          },
-          expression: "{\n                        placement: 'top',\n                        content: cell.tooltip,\n                        trigger: cell.tooltip ? 'hover' : 'manual',\n                      }"
-        }, {
           name: "show",
           rawName: "v-show",
           value: _vm.openRows[rIndex],
           expression: "openRows[rIndex]"
         }],
-        key: 'vue-quintable-' + _vm.uuid + '-generated-row-cell-' + rIndex + '-' + cIndex + '-' + _vm.generatedUpdatedKey,
-        staticClass: "generated-row-cell quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell",
-        class: _vm.configFinal.columnClasses[cIndex] + ' ' + (_vm.hoveredRow === rIndex ? _vm.configFinal.hoverClass : ''),
+        key: 'vue-quintable-' + _vm.uuid + '-generated-row-cell-headline' + rIndex + '-' + cIndex + '-' + _vm.generatedUpdatedKey,
+        staticClass: "generated-headline-cell generated-cell-element quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-headline",
+        class: _vm.configFinal.columnClasses[cIndex],
         attrs: {
-          "id": 'vue-quintable-' + _vm.uuid + '-generated-row-cell-' + rIndex + '-' + cIndex
-        }
-      }, [_vm.openRows[rIndex] && (_vm.showHeadlines[cIndex] || _vm.configFinal.sorts[cIndex]) ? _c('td', {
-        staticClass: "generated-headline-cell quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-headline-cell",
+          "id": 'vue-quintable-' + _vm.uuid + '-generated-row-cell-headline' + rIndex + '-' + cIndex
+        },
         on: {
           "click": function click($event) {
             return _vm.setSortColumn(cIndex);
@@ -26986,7 +26906,9 @@ var VueQuintablevue_type_template_id_11308d9e_scoped_true_render = function rend
         domProps: {
           "innerHTML": _vm._s(_vm.configFinal.headlines[cIndex])
         }
-      }) : _vm._e(), _vm.configFinal.sorts[cIndex] && _vm.hoveredRow === rIndex ? _c('span', {
+      }) : _c('span', {
+        staticClass: "headline"
+      }, [_c('wbr')]), _vm.configFinal.sorts[cIndex] && _vm.hoveredRow === rIndex ? _c('span', {
         staticClass: "sorting-icon ms-2 cursor-pointer quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon"
       }, [!_vm.currentSortIndexes[cIndex] ? _c('font-awesome-icon', {
         staticClass: "text-primary",
@@ -27018,12 +26940,81 @@ var VueQuintablevue_type_template_id_11308d9e_scoped_true_render = function rend
         attrs: {
           "icon": "times"
         }
-      })], 1)]) : _vm._e()], 1) : _vm._e()]) : _vm._e(), _c('td', {
-        key: 'vue-quintable-' + _vm.uuid + '-generated-cell-' + rIndex + '-' + cIndex,
-        staticClass: "generated-content-cell quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-content-cell",
-        class: _vm.cellClassesParsed[rIndex][cIndex] + (_vm.showHeadlines[cIndex] ? ' text-end' : ''),
+      })], 1)]) : _vm._e()], 1) : _vm._e()]);
+    }), _vm._l(_vm.stickyRows[rIndex], function (cell, cIndex) {
+      return _c('div', {
+        key: 'vue-quintable-' + _vm.uuid + '-sticky-row-cell-headline' + rIndex + '-' + cIndex,
+        staticClass: "generated-headline-cell generated-cell-element quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-headline",
+        class: _vm.configFinal.columnClasses[cIndex],
         attrs: {
-          "colspan": !_vm.showHeadlines[cIndex] && !_vm.configFinal.sorts[cIndex] ? '2' : '1'
+          "id": 'vue-quintable-' + _vm.uuid + '-sticky-row-cell-headline' + rIndex + '-' + cIndex
+        },
+        on: {
+          "click": function click($event) {
+            return _vm.setSortColumn(cIndex);
+          }
+        }
+      }, [_vm.showHeadlines[cIndex] ? _c('strong', {
+        domProps: {
+          "innerHTML": _vm._s(_vm.configFinal.headlines[cIndex])
+        }
+      }) : _c('span', {
+        staticClass: "headline"
+      }, [_c('wbr')]), _vm.configFinal.sorts[cIndex] && _vm.hoveredRow === rIndex ? _c('span', {
+        staticClass: "sorting-icon ms-2 cursor-pointer quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon"
+      }, [!_vm.currentSortIndexes[cIndex] ? _c('font-awesome-icon', {
+        staticClass: "text-primary",
+        attrs: {
+          "icon": "sort"
+        }
+      }) : _vm._e(), _vm.currentSortIndexes[cIndex] && _vm.currentSortIndexes[cIndex].asc ? _c('font-awesome-icon', {
+        staticClass: "text-primary",
+        attrs: {
+          "icon": "sort-amount-down-alt"
+        }
+      }) : _vm._e(), _vm.currentSortIndexes[cIndex] && !_vm.currentSortIndexes[cIndex].asc ? _c('font-awesome-icon', {
+        staticClass: "text-primary",
+        attrs: {
+          "icon": "sort-amount-down"
+        }
+      }) : _vm._e(), _vm.currentSortIndexes[cIndex] ? _c('span', {
+        staticClass: "ms-1 text-muted",
+        on: {
+          "click": function click($event) {
+            $event.stopPropagation();
+            $event.preventDefault();
+            return _vm.removeSort(cIndex);
+          }
+        }
+      }, [_vm.numberOfSorts > 1 ? _c('span', {
+        staticClass: "badge bg-info text-white"
+      }, [_vm._v(" " + _vm._s(_vm.currentSortIndexes[cIndex].order + 1) + " ")]) : _c('small', [_c('font-awesome-icon', {
+        attrs: {
+          "icon": "times"
+        }
+      })], 1)]) : _vm._e()], 1) : _vm._e()]);
+    })], 2), _c('div', [_vm._l(_vm.generatedRows[rIndex], function (cell, cIndex) {
+      return _c('div', {
+        directives: [{
+          name: "show",
+          rawName: "v-show",
+          value: _vm.openRows[rIndex],
+          expression: "openRows[rIndex]"
+        }, {
+          name: "tooltip",
+          rawName: "v-tooltip",
+          value: {
+            placement: 'top',
+            content: cell.tooltip,
+            trigger: cell.tooltip ? 'hover' : 'manual'
+          },
+          expression: "{\n                          placement: 'top',\n                          content: cell.tooltip,\n                          trigger: cell.tooltip ? 'hover' : 'manual',\n                        }"
+        }],
+        key: 'vue-quintable-' + _vm.uuid + '-generated-row-cell-' + rIndex + '-' + cIndex + '-' + _vm.generatedUpdatedKey,
+        staticClass: "generated-cell-element generated-content-cell quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-content",
+        class: _vm.configFinal.columnClasses[cIndex] + ' ' + _vm.cellClassesParsed[rIndex][cIndex],
+        attrs: {
+          "id": 'vue-quintable-' + _vm.uuid + '-generated-row-cell-' + rIndex + '-' + cIndex
         },
         on: {
           "click": function click($event) {
@@ -27124,71 +27115,25 @@ var VueQuintablevue_type_template_id_11308d9e_scoped_true_render = function rend
         })];
       }, {
         "cell": cell
-      })], 2)]);
+      })], 2);
     }), _vm._l(_vm.stickyRows[rIndex], function (cell, cIndex) {
-      return _c('tr', {
+      return _c('div', {
         directives: [{
           name: "tooltip",
           rawName: "v-tooltip",
           value: {
-            content: cell.tooltip,
             placement: 'top',
+            content: cell.tooltip,
             trigger: cell.tooltip ? 'hover' : 'manual'
           },
-          expression: "{\n                        content: cell.tooltip,\n                        placement: 'top',\n                        trigger: cell.tooltip ? 'hover' : 'manual',\n                      }"
+          expression: "{\n                          placement: 'top',\n                          content: cell.tooltip,\n                          trigger: cell.tooltip ? 'hover' : 'manual',\n                        }"
         }],
         key: 'vue-quintable-' + _vm.uuid + '-sticky-row-cell-' + rIndex + '-' + cIndex,
-        staticClass: "generated-row-cell sticky-row-cell quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell",
-        class: _vm.configFinal.columnClasses[cIndex] + ' ' + (_vm.hoveredRow === rIndex ? _vm.configFinal.hoverClass : ''),
+        staticClass: "generated-cell-element sticky-content-cell quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-content",
+        class: _vm.configFinal.columnClasses[cIndex] + ' ' + _vm.cellClassesParsed[rIndex][cIndex],
         attrs: {
           "id": 'vue-quintable-' + _vm.uuid + '-sticky-row-cell-' + rIndex + '-' + cIndex
-        }
-      }, [_vm.showHeadlines[cIndex] || _vm.configFinal.sorts[cIndex] ? _c('td', {
-        staticClass: "generated-headline-cell sticky-headline-cell quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-headline-cell",
-        on: {
-          "click": function click($event) {
-            return _vm.setSortColumn(cIndex);
-          }
-        }
-      }, [_vm.showHeadlines[cIndex] ? _c('strong', {
-        domProps: {
-          "innerHTML": _vm._s(_vm.configFinal.headlines[cIndex])
-        }
-      }) : _vm._e(), _vm.configFinal.sorts[cIndex] && _vm.hoveredRow === rIndex ? _c('span', {
-        staticClass: "sorting-icon ms-2 cursor-pointer quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sorting-icon"
-      }, [!_vm.currentSortIndexes[cIndex] ? _c('font-awesome-icon', {
-        staticClass: "text-primary",
-        attrs: {
-          "icon": "sort"
-        }
-      }) : _vm._e(), _vm.currentSortIndexes[cIndex] && _vm.currentSortIndexes[cIndex].asc ? _c('font-awesome-icon', {
-        staticClass: "text-primary",
-        attrs: {
-          "icon": "sort-amount-down-alt"
-        }
-      }) : _vm._e(), _vm.currentSortIndexes[cIndex] && !_vm.currentSortIndexes[cIndex].asc ? _c('font-awesome-icon', {
-        staticClass: "text-primary",
-        attrs: {
-          "icon": "sort-amount-down"
-        }
-      }) : _vm._e(), _vm.currentSortIndexes[cIndex] ? _c('span', {
-        staticClass: "ms-1 text-muted",
-        on: {
-          "click": function click($event) {
-            $event.stopPropagation();
-            $event.preventDefault();
-            return _vm.removeSort(cIndex);
-          }
-        }
-      }, [_vm.numberOfSorts > 1 ? _c('span', {
-        staticClass: "badge bg-info text-white"
-      }, [_vm._v(" " + _vm._s(_vm.currentSortIndexes[cIndex].order + 1) + " ")]) : _c('small', [_c('font-awesome-icon', {
-        attrs: {
-          "icon": "times"
-        }
-      })], 1)]) : _vm._e()], 1) : _vm._e()]) : _vm._e(), _c('td', {
-        key: 'vue-quintable-' + _vm.uuid + '-sticky-cell-' + rIndex + '-' + cIndex,
-        staticClass: "text-end quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell",
+        },
         on: {
           "click": function click($event) {
             return _vm.onCellClick(cell);
@@ -27288,8 +27233,8 @@ var VueQuintablevue_type_template_id_11308d9e_scoped_true_render = function rend
         })];
       }, {
         "cell": cell
-      })], 2)]);
-    })], 2)])])]) : _vm._e()] : _vm._e()];
+      })], 2);
+    })], 2)])])])]) : _vm._e()] : _vm._e()];
   })], 2)]) : _vm._e(), _vm.noRows && !_vm.ajaxLoading ? [_c('div', {
     staticClass: "clearfix slot-no-results slot quintable--table-container--no-results"
   }, [_vm._t("no-results", function () {
@@ -27487,10 +27432,9 @@ var VueQuintablevue_type_template_id_11308d9e_scoped_true_render = function rend
 
 var staticRenderFns = [];
 
-;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=template&id=11308d9e&scoped=true&
+;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=template&id=ed74a5e4&scoped=true&
 
 ;// CONCATENATED MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/typeof.js
-
 
 
 
@@ -27534,8 +27478,6 @@ var es_string_includes = __webpack_require__(2023);
 var es_array_map = __webpack_require__(1249);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.json.stringify.js
 var es_json_stringify = __webpack_require__(8862);
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.assign.js
-var es_object_assign = __webpack_require__(9601);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.match.js
 var es_string_match = __webpack_require__(4723);
 // EXTERNAL MODULE: ./node_modules/fuzzy.js/fuzzy.js
@@ -27548,8 +27490,6 @@ var axios_default = /*#__PURE__*/__webpack_require__.n(axios);
 var v4 = __webpack_require__(1171);
 var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
 ;// CONCATENATED MODULE: ./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib/index.js??clonedRuleSet-40.use[1]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=script&lang=js&
-
-
 
 
 
@@ -27676,7 +27616,6 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
       hoveredRow: null,
       allSelectedCustom: null,
       selected: {},
-      stickyRows: {},
       openRows: {},
       sortedIndexes: {},
       currentSortIndexes: {},
@@ -28004,6 +27943,18 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
         hideRowToggle = true;
       }
 
+      var expandedRowIcon = "chevron-up";
+
+      if (this.config.expandedRowIcon && typeof this.config.expandedRowIcon === "string" && ["chevron-up", "minus", "caret-up", "eye-slash"].includes(this.config.expandedRowIcon.toLowerCase())) {
+        expandedRowIcon = this.config.expandedRowIcon.toLowerCase();
+      }
+
+      var collapsedRowIcon = "chevron-down";
+
+      if (this.config.collapsedRowIcon && typeof this.config.collapsedRowIcon === "string" && ["chevron-down", "plus", "caret-down", "eye"].includes(this.config.collapsedRowIcon.toLowerCase())) {
+        collapsedRowIcon = this.config.collapsedRowIcon.toLowerCase();
+      }
+
       var pageRange = 5;
 
       if (this.config.pageRange) {
@@ -28143,6 +28094,8 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
         number: number,
         columns: columns,
         hideRowToggle: hideRowToggle,
+        expandedRowIcon: expandedRowIcon,
+        collapsedRowIcon: collapsedRowIcon,
         selectPosition: selectPosition,
         searchClass: searchClass,
         searchContainerClass: searchContainerClass,
@@ -28256,15 +28209,40 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
                 }
               }
             }
-          } // eslint-disable-next-line
+          }
 
-
-          this.$set(this.stickyRows, x, stickyCells);
           generatedRows[x] = generatedCells;
         }
       }
 
       return generatedRows;
+    },
+    stickyRows: function stickyRows() {
+      var stickyRows = {};
+
+      for (var x = 0; x < this.rowsFinal.length; x++) {
+        var cells = this.rowsFinal[x].cells ? this.rowsFinal[x].cells : this.rowsFinal[x];
+        var stickyCells = {};
+
+        for (var i = 0; i < this.hiddenBreakpoints.length; i++) {
+          var bp = this.hiddenBreakpoints[i];
+
+          for (var j = 0; j < this.configFinal.columns.length; j++) {
+            var col = this.configFinal.columns[j];
+            var hide = this.configFinal.hiddenCols[j] || !this.configFinal.ignoreEmpty[j] && this.configFinal.hideEmptyColumns && (this.isColEmpty(j) || this.isColEmpty(j, x)) || this.emptyColumns[j];
+
+            if (!hide && col.sticky) {
+              stickyCells[j] = cells[j];
+            } else if (!hide && col.breakpoint && (col.breakpoint.toLocaleLowerCase() === "all" || col.breakpoint.toLocaleLowerCase() === bp) && col.alwaysExpanded) {
+              stickyCells[j] = cells[j];
+            }
+          }
+        }
+
+        stickyRows[x] = stickyCells;
+      }
+
+      return stickyRows;
     },
 
     /**
@@ -29988,10 +29966,9 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
         var index = i.toString(); // if (typeof this.generatedRows[index] !== "object") {
         //   this.$set(this.generatedRows,index,{});
         // }
-
-        if (esm_typeof_typeof(this.stickyRows[index]) !== "object") {
-          this.$set(this.stickyRows, index, {});
-        }
+        // if (typeof this.stickyRows[index] !== "object") {
+        //   this.$set(this.stickyRows, index, {});
+        // }
 
         if (typeof this.sortedIndexes[index] === "undefined") {
           this.$set(this.sortedIndexes, index, i);
@@ -30020,7 +29997,6 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
         this.selected = {};
       }
 
-      this.stickyRows = {};
       this.openRows = {};
       this.sortedIndexes = {};
     },
@@ -30356,15 +30332,15 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
 });
 ;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_VueQuintablevue_type_script_lang_js_ = (VueQuintablevue_type_script_lang_js_); 
-;// CONCATENATED MODULE: ./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-12.use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=style&index=0&id=11308d9e&prod&scoped=true&lang=css&
+;// CONCATENATED MODULE: ./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-12.use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=style&index=0&id=ed74a5e4&prod&scoped=true&lang=css&
 // extracted by mini-css-extract-plugin
 
-;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=0&id=11308d9e&prod&scoped=true&lang=css&
+;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=0&id=ed74a5e4&prod&scoped=true&lang=css&
 
-;// CONCATENATED MODULE: ./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-12.use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=style&index=1&id=11308d9e&prod&lang=css&
+;// CONCATENATED MODULE: ./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-12.use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=style&index=1&id=ed74a5e4&prod&lang=css&
 // extracted by mini-css-extract-plugin
 
-;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=1&id=11308d9e&prod&lang=css&
+;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=1&id=ed74a5e4&prod&lang=css&
 
 ;// CONCATENATED MODULE: ./node_modules/@vue/vue-loader-v15/lib/runtime/componentNormalizer.js
 /* globals __VUE_SSR_CONTEXT__ */
@@ -30476,11 +30452,11 @@ function componentNormalizer_normalizeComponent(
 
 var component = componentNormalizer_normalizeComponent(
   components_VueQuintablevue_type_script_lang_js_,
-  VueQuintablevue_type_template_id_11308d9e_scoped_true_render,
+  VueQuintablevue_type_template_id_ed74a5e4_scoped_true_render,
   staticRenderFns,
   false,
   null,
-  "11308d9e",
+  "ed74a5e4",
   null
   
 )
@@ -30496,17 +30472,25 @@ var component = componentNormalizer_normalizeComponent(
 
 
 
-library$1.add(faCheck);
-library$1.add(faTimes);
-library$1.add(faSort);
-library$1.add(faSquare);
-library$1.add(faSortAmountDownAlt);
-library$1.add(faSortAmountDown);
-library$1.add(faAngleDoubleRight);
 library$1.add(faAngleDoubleLeft);
-library$1.add(faAngleRight);
+library$1.add(faAngleDoubleRight);
 library$1.add(faAngleLeft);
+library$1.add(faAngleRight);
+library$1.add(faCaretDown);
+library$1.add(faCaretUp);
+library$1.add(faCheck);
+library$1.add(faChevronDown);
+library$1.add(faChevronUp);
 library$1.add(faCircleNotch);
+library$1.add(faEye);
+library$1.add(faEyeSlash);
+library$1.add(faMinus);
+library$1.add(faPlus);
+library$1.add(faSort);
+library$1.add(faSortAmountDown);
+library$1.add(faSortAmountDownAlt);
+library$1.add(faSquare);
+library$1.add(faTimes);
 /** COMMON END **/
 
  // Declare install function executed by Vue.use()
