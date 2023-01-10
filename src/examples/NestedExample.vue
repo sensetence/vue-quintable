@@ -8,6 +8,7 @@
       <template v-slot:cell-complete="context">
         <div v-if="context.cell.type === 'nested'">
           <VueQuintable
+            class="ms-4"
             :nested="true"
             :rows="rowsNested"
             :config="configNested"
@@ -38,6 +39,7 @@
         data-toolbar-order="copy-to-clipboard"
       ><code class="language-markup" v-pre>&lt;template&gt;
       &lt;VueQuintable
+            class=&quot;ms-4&quot;
             :nested=&quot;true&quot;
             :rows=&quot;rowsNested&quot;
             :config=&quot;configNested&quot;
@@ -72,7 +74,7 @@ export default {
             headline: &quot;Age&quot;,
           },
           {
-            headline: &quot;Birth Time&quot;,
+            headline: &quot;Birth&amp;nbsp;Time&quot;,
             sticky: true,
           },
           {
@@ -192,7 +194,7 @@ export default {
             headline: "Age",
           },
           {
-            headline: "Birth Time",
+            headline: "Birth&nbsp;Time",
             sticky: true,
           },
           {

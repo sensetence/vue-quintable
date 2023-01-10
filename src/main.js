@@ -24,42 +24,52 @@ import { Wormhole } from "portal-vue";
 Wormhole.trackInstances = false;
 
 import {
+  faAngleDoubleLeft,
+  faAngleDoubleRight,
+  faAngleLeft,
+  faAngleRight,
+  faArrowsAlt,
+  faCaretDown,
+  faCaretUp,
   faCheck,
+  faChevronDown,
+  faChevronUp,
+  faCircleNotch,
+  faEye,
+  faEyeSlash,
+  faExpand,
+  faInfoCircle,
+  faPlus,
+  faMinus,
   faSort,
+  faSortAmountDown,
+  faSortAmountDownAlt,
   faSquare,
   faTimes,
-  faSortAmountDownAlt,
-  faSortAmountDown,
-  faAngleRight,
-  faInfoCircle,
-  faAngleLeft,
-  faAngleDoubleRight,
-  faAngleDoubleLeft,
-  faCircleNotch,
-  faChevronDown,
-  faArrowsAlt,
-  faExpand,
-  faPlus,
-  faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faArrowsAlt);
-library.add(faExpand);
-library.add(faCheck);
-library.add(faTimes);
-library.add(faSort);
-library.add(faSquare);
-library.add(faSortAmountDownAlt);
-library.add(faSortAmountDown);
-library.add(faAngleDoubleRight);
 library.add(faAngleDoubleLeft);
-library.add(faAngleRight);
+library.add(faAngleDoubleRight);
 library.add(faAngleLeft);
-library.add(faInfoCircle);
-library.add(faCircleNotch);
+library.add(faAngleRight);
+library.add(faArrowsAlt);
+library.add(faCaretDown);
+library.add(faCaretUp);
+library.add(faCheck);
 library.add(faChevronDown);
-library.add(faPlus);
 library.add(faChevronUp);
+library.add(faCircleNotch);
+library.add(faExpand);
+library.add(faEye);
+library.add(faEyeSlash);
+library.add(faInfoCircle);
+library.add(faMinus);
+library.add(faPlus);
+library.add(faSort);
+library.add(faSortAmountDown);
+library.add(faSortAmountDownAlt);
+library.add(faSquare);
+library.add(faTimes);
 
 Vue.component("v-select", vueSelect);
 Vue.component("p-check", PrettyCheck);

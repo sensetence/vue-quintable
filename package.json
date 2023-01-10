@@ -1,12 +1,12 @@
 {
   "name": "@sensetence/vue-quintable",
-  "version": "2.1.7",
+  "version": "2.3.0",
   "private": false,
   "scripts": {
+    "pack": "cross-env BUILD_MODE=pack node pack.js",
+    "build": "cross-env BUILD_MODE=build vue-cli-service build",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "build-bundle": "node pack.js"
+    "lint": "vue-cli-service lint"
   },
   "main": "./dist/vue-quintable.common.js",
   "files": [
@@ -39,6 +39,7 @@
     "@vue/cli-plugin-eslint": "~5.0.8",
     "@vue/cli-service": "~5.0.8",
     "bootstrap": "^5.1.0",
+    "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",

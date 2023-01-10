@@ -32,6 +32,8 @@
         data() {
             return {
                 config: {
+                    expandedRowIcon: "caret-up",
+                    collapsedRowIcon: "caret-down",
                     columns: [
                         {
                             headline: "Name",
@@ -97,6 +99,8 @@ export default {
   data() {
     return {
       config: {
+        expandedRowIcon: "caret-up",
+        collapsedRowIcon: "plus",
         columns: [
           {
             headline: "Name",

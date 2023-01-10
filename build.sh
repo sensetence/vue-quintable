@@ -1,1 +1,1 @@
-env BUILD_MODE=build npm run build
+npm run build
