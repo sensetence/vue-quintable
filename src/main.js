@@ -19,6 +19,10 @@ import "vue-select/dist/vue-select.css";
 
 import VTooltip from "v-tooltip";
 
+import PortalVue from "portal-vue";
+import { Wormhole } from "portal-vue";
+Wormhole.trackInstances = false;
+
 import {
   faAngleDoubleLeft,
   faAngleDoubleRight,
@@ -76,6 +80,8 @@ Vue.use(VTooltip, {
     '<div class="quintable-tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
   defaultClass: "",
 });
+
+Vue.use(PortalVue);
 
 /** COMMON END **/
 

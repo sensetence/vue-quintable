@@ -59,7 +59,7 @@ export default {
   data() {
     return {
       checked: false,
-      reference: "checkbox-component",
+      reference: "actions-component",
     };
   },
   methods: {

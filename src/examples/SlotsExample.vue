@@ -11,7 +11,18 @@
         </div>
       </template>
       <template v-slot:generated-cell-complete="context">
-        <div class="btn btn-sm btn-info" @click.stop="alert(context.cell.text)">
+        <div
+          class="btn btn-sm btn-warning"
+          @click.stop="alert(context.cell.text)"
+        >
+          {{ context.cell.text }}
+        </div>
+      </template>
+      <template v-slot:sticky-cell-complete="context">
+        <div
+          class="btn btn-sm btn-danger"
+          @click.stop="alert(context.cell.text)"
+        >
           {{ context.cell.text }}
         </div>
       </template>
@@ -86,107 +97,154 @@
         data-toolbar-order="copy-to-clipboard"
       ><code class="language-markup" v-pre>&lt;template&gt;
      &lt;VueQuintable :config=&quot;config&quot; :rows=&quot;rows&quot;&gt;
-        &lt;template v-slot:cell-complete=&quot;context&quot;&gt;
-            &lt;div class=&quot;btn btn-sm btn-info&quot; @click.stop=&quot;alert(context.cell.text)&quot;&gt;{{context.cell.text}}&lt;/div&gt;
-        &lt;/template&gt;
-        &lt;template v-slot:generated-cell-complete=&quot;context&quot;&gt;
-            &lt;div class=&quot;btn btn-sm btn-info&quot; @click.stop=&quot;alert(context.cell.text)&quot;&gt;{{context.cell.text}}&lt;/div&gt;
-        &lt;/template&gt;
-        &lt;template v-slot:header&gt;
-            &lt;p-check class=&quot;p-switch&quot; v-model=&quot;showRows&quot;&gt;Toggle Rows&lt;/p-check&gt;
-            &lt;hr&gt;
-            &lt;div class=&quot;alert alert-primary&quot;&gt;
-                &lt;div class=&quot;text-center&quot;&gt;
-                    &lt;h4&gt;VueQuintable&lt;/h4&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-        &lt;/template&gt;
-        &lt;template v-slot:footer&gt;
-            &lt;div class=&quot;text-center py-3 px-3 mt-3 bg-info text-white&quot;&gt;
-                Copyright &#169; 2020 by Sensetence (haftungsbeschr&#228;nkt)
-            &lt;/div&gt;
-        &lt;/template&gt;
-        &lt;template v-slot:no-results&gt;
-            &lt;div class=&quot;text-center&quot;&gt;
-                &lt;div class=&quot;alert alert-danger&quot;&gt;No Results...&lt;/div&gt;
-            &lt;/div&gt;
-        &lt;/template&gt;
+      &lt;template v-slot:cell-complete=&quot;context&quot;&gt;
+        &lt;div class=&quot;btn btn-sm btn-info&quot; @click.stop=&quot;alert(context.cell.text)&quot;&gt;
+          {{ context.cell.text }}
+        &lt;/div&gt;
+      &lt;/template&gt;
+      &lt;template v-slot:generated-cell-complete=&quot;context&quot;&gt;
+        &lt;div
+          class=&quot;btn btn-sm btn-warning&quot;
+          @click.stop=&quot;alert(context.cell.text)&quot;
+        &gt;
+          {{ context.cell.text }}
+        &lt;/div&gt;
+      &lt;/template&gt;
+      &lt;template v-slot:sticky-cell-complete=&quot;context&quot;&gt;
+        &lt;div
+          class=&quot;btn btn-sm btn-danger&quot;
+          @click.stop=&quot;alert(context.cell.text)&quot;
+        &gt;
+          {{ context.cell.text }}
+        &lt;/div&gt;
+      &lt;/template&gt;
+      &lt;template v-slot:header&gt;
+        &lt;hr /&gt;
+        &lt;div class=&quot;alert alert-primary&quot;&gt;
+          &lt;div class=&quot;text-center&quot;&gt;
+            &lt;h4&gt;VueQuintable&lt;/h4&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/template&gt;
 
+      &lt;template v-slot:before-search&gt;
+        &lt;div class=&quot;col-md-2&quot;&gt;
+          &lt;button type=&quot;button&quot; class=&quot;btn btn-primary w-100 text-center&quot;&gt;
+            Button before search
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/template&gt;
+
+      &lt;template v-slot:search=&quot;{ placeholder, value, setSearchQuery }&quot;&gt;
+        &lt;div class=&quot;col-md-8&quot;&gt;
+          &lt;input
+            type=&quot;search&quot;
+            :value=&quot;value&quot;
+            :placeholder=&quot;placeholder&quot;
+            class=&quot;form-control&quot;
+            @input=&quot;setSearchQuery($event.target.value)&quot;
+          /&gt;
+        &lt;/div&gt;
+      &lt;/template&gt;
+
+      &lt;template v-slot:after-search&gt;
+        &lt;div class=&quot;col-md-2&quot;&gt;
+          &lt;button type=&quot;button&quot; class=&quot;btn btn-secondary w-100 text-center&quot;&gt;
+            Button after search
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/template&gt;
+
+      &lt;template v-slot:after-search-container&gt;
+        &lt;hr /&gt;
+        &lt;p-check class=&quot;p-switch&quot; v-model=&quot;showRows&quot;&gt;Toggle Rows&lt;/p-check&gt;
+        &lt;hr /&gt;
+      &lt;/template&gt;
+
+      &lt;template v-slot:footer&gt;
+        &lt;div class=&quot;text-center py-3 px-3 mt-3 bg-info text-white&quot;&gt;
+          Copyright &copy; 2021 by Sensetence UG (haftungsbeschr&auml;nkt)
+        &lt;/div&gt;
+      &lt;/template&gt;
+      &lt;template v-slot:no-results&gt;
+        &lt;div class=&quot;text-center&quot;&gt;
+          &lt;div class=&quot;alert alert-danger&quot;&gt;No Results...&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/template&gt;
     &lt;/VueQuintable&gt;
 &lt;/template&gt;
-&#x3C;script&#x3E;
+&lt;script&gt;
+import VueQuintable from &quot;../components/VueQuintable.vue&quot;;
+import Chance from &quot;chance&quot;;
 
-    import VueQuintable from &#x22;../components/VueQuintable.vue&#x22;
-    import Chance from &#x22;chance&#x22;;
+export default {
+  components: {
+    VueQuintable,
+  },
+  data() {
+    return {
+      config: {
+        columns: [
+          {
+            headline: &quot;Name&quot;,
+          },
+          {
+            headline: &quot;Age&quot;,
+          },
+          {
+            headline: &quot;Birth Place&quot;,
+            sticky: true,
+          },
+          {
+            headline: &quot;Job&quot;,
+            breakpoint: &quot;md&quot;,
+          },
+        ],
+        search: true,
+        searchClass: &quot;col-md-8&quot;,
+      },
+      showRows: true,
+    };
+  },
+  computed: {
+    rows() {
+      if (!this.showRows) {
+        return [];
+      }
 
-    export default {
-        components:{
-            VueQuintable
-        },
-        data() {
-            return {
-                config: {
-                    columns: [
-                        {
-                            headline: &#x22;Name&#x22;,
-                        }, {
-                            headline: &#x22;Age&#x22;,
-                        }, {
-                            headline: &#x22;Birth Place&#x22;,
-                            breakpoint:&#x22;md&#x22;,
-                        }, {
-                            headline: &#x22;Job&#x22;,
-                            breakpoint:&#x22;md&#x22;,
-                        }
-                    ],
-                    searchClass:"col-md-8",
-                    showRows:true,
-                    search: true,
-                },
-            }
-        },
-        computed:{
-            rows(){
+      let count = 10;
+      const rows = [];
 
-                if(!this.showRows){
-                    return [];
-                }
+      const chance = new Chance();
 
-                let count = 10;
-                const rows = [];
+      for (let i = 0; i &lt; count; i++) {
+        rows.push([
+          {
+            text: chance.name({ nationality: &quot;en&quot; }),
+          },
+          {
+            text: chance.age(),
+          },
+          {
+            text: chance.city(),
+          },
+          {
+            text: chance.profession(),
+            type: &quot;nested&quot;,
+          },
+        ]);
+      }
 
-                const chance = new Chance();
-
-                for(let i = 0; i &#x3C; count; i++){
-                    rows.push([
-                        {
-                            text:chance.name({ nationality: &#x27;en&#x27; })
-                        },
-                        {
-                            text:chance.age()
-                        },
-                        {
-                            text:chance.city()
-                        },
-                        {
-                            text:chance.profession()
-                        },
-                    ]);
-                }
-
-                return rows;
-
-
-            }
-        },
-        methods:{
-            alert(text){
-                alert(&#x22;I clicked the slot &#x22;+ text)
-            }
-        }
-
-    }
-&#x3C;/script&#x3E;</code></pre>
+      return rows;
+    },
+  },
+  methods: {
+    alert(text) {
+      alert(&quot;I clicked the slot &quot; + text);
+    },
+  },
+};
+&lt;/script&gt;</code></pre>
 
       <!-- @formatter:on -->
     </div>
@@ -203,6 +261,7 @@ export default {
   data() {
     return {
       config: {
+        pagination: true,
         columns: [
           {
             headline: "Name",
@@ -212,7 +271,7 @@ export default {
           },
           {
             headline: "Birth Place",
-            breakpoint: "md",
+            sticky: true,
           },
           {
             headline: "Job",
@@ -231,7 +290,7 @@ export default {
         return [];
       }
 
-      let count = 10;
+      let count = 500;
       const rows = [];
 
       const chance = new Chance();
@@ -249,6 +308,7 @@ export default {
           },
           {
             text: chance.profession(),
+            type: "nested",
           },
         ]);
       }

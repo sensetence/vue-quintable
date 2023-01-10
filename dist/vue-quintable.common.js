@@ -11458,6 +11458,631 @@ module.exports = toPlainObject;
 
 /***/ }),
 
+/***/ 2433:
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+var __webpack_unused_export__;
+
+ /*! 
+  * portal-vue © Thorsten Lünborg, 2019 
+  * 
+  * Version: 2.1.7
+  * 
+  * LICENCE: MIT 
+  * 
+  * https://github.com/linusborg/portal-vue
+  * 
+ */
+
+
+
+__webpack_unused_export__ = ({ value: true });
+
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var Vue = _interopDefault(__webpack_require__(3797));
+
+function _typeof(obj) {
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function (obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function (obj) {
+      return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    };
+  }
+
+  return _typeof(obj);
+}
+
+function _toConsumableArray(arr) {
+  return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
+}
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
+
+    return arr2;
+  }
+}
+
+function _iterableToArray(iter) {
+  if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+}
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance");
+}
+
+var inBrowser = typeof window !== 'undefined';
+function freeze(item) {
+  if (Array.isArray(item) || _typeof(item) === 'object') {
+    return Object.freeze(item);
+  }
+
+  return item;
+}
+function combinePassengers(transports) {
+  var slotProps = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  return transports.reduce(function (passengers, transport) {
+    var temp = transport.passengers[0];
+    var newPassengers = typeof temp === 'function' ? temp(slotProps) : transport.passengers;
+    return passengers.concat(newPassengers);
+  }, []);
+}
+function stableSort(array, compareFn) {
+  return array.map(function (v, idx) {
+    return [idx, v];
+  }).sort(function (a, b) {
+    return compareFn(a[1], b[1]) || a[0] - b[0];
+  }).map(function (c) {
+    return c[1];
+  });
+}
+function pick(obj, keys) {
+  return keys.reduce(function (acc, key) {
+    if (obj.hasOwnProperty(key)) {
+      acc[key] = obj[key];
+    }
+
+    return acc;
+  }, {});
+}
+
+var transports = {};
+var targets = {};
+var sources = {};
+var Wormhole = Vue.extend({
+  data: function data() {
+    return {
+      transports: transports,
+      targets: targets,
+      sources: sources,
+      trackInstances: inBrowser
+    };
+  },
+  methods: {
+    open: function open(transport) {
+      if (!inBrowser) return;
+      var to = transport.to,
+          from = transport.from,
+          passengers = transport.passengers,
+          _transport$order = transport.order,
+          order = _transport$order === void 0 ? Infinity : _transport$order;
+      if (!to || !from || !passengers) return;
+      var newTransport = {
+        to: to,
+        from: from,
+        passengers: freeze(passengers),
+        order: order
+      };
+      var keys = Object.keys(this.transports);
+
+      if (keys.indexOf(to) === -1) {
+        Vue.set(this.transports, to, []);
+      }
+
+      var currentIndex = this.$_getTransportIndex(newTransport); // Copying the array here so that the PortalTarget change event will actually contain two distinct arrays
+
+      var newTransports = this.transports[to].slice(0);
+
+      if (currentIndex === -1) {
+        newTransports.push(newTransport);
+      } else {
+        newTransports[currentIndex] = newTransport;
+      }
+
+      this.transports[to] = stableSort(newTransports, function (a, b) {
+        return a.order - b.order;
+      });
+    },
+    close: function close(transport) {
+      var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+      var to = transport.to,
+          from = transport.from;
+      if (!to || !from && force === false) return;
+
+      if (!this.transports[to]) {
+        return;
+      }
+
+      if (force) {
+        this.transports[to] = [];
+      } else {
+        var index = this.$_getTransportIndex(transport);
+
+        if (index >= 0) {
+          // Copying the array here so that the PortalTarget change event will actually contain two distinct arrays
+          var newTransports = this.transports[to].slice(0);
+          newTransports.splice(index, 1);
+          this.transports[to] = newTransports;
+        }
+      }
+    },
+    registerTarget: function registerTarget(target, vm, force) {
+      if (!inBrowser) return;
+
+      if (this.trackInstances && !force && this.targets[target]) {
+        console.warn("[portal-vue]: Target ".concat(target, " already exists"));
+      }
+
+      this.$set(this.targets, target, Object.freeze([vm]));
+    },
+    unregisterTarget: function unregisterTarget(target) {
+      this.$delete(this.targets, target);
+    },
+    registerSource: function registerSource(source, vm, force) {
+      if (!inBrowser) return;
+
+      if (this.trackInstances && !force && this.sources[source]) {
+        console.warn("[portal-vue]: source ".concat(source, " already exists"));
+      }
+
+      this.$set(this.sources, source, Object.freeze([vm]));
+    },
+    unregisterSource: function unregisterSource(source) {
+      this.$delete(this.sources, source);
+    },
+    hasTarget: function hasTarget(to) {
+      return !!(this.targets[to] && this.targets[to][0]);
+    },
+    hasSource: function hasSource(to) {
+      return !!(this.sources[to] && this.sources[to][0]);
+    },
+    hasContentFor: function hasContentFor(to) {
+      return !!this.transports[to] && !!this.transports[to].length;
+    },
+    // Internal
+    $_getTransportIndex: function $_getTransportIndex(_ref) {
+      var to = _ref.to,
+          from = _ref.from;
+
+      for (var i in this.transports[to]) {
+        if (this.transports[to][i].from === from) {
+          return +i;
+        }
+      }
+
+      return -1;
+    }
+  }
+});
+var wormhole = new Wormhole(transports);
+
+var _id = 1;
+var Portal = Vue.extend({
+  name: 'portal',
+  props: {
+    disabled: {
+      type: Boolean
+    },
+    name: {
+      type: String,
+      default: function _default() {
+        return String(_id++);
+      }
+    },
+    order: {
+      type: Number,
+      default: 0
+    },
+    slim: {
+      type: Boolean
+    },
+    slotProps: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    tag: {
+      type: String,
+      default: 'DIV'
+    },
+    to: {
+      type: String,
+      default: function _default() {
+        return String(Math.round(Math.random() * 10000000));
+      }
+    }
+  },
+  created: function created() {
+    var _this = this;
+
+    this.$nextTick(function () {
+      wormhole.registerSource(_this.name, _this);
+    });
+  },
+  mounted: function mounted() {
+    if (!this.disabled) {
+      this.sendUpdate();
+    }
+  },
+  updated: function updated() {
+    if (this.disabled) {
+      this.clear();
+    } else {
+      this.sendUpdate();
+    }
+  },
+  beforeDestroy: function beforeDestroy() {
+    wormhole.unregisterSource(this.name);
+    this.clear();
+  },
+  watch: {
+    to: function to(newValue, oldValue) {
+      oldValue && oldValue !== newValue && this.clear(oldValue);
+      this.sendUpdate();
+    }
+  },
+  methods: {
+    clear: function clear(target) {
+      var closer = {
+        from: this.name,
+        to: target || this.to
+      };
+      wormhole.close(closer);
+    },
+    normalizeSlots: function normalizeSlots() {
+      return this.$scopedSlots.default ? [this.$scopedSlots.default] : this.$slots.default;
+    },
+    normalizeOwnChildren: function normalizeOwnChildren(children) {
+      return typeof children === 'function' ? children(this.slotProps) : children;
+    },
+    sendUpdate: function sendUpdate() {
+      var slotContent = this.normalizeSlots();
+
+      if (slotContent) {
+        var transport = {
+          from: this.name,
+          to: this.to,
+          passengers: _toConsumableArray(slotContent),
+          order: this.order
+        };
+        wormhole.open(transport);
+      } else {
+        this.clear();
+      }
+    }
+  },
+  render: function render(h) {
+    var children = this.$slots.default || this.$scopedSlots.default || [];
+    var Tag = this.tag;
+
+    if (children && this.disabled) {
+      return children.length <= 1 && this.slim ? this.normalizeOwnChildren(children)[0] : h(Tag, [this.normalizeOwnChildren(children)]);
+    } else {
+      return this.slim ? h() : h(Tag, {
+        class: {
+          'v-portal': true
+        },
+        style: {
+          display: 'none'
+        },
+        key: 'v-portal-placeholder'
+      });
+    }
+  }
+});
+
+var PortalTarget = Vue.extend({
+  name: 'portalTarget',
+  props: {
+    multiple: {
+      type: Boolean,
+      default: false
+    },
+    name: {
+      type: String,
+      required: true
+    },
+    slim: {
+      type: Boolean,
+      default: false
+    },
+    slotProps: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    tag: {
+      type: String,
+      default: 'div'
+    },
+    transition: {
+      type: [String, Object, Function]
+    }
+  },
+  data: function data() {
+    return {
+      transports: wormhole.transports,
+      firstRender: true
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    this.$nextTick(function () {
+      wormhole.registerTarget(_this.name, _this);
+    });
+  },
+  watch: {
+    ownTransports: function ownTransports() {
+      this.$emit('change', this.children().length > 0);
+    },
+    name: function name(newVal, oldVal) {
+      /**
+       * TODO
+       * This should warn as well ...
+       */
+      wormhole.unregisterTarget(oldVal);
+      wormhole.registerTarget(newVal, this);
+    }
+  },
+  mounted: function mounted() {
+    var _this2 = this;
+
+    if (this.transition) {
+      this.$nextTick(function () {
+        // only when we have a transition, because it causes a re-render
+        _this2.firstRender = false;
+      });
+    }
+  },
+  beforeDestroy: function beforeDestroy() {
+    wormhole.unregisterTarget(this.name);
+  },
+  computed: {
+    ownTransports: function ownTransports() {
+      var transports = this.transports[this.name] || [];
+
+      if (this.multiple) {
+        return transports;
+      }
+
+      return transports.length === 0 ? [] : [transports[transports.length - 1]];
+    },
+    passengers: function passengers() {
+      return combinePassengers(this.ownTransports, this.slotProps);
+    }
+  },
+  methods: {
+    // can't be a computed prop because it has to "react" to $slot changes.
+    children: function children() {
+      return this.passengers.length !== 0 ? this.passengers : this.$scopedSlots.default ? this.$scopedSlots.default(this.slotProps) : this.$slots.default || [];
+    },
+    // can't be a computed prop because it has to "react" to this.children().
+    noWrapper: function noWrapper() {
+      var noWrapper = this.slim && !this.transition;
+
+      if (noWrapper && this.children().length > 1) {
+        console.warn('[portal-vue]: PortalTarget with `slim` option received more than one child element.');
+      }
+
+      return noWrapper;
+    }
+  },
+  render: function render(h) {
+    var noWrapper = this.noWrapper();
+    var children = this.children();
+    var Tag = this.transition || this.tag;
+    return noWrapper ? children[0] : this.slim && !Tag ? h() : h(Tag, {
+      props: {
+        // if we have a transition component, pass the tag if it exists
+        tag: this.transition && this.tag ? this.tag : undefined
+      },
+      class: {
+        'vue-portal-target': true
+      }
+    }, children);
+  }
+});
+
+var _id$1 = 0;
+var portalProps = ['disabled', 'name', 'order', 'slim', 'slotProps', 'tag', 'to'];
+var targetProps = ['multiple', 'transition'];
+var MountingPortal = Vue.extend({
+  name: 'MountingPortal',
+  inheritAttrs: false,
+  props: {
+    append: {
+      type: [Boolean, String]
+    },
+    bail: {
+      type: Boolean
+    },
+    mountTo: {
+      type: String,
+      required: true
+    },
+    // Portal
+    disabled: {
+      type: Boolean
+    },
+    // name for the portal
+    name: {
+      type: String,
+      default: function _default() {
+        return 'mounted_' + String(_id$1++);
+      }
+    },
+    order: {
+      type: Number,
+      default: 0
+    },
+    slim: {
+      type: Boolean
+    },
+    slotProps: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    tag: {
+      type: String,
+      default: 'DIV'
+    },
+    // name for the target
+    to: {
+      type: String,
+      default: function _default() {
+        return String(Math.round(Math.random() * 10000000));
+      }
+    },
+    // Target
+    multiple: {
+      type: Boolean,
+      default: false
+    },
+    targetSlim: {
+      type: Boolean
+    },
+    targetSlotProps: {
+      type: Object,
+      default: function _default() {
+        return {};
+      }
+    },
+    targetTag: {
+      type: String,
+      default: 'div'
+    },
+    transition: {
+      type: [String, Object, Function]
+    }
+  },
+  created: function created() {
+    if (typeof document === 'undefined') return;
+    var el = document.querySelector(this.mountTo);
+
+    if (!el) {
+      console.error("[portal-vue]: Mount Point '".concat(this.mountTo, "' not found in document"));
+      return;
+    }
+
+    var props = this.$props; // Target already exists
+
+    if (wormhole.targets[props.name]) {
+      if (props.bail) {
+        console.warn("[portal-vue]: Target ".concat(props.name, " is already mounted.\n        Aborting because 'bail: true' is set"));
+      } else {
+        this.portalTarget = wormhole.targets[props.name];
+      }
+
+      return;
+    }
+
+    var append = props.append;
+
+    if (append) {
+      var type = typeof append === 'string' ? append : 'DIV';
+      var mountEl = document.createElement(type);
+      el.appendChild(mountEl);
+      el = mountEl;
+    } // get props for target from $props
+    // we have to rename a few of them
+
+
+    var _props = pick(this.$props, targetProps);
+
+    _props.slim = this.targetSlim;
+    _props.tag = this.targetTag;
+    _props.slotProps = this.targetSlotProps;
+    _props.name = this.to;
+    this.portalTarget = new PortalTarget({
+      el: el,
+      parent: this.$parent || this,
+      propsData: _props
+    });
+  },
+  beforeDestroy: function beforeDestroy() {
+    var target = this.portalTarget;
+
+    if (this.append) {
+      var el = target.$el;
+      el.parentNode.removeChild(el);
+    }
+
+    target.$destroy();
+  },
+  render: function render(h) {
+    if (!this.portalTarget) {
+      console.warn("[portal-vue] Target wasn't mounted");
+      return h();
+    } // if there's no "manual" scoped slot, so we create a <Portal> ourselves
+
+
+    if (!this.$scopedSlots.manual) {
+      var props = pick(this.$props, portalProps);
+      return h(Portal, {
+        props: props,
+        attrs: this.$attrs,
+        on: this.$listeners,
+        scopedSlots: this.$scopedSlots
+      }, this.$slots.default);
+    } // else, we render the scoped slot
+
+
+    var content = this.$scopedSlots.manual({
+      to: this.to
+    }); // if user used <template> for the scoped slot
+    // content will be an array
+
+    if (Array.isArray(content)) {
+      content = content[0];
+    }
+
+    if (!content) return h();
+    return content;
+  }
+});
+
+function install(Vue$$1) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  Vue$$1.component(options.portalName || 'Portal', Portal);
+  Vue$$1.component(options.portalTargetName || 'PortalTarget', PortalTarget);
+  Vue$$1.component(options.MountingPortalName || 'MountingPortal', MountingPortal);
+}
+
+var index = {
+  install: install
+};
+
+exports.ZP = index;
+__webpack_unused_export__ = Portal;
+__webpack_unused_export__ = PortalTarget;
+__webpack_unused_export__ = MountingPortal;
+exports.Df = wormhole;
+//# sourceMappingURL=portal-vue.common.js.map
+
+
+/***/ }),
+
 /***/ 8648:
 /***/ (function(module) {
 
@@ -11585,6 +12210,14 @@ module.exports = v4;
 
 !function(t,e){ true?module.exports=e():0}("undefined"!=typeof self?self:this,(function(){return(()=>{var t={646:t=>{t.exports=function(t){if(Array.isArray(t)){for(var e=0,n=new Array(t.length);e<t.length;e++)n[e]=t[e];return n}}},713:t=>{t.exports=function(t,e,n){return e in t?Object.defineProperty(t,e,{value:n,enumerable:!0,configurable:!0,writable:!0}):t[e]=n,t}},860:t=>{t.exports=function(t){if(Symbol.iterator in Object(t)||"[object Arguments]"===Object.prototype.toString.call(t))return Array.from(t)}},206:t=>{t.exports=function(){throw new TypeError("Invalid attempt to spread non-iterable instance")}},319:(t,e,n)=>{var o=n(646),i=n(860),s=n(206);t.exports=function(t){return o(t)||i(t)||s()}},8:t=>{function e(n){return"function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?t.exports=e=function(t){return typeof t}:t.exports=e=function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},e(n)}t.exports=e}},e={};function n(o){var i=e[o];if(void 0!==i)return i.exports;var s=e[o]={exports:{}};return t[o](s,s.exports,n),s.exports}n.n=t=>{var e=t&&t.__esModule?()=>t.default:()=>t;return n.d(e,{a:e}),e},n.d=(t,e)=>{for(var o in e)n.o(e,o)&&!n.o(t,o)&&Object.defineProperty(t,o,{enumerable:!0,get:e[o]})},n.o=(t,e)=>Object.prototype.hasOwnProperty.call(t,e),n.r=t=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})};var o={};return(()=>{"use strict";n.r(o),n.d(o,{VueSelect:()=>m,default:()=>O,mixins:()=>_});var t=n(319),e=n.n(t),i=n(8),s=n.n(i),r=n(713),a=n.n(r);const l={props:{autoscroll:{type:Boolean,default:!0}},watch:{typeAheadPointer:function(){this.autoscroll&&this.maybeAdjustScroll()},open:function(t){var e=this;this.autoscroll&&t&&this.$nextTick((function(){return e.maybeAdjustScroll()}))}},methods:{maybeAdjustScroll:function(){var t,e=(null===(t=this.$refs.dropdownMenu)||void 0===t?void 0:t.children[this.typeAheadPointer])||!1;if(e){var n=this.getDropdownViewport(),o=e.getBoundingClientRect(),i=o.top,s=o.bottom,r=o.height;if(i<n.top)return this.$refs.dropdownMenu.scrollTop=e.offsetTop;if(s>n.bottom)return this.$refs.dropdownMenu.scrollTop=e.offsetTop-(n.height-r)}},getDropdownViewport:function(){return this.$refs.dropdownMenu?this.$refs.dropdownMenu.getBoundingClientRect():{height:0,top:0,bottom:0}}}},c={data:function(){return{typeAheadPointer:-1}},watch:{filteredOptions:function(){for(var t=0;t<this.filteredOptions.length;t++)if(this.selectable(this.filteredOptions[t])){this.typeAheadPointer=t;break}},open:function(t){t&&this.typeAheadToLastSelected()},selectedValue:function(){this.open&&this.typeAheadToLastSelected()}},methods:{typeAheadUp:function(){for(var t=this.typeAheadPointer-1;t>=0;t--)if(this.selectable(this.filteredOptions[t])){this.typeAheadPointer=t;break}},typeAheadDown:function(){for(var t=this.typeAheadPointer+1;t<this.filteredOptions.length;t++)if(this.selectable(this.filteredOptions[t])){this.typeAheadPointer=t;break}},typeAheadSelect:function(){var t=this.filteredOptions[this.typeAheadPointer];t&&this.selectable(t)&&this.select(t)},typeAheadToLastSelected:function(){this.typeAheadPointer=0!==this.selectedValue.length?this.filteredOptions.indexOf(this.selectedValue[this.selectedValue.length-1]):-1}}},u={props:{loading:{type:Boolean,default:!1}},data:function(){return{mutableLoading:!1}},watch:{search:function(){this.$emit("search",this.search,this.toggleLoading)},loading:function(t){this.mutableLoading=t}},methods:{toggleLoading:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:null;return this.mutableLoading=null==t?!this.mutableLoading:t}}};function p(t,e,n,o,i,s,r,a){var l,c="function"==typeof t?t.options:t;if(e&&(c.render=e,c.staticRenderFns=n,c._compiled=!0),o&&(c.functional=!0),s&&(c._scopeId="data-v-"+s),r?(l=function(t){(t=t||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext)||"undefined"==typeof __VUE_SSR_CONTEXT__||(t=__VUE_SSR_CONTEXT__),i&&i.call(this,t),t&&t._registeredComponents&&t._registeredComponents.add(r)},c._ssrRegister=l):i&&(l=a?function(){i.call(this,(c.functional?this.parent:this).$root.$options.shadowRoot)}:i),l)if(c.functional){c._injectStyles=l;var u=c.render;c.render=function(t,e){return l.call(e),u(t,e)}}else{var p=c.beforeCreate;c.beforeCreate=p?[].concat(p,l):[l]}return{exports:t,options:c}}const h={Deselect:p({},(function(){var t=this.$createElement,e=this._self._c||t;return e("svg",{attrs:{xmlns:"http://www.w3.org/2000/svg",width:"10",height:"10"}},[e("path",{attrs:{d:"M6.895455 5l2.842897-2.842898c.348864-.348863.348864-.914488 0-1.263636L9.106534.261648c-.348864-.348864-.914489-.348864-1.263636 0L5 3.104545 2.157102.261648c-.348863-.348864-.914488-.348864-1.263636 0L.261648.893466c-.348864.348864-.348864.914489 0 1.263636L3.104545 5 .261648 7.842898c-.348864.348863-.348864.914488 0 1.263636l.631818.631818c.348864.348864.914773.348864 1.263636 0L5 6.895455l2.842898 2.842897c.348863.348864.914772.348864 1.263636 0l.631818-.631818c.348864-.348864.348864-.914489 0-1.263636L6.895455 5z"}})])}),[],!1,null,null,null).exports,OpenIndicator:p({},(function(){var t=this.$createElement,e=this._self._c||t;return e("svg",{attrs:{xmlns:"http://www.w3.org/2000/svg",width:"14",height:"10"}},[e("path",{attrs:{d:"M9.211364 7.59931l4.48338-4.867229c.407008-.441854.407008-1.158247 0-1.60046l-.73712-.80023c-.407008-.441854-1.066904-.441854-1.474243 0L7 5.198617 2.51662.33139c-.407008-.441853-1.066904-.441853-1.474243 0l-.737121.80023c-.407008.441854-.407008 1.158248 0 1.600461l4.48338 4.867228L7 10l2.211364-2.40069z"}})])}),[],!1,null,null,null).exports},d={inserted:function(t,e,n){var o=n.context;if(o.appendToBody){var i=o.$refs.toggle.getBoundingClientRect(),s=i.height,r=i.top,a=i.left,l=i.width,c=window.scrollX||window.pageXOffset,u=window.scrollY||window.pageYOffset;t.unbindPosition=o.calculatePosition(t,o,{width:l+"px",left:c+a+"px",top:u+r+s+"px"}),document.body.appendChild(t)}},unbind:function(t,e,n){n.context.appendToBody&&(t.unbindPosition&&"function"==typeof t.unbindPosition&&t.unbindPosition(),t.parentNode&&t.parentNode.removeChild(t))}};const f=function(t){var e={};return Object.keys(t).sort().forEach((function(n){e[n]=t[n]})),JSON.stringify(e)};var y=0;const b=function(){return++y};function g(t,e){var n=Object.keys(t);if(Object.getOwnPropertySymbols){var o=Object.getOwnPropertySymbols(t);e&&(o=o.filter((function(e){return Object.getOwnPropertyDescriptor(t,e).enumerable}))),n.push.apply(n,o)}return n}function v(t){for(var e=1;e<arguments.length;e++){var n=null!=arguments[e]?arguments[e]:{};e%2?g(Object(n),!0).forEach((function(e){a()(t,e,n[e])})):Object.getOwnPropertyDescriptors?Object.defineProperties(t,Object.getOwnPropertyDescriptors(n)):g(Object(n)).forEach((function(e){Object.defineProperty(t,e,Object.getOwnPropertyDescriptor(n,e))}))}return t}const m=p({components:v({},h),directives:{appendToBody:d},mixins:[l,c,u],props:{value:{},components:{type:Object,default:function(){return{}}},options:{type:Array,default:function(){return[]}},disabled:{type:Boolean,default:!1},clearable:{type:Boolean,default:!0},deselectFromDropdown:{type:Boolean,default:!1},searchable:{type:Boolean,default:!0},multiple:{type:Boolean,default:!1},placeholder:{type:String,default:""},transition:{type:String,default:"vs__fade"},clearSearchOnSelect:{type:Boolean,default:!0},closeOnSelect:{type:Boolean,default:!0},label:{type:String,default:"label"},autocomplete:{type:String,default:"off"},reduce:{type:Function,default:function(t){return t}},selectable:{type:Function,default:function(t){return!0}},getOptionLabel:{type:Function,default:function(t){return"object"===s()(t)?t.hasOwnProperty(this.label)?t[this.label]:console.warn('[vue-select warn]: Label key "option.'.concat(this.label,'" does not')+" exist in options object ".concat(JSON.stringify(t),".\n")+"https://vue-select.org/api/props.html#getoptionlabel"):t}},getOptionKey:{type:Function,default:function(t){if("object"!==s()(t))return t;try{return t.hasOwnProperty("id")?t.id:f(t)}catch(e){return console.warn("[vue-select warn]: Could not stringify this option to generate unique key. Please provide'getOptionKey' prop to return a unique key for each option.\nhttps://vue-select.org/api/props.html#getoptionkey",t,e)}}},onTab:{type:Function,default:function(){this.selectOnTab&&!this.isComposing&&this.typeAheadSelect()}},taggable:{type:Boolean,default:!1},tabindex:{type:Number,default:null},pushTags:{type:Boolean,default:!1},filterable:{type:Boolean,default:!0},filterBy:{type:Function,default:function(t,e,n){return(e||"").toLocaleLowerCase().indexOf(n.toLocaleLowerCase())>-1}},filter:{type:Function,default:function(t,e){var n=this;return t.filter((function(t){var o=n.getOptionLabel(t);return"number"==typeof o&&(o=o.toString()),n.filterBy(t,o,e)}))}},createOption:{type:Function,default:function(t){return"object"===s()(this.optionList[0])?a()({},this.label,t):t}},resetOnOptionsChange:{default:!1,validator:function(t){return["function","boolean"].includes(s()(t))}},clearSearchOnBlur:{type:Function,default:function(t){var e=t.clearSearchOnSelect,n=t.multiple;return e&&!n}},noDrop:{type:Boolean,default:!1},inputId:{type:String},dir:{type:String,default:"auto"},selectOnTab:{type:Boolean,default:!1},selectOnKeyCodes:{type:Array,default:function(){return[13]}},searchInputQuerySelector:{type:String,default:"[type=search]"},mapKeydown:{type:Function,default:function(t,e){return t}},appendToBody:{type:Boolean,default:!1},calculatePosition:{type:Function,default:function(t,e,n){var o=n.width,i=n.top,s=n.left;t.style.top=i,t.style.left=s,t.style.width=o}},dropdownShouldOpen:{type:Function,default:function(t){var e=t.noDrop,n=t.open,o=t.mutableLoading;return!e&&(n&&!o)}},uid:{type:[String,Number],default:function(){return b()}}},data:function(){return{search:"",open:!1,isComposing:!1,pushedTags:[],_value:[]}},computed:{isTrackingValues:function(){return void 0===this.value||this.$options.propsData.hasOwnProperty("reduce")},selectedValue:function(){var t=this.value;return this.isTrackingValues&&(t=this.$data._value),null!=t&&""!==t?[].concat(t):[]},optionList:function(){return this.options.concat(this.pushTags?this.pushedTags:[])},searchEl:function(){return this.$scopedSlots.search?this.$refs.selectedOptions.querySelector(this.searchInputQuerySelector):this.$refs.search},scope:function(){var t=this,e={search:this.search,loading:this.loading,searching:this.searching,filteredOptions:this.filteredOptions};return{search:{attributes:v({disabled:this.disabled,placeholder:this.searchPlaceholder,tabindex:this.tabindex,readonly:!this.searchable,id:this.inputId,"aria-autocomplete":"list","aria-labelledby":"vs".concat(this.uid,"__combobox"),"aria-controls":"vs".concat(this.uid,"__listbox"),ref:"search",type:"search",autocomplete:this.autocomplete,value:this.search},this.dropdownOpen&&this.filteredOptions[this.typeAheadPointer]?{"aria-activedescendant":"vs".concat(this.uid,"__option-").concat(this.typeAheadPointer)}:{}),events:{compositionstart:function(){return t.isComposing=!0},compositionend:function(){return t.isComposing=!1},keydown:this.onSearchKeyDown,blur:this.onSearchBlur,focus:this.onSearchFocus,input:function(e){return t.search=e.target.value}}},spinner:{loading:this.mutableLoading},noOptions:{search:this.search,loading:this.mutableLoading,searching:this.searching},openIndicator:{attributes:{ref:"openIndicator",role:"presentation",class:"vs__open-indicator"}},listHeader:e,listFooter:e,header:v({},e,{deselect:this.deselect}),footer:v({},e,{deselect:this.deselect})}},childComponents:function(){return v({},h,{},this.components)},stateClasses:function(){return{"vs--open":this.dropdownOpen,"vs--single":!this.multiple,"vs--multiple":this.multiple,"vs--searching":this.searching&&!this.noDrop,"vs--searchable":this.searchable&&!this.noDrop,"vs--unsearchable":!this.searchable,"vs--loading":this.mutableLoading,"vs--disabled":this.disabled}},searching:function(){return!!this.search},dropdownOpen:function(){return this.dropdownShouldOpen(this)},searchPlaceholder:function(){return this.isValueEmpty&&this.placeholder?this.placeholder:void 0},filteredOptions:function(){var t=[].concat(this.optionList);if(!this.filterable&&!this.taggable)return t;var e=this.search.length?this.filter(t,this.search,this):t;if(this.taggable&&this.search.length){var n=this.createOption(this.search);this.optionExists(n)||e.unshift(n)}return e},isValueEmpty:function(){return 0===this.selectedValue.length},showClearButton:function(){return!this.multiple&&this.clearable&&!this.open&&!this.isValueEmpty}},watch:{options:function(t,e){var n=this;!this.taggable&&("function"==typeof n.resetOnOptionsChange?n.resetOnOptionsChange(t,e,n.selectedValue):n.resetOnOptionsChange)&&this.clearSelection(),this.value&&this.isTrackingValues&&this.setInternalValueFromOptions(this.value)},value:{immediate:!0,handler:function(t){this.isTrackingValues&&this.setInternalValueFromOptions(t)}},multiple:function(){this.clearSelection()},open:function(t){this.$emit(t?"open":"close")}},created:function(){this.mutableLoading=this.loading,this.$on("option:created",this.pushTag)},methods:{setInternalValueFromOptions:function(t){var e=this;Array.isArray(t)?this.$data._value=t.map((function(t){return e.findOptionFromReducedValue(t)})):this.$data._value=this.findOptionFromReducedValue(t)},select:function(t){this.$emit("option:selecting",t),this.isOptionSelected(t)?this.deselectFromDropdown&&(this.clearable||this.multiple&&this.selectedValue.length>1)&&this.deselect(t):(this.taggable&&!this.optionExists(t)&&this.$emit("option:created",t),this.multiple&&(t=this.selectedValue.concat(t)),this.updateValue(t),this.$emit("option:selected",t)),this.onAfterSelect(t)},deselect:function(t){var e=this;this.$emit("option:deselecting",t),this.updateValue(this.selectedValue.filter((function(n){return!e.optionComparator(n,t)}))),this.$emit("option:deselected",t)},clearSelection:function(){this.updateValue(this.multiple?[]:null)},onAfterSelect:function(t){this.closeOnSelect&&(this.open=!this.open,this.searchEl.blur()),this.clearSearchOnSelect&&(this.search="")},updateValue:function(t){var e=this;void 0===this.value&&(this.$data._value=t),null!==t&&(t=Array.isArray(t)?t.map((function(t){return e.reduce(t)})):this.reduce(t)),this.$emit("input",t)},toggleDropdown:function(t){var n=t.target!==this.searchEl;n&&t.preventDefault();var o=[].concat(e()(this.$refs.deselectButtons||[]),e()([this.$refs.clearButton]||0));void 0===this.searchEl||o.filter(Boolean).some((function(e){return e.contains(t.target)||e===t.target}))?t.preventDefault():this.open&&n?this.searchEl.blur():this.disabled||(this.open=!0,this.searchEl.focus())},isOptionSelected:function(t){var e=this;return this.selectedValue.some((function(n){return e.optionComparator(n,t)}))},isOptionDeselectable:function(t){return this.isOptionSelected(t)&&this.deselectFromDropdown},optionComparator:function(t,e){return this.getOptionKey(t)===this.getOptionKey(e)},findOptionFromReducedValue:function(t){var n=this,o=[].concat(e()(this.options),e()(this.pushedTags)).filter((function(e){return JSON.stringify(n.reduce(e))===JSON.stringify(t)}));return 1===o.length?o[0]:o.find((function(t){return n.optionComparator(t,n.$data._value)}))||t},closeSearchOptions:function(){this.open=!1,this.$emit("search:blur")},maybeDeleteValue:function(){if(!this.searchEl.value.length&&this.selectedValue&&this.selectedValue.length&&this.clearable){var t=null;this.multiple&&(t=e()(this.selectedValue.slice(0,this.selectedValue.length-1))),this.updateValue(t)}},optionExists:function(t){var e=this;return this.optionList.some((function(n){return e.optionComparator(n,t)}))},normalizeOptionForSlot:function(t){return"object"===s()(t)?t:a()({},this.label,t)},pushTag:function(t){this.pushedTags.push(t)},onEscape:function(){this.search.length?this.search="":this.searchEl.blur()},onSearchBlur:function(){if(!this.mousedown||this.searching){var t=this.clearSearchOnSelect,e=this.multiple;return this.clearSearchOnBlur({clearSearchOnSelect:t,multiple:e})&&(this.search=""),void this.closeSearchOptions()}this.mousedown=!1,0!==this.search.length||0!==this.options.length||this.closeSearchOptions()},onSearchFocus:function(){this.open=!0,this.$emit("search:focus")},onMousedown:function(){this.mousedown=!0},onMouseUp:function(){this.mousedown=!1},onSearchKeyDown:function(t){var e=this,n=function(t){return t.preventDefault(),!e.isComposing&&e.typeAheadSelect()},o={8:function(t){return e.maybeDeleteValue()},9:function(t){return e.onTab()},27:function(t){return e.onEscape()},38:function(t){return t.preventDefault(),e.typeAheadUp()},40:function(t){return t.preventDefault(),e.typeAheadDown()}};this.selectOnKeyCodes.forEach((function(t){return o[t]=n}));var i=this.mapKeydown(o,this);if("function"==typeof i[t.keyCode])return i[t.keyCode](t)}}},(function(){var t=this,e=t.$createElement,n=t._self._c||e;return n("div",{staticClass:"v-select",class:t.stateClasses,attrs:{dir:t.dir}},[t._t("header",null,null,t.scope.header),t._v(" "),n("div",{ref:"toggle",staticClass:"vs__dropdown-toggle",attrs:{id:"vs"+t.uid+"__combobox",role:"combobox","aria-expanded":t.dropdownOpen.toString(),"aria-owns":"vs"+t.uid+"__listbox","aria-label":"Search for option"},on:{mousedown:function(e){return t.toggleDropdown(e)}}},[n("div",{ref:"selectedOptions",staticClass:"vs__selected-options"},[t._l(t.selectedValue,(function(e){return t._t("selected-option-container",[n("span",{key:t.getOptionKey(e),staticClass:"vs__selected"},[t._t("selected-option",[t._v("\n            "+t._s(t.getOptionLabel(e))+"\n          ")],null,t.normalizeOptionForSlot(e)),t._v(" "),t.multiple?n("button",{ref:"deselectButtons",refInFor:!0,staticClass:"vs__deselect",attrs:{disabled:t.disabled,type:"button",title:"Deselect "+t.getOptionLabel(e),"aria-label":"Deselect "+t.getOptionLabel(e)},on:{click:function(n){return t.deselect(e)}}},[n(t.childComponents.Deselect,{tag:"component"})],1):t._e()],2)],{option:t.normalizeOptionForSlot(e),deselect:t.deselect,multiple:t.multiple,disabled:t.disabled})})),t._v(" "),t._t("search",[n("input",t._g(t._b({staticClass:"vs__search"},"input",t.scope.search.attributes,!1),t.scope.search.events))],null,t.scope.search)],2),t._v(" "),n("div",{ref:"actions",staticClass:"vs__actions"},[n("button",{directives:[{name:"show",rawName:"v-show",value:t.showClearButton,expression:"showClearButton"}],ref:"clearButton",staticClass:"vs__clear",attrs:{disabled:t.disabled,type:"button",title:"Clear Selected","aria-label":"Clear Selected"},on:{click:t.clearSelection}},[n(t.childComponents.Deselect,{tag:"component"})],1),t._v(" "),t._t("open-indicator",[t.noDrop?t._e():n(t.childComponents.OpenIndicator,t._b({tag:"component"},"component",t.scope.openIndicator.attributes,!1))],null,t.scope.openIndicator),t._v(" "),t._t("spinner",[n("div",{directives:[{name:"show",rawName:"v-show",value:t.mutableLoading,expression:"mutableLoading"}],staticClass:"vs__spinner"},[t._v("Loading...")])],null,t.scope.spinner)],2)]),t._v(" "),n("transition",{attrs:{name:t.transition}},[t.dropdownOpen?n("ul",{directives:[{name:"append-to-body",rawName:"v-append-to-body"}],key:"vs"+t.uid+"__listbox",ref:"dropdownMenu",staticClass:"vs__dropdown-menu",attrs:{id:"vs"+t.uid+"__listbox",role:"listbox",tabindex:"-1"},on:{mousedown:function(e){return e.preventDefault(),t.onMousedown(e)},mouseup:t.onMouseUp}},[t._t("list-header",null,null,t.scope.listHeader),t._v(" "),t._l(t.filteredOptions,(function(e,o){return n("li",{key:t.getOptionKey(e),staticClass:"vs__dropdown-option",class:{"vs__dropdown-option--deselect":t.isOptionDeselectable(e)&&o===t.typeAheadPointer,"vs__dropdown-option--selected":t.isOptionSelected(e),"vs__dropdown-option--highlight":o===t.typeAheadPointer,"vs__dropdown-option--disabled":!t.selectable(e)},attrs:{id:"vs"+t.uid+"__option-"+o,role:"option","aria-selected":o===t.typeAheadPointer||null},on:{mouseover:function(n){t.selectable(e)&&(t.typeAheadPointer=o)},click:function(n){n.preventDefault(),n.stopPropagation(),t.selectable(e)&&t.select(e)}}},[t._t("option",[t._v("\n          "+t._s(t.getOptionLabel(e))+"\n        ")],null,t.normalizeOptionForSlot(e))],2)})),t._v(" "),0===t.filteredOptions.length?n("li",{staticClass:"vs__no-options"},[t._t("no-options",[t._v("\n          Sorry, no matching options.\n        ")],null,t.scope.noOptions)],2):t._e(),t._v(" "),t._t("list-footer",null,null,t.scope.listFooter)],2):n("ul",{staticStyle:{display:"none",visibility:"hidden"},attrs:{id:"vs"+t.uid+"__listbox",role:"listbox"}})]),t._v(" "),t._t("footer",null,null,t.scope.footer)],2)}),[],!1,null,null,null).exports,_={ajax:u,pointer:c,pointerScroll:l},O=m})(),o})()}));
 //# sourceMappingURL=vue-select.js.map
+
+/***/ }),
+
+/***/ 3797:
+/***/ (function(module) {
+
+"use strict";
+module.exports = require("vue");
 
 /***/ }),
 
@@ -20244,6 +20877,8 @@ if (v_tooltip_esm_GlobalVue) {
 /* harmony default export */ var v_tooltip_esm = (v_tooltip_esm_plugin);
 
 
+// EXTERNAL MODULE: ./node_modules/portal-vue/dist/portal-vue.common.js
+var portal_vue_common = __webpack_require__(2433);
 ;// CONCATENATED MODULE: ./node_modules/@fortawesome/free-solid-svg-icons/index.es.js
 /*!
  * Font Awesome Free 5.15.4 by @fontawesome - https://fontawesome.com
@@ -26267,6 +26902,8 @@ var _iconsCache = {
 
 
 
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.function.name.js
+var es_function_name = __webpack_require__(8309);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.exec.js
 var es_regexp_exec = __webpack_require__(4916);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.search.js
@@ -26281,9 +26918,7 @@ var es_array_find_index = __webpack_require__(4553);
 var es_regexp_sticky = __webpack_require__(8386);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.keys.js
 var es_object_keys = __webpack_require__(7941);
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.function.name.js
-var es_function_name = __webpack_require__(8309);
-;// CONCATENATED MODULE: ./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib/index.js??clonedRuleSet-40.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/templateLoader.js??ruleSet[1].rules[3]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=template&id=ed74a5e4&scoped=true&
+;// CONCATENATED MODULE: ./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib/index.js??clonedRuleSet-40.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/templateLoader.js??ruleSet[1].rules[3]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=template&id=b0b7e5f6&scoped=true&
 
 
 
@@ -26293,7 +26928,7 @@ var es_function_name = __webpack_require__(8309);
 
 
 
-var VueQuintablevue_type_template_id_ed74a5e4_scoped_true_render = function render() {
+var VueQuintablevue_type_template_id_b0b7e5f6_scoped_true_render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
@@ -26320,7 +26955,60 @@ var VueQuintablevue_type_template_id_ed74a5e4_scoped_true_render = function rend
     staticClass: "d-none d-xxl-block"
   })]), _c('div', {
     staticClass: "header slot slot-header quintable--header"
-  }, [_vm._t("header")], 2), _vm.configFinal.search ? _c('div', {
+  }, [_vm._t("header")], 2), _vm._l(_vm.visibleRowIndexes, function (rIndex) {
+    return [_vm._l(_vm.rowsFinal[rIndex].cells ? _vm.rowsFinal[rIndex].cells : _vm.rowsFinal[rIndex], function (cell, cIndex) {
+      return [_c('div', {
+        key: 'cell-content-portal-' + rIndex + '-' + cIndex
+      }, [_c('portal', {
+        attrs: {
+          "to": _vm.portalIdentifier + '-cell-content-portal-target-' + rIndex + '-' + cIndex
+        },
+        scopedSlots: _vm._u([{
+          key: "default",
+          fn: function fn(options) {
+            return _c('div', {}, [cell.quintable ? _c('div', {
+              staticClass: "cell-inner",
+              class: options.path + ' ' + options.path + '--quintable'
+            }, [_vm._v(" Nested support was removed, use slots instead! ")]) : _vm._t('cell-complete', function () {
+              return [_vm._t('cell-content', function () {
+                return [_vm.configFinal.columns[cIndex].cellFormatter && _vm.cellFormatters(cIndex, cell).type === 'html' ? _c('div', {
+                  staticClass: "cell-inner",
+                  class: options.path + ' ' + options.path + '--formatted-html',
+                  domProps: {
+                    "innerHTML": _vm._s(_vm.cellFormatters(cIndex, cell).value)
+                  }
+                }) : _vm.configFinal.columns[cIndex].cellFormatter ? _c('div', {
+                  staticClass: "cell-inner",
+                  class: options.path + ' ' + options.path + '--formatted-value'
+                }, [_vm._v(" " + _vm._s(_vm.cellFormatters(cIndex, cell).value) + " ")]) : cell.html ? _c('div', {
+                  staticClass: "cell-inner",
+                  class: options.path + ' ' + options.path + '--html',
+                  domProps: {
+                    "innerHTML": _vm._s(cell.html)
+                  }
+                }) : _vm._e(), cell.text ? _c('div', {
+                  staticClass: "cell-inner",
+                  class: options.path + ' ' + options.path + '--text'
+                }, [_vm._v(" " + _vm._s(cell.text) + " ")]) : _vm._e(), cell.component ? _c('div', {
+                  staticClass: "cell-inner",
+                  class: options.path + ' ' + options.path + '--component'
+                }, [_c(cell.component.name, _vm._b({
+                  tag: "component",
+                  on: {
+                    "action": _vm.handleComponentEvent
+                  }
+                }, 'component', cell.component.props, false))], 1) : _vm._e()];
+              }, {
+                "cell": cell
+              })];
+            }, {
+              "cell": cell
+            })], 2);
+          }
+        }], null, true)
+      })], 1)];
+    })];
+  }), _vm.configFinal.search ? _c('div', {
     staticClass: "mb-3 quintable--search-container",
     class: _vm.configFinal.searchContainerClass
   }, [_vm._t("before-search"), _vm._t("search", function () {
@@ -26697,101 +27385,14 @@ var VueQuintablevue_type_template_id_ed74a5e4_scoped_true_render = function rend
         }
       }, [_vm.configFinal.columns[cIndex] && cell && _vm.hiddenBreakpoints.findIndex(function (x) {
         return x === _vm.configFinal.columns[cIndex].breakpoint;
-      }) === -1 && _vm.configFinal.columns[cIndex].breakpoint !== 'all' && !_vm.configFinal.stickyCols[cIndex] ? [_vm._t('cell-complete' + (_vm.identifier ? '-' + _vm.identifier : ''), function () {
-        return [_vm._t('cell-content' + (_vm.identifier ? '-' + _vm.identifier : ''), function () {
-          return [_vm.configFinal.columns[cIndex].cellFormatter ? [cell.quintable ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--row--cell--inner-cell quintable--table-container--table--tbody--row--cell--inner-cell--quintable"
-          }, [_c('VueQuintable', {
-            staticClass: "quintable-sub-table quintable--table-container--table--tbody--row--cell--inner-cell--quintable--sub-table",
-            attrs: {
-              "table-classes": cell.quintable.tableClasses,
-              "nested": true,
-              "identifier": cell.quintable.identifier ? cell.quintable.identifier : _vm.generateIdentifier(),
-              "config": cell.quintable.config,
-              "rows": cell.quintable.rows,
-              "verbose": _vm.verbose,
-              "filter-groups": cell.quintable.filterGroups ? cell.quintable.filterGroups : [],
-              "filters": cell.quintable.filters ? cell.quintable.filters : {}
-            },
-            scopedSlots: _vm._u([_vm._l(Object.keys(_vm.$scopedSlots), function (slot) {
-              return {
-                key: slot,
-                fn: function fn(scope) {
-                  return [_vm._t(slot, null, null, scope)];
-                }
-              };
-            })], null, true),
-            model: {
-              value: cell.quintable.value,
-              callback: function callback($$v) {
-                _vm.$set(cell.quintable, "value", $$v);
-              },
-              expression: "cell.quintable.value"
-            }
-          })], 1) : cell.component ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--row--cell--inner-cell quintable--table-container--table--tbody--row--cell--inner-cell--component"
-          }, [_c(cell.component.name, _vm._b({
-            tag: "component",
-            on: {
-              "action": _vm.handleComponentEvent
-            }
-          }, 'component', cell.component.props, false))], 1) : _vm.cellFormatters(cIndex, cell).type === 'html' ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--row--cell--inner-cell quintable--table-container--table--tbody--row--cell--inner-cell--formatted-html",
-            domProps: {
-              "innerHTML": _vm._s(_vm.cellFormatters(cIndex, cell).value)
-            }
-          }) : _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--row--cell--inner-cell quintable--table-container--table--tbody--row--cell--inner-cell--formatted-value"
-          }, [_vm._v(" " + _vm._s(_vm.cellFormatters(cIndex, cell).value) + " ")])] : [cell.html ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--row--cell--inner-cell quintable--table-container--table--tbody--row--cell--inner-cell-html",
-            domProps: {
-              "innerHTML": _vm._s(cell.html)
-            }
-          }) : _vm._e(), cell.text ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--row--cell--inner-cell quintable--table-container--table--tbody--row--cell--inner-cell--text"
-          }, [_vm._v(" " + _vm._s(cell.text) + " ")]) : _vm._e(), cell.quintable ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--row--cell--inner-cell quintable--table-container--table--tbody--row--cell--inner-cell--quintable"
-          }, [_c('VueQuintable', {
-            staticClass: "quintable-sub-table quintable--table-container--table--tbody--row--cell--inner-cell--quintable--sub-table",
-            attrs: {
-              "table-classes": cell.quintable.tableClasses,
-              "nested": true,
-              "identifier": cell.quintable.identifier ? cell.quintable.identifier : _vm.generateIdentifier(),
-              "config": cell.quintable.config,
-              "rows": cell.quintable.rows,
-              "verbose": _vm.verbose,
-              "filter-groups": cell.quintable.filterGroups ? cell.quintable.filterGroups : [],
-              "filters": cell.quintable.filters ? cell.quintable.filters : {}
-            },
-            scopedSlots: _vm._u([_vm._l(Object.keys(_vm.$scopedSlots), function (slot) {
-              return {
-                key: slot,
-                fn: function fn(scope) {
-                  return [_vm._t(slot, null, null, scope)];
-                }
-              };
-            })], null, true),
-            model: {
-              value: cell.quintable.value,
-              callback: function callback($$v) {
-                _vm.$set(cell.quintable, "value", $$v);
-              },
-              expression: "cell.quintable.value"
-            }
-          })], 1) : _vm._e(), cell.component ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--row--cell--inner-cell quintable--table-container--table--tbody--row--cell--inner-cell--component"
-          }, [_c(cell.component.name, _vm._b({
-            tag: "component",
-            on: {
-              "action": _vm.handleComponentEvent
-            }
-          }, 'component', cell.component.props, false))], 1) : _vm._e()]];
-        }, {
-          "cell": cell
-        })];
-      }, {
-        "cell": cell
-      })] : _vm._e()], 2) : _vm._e()];
+      }) === -1 && _vm.configFinal.columns[cIndex].breakpoint !== 'all' && !_vm.configFinal.stickyCols[cIndex] ? _c('portal-target', {
+        attrs: {
+          "name": _vm.portalIdentifier + '-cell-content-portal-target-' + rIndex + '-' + cIndex,
+          "slot-props": {
+            path: 'quintable--table-container--table--tbody--row--cell--inner-cell'
+          }
+        }
+      }) : _vm._e()], 1) : _vm._e()];
     }), _vm.configFinal.select && _vm.configFinal.selectPosition === 'post' ? _c('td', {
       staticClass: "select-td post quintable--table-container--table--tbody--row--select-td quintable--table-container--table--tbody--row--select-td--post",
       class: {
@@ -26892,7 +27493,7 @@ var VueQuintablevue_type_template_id_ed74a5e4_scoped_true_render = function rend
           expression: "openRows[rIndex]"
         }],
         key: 'vue-quintable-' + _vm.uuid + '-generated-row-cell-headline' + rIndex + '-' + cIndex + '-' + _vm.generatedUpdatedKey,
-        staticClass: "generated-headline-cell generated-cell-element quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-headline",
+        staticClass: "generated-cell-element generated-cell-headline quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-headline",
         class: _vm.configFinal.columnClasses[cIndex],
         attrs: {
           "id": 'vue-quintable-' + _vm.uuid + '-generated-row-cell-headline' + rIndex + '-' + cIndex
@@ -26944,7 +27545,7 @@ var VueQuintablevue_type_template_id_ed74a5e4_scoped_true_render = function rend
     }), _vm._l(_vm.stickyRows[rIndex], function (cell, cIndex) {
       return _c('div', {
         key: 'vue-quintable-' + _vm.uuid + '-sticky-row-cell-headline' + rIndex + '-' + cIndex,
-        staticClass: "generated-headline-cell generated-cell-element quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-headline",
+        staticClass: "generated-cell-element sticky-cell-headline quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-headline",
         class: _vm.configFinal.columnClasses[cIndex],
         attrs: {
           "id": 'vue-quintable-' + _vm.uuid + '-sticky-row-cell-headline' + rIndex + '-' + cIndex
@@ -27011,7 +27612,7 @@ var VueQuintablevue_type_template_id_ed74a5e4_scoped_true_render = function rend
           expression: "{\n                          placement: 'top',\n                          content: cell.tooltip,\n                          trigger: cell.tooltip ? 'hover' : 'manual',\n                        }"
         }],
         key: 'vue-quintable-' + _vm.uuid + '-generated-row-cell-' + rIndex + '-' + cIndex + '-' + _vm.generatedUpdatedKey,
-        staticClass: "generated-cell-element generated-content-cell quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-content",
+        staticClass: "generated-cell-element generated-cell-element-content generated-cell-content quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-content",
         class: _vm.configFinal.columnClasses[cIndex] + ' ' + _vm.cellClassesParsed[rIndex][cIndex],
         attrs: {
           "id": 'vue-quintable-' + _vm.uuid + '-generated-row-cell-' + rIndex + '-' + cIndex
@@ -27021,95 +27622,16 @@ var VueQuintablevue_type_template_id_ed74a5e4_scoped_true_render = function rend
             return _vm.onCellClick(cell);
           }
         }
-      }, [_vm._t('generated-cell-complete' + (_vm.identifier ? '-' + _vm.identifier : ''), function () {
-        return [_vm._t('generated-cell-content' + (_vm.identifier ? '-' + _vm.identifier : ''), function () {
-          return [_vm.configFinal.columns[cIndex].cellFormatter ? [cell.quintable ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner--quintable"
-          }, [_c('VueQuintable', {
-            staticClass: "quintable-sub-table quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner--quintable--sub-table",
+      }, [_vm._t('generated-cell-complete', function () {
+        return [_vm._t('generated-cell-content', function () {
+          return [_c('portal-target', {
             attrs: {
-              "table-classes": cell.quintable.tableClasses,
-              "nested": true,
-              "identifier": cell.quintable.identifier ? cell.quintable.identifier : _vm.generateIdentifier(),
-              "config": cell.quintable.config,
-              "rows": cell.quintable.rows,
-              "verbose": _vm.verbose,
-              "filter-groups": cell.quintable.filterGroups ? cell.quintable.filterGroups : [],
-              "filters": cell.quintable.filters ? cell.quintable.filters : {}
-            },
-            scopedSlots: _vm._u([_vm._l(Object.keys(_vm.$scopedSlots), function (slot) {
-              return {
-                key: slot,
-                fn: function fn(scope) {
-                  return [_vm._t(slot, null, null, scope)];
-                }
-              };
-            })], null, true),
-            model: {
-              value: cell.quintable.value,
-              callback: function callback($$v) {
-                _vm.$set(cell.quintable, "value", $$v);
-              },
-              expression: "cell.quintable.value"
+              "name": _vm.portalIdentifier + '-cell-content-portal-target-' + rIndex + '-' + cIndex,
+              "slot-props": {
+                path: 'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner'
+              }
             }
-          })], 1) : cell.component ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner--component"
-          }, [_c(cell.component.name, _vm._b({
-            tag: "component",
-            on: {
-              "action": _vm.handleComponentEvent
-            }
-          }, 'component', cell.component.props, false))], 1) : _vm.cellFormatters(cIndex, cell).type === 'html' ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner--formatted-html",
-            domProps: {
-              "innerHTML": _vm._s(_vm.cellFormatters(cIndex, cell).value)
-            }
-          }) : _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner--formatted-value"
-          }, [_vm._v(" " + _vm._s(_vm.cellFormatters(cIndex, cell).value) + " ")])] : [cell.html ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner--html",
-            domProps: {
-              "innerHTML": _vm._s(cell.html)
-            }
-          }) : _vm._e(), cell.text ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner--text"
-          }, [_vm._v(" " + _vm._s(cell.text) + " ")]) : _vm._e(), cell.quintable ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner-quintable"
-          }, [_c('VueQuintable', {
-            staticClass: "quintable-sub-table quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner--quintable--sub-table",
-            attrs: {
-              "table-classes": cell.quintable.tableClasses,
-              "nested": true,
-              "identifier": cell.quintable.identifier ? cell.quintable.identifier : _vm.generateIdentifier(),
-              "config": cell.quintable.config,
-              "rows": cell.quintable.rows,
-              "verbose": _vm.verbose,
-              "filter-groups": cell.quintable.filterGroups ? cell.quintable.filterGroups : [],
-              "filters": cell.quintable.filters ? cell.quintable.filters : {}
-            },
-            scopedSlots: _vm._u([_vm._l(Object.keys(_vm.$scopedSlots), function (slot) {
-              return {
-                key: slot,
-                fn: function fn(scope) {
-                  return [_vm._t(slot, null, null, scope)];
-                }
-              };
-            })], null, true),
-            model: {
-              value: cell.quintable.value,
-              callback: function callback($$v) {
-                _vm.$set(cell.quintable, "value", $$v);
-              },
-              expression: "cell.quintable.value"
-            }
-          })], 1) : _vm._e(), cell.component ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner--component"
-          }, [_c(cell.component.name, _vm._b({
-            tag: "component",
-            on: {
-              "action": _vm.handleComponentEvent
-            }
-          }, 'component', cell.component.props, false))], 1) : _vm._e()]];
+          })];
         }, {
           "cell": cell
         })];
@@ -27129,7 +27651,7 @@ var VueQuintablevue_type_template_id_ed74a5e4_scoped_true_render = function rend
           expression: "{\n                          placement: 'top',\n                          content: cell.tooltip,\n                          trigger: cell.tooltip ? 'hover' : 'manual',\n                        }"
         }],
         key: 'vue-quintable-' + _vm.uuid + '-sticky-row-cell-' + rIndex + '-' + cIndex,
-        staticClass: "generated-cell-element sticky-content-cell quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-content",
+        staticClass: "generated-cell-element generated-cell-element-content sticky-cell-content quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-content",
         class: _vm.configFinal.columnClasses[cIndex] + ' ' + _vm.cellClassesParsed[rIndex][cIndex],
         attrs: {
           "id": 'vue-quintable-' + _vm.uuid + '-sticky-row-cell-' + rIndex + '-' + cIndex
@@ -27139,95 +27661,16 @@ var VueQuintablevue_type_template_id_ed74a5e4_scoped_true_render = function rend
             return _vm.onCellClick(cell);
           }
         }
-      }, [_vm._t('sticky-cell-complete' + (_vm.identifier ? '-' + _vm.identifier : ''), function () {
-        return [_vm._t('sticky-cell-content' + (_vm.identifier ? '-' + _vm.identifier : ''), function () {
-          return [_vm.configFinal.columns[cIndex].cellFormatter ? [cell.quintable ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--quintable"
-          }, [_c('VueQuintable', {
-            staticClass: "quintable-sub-table quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--quintable--sub-table",
+      }, [_vm._t('sticky-cell-complete', function () {
+        return [_vm._t('sticky-cell-content', function () {
+          return [_c('portal-target', {
             attrs: {
-              "table-classes": cell.quintable.tableClasses,
-              "nested": true,
-              "identifier": cell.quintable.identifier ? cell.quintable.identifier : _vm.generateIdentifier(),
-              "config": cell.quintable.config,
-              "rows": cell.quintable.rows,
-              "verbose": _vm.verbose,
-              "filter-groups": cell.quintable.filterGroups ? cell.quintable.filterGroups : [],
-              "filters": cell.quintable.filters ? cell.quintable.filters : {}
-            },
-            scopedSlots: _vm._u([_vm._l(Object.keys(_vm.$scopedSlots), function (slot) {
-              return {
-                key: slot,
-                fn: function fn(scope) {
-                  return [_vm._t(slot, null, null, scope)];
-                }
-              };
-            })], null, true),
-            model: {
-              value: cell.quintable.value,
-              callback: function callback($$v) {
-                _vm.$set(cell.quintable, "value", $$v);
-              },
-              expression: "cell.quintable.value"
+              "name": _vm.portalIdentifier + '-cell-content-portal-target-' + rIndex + '-' + cIndex,
+              "slot-props": {
+                path: 'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner'
+              }
             }
-          })], 1) : cell.component ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--component"
-          }, [_c(cell.component.name, _vm._b({
-            tag: "component",
-            on: {
-              "action": _vm.handleComponentEvent
-            }
-          }, 'component', cell.component.props, false))], 1) : _vm.cellFormatters(cIndex, cell).type === 'html' ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--formatted-html",
-            domProps: {
-              "innerHTML": _vm._s(_vm.cellFormatters(cIndex, cell).value)
-            }
-          }) : _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--formatted-value"
-          }, [_vm._v(" " + _vm._s(_vm.cellFormatters(cIndex, cell).value) + " ")])] : [cell.html ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--text",
-            domProps: {
-              "innerHTML": _vm._s(cell.html)
-            }
-          }) : _vm._e(), cell.text ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--html"
-          }, [_vm._v(" " + _vm._s(cell.text) + " ")]) : _vm._e(), cell.quintable ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--quintable"
-          }, [_c('VueQuintable', {
-            staticClass: "quintable-sub-table quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--quintable--sub-table",
-            attrs: {
-              "table-classes": cell.quintable.tableClasses,
-              "nested": true,
-              "identifier": cell.quintable.identifier ? cell.quintable.identifier : _vm.generateIdentifier(),
-              "config": cell.quintable.config,
-              "rows": cell.quintable.rows,
-              "verbose": _vm.verbose,
-              "filter-groups": cell.quintable.filterGroups ? cell.quintable.filterGroups : [],
-              "filters": cell.quintable.filters ? cell.quintable.filters : {}
-            },
-            scopedSlots: _vm._u([_vm._l(Object.keys(_vm.$scopedSlots), function (slot) {
-              return {
-                key: slot,
-                fn: function fn(scope) {
-                  return [_vm._t(slot, null, null, scope)];
-                }
-              };
-            })], null, true),
-            model: {
-              value: cell.quintable.value,
-              callback: function callback($$v) {
-                _vm.$set(cell.quintable, "value", $$v);
-              },
-              expression: "cell.quintable.value"
-            }
-          })], 1) : _vm._e(), cell.component ? _c('div', {
-            staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--component"
-          }, [_c(cell.component.name, _vm._b({
-            tag: "component",
-            on: {
-              "action": _vm.handleComponentEvent
-            }
-          }, 'component', cell.component.props, false))], 1) : _vm._e()]];
+          })];
         }, {
           "cell": cell
         })];
@@ -27427,12 +27870,12 @@ var VueQuintablevue_type_template_id_ed74a5e4_scoped_true_render = function rend
     staticClass: "d-inline-block align-middle mb-2 quintable--table-footer-container--pagination-wrapper--pagination-container--visible-rows"
   }, [_vm._v(_vm._s(_vm.firstVisibleRow) + "-" + _vm._s(_vm.lastVisibleRow) + " " + _vm._s(_vm.configFinal.numberOfVisibleRowsFillerWord) + " " + _vm._s(_vm.numberOfVisibleRows))]) : _vm._e()]) : _vm._e()])])]), _c('div', {
     staticClass: "footer slot slot-footer quintable--footer"
-  }, [_vm._t("footer")], 2)]);
+  }, [_vm._t("footer")], 2)], 2);
 };
 
 var staticRenderFns = [];
 
-;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=template&id=ed74a5e4&scoped=true&
+;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=template&id=b0b7e5f6&scoped=true&
 
 ;// CONCATENATED MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/typeof.js
 
@@ -27696,6 +28139,10 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
     };
   },
   computed: {
+    portalIdentifier: function portalIdentifier() {
+      return v4_default()();
+    },
+
     /**
      * Just a debug flag
      *
@@ -30190,9 +30637,6 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
         this.hiddenBreakpoints = breakpoints;
       }
     },
-    generateIdentifier: function generateIdentifier() {
-      return v4_default()();
-    },
     checkStoredSelectedRows: function checkStoredSelectedRows() {
       var deleteStore = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
 
@@ -30332,15 +30776,15 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
 });
 ;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_VueQuintablevue_type_script_lang_js_ = (VueQuintablevue_type_script_lang_js_); 
-;// CONCATENATED MODULE: ./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-12.use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=style&index=0&id=ed74a5e4&prod&scoped=true&lang=css&
+;// CONCATENATED MODULE: ./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-12.use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=style&index=0&id=b0b7e5f6&prod&scoped=true&lang=css&
 // extracted by mini-css-extract-plugin
 
-;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=0&id=ed74a5e4&prod&scoped=true&lang=css&
+;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=0&id=b0b7e5f6&prod&scoped=true&lang=css&
 
-;// CONCATENATED MODULE: ./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-12.use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=style&index=1&id=ed74a5e4&prod&lang=css&
+;// CONCATENATED MODULE: ./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-12.use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=style&index=1&id=b0b7e5f6&prod&lang=css&
 // extracted by mini-css-extract-plugin
 
-;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=1&id=ed74a5e4&prod&lang=css&
+;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=1&id=b0b7e5f6&prod&lang=css&
 
 ;// CONCATENATED MODULE: ./node_modules/@vue/vue-loader-v15/lib/runtime/componentNormalizer.js
 /* globals __VUE_SSR_CONTEXT__ */
@@ -30452,11 +30896,11 @@ function componentNormalizer_normalizeComponent(
 
 var component = componentNormalizer_normalizeComponent(
   components_VueQuintablevue_type_script_lang_js_,
-  VueQuintablevue_type_template_id_ed74a5e4_scoped_true_render,
+  VueQuintablevue_type_template_id_b0b7e5f6_scoped_true_render,
   staticRenderFns,
   false,
   null,
-  "ed74a5e4",
+  "b0b7e5f6",
   null
   
 )
@@ -30471,6 +30915,9 @@ var component = componentNormalizer_normalizeComponent(
 
 
 
+
+
+portal_vue_common/* Wormhole.trackInstances */.Df.trackInstances = false;
 
 library$1.add(faAngleDoubleLeft);
 library$1.add(faAngleDoubleRight);
@@ -30506,6 +30953,7 @@ var src_install = function install(Vue) {
     defaultTemplate: '<div class="quintable-tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
     defaultClass: ""
   });
+  Vue.use(portal_vue_common/* default */.ZP);
 }; // Create module definition for Vue.use()
 
 

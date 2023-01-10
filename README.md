@@ -116,19 +116,19 @@ These points will convince you that VueQuintable is the last table plugin you wi
 
 You can define some slots to customize the table as you want to.
 
-- header
-- before-search
-- after-search
-- after-search-container
-- footer
-- no-results
-- loading
-- cell-complete
-- cell-content
-- generated-cell-complete
-- generated-cell-content
-- sticky-cell-complete
-- sticky-cell-content
+- header | used for content above the table
+- before-search | used for content before the search bar
+- after-search | used for content after the search bar
+- after-search-container | used for content before the search bar container
+- footer | used for content below the table
+- no-results | used for placeholder if there are no table entries due to filtering etc.
+- loading | custom loader
+- cell-complete | *deprecated*
+- cell-content | custom content for cells, cell is delivered as slot scope. Used also for generated and sticky cells
+- generated-cell-complete | *deprecated*
+- generated-cell-content  | custom content for generated cells, optional, overrides cell-content
+- sticky-cell-complete | *deprecated*
+- sticky-cell-content  | custom content for sticky cells, optional, overrides cell-content
 
 ```html
 <template v-slot:header>Your HTML-Code</template>
@@ -139,17 +139,6 @@ You can define some slots to customize the table as you want to.
     </button>
 </template>
 ```
-
-If you want to use slots in nested table you should use the *identifier* option for the nested table. If done so (e.g. "nested-identifier") you can use slots like the following:
-
-```html
-<template v-slot:cell-content-nested-identifier="{cell}">
-    <button>
-        {{cell.text}}
-    </button>
-</template>
-```
-
 
 
 ## Events
@@ -188,27 +177,28 @@ The following will give you an overview how to configure the VueQuintable for yo
 
 ### Table Properties
 
-| Parameter         | Type          | Required                    | Description                                                  |
-| ----------------- | ------------- | --------------------------- | ------------------------------------------------------------ |
-| config            | Object        | yes                         | The table configuration object. See details below.           |
-| rows              | Array         | yes (if no ajax url is set) | Table rows containing all cells. See details below.          |
-| preSelectedRows   | Array         | no                          | Array of objects{key,value} to set selection of rows from outside. You have to set the key to an unique property of the row e.g. an id and the value to the actual properties' value of the row. If done so, the row will be (pre-) selected. Note: This won't work initially, for initial select use *config.defaultSelected* or *row.selected* properties |
-| dynamicConfig     | Boolean       | no                          | If set to true the Table wont be re-initialized and re-rendered if some values inside the *config* property are changed. This is useful to dynamically set *config* values for columns |
-| filters           | Object        | no                          | The active filters for displaying rows. This has to be an object with filter name as key and filter value as value. Additionally a set of operators can be passed. See example below. |
-| filter-groups     | Array         | no                          | Filter groups with relations. See example below.             |
-| sort-order        | Object        | no                          | Set sorting values and order by default or on the fly. See examples below. |
-| axios             | Object        | no                          | Pass a configured axios instance to be used for ajax functionalities. Only relevant if ajax is used. Recommendation: set it to the current time using new Date() for update |
-| updated           | Boolean\|Date | no                          | Property to trigger reload on current page. Only relevant if ajax is used. |
-| verbose           | Boolean       | no                          | Default is false. Set to true to see debug informations on developer tools in your Browser. |
-| identifier        | String        | no                          | Default is null, for nested tables default is a random string. Use for slots of nested tables |
-| initialSearchTerm | String        | no                          | Default is null, initial search term if search is enabled    |
+| Parameter         | Type     | Required                    | Description                                                                                                                                                                                                                                                                                                                                                 |
+|-------------------|----------| --------------------------- |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| config            | Object   | yes                         | The table configuration object. See details below.                                                                                                                                                                                                                                                                                                          |
+| rows              | Array    | yes (if no ajax url is set) | Table rows containing all cells. See details below.                                                                                                                                                                                                                                                                                                         |
+| preSelectedRows   | Array    | no                          | Array of objects{key,value} to set selection of rows from outside. You have to set the key to an unique property of the row e.g. an id and the value to the actual properties' value of the row. If done so, the row will be (pre-) selected. Note: This won't work initially, for initial select use *config.defaultSelected* or *row.selected* properties |
+| dynamicConfig     | Boolean  | no                          | If set to true the Table wont be re-initialized and re-rendered if some values inside the *config* property are changed. This is useful to dynamically set *config* values for columns                                                                                                                                                                      |
+| filters           | Object   | no                          | The active filters for displaying rows. This has to be an object with filter name as key and filter value as value. Additionally a set of operators can be passed. See example below.                                                                                                                                                                       |
+| filter-groups     | Array    | no                          | Filter groups with relations. See example below.                                                                                                                                                                                                                                                                                                            |
+| sort-order        | Object   | no                          | Set sorting values and order by default or on the fly. See examples below.                                                                                                                                                                                                                                                                                  |
+| axios             | Object   | no                          | Pass a configured axios instance to be used for ajax functionalities. Only relevant if ajax is used. Recommendation: set it to the current time using new Date() for update                                                                                                                                                                                 |
+| updated           | Boolean\ |Date | no                                                                                                                                                                                                                                                                                                                                                          | Property to trigger reload on current page. Only relevant if ajax is used. |
+| verbose           | Boolean  | no                          | Default is false. Set to true to see debug informations on developer tools in your Browser.                                                                                                                                                                                                                                                                 |
+| identifier        | String   | no                          | Default is null, for nested tables default is a random string. Use for slots of nested tables                                                                                                                                                                                                                                                               |
+| initialSearchTerm | String   | no                          | Default is null, initial search term if search is enabled                                                                                                                                                                                                                                                                                                   |
+| nested            | Boolean  | no                          | Default is false, use it if a quintable is nested inside a slot                                                                                                                                                                                                                                                                                             |
 
 #### Property *config* properties
 
 | Key                    | Type                            | Required | Pre-condition                                                | Description                                                  | Default          | Example                               |
 | ---------------------- | ------------------------------- | -------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ---------------- | ------------------------------------- |
 | columns                | Array                           | yes      | -                                                            | Contains the configuration for the table columns including headlines. | null             | *See below*                           |
-| hideEmptyColumns       | Boolean                         | no       | -                                                            | If set to true columns of visible rows which are empty for each row will be hidden. Will check *text*,  *html*, *component* and *quintable* properties | false            | true                                  |
+| hideEmptyColumns       | Boolean                         | no       | -                                                            | If set to true columns of visible rows which are empty for each row will be hidden. Will check *text*,  *html*, *component* properties | false            | true                                  |
 | ignoreSortEmptyColumns | String{"none"\|"active"\|"all"} | no       | *hideEmptyColumns* enabled                                   | Select if/how columns with *sort* enabled shall be hidden if they are empty for each row. "none": sorting columns keep always visible. "active": sorting columns will always keep visible if they are active. "all": empty sorting columns will be hidden as well | "none"           | "all"                                 |
 | expandedAll            | Boolean                         | no       | Breakpoints for columns are set                              | If set to true, all columns will be expanded by default      | false            | true                                  |
 | hoverClass             | Boolean\|String                 | no       | -                                                            | Class for rows on hover                                      | "bg-muted"       | "bg-success"                          |
@@ -282,16 +272,15 @@ The following will give you an overview how to configure the VueQuintable for yo
 
 ##### Property *cells* for property *rows* properties
 
-| Key       | Type   | Pre-condition                                                | Description                                                  |
-| --------- | ------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| text      | String | non of the following are set: *html*, *component*, *quintable* | Content string                                               |
-| html      | String | non of the following are set: *text*, *component*, *quintable* | HTML content string                                          |
-| component | String | non of the following are set: *text*, *html*, *quintable*    | Custom component object, see code example below              |
-| quintable | String | non of the following are set: *text*, *html*, *component*    | VueQuintable object component for nested table, see simple code example below |
-| classes   | String | -                                                            | Additional CSS classes for cell                              |
-| align     | String | -                                                            | Text alignment for whole column, this will overwrite *columns* and *rows* align values |
+| Key       | Type   | Pre-condition                                              | Description                                                                                          |
+| --------- | ------ | ---------------------------------------------------------- |------------------------------------------------------------------------------------------------------|
+| text      | String | non of the following are set: *html*, *component* | Content string                                                                                       |
+| html      | String | non of the following are set: *text*, *component* | HTML content string                                                                                  |
+| component | String | non of the following are set: *text*, *html*  | Custom component object, see code example below. Should not be used, use slot *cell-content* instead |
+| classes   | String | -                                                          | Additional CSS classes for cell                                                                      |
+| align     | String | -                                                          | Text alignment for whole column, this will overwrite *columns* and *rows* align values               |
 
-Lets have a look on a example for *rows* and *cells*
+Lets have a look on an example for *rows* and *cells*
 
 ```javascript
 //Table with columns "Name","Age","Birth Place","Job"
@@ -304,9 +293,6 @@ Lets have a look on a example for *rows* and *cells*
         },
         {
             text:50
-        },
-        {
-            text:"New York"
         },
         {
             text:"Trainee"
@@ -327,39 +313,6 @@ Lets have a look on a example for *rows* and *cells*
                         age:20,
                     }
                 },
-            },
-            {
-                quintable: {
-                    tableClasses:"text-center",
-                    config: {
-                        columns: [
-                            {
-                                headline: "State of birth",
-                            }, {
-                                headline: "City of birth",
-                            }, {
-                                headline: "Time of birth",
-                            }
-                        ],
-                    },
-                    rows: [
-                        [
-                            {text: "Bavaria"}, 
-                            {text: "Augsburg"},
-                            {text: "10:10 AM"}
-                        ],
-                        [
-                            {text: "New York"}, 
-                            {text: "New York"}, 
-                            {text: "12:10 AM"}
-                        ],
-                        [
-                            {text: "Texas"}, 
-                            {text: "Houston"}, 
-                            {text: "09:12 PM"}
-                        ],        								
-                    ],
-            	},
             },
             {
                 text:"Trainee"
