@@ -43,10 +43,11 @@
                             showHeadlineBreakpoint:"md",
                         }, {
                             headline: "Birth Place",
-                            sticky:true
+                            sticky: true,
+                            sort: true,
                         }, {
                             headline: "Job",
-                            breakpoint:"all"
+                            breakpoint: "all"
                         }
                     ],
                 },
@@ -113,6 +114,7 @@ export default {
           {
             headline: "Birth Place",
             sticky: true,
+            sort: true,
           },
           {
             headline: "Job",

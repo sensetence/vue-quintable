@@ -83,9 +83,6 @@
                       @action="handleComponentEvent"
                     ></component>
                   </div>
-                  <div v-else>
-                    <wbr />
-                  </div>
                 </slot>
               </slot>
             </div>
@@ -548,205 +545,22 @@
               >
                 <td :colspan="configFinal.number + 1" class="ps-0 pe-0 pt-0">
                   <div
-                    class="
-                      mb-0
-                      generated-table
-                      quintable--table-container--table--tbody--generated-row--generated-table
-                    "
+                    :class="hoveredRow === rIndex ? configFinal.hoverClass : ''"
                   >
-                    <div
+                    <table
                       class="
-                        d-flex
-                        generated-row-cell
-                        quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell
-                      "
-                      :class="
-                        hoveredRow === rIndex ? configFinal.hoverClass : ''
+                        mb-2
+                        generated-table
+                        quintable--table-container--table--tbody--generated-row--generated-table
                       "
                     >
-                      <div
-                        v-if="
-                          !configFinal.hideRowToggle &&
-                          generatedRows[rIndex] &&
-                          Object.keys(generatedRows[rIndex]).length
-                        "
-                        class="toggle-cell"
-                      ></div>
-                      <div>
-                        <div
+                      <tbody>
+                        <tr
                           class="
-                            generated-cell-element generated-cell-headline
-                            quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-headline
-                          "
-                          @click="setSortColumn(cIndex)"
-                          v-show="openRows[rIndex]"
-                          :class="configFinal.columnClasses[cIndex]"
-                          :key="
-                            'vue-quintable-' +
-                            uuid +
-                            '-generated-row-cell-headline' +
-                            rIndex +
-                            '-' +
-                            cIndex +
-                            '-' +
-                            generatedUpdatedKey
-                          "
-                          :id="
-                            'vue-quintable-' +
-                            uuid +
-                            '-generated-row-cell-headline' +
-                            rIndex +
-                            '-' +
-                            cIndex
+                            generated-row-cell
+                            quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell
                           "
                           v-for="(cell, cIndex) in generatedRows[rIndex]"
-                        >
-                          <strong
-                            v-html="configFinal.headlines[cIndex]"
-                            v-if="showHeadlines[cIndex]"
-                          >
-                          </strong>
-                          <span v-else class="headline"><wbr /></span>
-
-                          <span
-                            class="
-                              sorting-icon
-                              ms-2
-                              cursor-pointer
-                              quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon
-                            "
-                            v-if="
-                              configFinal.sorts[cIndex] && hoveredRow === rIndex
-                            "
-                          >
-                            <font-awesome-icon
-                              v-if="!currentSortIndexes[cIndex]"
-                              icon="sort"
-                              class="text-primary"
-                            />
-                            <font-awesome-icon
-                              v-if="
-                                currentSortIndexes[cIndex] &&
-                                currentSortIndexes[cIndex].asc
-                              "
-                              icon="sort-amount-down-alt"
-                              class="text-primary"
-                            />
-                            <font-awesome-icon
-                              v-if="
-                                currentSortIndexes[cIndex] &&
-                                !currentSortIndexes[cIndex].asc
-                              "
-                              icon="sort-amount-down"
-                              class="text-primary"
-                            />
-                            <span
-                              v-if="currentSortIndexes[cIndex]"
-                              @click.stop.prevent="removeSort(cIndex)"
-                              class="ms-1 text-muted"
-                            >
-                              <span
-                                class="badge bg-info text-white"
-                                v-if="numberOfSorts > 1"
-                              >
-                                {{ currentSortIndexes[cIndex].order + 1 }}
-                              </span>
-                              <small v-else>
-                                <font-awesome-icon icon="times" />
-                              </small>
-                            </span>
-                          </span>
-                        </div>
-                        <div
-                          class="
-                            generated-cell-element
-                            sticky-cell-headline
-                            quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-headline
-                          "
-                          @click="setSortColumn(cIndex)"
-                          :class="configFinal.columnClasses[cIndex]"
-                          :key="
-                            'vue-quintable-' +
-                            uuid +
-                            '-sticky-row-cell-headline' +
-                            rIndex +
-                            '-' +
-                            cIndex
-                          "
-                          :id="
-                            'vue-quintable-' +
-                            uuid +
-                            '-sticky-row-cell-headline' +
-                            rIndex +
-                            '-' +
-                            cIndex
-                          "
-                          v-for="(cell, cIndex) in stickyRows[rIndex]"
-                        >
-                          <strong
-                            v-html="configFinal.headlines[cIndex]"
-                            v-if="showHeadlines[cIndex]"
-                          >
-                          </strong>
-                          <span v-else class="headline"><wbr /></span>
-
-                          <span
-                            class="
-                              sorting-icon
-                              ms-2
-                              cursor-pointer
-                              quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon
-                            "
-                            v-if="
-                              configFinal.sorts[cIndex] && hoveredRow === rIndex
-                            "
-                          >
-                            <font-awesome-icon
-                              v-if="!currentSortIndexes[cIndex]"
-                              icon="sort"
-                              class="text-primary"
-                            />
-                            <font-awesome-icon
-                              v-if="
-                                currentSortIndexes[cIndex] &&
-                                currentSortIndexes[cIndex].asc
-                              "
-                              icon="sort-amount-down-alt"
-                              class="text-primary"
-                            />
-                            <font-awesome-icon
-                              v-if="
-                                currentSortIndexes[cIndex] &&
-                                !currentSortIndexes[cIndex].asc
-                              "
-                              icon="sort-amount-down"
-                              class="text-primary"
-                            />
-                            <span
-                              v-if="currentSortIndexes[cIndex]"
-                              @click.stop.prevent="removeSort(cIndex)"
-                              class="ms-1 text-muted"
-                            >
-                              <span
-                                class="badge bg-info text-white"
-                                v-if="numberOfSorts > 1"
-                              >
-                                {{ currentSortIndexes[cIndex].order + 1 }}
-                              </span>
-                              <small v-else>
-                                <font-awesome-icon icon="times" />
-                              </small>
-                            </span>
-                          </span>
-                        </div>
-                      </div>
-                      <div>
-                        <div
-                          :class="
-                            configFinal.columnClasses[cIndex] +
-                            ' ' +
-                            cellClassesParsed[rIndex][cIndex]
-                          "
                           :key="
                             'vue-quintable-' +
                             uuid +
@@ -766,42 +580,143 @@
                             cIndex
                           "
                           v-show="openRows[rIndex]"
-                          v-for="(cell, cIndex) in generatedRows[rIndex]"
-                          class="
-                            generated-cell-element
-                            generated-cell-element-content
-                            generated-cell-content
-                            quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-content
-                          "
-                          @click="onCellClick(cell)"
-                          v-tooltip="{
-                            placement: 'top',
-                            content: cell.tooltip,
-                            trigger: cell.tooltip ? 'hover' : 'manual',
-                          }"
                         >
-                          <slot :cell="cell" :name="'generated-cell-complete'">
-                            <slot :cell="cell" :name="'generated-cell-content'">
-                              <portal-target
-                                :name="
-                                  portalIdentifier +
-                                  '-cell-content-portal-target-' +
-                                  rIndex +
-                                  '-' +
-                                  cIndex
+                          <td
+                            v-if="
+                              !configFinal.hideRowToggle &&
+                              generatedRows[rIndex] &&
+                              Object.keys(generatedRows[rIndex]).length
+                            "
+                            class="toggle-cell invisible"
+                          >
+                            <span v-if="hiddenColumns[rIndex] > 0">
+                              <span v-if="!openRows[rIndex]"
+                                ><font-awesome-icon
+                                  fixed-width
+                                  :icon="configFinal.collapsedRowIcon"
+                                ></font-awesome-icon
+                              ></span>
+                              <span v-else
+                                ><font-awesome-icon
+                                  fixed-width
+                                  :icon="configFinal.expandedRowIcon"
+                                ></font-awesome-icon
+                              ></span>
+                            </span>
+                          </td>
+                          <td
+                            class="
+                              generated-cell-element generated-cell-headline
+                              quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-headline
+                            "
+                            @click="setSortColumn(cIndex)"
+                            :class="configFinal.columnClasses[cIndex]"
+                          >
+                            <strong
+                              v-html="configFinal.headlines[cIndex]"
+                              v-if="showHeadlines[cIndex]"
+                            >
+                            </strong>
+                            <span v-else class="headline"><wbr /></span>
+
+                            <span
+                              class="
+                                sorting-icon
+                                ms-2
+                                cursor-pointer
+                                quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon
+                              "
+                              v-if="
+                                configFinal.sorts[cIndex] &&
+                                hoveredRow === rIndex
+                              "
+                            >
+                              <font-awesome-icon
+                                v-if="!currentSortIndexes[cIndex]"
+                                icon="sort"
+                                class="text-primary"
+                              />
+                              <font-awesome-icon
+                                v-if="
+                                  currentSortIndexes[cIndex] &&
+                                  currentSortIndexes[cIndex].asc
                                 "
-                                :slot-props="{
-                                  path: 'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner',
-                                }"
-                              ></portal-target>
+                                icon="sort-amount-down-alt"
+                                class="text-primary"
+                              />
+                              <font-awesome-icon
+                                v-if="
+                                  currentSortIndexes[cIndex] &&
+                                  !currentSortIndexes[cIndex].asc
+                                "
+                                icon="sort-amount-down"
+                                class="text-primary"
+                              />
+                              <span
+                                v-if="currentSortIndexes[cIndex]"
+                                @click.stop.prevent="removeSort(cIndex)"
+                                class="ms-1 text-muted"
+                              >
+                                <span
+                                  class="badge bg-info text-white"
+                                  v-if="numberOfSorts > 1"
+                                >
+                                  {{ currentSortIndexes[cIndex].order + 1 }}
+                                </span>
+                                <small v-else>
+                                  <font-awesome-icon icon="times" />
+                                </small>
+                              </span>
+                            </span>
+                          </td>
+                          <td
+                            :class="
+                              configFinal.columnClasses[cIndex] +
+                              ' ' +
+                              cellClassesParsed[rIndex][cIndex]
+                            "
+                            class="
+                              generated-cell-element
+                              generated-cell-element-content
+                              generated-cell-content
+                              quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-content
+                            "
+                            @click="onCellClick(cell)"
+                            v-tooltip="{
+                              placement: 'top',
+                              content: cell.tooltip,
+                              trigger: cell.tooltip ? 'hover' : 'manual',
+                            }"
+                          >
+                            <slot
+                              :cell="cell"
+                              :name="'generated-cell-complete'"
+                            >
+                              <slot
+                                :cell="cell"
+                                :name="'generated-cell-content'"
+                              >
+                                <portal-target
+                                  :name="
+                                    portalIdentifier +
+                                    '-cell-content-portal-target-' +
+                                    rIndex +
+                                    '-' +
+                                    cIndex
+                                  "
+                                  :slot-props="{
+                                    path: 'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner',
+                                  }"
+                                ></portal-target>
+                              </slot>
                             </slot>
-                          </slot>
-                        </div>
-                        <div
-                          :class="
-                            configFinal.columnClasses[cIndex] +
-                            ' ' +
-                            cellClassesParsed[rIndex][cIndex]
+                          </td>
+                        </tr>
+                        <tr
+                          v-for="(cell, cIndex) in stickyRows[rIndex]"
+                          class="
+                            sticky-row-cell
+                            quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell
                           "
                           :key="
                             'vue-quintable-' +
@@ -819,39 +734,136 @@
                             '-' +
                             cIndex
                           "
-                          v-for="(cell, cIndex) in stickyRows[rIndex]"
-                          class="
-                            generated-cell-element
-                            generated-cell-element-content
-                            sticky-cell-content
-                            quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-content
-                          "
-                          @click="onCellClick(cell)"
-                          v-tooltip="{
-                            placement: 'top',
-                            content: cell.tooltip,
-                            trigger: cell.tooltip ? 'hover' : 'manual',
-                          }"
                         >
-                          <slot :cell="cell" :name="'sticky-cell-complete'">
-                            <slot :cell="cell" :name="'sticky-cell-content'">
-                              <portal-target
-                                :name="
-                                  portalIdentifier +
-                                  '-cell-content-portal-target-' +
-                                  rIndex +
-                                  '-' +
-                                  cIndex
+                          <td
+                            v-if="
+                              !configFinal.hideRowToggle &&
+                              generatedRows[rIndex] &&
+                              Object.keys(generatedRows[rIndex]).length
+                            "
+                            class="toggle-cell invisible"
+                          >
+                            <span v-if="hiddenColumns[rIndex] > 0">
+                              <span v-if="!openRows[rIndex]"
+                                ><font-awesome-icon
+                                  fixed-width
+                                  :icon="configFinal.collapsedRowIcon"
+                                ></font-awesome-icon
+                              ></span>
+                              <span v-else
+                                ><font-awesome-icon
+                                  fixed-width
+                                  :icon="configFinal.expandedRowIcon"
+                                ></font-awesome-icon
+                              ></span>
+                            </span>
+                          </td>
+                          <td
+                            class="
+                              generated-cell-element
+                              sticky-cell-headline
+                              quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-headline
+                            "
+                            @click="setSortColumn(cIndex)"
+                            :class="configFinal.columnClasses[cIndex]"
+                          >
+                            <strong
+                              v-html="configFinal.headlines[cIndex]"
+                              v-if="showHeadlines[cIndex]"
+                            >
+                            </strong>
+                            <span v-else class="headline"><wbr /></span>
+
+                            <span
+                              class="
+                                sorting-icon
+                                ms-2
+                                cursor-pointer
+                                quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon
+                              "
+                              v-if="
+                                configFinal.sorts[cIndex] &&
+                                hoveredRow === rIndex
+                              "
+                            >
+                              <font-awesome-icon
+                                v-if="!currentSortIndexes[cIndex]"
+                                icon="sort"
+                                class="text-primary"
+                              />
+                              <font-awesome-icon
+                                v-if="
+                                  currentSortIndexes[cIndex] &&
+                                  currentSortIndexes[cIndex].asc
                                 "
-                                :slot-props="{
-                                  path: 'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner',
-                                }"
-                              ></portal-target>
+                                icon="sort-amount-down-alt"
+                                class="text-primary"
+                              />
+                              <font-awesome-icon
+                                v-if="
+                                  currentSortIndexes[cIndex] &&
+                                  !currentSortIndexes[cIndex].asc
+                                "
+                                icon="sort-amount-down"
+                                class="text-primary"
+                              />
+                              <span
+                                v-if="currentSortIndexes[cIndex]"
+                                @click.stop.prevent="removeSort(cIndex)"
+                                class="ms-1 text-muted"
+                              >
+                                <span
+                                  class="badge bg-info text-white"
+                                  v-if="numberOfSorts > 1"
+                                >
+                                  {{ currentSortIndexes[cIndex].order + 1 }}
+                                </span>
+                                <small v-else>
+                                  <font-awesome-icon icon="times" />
+                                </small>
+                              </span>
+                            </span>
+                          </td>
+
+                          <td
+                            :class="
+                              configFinal.columnClasses[cIndex] +
+                              ' ' +
+                              cellClassesParsed[rIndex][cIndex]
+                            "
+                            class="
+                              generated-cell-element
+                              generated-cell-element-content
+                              sticky-cell-content
+                              quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-content
+                            "
+                            @click="onCellClick(cell)"
+                            v-tooltip="{
+                              placement: 'top',
+                              content: cell.tooltip,
+                              trigger: cell.tooltip ? 'hover' : 'manual',
+                            }"
+                          >
+                            <slot :cell="cell" :name="'sticky-cell-complete'">
+                              <slot :cell="cell" :name="'sticky-cell-content'">
+                                <portal-target
+                                  :name="
+                                    portalIdentifier +
+                                    '-cell-content-portal-target-' +
+                                    rIndex +
+                                    '-' +
+                                    cIndex
+                                  "
+                                  :slot-props="{
+                                    path: 'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner',
+                                  }"
+                                ></portal-target>
+                              </slot>
                             </slot>
-                          </slot>
-                        </div>
-                      </div>
-                    </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </td>
               </tr>
@@ -2939,12 +2951,7 @@ export default {
           })
           .filter((row) => {
             const cells = row.cells ? row.cells : row;
-            return (
-              cells[i].text + "" ||
-              cells[i].html ||
-              cells[i].quintable ||
-              cells[i].component
-            );
+            return cells[i].text + "" || cells[i].html || cells[i].component;
           }).length <= 0
       );
     },
@@ -2989,7 +2996,7 @@ export default {
         return formatted;
       }
 
-      return cell.html ? cell.html : cell.text ? cell.text : "";
+      return cell.html ? cell.html : cell.text + "" ? cell.text : "";
     },
 
     /**
@@ -4195,14 +4202,23 @@ export default {
 </script>
 
 <style scoped>
+table.generated-table td {
+  vertical-align: top;
+}
+
 .generated-cell-element {
   padding: 0.5rem 0.5rem;
 }
 
 .toggle-cell {
-  min-width: 50px;
-  max-width: 50px;
-  width: 50px;
+  width: 0;
+  white-space: nowrap;
+  padding: 0.5rem 0.5rem;
+}
+
+.toggle-cell.invisible > span {
+  pointer-events: none;
+  opacity: 0;
 }
 
 .cursor-pointer {
@@ -4277,7 +4293,7 @@ export default {
   font-size: 3em;
 }
 
-.generated-row-cell .generated-cell-element-content {
+.generated-cell-element-content {
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;

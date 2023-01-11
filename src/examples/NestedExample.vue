@@ -192,6 +192,7 @@ export default {
           },
           {
             headline: "Age",
+            breakpoint: "lg",
           },
           {
             headline: "Birth&nbsp;Time",

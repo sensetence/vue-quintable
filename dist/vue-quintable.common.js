@@ -26921,7 +26921,7 @@ var es_array_find_index = __webpack_require__(4553);
 var es_regexp_sticky = __webpack_require__(8386);
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.keys.js
 var es_object_keys = __webpack_require__(7941);
-;// CONCATENATED MODULE: ./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib/index.js??clonedRuleSet-40.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/templateLoader.js??ruleSet[1].rules[3]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=template&id=17661baa&scoped=true&
+;// CONCATENATED MODULE: ./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib/index.js??clonedRuleSet-40.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/templateLoader.js??ruleSet[1].rules[3]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=template&id=d17eb460&scoped=true&
 
 
 
@@ -26931,7 +26931,7 @@ var es_object_keys = __webpack_require__(7941);
 
 
 
-var VueQuintablevue_type_template_id_17661baa_scoped_true_render = function render() {
+var VueQuintablevue_type_template_id_d17eb460_scoped_true_render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
@@ -27000,7 +27000,7 @@ var VueQuintablevue_type_template_id_17661baa_scoped_true_render = function rend
                   on: {
                     "action": _vm.handleComponentEvent
                   }
-                }, 'component', cell.component.props, false))], 1) : _c('div', [_c('wbr')])];
+                }, 'component', cell.component.props, false))], 1) : _vm._e()];
               }, {
                 "cell": cell
               })];
@@ -27481,26 +27481,37 @@ var VueQuintablevue_type_template_id_17661baa_scoped_true_render = function rend
         "colspan": _vm.configFinal.number + 1
       }
     }, [_c('div', {
-      staticClass: "mb-0 generated-table quintable--table-container--table--tbody--generated-row--generated-table"
-    }, [_c('div', {
-      staticClass: "d-flex generated-row-cell quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell",
       class: _vm.hoveredRow === rIndex ? _vm.configFinal.hoverClass : ''
-    }, [!_vm.configFinal.hideRowToggle && _vm.generatedRows[rIndex] && Object.keys(_vm.generatedRows[rIndex]).length ? _c('div', {
-      staticClass: "toggle-cell"
-    }) : _vm._e(), _c('div', [_vm._l(_vm.generatedRows[rIndex], function (cell, cIndex) {
-      return _c('div', {
+    }, [_c('table', {
+      staticClass: "mb-2 generated-table quintable--table-container--table--tbody--generated-row--generated-table"
+    }, [_c('tbody', [_vm._l(_vm.generatedRows[rIndex], function (cell, cIndex) {
+      return _c('tr', {
         directives: [{
           name: "show",
           rawName: "v-show",
           value: _vm.openRows[rIndex],
           expression: "openRows[rIndex]"
         }],
-        key: 'vue-quintable-' + _vm.uuid + '-generated-row-cell-headline' + rIndex + '-' + cIndex + '-' + _vm.generatedUpdatedKey,
+        key: 'vue-quintable-' + _vm.uuid + '-generated-row-cell-' + rIndex + '-' + cIndex + '-' + _vm.generatedUpdatedKey,
+        staticClass: "generated-row-cell quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell",
+        attrs: {
+          "id": 'vue-quintable-' + _vm.uuid + '-generated-row-cell-' + rIndex + '-' + cIndex
+        }
+      }, [!_vm.configFinal.hideRowToggle && _vm.generatedRows[rIndex] && Object.keys(_vm.generatedRows[rIndex]).length ? _c('td', {
+        staticClass: "toggle-cell invisible"
+      }, [_vm.hiddenColumns[rIndex] > 0 ? _c('span', [!_vm.openRows[rIndex] ? _c('span', [_c('font-awesome-icon', {
+        attrs: {
+          "fixed-width": "",
+          "icon": _vm.configFinal.collapsedRowIcon
+        }
+      })], 1) : _c('span', [_c('font-awesome-icon', {
+        attrs: {
+          "fixed-width": "",
+          "icon": _vm.configFinal.expandedRowIcon
+        }
+      })], 1)]) : _vm._e()]) : _vm._e(), _c('td', {
         staticClass: "generated-cell-element generated-cell-headline quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-headline",
         class: _vm.configFinal.columnClasses[cIndex],
-        attrs: {
-          "id": 'vue-quintable-' + _vm.uuid + '-generated-row-cell-headline' + rIndex + '-' + cIndex
-        },
         on: {
           "click": function click($event) {
             return _vm.setSortColumn(cIndex);
@@ -27544,67 +27555,8 @@ var VueQuintablevue_type_template_id_17661baa_scoped_true_render = function rend
         attrs: {
           "icon": "times"
         }
-      })], 1)]) : _vm._e()], 1) : _vm._e()]);
-    }), _vm._l(_vm.stickyRows[rIndex], function (cell, cIndex) {
-      return _c('div', {
-        key: 'vue-quintable-' + _vm.uuid + '-sticky-row-cell-headline' + rIndex + '-' + cIndex,
-        staticClass: "generated-cell-element sticky-cell-headline quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-headline",
-        class: _vm.configFinal.columnClasses[cIndex],
-        attrs: {
-          "id": 'vue-quintable-' + _vm.uuid + '-sticky-row-cell-headline' + rIndex + '-' + cIndex
-        },
-        on: {
-          "click": function click($event) {
-            return _vm.setSortColumn(cIndex);
-          }
-        }
-      }, [_vm.showHeadlines[cIndex] ? _c('strong', {
-        domProps: {
-          "innerHTML": _vm._s(_vm.configFinal.headlines[cIndex])
-        }
-      }) : _c('span', {
-        staticClass: "headline"
-      }, [_c('wbr')]), _vm.configFinal.sorts[cIndex] && _vm.hoveredRow === rIndex ? _c('span', {
-        staticClass: "sorting-icon ms-2 cursor-pointer quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon"
-      }, [!_vm.currentSortIndexes[cIndex] ? _c('font-awesome-icon', {
-        staticClass: "text-primary",
-        attrs: {
-          "icon": "sort"
-        }
-      }) : _vm._e(), _vm.currentSortIndexes[cIndex] && _vm.currentSortIndexes[cIndex].asc ? _c('font-awesome-icon', {
-        staticClass: "text-primary",
-        attrs: {
-          "icon": "sort-amount-down-alt"
-        }
-      }) : _vm._e(), _vm.currentSortIndexes[cIndex] && !_vm.currentSortIndexes[cIndex].asc ? _c('font-awesome-icon', {
-        staticClass: "text-primary",
-        attrs: {
-          "icon": "sort-amount-down"
-        }
-      }) : _vm._e(), _vm.currentSortIndexes[cIndex] ? _c('span', {
-        staticClass: "ms-1 text-muted",
-        on: {
-          "click": function click($event) {
-            $event.stopPropagation();
-            $event.preventDefault();
-            return _vm.removeSort(cIndex);
-          }
-        }
-      }, [_vm.numberOfSorts > 1 ? _c('span', {
-        staticClass: "badge bg-info text-white"
-      }, [_vm._v(" " + _vm._s(_vm.currentSortIndexes[cIndex].order + 1) + " ")]) : _c('small', [_c('font-awesome-icon', {
-        attrs: {
-          "icon": "times"
-        }
-      })], 1)]) : _vm._e()], 1) : _vm._e()]);
-    })], 2), _c('div', [_vm._l(_vm.generatedRows[rIndex], function (cell, cIndex) {
-      return _c('div', {
+      })], 1)]) : _vm._e()], 1) : _vm._e()]), _c('td', {
         directives: [{
-          name: "show",
-          rawName: "v-show",
-          value: _vm.openRows[rIndex],
-          expression: "openRows[rIndex]"
-        }, {
           name: "tooltip",
           rawName: "v-tooltip",
           value: {
@@ -27612,14 +27564,10 @@ var VueQuintablevue_type_template_id_17661baa_scoped_true_render = function rend
             content: cell.tooltip,
             trigger: cell.tooltip ? 'hover' : 'manual'
           },
-          expression: "{\n                          placement: 'top',\n                          content: cell.tooltip,\n                          trigger: cell.tooltip ? 'hover' : 'manual',\n                        }"
+          expression: "{\n                            placement: 'top',\n                            content: cell.tooltip,\n                            trigger: cell.tooltip ? 'hover' : 'manual',\n                          }"
         }],
-        key: 'vue-quintable-' + _vm.uuid + '-generated-row-cell-' + rIndex + '-' + cIndex + '-' + _vm.generatedUpdatedKey,
         staticClass: "generated-cell-element generated-cell-element-content generated-cell-content quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-content",
         class: _vm.configFinal.columnClasses[cIndex] + ' ' + _vm.cellClassesParsed[rIndex][cIndex],
-        attrs: {
-          "id": 'vue-quintable-' + _vm.uuid + '-generated-row-cell-' + rIndex + '-' + cIndex
-        },
         on: {
           "click": function click($event) {
             return _vm.onCellClick(cell);
@@ -27640,9 +27588,73 @@ var VueQuintablevue_type_template_id_17661baa_scoped_true_render = function rend
         })];
       }, {
         "cell": cell
-      })], 2);
+      })], 2)]);
     }), _vm._l(_vm.stickyRows[rIndex], function (cell, cIndex) {
-      return _c('div', {
+      return _c('tr', {
+        key: 'vue-quintable-' + _vm.uuid + '-sticky-row-cell-' + rIndex + '-' + cIndex,
+        staticClass: "sticky-row-cell quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell",
+        attrs: {
+          "id": 'vue-quintable-' + _vm.uuid + '-sticky-row-cell-' + rIndex + '-' + cIndex
+        }
+      }, [!_vm.configFinal.hideRowToggle && _vm.generatedRows[rIndex] && Object.keys(_vm.generatedRows[rIndex]).length ? _c('td', {
+        staticClass: "toggle-cell invisible"
+      }, [_vm.hiddenColumns[rIndex] > 0 ? _c('span', [!_vm.openRows[rIndex] ? _c('span', [_c('font-awesome-icon', {
+        attrs: {
+          "fixed-width": "",
+          "icon": _vm.configFinal.collapsedRowIcon
+        }
+      })], 1) : _c('span', [_c('font-awesome-icon', {
+        attrs: {
+          "fixed-width": "",
+          "icon": _vm.configFinal.expandedRowIcon
+        }
+      })], 1)]) : _vm._e()]) : _vm._e(), _c('td', {
+        staticClass: "generated-cell-element sticky-cell-headline quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-headline",
+        class: _vm.configFinal.columnClasses[cIndex],
+        on: {
+          "click": function click($event) {
+            return _vm.setSortColumn(cIndex);
+          }
+        }
+      }, [_vm.showHeadlines[cIndex] ? _c('strong', {
+        domProps: {
+          "innerHTML": _vm._s(_vm.configFinal.headlines[cIndex])
+        }
+      }) : _c('span', {
+        staticClass: "headline"
+      }, [_c('wbr')]), _vm.configFinal.sorts[cIndex] && _vm.hoveredRow === rIndex ? _c('span', {
+        staticClass: "sorting-icon ms-2 cursor-pointer quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon"
+      }, [!_vm.currentSortIndexes[cIndex] ? _c('font-awesome-icon', {
+        staticClass: "text-primary",
+        attrs: {
+          "icon": "sort"
+        }
+      }) : _vm._e(), _vm.currentSortIndexes[cIndex] && _vm.currentSortIndexes[cIndex].asc ? _c('font-awesome-icon', {
+        staticClass: "text-primary",
+        attrs: {
+          "icon": "sort-amount-down-alt"
+        }
+      }) : _vm._e(), _vm.currentSortIndexes[cIndex] && !_vm.currentSortIndexes[cIndex].asc ? _c('font-awesome-icon', {
+        staticClass: "text-primary",
+        attrs: {
+          "icon": "sort-amount-down"
+        }
+      }) : _vm._e(), _vm.currentSortIndexes[cIndex] ? _c('span', {
+        staticClass: "ms-1 text-muted",
+        on: {
+          "click": function click($event) {
+            $event.stopPropagation();
+            $event.preventDefault();
+            return _vm.removeSort(cIndex);
+          }
+        }
+      }, [_vm.numberOfSorts > 1 ? _c('span', {
+        staticClass: "badge bg-info text-white"
+      }, [_vm._v(" " + _vm._s(_vm.currentSortIndexes[cIndex].order + 1) + " ")]) : _c('small', [_c('font-awesome-icon', {
+        attrs: {
+          "icon": "times"
+        }
+      })], 1)]) : _vm._e()], 1) : _vm._e()]), _c('td', {
         directives: [{
           name: "tooltip",
           rawName: "v-tooltip",
@@ -27651,14 +27663,10 @@ var VueQuintablevue_type_template_id_17661baa_scoped_true_render = function rend
             content: cell.tooltip,
             trigger: cell.tooltip ? 'hover' : 'manual'
           },
-          expression: "{\n                          placement: 'top',\n                          content: cell.tooltip,\n                          trigger: cell.tooltip ? 'hover' : 'manual',\n                        }"
+          expression: "{\n                            placement: 'top',\n                            content: cell.tooltip,\n                            trigger: cell.tooltip ? 'hover' : 'manual',\n                          }"
         }],
-        key: 'vue-quintable-' + _vm.uuid + '-sticky-row-cell-' + rIndex + '-' + cIndex,
         staticClass: "generated-cell-element generated-cell-element-content sticky-cell-content quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-content",
         class: _vm.configFinal.columnClasses[cIndex] + ' ' + _vm.cellClassesParsed[rIndex][cIndex],
-        attrs: {
-          "id": 'vue-quintable-' + _vm.uuid + '-sticky-row-cell-' + rIndex + '-' + cIndex
-        },
         on: {
           "click": function click($event) {
             return _vm.onCellClick(cell);
@@ -27679,7 +27687,7 @@ var VueQuintablevue_type_template_id_17661baa_scoped_true_render = function rend
         })];
       }, {
         "cell": cell
-      })], 2);
+      })], 2)]);
     })], 2)])])])]) : _vm._e()] : _vm._e()];
   })], 2)]) : _vm._e(), _vm.noRows && !_vm.ajaxLoading ? [_c('div', {
     staticClass: "clearfix slot-no-results slot quintable--table-container--no-results"
@@ -27878,7 +27886,7 @@ var VueQuintablevue_type_template_id_17661baa_scoped_true_render = function rend
 
 var staticRenderFns = [];
 
-;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=template&id=17661baa&scoped=true&
+;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=template&id=d17eb460&scoped=true&
 
 ;// CONCATENATED MODULE: ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/helpers/esm/typeof.js
 
@@ -29665,7 +29673,7 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
         return _this5.rowsFinal[index];
       }).filter(function (row) {
         var cells = row.cells ? row.cells : row;
-        return cells[i].text + "" || cells[i].html || cells[i].quintable || cells[i].component;
+        return cells[i].text + "" || cells[i].html || cells[i].component;
       }).length <= 0;
     },
 
@@ -29706,7 +29714,7 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
         return formatted;
       }
 
-      return cell.html ? cell.html : cell.text ? cell.text : "";
+      return cell.html ? cell.html : cell.text + "" ? cell.text : "";
     },
 
     /**
@@ -30780,15 +30788,15 @@ var v4_default = /*#__PURE__*/__webpack_require__.n(v4);
 });
 ;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=script&lang=js&
  /* harmony default export */ var components_VueQuintablevue_type_script_lang_js_ = (VueQuintablevue_type_script_lang_js_); 
-;// CONCATENATED MODULE: ./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-12.use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=style&index=0&id=17661baa&prod&scoped=true&lang=css&
+;// CONCATENATED MODULE: ./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-12.use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=style&index=0&id=d17eb460&prod&scoped=true&lang=css&
 // extracted by mini-css-extract-plugin
 
-;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=0&id=17661baa&prod&scoped=true&lang=css&
+;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=0&id=d17eb460&prod&scoped=true&lang=css&
 
-;// CONCATENATED MODULE: ./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-12.use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=style&index=1&id=17661baa&prod&lang=css&
+;// CONCATENATED MODULE: ./node_modules/mini-css-extract-plugin/dist/loader.js??clonedRuleSet-12.use[0]!./node_modules/css-loader/dist/cjs.js??clonedRuleSet-12.use[1]!./node_modules/@vue/vue-loader-v15/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/dist/cjs.js??clonedRuleSet-12.use[2]!./node_modules/@vue/vue-loader-v15/lib/index.js??vue-loader-options!./src/components/VueQuintable.vue?vue&type=style&index=1&id=d17eb460&prod&lang=css&
 // extracted by mini-css-extract-plugin
 
-;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=1&id=17661baa&prod&lang=css&
+;// CONCATENATED MODULE: ./src/components/VueQuintable.vue?vue&type=style&index=1&id=d17eb460&prod&lang=css&
 
 ;// CONCATENATED MODULE: ./node_modules/@vue/vue-loader-v15/lib/runtime/componentNormalizer.js
 /* globals __VUE_SSR_CONTEXT__ */
@@ -30900,11 +30908,11 @@ function componentNormalizer_normalizeComponent(
 
 var component = componentNormalizer_normalizeComponent(
   components_VueQuintablevue_type_script_lang_js_,
-  VueQuintablevue_type_template_id_17661baa_scoped_true_render,
+  VueQuintablevue_type_template_id_d17eb460_scoped_true_render,
   staticRenderFns,
   false,
   null,
-  "17661baa",
+  "d17eb460",
   null
   
 )
