@@ -1117,8 +1117,15 @@ import fuzzy from "fuzzy.js";
 import axios from "axios";
 import randomUUID from "uuid/v4";
 
+import { Portal, PortalTarget, Wormhole } from "portal-vue";
+Wormhole.trackInstances = false;
+
 export default {
   name: "VueQuintable",
+  components: {
+    Portal,
+    PortalTarget,
+  },
   props: {
     rows: {
       type: Array,

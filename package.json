@@ -1,27 +1,31 @@
 {
   "name": "@sensetence/vue-quintable",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "private": false,
   "scripts": {
-    "pack": "cross-env BUILD_MODE=pack node pack.js",
-    "build": "cross-env BUILD_MODE=build vue-cli-service build",
-    "serve": "vue-cli-service serve",
-    "lint": "vue-cli-service lint"
+    "dev": "vite --config vite.build.config.js",
+    "build": "vite build --config vite.build.config.js",
+    "prod": "vite build --config vite.pack.config.js",
+    "preview": "vite preview"
   },
-  "main": "./dist/vue-quintable.common.js",
+  "main": "./dist/vue-quintable.umd.js",
+  "module": "./dist/vue-quintable.es.js",
   "files": [
-    "dist/*"
+    "dist"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/vue-quintable.es.js",
+      "require": "./dist/vue-quintable.umd.js"
+    }
+  },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/vue-fontawesome": "^0.1.10",
     "axios": "^0.21.1",
-    "chance": "^1.1.7",
     "core-js": "^3.9.1",
     "fuzzy.js": "^0.1.0",
-    "moment-timezone": "^0.5.35",
-    "node-gyp": "^6.1.0",
     "portal-vue": "2.1.7",
     "prismjs": "^1.23.0",
     "uuid": "^3.4.0",
@@ -31,25 +35,30 @@
     "vue-select": "^3.11.2"
   },
   "devDependencies": {
+    "node-gyp": "^6.1.0",
+    "chance": "^1.1.7",
+    "moment-timezone": "^0.5.35",
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
-    "@babel/polyfill": "^7.12.1",
     "@popperjs/core": "^2.9.3",
-    "@vue/cli-plugin-babel": "~5.0.8",
-    "@vue/cli-plugin-eslint": "~5.0.8",
-    "@vue/cli-service": "~5.0.8",
+    "@vitejs/plugin-basic-ssl": "^1.0.1",
+    "@vitejs/plugin-vue2": "^2.2.0",
+    "autoprefixer": "^10.4.13",
     "bootstrap": "^5.1.0",
     "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^9.4.0",
-    "mutationobserver-shim": "^0.3.7",
     "prettier": "2.3.1",
     "pretty-checkbox-vue": "^1.1.9",
     "sass": "^1.49.9",
     "sass-loader": "^8.0.2",
-    "webpack": "^5.74.0"
+    "vite": "^4.0.4",
+    "vite-plugin-commonjs": "^0.6.1",
+    "vite-plugin-eslint": "^1.8.1",
+    "vite-plugin-rewrite-all": "^1.0.1",
+    "vue-template-compiler": "^2.7.14"
   },
   "homepage": "https://sensetence.com/vue-quintable/",
   "keywords": [
@@ -69,5 +78,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/sensetence/vue-quintable.git"
+  },
+  "config": {
+    "packageName": "vue-quintable"
   }
 }

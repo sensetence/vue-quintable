@@ -11,10 +11,6 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 import VTooltip from "v-tooltip";
 
-import PortalVue from "portal-vue";
-import { Wormhole } from "portal-vue";
-Wormhole.trackInstances = false;
-
 import {
   faAngleDoubleLeft,
   faAngleDoubleRight,
@@ -75,8 +71,6 @@ let install = function (Vue) {
       '<div class="quintable-tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
     defaultClass: "",
   });
-
-  Vue.use(PortalVue);
 };
 
 // Create module definition for Vue.use()

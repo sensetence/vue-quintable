@@ -56,8 +56,8 @@
 import VueQuintable from &quot;../components/VueQuintable.vue&quot;;
 
 import Chance from &quot;chance&quot;;
-import * as moment from &quot;moment&quot;;
-import &quot;moment-timezone&quot;;
+import moment from 'moment-timezone';
+
 
 export default {
   components: {
@@ -176,8 +176,7 @@ export default {
 import VueQuintable from "../components/VueQuintable.vue";
 
 import Chance from "chance";
-import * as moment from "moment";
-import "moment-timezone";
+import moment from "moment-timezone";
 
 export default {
   components: {

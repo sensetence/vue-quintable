@@ -1,5 +1,4 @@
-import "@babel/polyfill";
-import "mutationobserver-shim";
+// import "@babel/polyfill";
 
 /** COMMON START **/
 
@@ -18,10 +17,6 @@ import vueSelect from "vue-select";
 import "vue-select/dist/vue-select.css";
 
 import VTooltip from "v-tooltip";
-
-import PortalVue from "portal-vue";
-import { Wormhole } from "portal-vue";
-Wormhole.trackInstances = false;
 
 import {
   faAngleDoubleLeft,
@@ -80,8 +75,6 @@ Vue.use(VTooltip, {
     '<div class="quintable-tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
   defaultClass: "",
 });
-
-Vue.use(PortalVue);
 
 /** COMMON END **/
 

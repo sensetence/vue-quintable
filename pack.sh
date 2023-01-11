@@ -1,1 +1,1 @@
-npm run pack
+npm run prod

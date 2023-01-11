@@ -25,7 +25,7 @@ module.exports = {
       },
     ],
   },
-  parserOptions: {
-    parser: "@babel/eslint-parser",
-  },
+  // parserOptions: {
+  //   parser: "@babel/eslint-parser",
+  // },
 };

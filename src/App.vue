@@ -7,7 +7,7 @@
             <img
               alt="VueQuintable Logo"
               title="VueQuintable Logo"
-              src="banner.png"
+              src="./assets/banner.png"
               width="400"
               height="300"
             />
