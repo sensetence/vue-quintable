@@ -483,7 +483,7 @@
                             class="
                               cell-inner
                               quintable--table-container--table--tbody--row--cell--inner-cell
-                              quintable--table-container--table--tbody--row--cell--inner-cell-html
+                              quintable--table-container--table--tbody--row--cell--inner-cell--html
                             "
                             v-if="cell.html"
                             v-html="cell.html"
@@ -494,7 +494,7 @@
                               quintable--table-container--table--tbody--row--cell--inner-cell
                               quintable--table-container--table--tbody--row--cell--inner-cell--text
                             "
-                            v-if="cell.text"
+                            v-if="cell.text + ''"
                           >
                             {{ cell.text }}
                           </div>
@@ -554,6 +554,9 @@
                               v-bind="cell.component.props"
                               @action="handleComponentEvent"
                             ></component>
+                          </div>
+                          <div v-if="emptyColumns[cIndex]">
+                            <wbr />
                           </div>
                         </template>
                       </slot>
@@ -973,7 +976,7 @@
                                     quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner
                                     quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell-cell-inner--text
                                   "
-                                  v-if="cell.text"
+                                  v-if="cell.text + ''"
                                 >
                                   {{ cell.text }}
                                 </div>
@@ -1033,6 +1036,9 @@
                                     v-bind="cell.component.props"
                                     @action="handleComponentEvent"
                                   ></component>
+                                </div>
+                                <div v-if="emptyColumns[cIndex]">
+                                  <wbr />
                                 </div>
                               </template>
                             </slot>
@@ -1183,9 +1189,9 @@
                                   class="
                                     cell-inner
                                     quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner
-                                    quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--html
+                                    quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--text
                                   "
-                                  v-if="cell.text"
+                                  v-if="cell.text + ''"
                                 >
                                   {{ cell.text }}
                                 </div>
@@ -1244,6 +1250,9 @@
                                     v-bind="cell.component.props"
                                     @action="handleComponentEvent"
                                   ></component>
+                                </div>
+                                <div v-if="emptyColumns[cIndex]">
+                                  <wbr />
                                 </div>
                               </template>
                             </slot>
@@ -3337,7 +3346,7 @@ export default {
           .filter((row) => {
             const cells = row.cells ? row.cells : row;
             return (
-              cells[i].text ||
+              cells[i].text + "" ||
               cells[i].html ||
               cells[i].quintable ||
               cells[i].component
