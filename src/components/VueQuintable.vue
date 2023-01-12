@@ -25,7 +25,18 @@
               '-cell-content-portal-target-' +
               rIndex +
               '-' +
-              cIndex
+              cIndex +
+              '-' +
+              currentPortalTargetTypes[`${rIndex}-${cIndex}`]
+            "
+            :id="
+              portalIdentifier +
+              '-cell-content-portal-target-' +
+              rIndex +
+              '-' +
+              cIndex +
+              '-' +
+              currentPortalTargetTypes[`${rIndex}-${cIndex}`]
             "
           >
             <div slot-scope="options">
@@ -67,11 +78,10 @@
                   <div
                     class="cell-inner"
                     :class="options.path + ' ' + options.path + '--text'"
-                    v-if="cell.text + ''"
+                    v-if="valueToString(cell.text)"
                   >
                     {{ cell.text }}
                   </div>
-
                   <div
                     class="cell-inner"
                     :class="options.path + ' ' + options.path + '--component'"
@@ -466,7 +476,16 @@
                       '-cell-content-portal-target-' +
                       rIndex +
                       '-' +
-                      cIndex
+                      cIndex +
+                      '-regular'
+                    "
+                    :id="
+                      portalIdentifier +
+                      '-cell-content-portal-target-' +
+                      rIndex +
+                      '-' +
+                      cIndex +
+                      '-regular'
                     "
                     :slot-props="{
                       path: 'quintable--table-container--table--tbody--row--cell--inner-cell',
@@ -702,7 +721,8 @@
                                     '-cell-content-portal-target-' +
                                     rIndex +
                                     '-' +
-                                    cIndex
+                                    cIndex +
+                                    '-generated'
                                   "
                                   :slot-props="{
                                     path: 'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner',
@@ -852,7 +872,8 @@
                                     '-cell-content-portal-target-' +
                                     rIndex +
                                     '-' +
-                                    cIndex
+                                    cIndex +
+                                    '-sticky'
                                   "
                                   :slot-props="{
                                     path: 'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner',
@@ -1116,8 +1137,8 @@
 import fuzzy from "fuzzy.js";
 import axios from "axios";
 import randomUUID from "uuid/v4";
-
 import { Portal, PortalTarget, Wormhole } from "portal-vue";
+
 Wormhole.trackInstances = false;
 
 export default {
@@ -1307,15 +1328,40 @@ export default {
   },
 
   computed: {
-    portalIdentifier() {
-      return randomUUID();
-    },
     /**
      * Just a debug flag
      *
      */
     DEBUG() {
       return this.verbose;
+    },
+
+    /**
+     * Identifier for portals, each nested table has its own
+     *
+     */
+    portalIdentifier() {
+      return randomUUID();
+    },
+
+    /**
+     * types for portal targets, where to put the contents of default cell slot
+     *
+     */
+    currentPortalTargetTypes() {
+      const names = {};
+      for (let i = 0; i < this.rowsFinal.length; i++) {
+        for (let j = 0; j < this.configFinal.columns.length; j++) {
+          if (this.generatedRows[i][j]) {
+            names[`${i}-${j}`] = "generated";
+          } else if (this.stickyRows[i][j]) {
+            names[`${i}-${j}`] = "sticky";
+          } else {
+            names[`${i}-${j}`] = "regular";
+          }
+        }
+      }
+      return names;
     },
 
     /**
@@ -1810,7 +1856,6 @@ export default {
             : this.rowsFinal[x];
 
           let generatedCells = {};
-          let stickyCells = {};
 
           for (let i = 0; i < this.hiddenBreakpoints.length; i++) {
             let bp = this.hiddenBreakpoints[i];
@@ -1824,9 +1869,7 @@ export default {
                   (this.isColEmpty(j) || this.isColEmpty(j, x))) ||
                 this.emptyColumns[j];
 
-              if (!hide && col.sticky) {
-                stickyCells[j] = cells[j];
-              } else if (
+              if (
                 !hide &&
                 col.breakpoint &&
                 (col.breakpoint.toLocaleLowerCase() === "all" ||
@@ -1834,8 +1877,6 @@ export default {
               ) {
                 if (!col.sticky && !col.alwaysExpanded) {
                   generatedCells[j] = cells[j];
-                } else if (col.alwaysExpanded) {
-                  stickyCells[j] = cells[j];
                 }
               }
             }
@@ -2945,12 +2986,19 @@ export default {
     },
 
     /**
+     * just a small string casting function
+     *
+     */
+    valueToString: function (value) {
+      return String(value);
+    },
+
+    /**
      * checks if the passed cell is empty for one or all rows
      *
      */
     isColEmpty(i, rowIndex = -1) {
       const rowIndexes = rowIndex > -1 ? [rowIndex] : this.visibleRowIndexes;
-
       return (
         rowIndexes
           .map((index) => {
@@ -2958,7 +3006,11 @@ export default {
           })
           .filter((row) => {
             const cells = row.cells ? row.cells : row;
-            return cells[i].text + "" || cells[i].html || cells[i].component;
+            return (
+              this.valueToString(cells[i].text) ||
+              cells[i].html ||
+              cells[i].component
+            );
           }).length <= 0
       );
     },
@@ -3003,7 +3055,11 @@ export default {
         return formatted;
       }
 
-      return cell.html ? cell.html : cell.text + "" ? cell.text : "";
+      return cell.html
+        ? cell.html
+        : this.valueToString(cell.text)
+        ? cell.text
+        : "";
     },
 
     /**

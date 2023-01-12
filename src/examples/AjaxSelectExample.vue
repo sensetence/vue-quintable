@@ -2,14 +2,15 @@
   <div class="content">
     <p class="alert alert-info">
       <font-awesome-icon class="me-2" icon="info-circle"></font-awesome-icon>
-      Pagination and sorting will be handled by server side via ajax
+      Selecting rows will be persistent, even if pages are changes via ajax
     </p>
 
     <VueQuintable
-      v-model="selectedRows"
+      :selected-rows.sync="selectedRows"
       :pre-selected-rows="preSelectedRows"
       :axios="axios"
       :config="ajaxConfig"
+      @update:page="onPageChange"
       @ajax:rows="rowsUpdated"
     />
 
@@ -43,132 +44,149 @@
     <div id="code-basic" class="mt-2 collapse show">
       <!-- @formatter:off -->
       <pre data-toolbar-order="copy-to-clipboard">
-             <code class="language-markup">
+             <code class="language-markup" v-pre>
         &lt;template&gt;
-            &lt;VueQuintable  v-model=&quot;selectedRows&quot;
-                       :pre-selected-rows=&quot;preSelectedRows&quot;
-                       :axios=&quot;axios&quot;
-                       :config=&quot;ajaxConfig&quot;
-                       @ajax:rows=&quot;rowsUpdated&quot; /&gt;
+           &lt;VueQuintable
+            :selected-rows.sync=&quot;selectedRows&quot;
+            :pre-selected-rows=&quot;preSelectedRows&quot;
+            :axios=&quot;axios&quot;
+            :config=&quot;ajaxConfig&quot;
+            @update:page=&quot;onPageChange&quot;
+            @ajax:rows=&quot;rowsUpdated&quot;
+          /&gt;
+
+          &lt;p v-if=&quot;preSelectedRowIds.length&quot;&gt;
+            &lt;strong&gt;Selected Rows:&lt;/strong&gt;
+          &lt;/p&gt;
+          &lt;div class=&quot;list-group&quot;&gt;
+            &lt;div class=&quot;list-group-item&quot; v-for=&quot;id in preSelectedRowIds&quot; :key=&quot;id&quot;&gt;
+              {{ allSelectedRows[id].cells[0].html }}
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div
+            class=&quot;btn btn-danger mt-2&quot;
+            v-if=&quot;preSelectedRowIds.length&quot;
+            @click=&quot;clearSelection&quot;
+          &gt;
+            Clear
+          &lt;/div&gt;
+          &lt;div class=&quot;clearfix&quot;&gt;&lt;/div&gt;
         &lt;/template&gt;
 
         &lt;script&gt;
+import VueQuintable from &quot;../components/VueQuintable.vue&quot;;
+import axiosCustom from &quot;axios&quot;;
 
-    import VueQuintable from &quot;../components/VueQuintable.vue&quot;
-    import axiosCustom from &quot;axios&quot;
+axiosCustom.interceptors.request.use(
+  (config) =&gt; {
+    console.warn(&quot;Custom axios&quot;, config);
 
-    axiosCustom.interceptors.request.use(
-        (config) =&gt; {
+    return config;
+  },
+  (error) =&gt; {
+    console.log(&quot;ERROR AXIOS&quot;, error);
+  }
+);
 
-            console.warn(&quot;Custom axios&quot;,config);
+export default {
+  components: {
+    VueQuintable,
+  },
+  data() {
+    return {
+      axios: axiosCustom,
+      selectedRows: [],
+      allSelectedRows: {},
+      preSelectedRowIds: [],
+      preSelectedRows: [],
+      ajaxRows: [],
+      ajaxConfig: {
+        //Object[] columns with headline, sticky, breakpoint, align, sort
+        columns: [
+          {
+            headline: &quot;Name&quot;,
+          },
+          {
+            headline: &quot;Email&quot;,
+            breakpoint: &quot;sm&quot;,
+          },
+          {
+            headline: &quot;Phone&quot;,
+            breakpoint: &quot;md&quot;,
+          },
+          {
+            headline: &quot;Job Title&quot;,
+            breakpoint: &quot;md&quot;,
+          },
+          {
+            headline: &quot;City&quot;,
+            breakpoint: &quot;md&quot;,
+          },
+          {
+            headline: &quot;Address&quot;,
+            breakpoint: &quot;md&quot;,
+          },
+        ],
+        pagination: 5,
+        select: true,
+        selectPosition: &quot;pre&quot;,
+        selectAll: true,
+        prettySelect: true,
+        ajaxUrl: &quot;https://sensetence.com/vue-quintable-demo/data.php/&quot;,
+        pageChanged: false,
+      },
+    };
+  },
 
-            return config
-        },
-        error =&gt; {
-            console.log(&quot;ERROR AXIOS&quot;, error)
+  watch: {
+    selectedRows(rows) {
+      if (!this.pageChanged &amp;&amp; this.ajaxRows) {
+        for (let i = 0; i &lt; rows.length; i++) {
+          if (!this.preSelectedRowIds.includes(rows[i].id)) {
+            this.preSelectedRowIds.push(rows[i].id);
+            this.$set(this.allSelectedRows, rows[i].id, rows[i]);
+          }
         }
-    )
 
-    export default {
-        components:{
-            VueQuintable
-        },
-        data() {
+        for (let j = 0; j &lt; this.ajaxRows.length; j++) {
+          const id = this.ajaxRows[j].id;
+
+          const index = this.preSelectedRowIds.indexOf(id);
+
+          if (!rows.map((r) =&gt; r.id).includes(id) &amp;&amp; index !== -1) {
+            this.preSelectedRowIds.splice(index, 1);
+            this.$delete(this.allSelectedRows, id);
+          }
+        }
+      }
+    },
+  },
+  methods: {
+    clearSelection() {
+      this.allSelectedRows = {};
+      this.preSelectedRows = [];
+      this.preSelectedRowIds = [];
+    },
+    rowsUpdated(data) {
+      this.pageChanged = false;
+      if (data &amp;&amp; data.rows &amp;&amp; data.rows.length) {
+        this.$nextTick(() =&gt; {
+          this.preSelectedRows = this.preSelectedRowIds.map((id) =&gt; {
             return {
-                axios:axiosCustom,
-                selectedRows: [],
-                allSelectedRows:{},
-                preSelectedRowIds: [],
-                preSelectedRows: [],
-                ajaxRows: [],
-                ajaxConfig: {
-                    //Object[] columns with headline, sticky, breakpoint, align, sort
-                    columns: [
-                        {
-                            headline: &quot;Name&quot;,
+              key: &quot;id&quot;,
+              value: id,
+            };
+          });
+        });
+      }
 
-                        }, {
-                            headline: &quot;Email&quot;,
-                            breakpoint: &quot;sm&quot;,
-
-                        }, {
-                            headline: &quot;Phone&quot;,
-                            breakpoint: &quot;md&quot;,
-                        }, {
-                            headline: &quot;Job Title&quot;,
-                            breakpoint: &quot;md&quot;,
-
-                        }, {
-                            headline: &quot;City&quot;,
-                            breakpoint: &quot;md&quot;,
-                        }, {
-                            headline: &quot;Address&quot;,
-                            breakpoint: &quot;md&quot;,
-
-                        }
-                    ],
-                    pagination:5,
-                    select: true,
-                    selectPosition: &quot;pre&quot;,
-                    selectAll: true,
-                    prettySelect: true,
-                    ajaxUrl:&quot;https://sensetence.com/vue-quintable-demo/data.php/&quot;,
-
-                },
-
-
-            }
-        },
-
-        watch:{
-            selectedRows(rows) {
-                for (var i = 0; i &lt; rows.length; i++) {
-                    if (this.preSelectedRowIds.indexOf(rows[i].id) === -1) {
-                        this.preSelectedRowIds.push(rows[i].id);
-                        this.$set(this.allSelectedRows,rows[i].id,rows[i])
-                    }
-                }
-
-                for (var j = 0; j &lt; this.ajaxRows.length; j++) {
-                    var id = this.ajaxRows[j].id;
-
-                    var index = this.preSelectedRowIds.indexOf(id);
-                    if (rows.map(r =&gt; r.id).indexOf(id) === -1 &amp;&amp; index !== -1) {
-                        this.preSelectedRowIds.splice(index, 1);
-                        this.allSelectedRows[id] = rows[i];
-                        this.$delete(this.allSelectedRows,id);
-                    }
-
-                }
-
-            },
-        },
-        methods:{
-            clearSelection(){
-                this.allSelectedRows = {};
-                this.preSelectedRows = [];
-                this.preSelectedRowIds = [];
-            },
-            rowsUpdated(data){
-
-                if (data &amp;&amp; data.rows &amp;&amp; data.rows.length) {
-                    this.$nextTick(() =&gt; {
-
-                        this.preSelectedRows = this.preSelectedRowIds.map(id =&gt; {
-                            return {
-                                key: &quot;id&quot;,
-                                value: id
-                            }
-                        });
-
-                    });
-                }
-
-                this.ajaxRows = data.rows;
-
-            },
-        }
-    }
+      this.ajaxRows = data.rows;
+    },
+    onPageChange() {
+      this.pageChanged = true;
+    },
+  },
+};
 &lt;/script&gt;
     </code>
         </pre>
@@ -237,27 +255,30 @@ export default {
         selectAll: true,
         prettySelect: true,
         ajaxUrl: "https://sensetence.com/vue-quintable-demo/data.php/",
+        pageChanged: false,
       },
     };
   },
 
   watch: {
     selectedRows(rows) {
-      for (var i = 0; i < rows.length; i++) {
-        if (this.preSelectedRowIds.indexOf(rows[i].id) === -1) {
-          this.preSelectedRowIds.push(rows[i].id);
-          this.$set(this.allSelectedRows, rows[i].id, rows[i]);
+      if (!this.pageChanged && this.ajaxRows) {
+        for (let i = 0; i < rows.length; i++) {
+          if (!this.preSelectedRowIds.includes(rows[i].id)) {
+            this.preSelectedRowIds.push(rows[i].id);
+            this.$set(this.allSelectedRows, rows[i].id, rows[i]);
+          }
         }
-      }
 
-      for (var j = 0; j < this.ajaxRows.length; j++) {
-        var id = this.ajaxRows[j].id;
+        for (let j = 0; j < this.ajaxRows.length; j++) {
+          const id = this.ajaxRows[j].id;
 
-        var index = this.preSelectedRowIds.indexOf(id);
-        if (rows.map((r) => r.id).indexOf(id) === -1 && index !== -1) {
-          this.preSelectedRowIds.splice(index, 1);
-          this.allSelectedRows[id] = rows[i];
-          this.$delete(this.allSelectedRows, id);
+          const index = this.preSelectedRowIds.indexOf(id);
+
+          if (!rows.map((r) => r.id).includes(id) && index !== -1) {
+            this.preSelectedRowIds.splice(index, 1);
+            this.$delete(this.allSelectedRows, id);
+          }
         }
       }
     },
@@ -269,6 +290,7 @@ export default {
       this.preSelectedRowIds = [];
     },
     rowsUpdated(data) {
+      this.pageChanged = false;
       if (data && data.rows && data.rows.length) {
         this.$nextTick(() => {
           this.preSelectedRows = this.preSelectedRowIds.map((id) => {
@@ -281,6 +303,9 @@ export default {
       }
 
       this.ajaxRows = data.rows;
+    },
+    onPageChange() {
+      this.pageChanged = true;
     },
   },
 };

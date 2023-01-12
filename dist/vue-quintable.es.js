@@ -2,20 +2,20 @@ import he from "vue-select";
 import { library as y } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon as ue } from "@fortawesome/vue-fontawesome";
 import fe from "v-tooltip";
-import { faAngleDoubleLeft as de, faAngleDoubleRight as pe, faAngleLeft as ge, faAngleRight as me, faCaretDown as we, faCaretUp as be, faCheck as ye, faChevronDown as Se, faChevronUp as Fe, faCircleNotch as ve, faEye as Ce, faEyeSlash as _e, faMinus as ke, faPlus as Re, faSort as Pe, faSortAmountDown as xe, faSortAmountDownAlt as Oe, faSquare as qe, faTimes as Ae } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDoubleLeft as de, faAngleDoubleRight as ge, faAngleLeft as pe, faAngleRight as me, faCaretDown as we, faCaretUp as be, faCheck as ye, faChevronDown as Se, faChevronUp as Fe, faCircleNotch as ve, faEye as Ce, faEyeSlash as _e, faMinus as ke, faPlus as Re, faSort as Pe, faSortAmountDown as xe, faSortAmountDownAlt as Oe, faSquare as qe, faTimes as Ae } from "@fortawesome/free-solid-svg-icons";
 import ie from "fuzzy.js";
-import je from "axios";
-import { Wormhole as $e, Portal as Ve, PortalTarget as Le } from "portal-vue";
-var Ee = typeof globalThis != "undefined" ? globalThis : typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : {};
-function Te(i) {
+import $e from "axios";
+import { Wormhole as je, Portal as Ve, PortalTarget as Le } from "portal-vue";
+var Te = typeof globalThis != "undefined" ? globalThis : typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : {};
+function Ee(i) {
   return i && i.__esModule && Object.prototype.hasOwnProperty.call(i, "default") ? i.default : i;
 }
-var E = {}, Ue = {
+var T = {}, Ue = {
   get exports() {
-    return E;
+    return T;
   },
   set exports(i) {
-    E = i;
+    T = i;
   }
 };
 /*!
@@ -26,7 +26,7 @@ var E = {}, Ue = {
 (function(i, e) {
   (function(t, s) {
     i.exports = s();
-  })(typeof self != "undefined" ? self : Ee, function() {
+  })(typeof self != "undefined" ? self : Te, function() {
     return function(t) {
       var s = {};
       function o(n) {
@@ -51,14 +51,14 @@ var E = {}, Ue = {
       t.exports = function(o, n, l, a, r, c) {
         var u, f = o = o || {}, d = typeof o.default;
         d !== "object" && d !== "function" || (u = o, f = o.default);
-        var p, m = typeof f == "function" ? f.options : f;
-        if (n && (m.render = n.render, m.staticRenderFns = n.staticRenderFns, m._compiled = !0), l && (m.functional = !0), r && (m._scopeId = r), c ? (p = function(b) {
+        var g, m = typeof f == "function" ? f.options : f;
+        if (n && (m.render = n.render, m.staticRenderFns = n.staticRenderFns, m._compiled = !0), l && (m.functional = !0), r && (m._scopeId = r), c ? (g = function(b) {
           (b = b || this.$vnode && this.$vnode.ssrContext || this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) || typeof __VUE_SSR_CONTEXT__ == "undefined" || (b = __VUE_SSR_CONTEXT__), a && a.call(this, b), b && b._registeredComponents && b._registeredComponents.add(c);
-        }, m._ssrRegister = p) : a && (p = a), p) {
+        }, m._ssrRegister = g) : a && (g = a), g) {
           var S = m.functional, F = S ? m.render : m.beforeCreate;
-          S ? (m._injectStyles = p, m.render = function(b, g) {
-            return p.call(g), F(b, g);
-          }) : m.beforeCreate = F ? [].concat(F, p) : [p];
+          S ? (m._injectStyles = g, m.render = function(b, p) {
+            return g.call(p), F(b, p);
+          }) : m.beforeCreate = F ? [].concat(F, g) : [g];
         }
         return { esModule: u, exports: f, options: m };
       };
@@ -143,13 +143,13 @@ var E = {}, Ue = {
     }]);
   });
 })(Ue);
-const De = /* @__PURE__ */ Te(E);
-var T = {}, se = {
+const De = /* @__PURE__ */ Ee(T);
+var E = {}, se = {
   get exports() {
-    return T;
+    return E;
   },
   set exports(i) {
-    T = i;
+    E = i;
   }
 }, ne = typeof crypto != "undefined" && crypto.getRandomValues && crypto.getRandomValues.bind(crypto) || typeof msCrypto != "undefined" && typeof window.msCrypto.getRandomValues == "function" && msCrypto.getRandomValues.bind(msCrypto);
 if (ne) {
@@ -193,7 +193,7 @@ function Ge(i, e) {
     s[i[t++]]
   ].join("");
 }
-var Ne = Ge, Me = T, Be = Ne;
+var Ne = Ge, Me = E, Be = Ne;
 function He(i, e, t) {
   var s = e && t || 0;
   typeof i == "string" && (e = i === "binary" ? new Array(16) : null, i = null), i = i || {};
@@ -221,8 +221,8 @@ function Qe(i, e, t, s, o, n, l, a) {
     if (r.functional) {
       r._injectStyles = c;
       var u = r.render;
-      r.render = function(p, m) {
-        return c.call(m), u(p, m);
+      r.render = function(g, m) {
+        return c.call(m), u(g, m);
       };
     } else {
       var f = r.beforeCreate;
@@ -233,7 +233,7 @@ function Qe(i, e, t, s, o, n, l, a) {
     options: r
   };
 }
-$e.trackInstances = !1;
+je.trackInstances = !1;
 const ze = {
   name: "VueQuintable",
   components: {
@@ -392,9 +392,6 @@ const ze = {
     };
   },
   computed: {
-    portalIdentifier() {
-      return ae();
-    },
     /**
      * Just a debug flag
      *
@@ -403,11 +400,29 @@ const ze = {
       return this.verbose;
     },
     /**
+     * Identifier for portals, each nested table has its own
+     *
+     */
+    portalIdentifier() {
+      return ae();
+    },
+    /**
+     * types for portal targets, where to put the contents of default cell slot
+     *
+     */
+    currentPortalTargetTypes() {
+      const i = {};
+      for (let e = 0; e < this.rowsFinal.length; e++)
+        for (let t = 0; t < this.configFinal.columns.length; t++)
+          this.generatedRows[e][t] ? i[`${e}-${t}`] = "generated" : this.stickyRows[e][t] ? i[`${e}-${t}`] = "sticky" : i[`${e}-${t}`] = "regular";
+      return i;
+    },
+    /**
      * Checks if an axios instance has been passed to quintable or the default axios has to be used
      *
      */
     axiosFinal() {
-      return this.axios ? this.axios : je;
+      return this.axios ? this.axios : $e;
     },
     /**
      * Set default values for all possible config values
@@ -449,8 +464,8 @@ const ze = {
       this.config.expandedAll && (f = !0);
       let d = !1;
       this.config.useFuzzySearch && (d = !0);
-      let p = !1;
-      this.config.prettySelect && (p = !0);
+      let g = !1;
+      this.config.prettySelect && (g = !0);
       let m = !1;
       this.config.rowsSelect && (m = !0);
       let S = !1;
@@ -459,8 +474,8 @@ const ze = {
       this.config.hideEmptyColumns && (F = !0);
       let b = "none";
       ["none", "active", "all"].includes(this.config.ignoreSortEmptyColumns) && (b = this.config.ignoreSortEmptyColumns);
-      let g = !1;
-      this.config.search && (g = !0);
+      let p = !1;
+      this.config.search && (p = !0);
       let w = 1;
       this.config.searchLength && (w = this.config.searchLength);
       let U = "Search...";
@@ -499,29 +514,29 @@ const ze = {
       this.config.defaultSelected && (z = !0);
       let K = !1;
       this.config.hideRowToggle && (K = !0);
-      let I = "chevron-up";
+      let J = "chevron-up";
       this.config.expandedRowIcon && typeof this.config.expandedRowIcon == "string" && ["chevron-up", "minus", "caret-up", "eye-slash"].includes(
         this.config.expandedRowIcon.toLowerCase()
-      ) && (I = this.config.expandedRowIcon.toLowerCase());
-      let J = "chevron-down";
+      ) && (J = this.config.expandedRowIcon.toLowerCase());
+      let W = "chevron-down";
       this.config.collapsedRowIcon && typeof this.config.collapsedRowIcon == "string" && ["chevron-down", "plus", "caret-down", "eye"].includes(
         this.config.collapsedRowIcon.toLowerCase()
-      ) && (J = this.config.collapsedRowIcon.toLowerCase());
-      let W = 5;
-      this.config.pageRange && (W = this.config.pageRange);
+      ) && (W = this.config.collapsedRowIcon.toLowerCase());
+      let I = 5;
+      this.config.pageRange && (I = this.config.pageRange);
       let X = "col-12";
       this.config.searchClass && (X = this.config.searchClass);
       let Y = "row";
       this.config.searchContainerClass && (Y = this.config.searchContainerClass);
       let Z = "GET";
       this.config.requestMethod && typeof this.config.requestMethod == "string" && ["POST", "GET"].includes(this.config.requestMethod.toUpperCase()) && (Z = this.config.requestMethod.toUpperCase());
-      let ee = 0, q = [], A = [], j = [], k = [], $ = [], V = [], v = [], L = [], te = null;
+      let ee = 0, q = [], A = [], $ = [], k = [], j = [], V = [], v = [], L = [], te = null;
       if (this.config.columns) {
         ee = this.config.columns.length;
         for (let h = 0; h < this.config.columns.length; h++)
           v[h] = "", this.config.columns[h] && this.config.columns[h].headline ? (q[h] = this.config.columns[h].headline, v[h] += this.config.columns[h].headline.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/\s+/g, "-").toLowerCase()) : q[h] = "", v[h] += " column-" + (h + 1), this.config.columns[h].classes && (v[h] += " " + this.config.columns[h].classes), this.config.columns[h] && this.config.columns[h].breakpoint ? A[h] = this.config.columns[h].breakpoint : A[h] = "", this.config.columns[h] && this.config.columns[h].sort ? this.config.columns[h].firstSortDirection && typeof this.config.columns[h].firstSortDirection == "string" && ["DESC", "ASC"].includes(
             this.config.columns[h].firstSortDirection.toUpperCase()
-          ) ? k[h] = this.config.columns[h].firstSortDirection.toUpperCase() : k[h] = !0 : k[h] = !1, this.config.columns[h] && this.config.columns[h].ignoreEmpty ? L[h] = !0 : L[h] = !1, this.config.columns[h] && this.config.columns[h].sticky ? $[h] = !0 : $[h] = !1, this.config.columns[h] && this.config.columns[h].hidden ? j[h] = !0 : j[h] = !1, this.config.columns[h] && this.config.columns[h].align ? V[h] = this.config.columns[h].align : V[h] = !1;
+          ) ? k[h] = this.config.columns[h].firstSortDirection.toUpperCase() : k[h] = !0 : k[h] = !1, this.config.columns[h] && this.config.columns[h].ignoreEmpty ? L[h] = !0 : L[h] = !1, this.config.columns[h] && this.config.columns[h].sticky ? j[h] = !0 : j[h] = !1, this.config.columns[h] && this.config.columns[h].hidden ? $[h] = !0 : $[h] = !1, this.config.columns[h] && this.config.columns[h].align ? V[h] = this.config.columns[h].align : V[h] = !1;
         te = this.config.columns;
       }
       return {
@@ -538,7 +553,7 @@ const ze = {
         disallowAllOption: S,
         defaultSelected: z,
         searchLength: w,
-        search: g,
+        search: p,
         searchPlaceholder: U,
         useFuzzySearch: d,
         ajaxUrl: c,
@@ -546,10 +561,10 @@ const ze = {
         multiSortPlaceholder: D,
         rowsPlaceholder: B,
         emptyPlaceholder: H,
-        stickyCols: $,
+        stickyCols: j,
         alignments: V,
         breakpoints: A,
-        hiddenCols: j,
+        hiddenCols: $,
         ignoreEmpty: L,
         hideEmptyColumns: F,
         ignoreSortEmptyColumns: b,
@@ -560,13 +575,13 @@ const ze = {
         selectAllRows: C,
         hoverClass: o,
         expandedAll: f,
-        pageRange: W,
-        prettySelect: p,
+        pageRange: I,
+        prettySelect: g,
         number: ee,
         columns: te,
         hideRowToggle: K,
-        expandedRowIcon: I,
-        collapsedRowIcon: J,
+        expandedRowIcon: J,
+        collapsedRowIcon: W,
         selectPosition: u,
         searchClass: X,
         searchContainerClass: Y,
@@ -625,8 +640,7 @@ const ze = {
             let n = this.hiddenBreakpoints[o];
             for (let l = 0; l < this.configFinal.columns.length; l++) {
               let a = this.configFinal.columns[l];
-              const r = this.configFinal.hiddenCols[l] || !this.configFinal.ignoreEmpty[l] && this.configFinal.hideEmptyColumns && (this.isColEmpty(l) || this.isColEmpty(l, e)) || this.emptyColumns[l];
-              !r && a.sticky ? t[l] : !r && a.breakpoint && (a.breakpoint.toLocaleLowerCase() === "all" || a.breakpoint.toLocaleLowerCase() === n) && (!a.sticky && !a.alwaysExpanded ? s[l] = t[l] : a.alwaysExpanded && t[l]);
+              !(this.configFinal.hiddenCols[l] || !this.configFinal.ignoreEmpty[l] && this.configFinal.hideEmptyColumns && (this.isColEmpty(l) || this.isColEmpty(l, e)) || this.emptyColumns[l]) && a.breakpoint && (a.breakpoint.toLocaleLowerCase() === "all" || a.breakpoint.toLocaleLowerCase() === n) && !a.sticky && !a.alwaysExpanded && (s[l] = t[l]);
             }
           }
           i[e] = s;
@@ -1242,13 +1256,20 @@ const ze = {
       this.query = i;
     },
     /**
+     * just a small string casting function
+     *
+     */
+    valueToString: function(i) {
+      return String(i);
+    },
+    /**
      * checks if the passed cell is empty for one or all rows
      *
      */
     isColEmpty(i, e = -1) {
       return (e > -1 ? [e] : this.visibleRowIndexes).map((s) => this.rowsFinal[s]).filter((s) => {
         const o = s.cells ? s.cells : s;
-        return o[i].text + "" || o[i].html || o[i].component;
+        return this.valueToString(o[i].text) || o[i].html || o[i].component;
       }).length <= 0;
     },
     /**
@@ -1277,7 +1298,7 @@ const ze = {
           value: t
         }), t;
       }
-      return e.html ? e.html : e.text + "" ? e.text : "";
+      return e.html ? e.html : this.valueToString(e.text) ? e.text : "";
     },
     /**
      * Event listener for select row checkboxes. Checks if all rows are selected now and sets the allSelectedProperty in case
@@ -1460,9 +1481,9 @@ const ze = {
                   continue;
                 let u = typeof i[c.name] == "object" && i[c.name] !== null && i[c.name].operator && this.operators.includes(i[c.name].operator) ? i[c.name].operator : this.defaultOperator, f = this.getFilterValues(i[c.name]);
                 const d = typeof i[c.name].compare == "function" ? i[c.name].compare : this.operatorFunctions[u];
-                for (let p = 0; p < f.length; p++)
+                for (let g = 0; g < f.length; g++)
                   if (!d(
-                    f[p],
+                    f[g],
                     e[c.name]
                   )) {
                     n = !1;
@@ -1605,10 +1626,10 @@ const ze = {
       n.sort(function(u, f) {
         return u.order - f.order;
       });
-      let l = (u, f, d, p) => {
-        p = p || 0;
-        let m = d[p], S = m.index, F = u.cells ? u.cells : u, b = f.cells ? f.cells : f, g = typeof F[S].sortValue != "undefined" && F[S].sortValue !== null ? F[S].sortValue : F[S].html ? F[S].html : F[S].text, w = typeof b[S].sortValue != "undefined" && b[S].sortValue !== null ? b[S].sortValue : b[S].html ? b[S].html : b[S].text;
-        return typeof g == "string" && (g = g.toLowerCase()), typeof w == "string" && (w = w.toLowerCase()), isNaN(g) ? (typeof g == "string" && g.match(/^-?\d+$/) || typeof g == "string" && g.match(/^\d+\.\d+$/)) && (g = parseFloat(g)) : g = parseFloat(g), isNaN(w) ? (typeof w == "string" && w.match(/^-?\d+$/) || typeof w == "string" && w.match(/^\d+\.\d+$/)) && (w = parseFloat(w)) : w = parseFloat(w), m.asc ? g > w ? 1 : g < w ? -1 : d[p + 1] ? l(u, f, d, p + 1) : 1 : g < w ? 1 : g > w ? -1 : d[p + 1] ? l(u, f, d, p + 1) : -1;
+      let l = (u, f, d, g) => {
+        g = g || 0;
+        let m = d[g], S = m.index, F = u.cells ? u.cells : u, b = f.cells ? f.cells : f, p = typeof F[S].sortValue != "undefined" && F[S].sortValue !== null ? F[S].sortValue : F[S].html ? F[S].html : F[S].text, w = typeof b[S].sortValue != "undefined" && b[S].sortValue !== null ? b[S].sortValue : b[S].html ? b[S].html : b[S].text;
+        return typeof p == "string" && (p = p.toLowerCase()), typeof w == "string" && (w = w.toLowerCase()), isNaN(p) ? (typeof p == "string" && p.match(/^-?\d+$/) || typeof p == "string" && p.match(/^\d+\.\d+$/)) && (p = parseFloat(p)) : p = parseFloat(p), isNaN(w) ? (typeof w == "string" && w.match(/^-?\d+$/) || typeof w == "string" && w.match(/^\d+\.\d+$/)) && (w = parseFloat(w)) : w = parseFloat(w), m.asc ? p > w ? 1 : p < w ? -1 : d[g + 1] ? l(u, f, d, g + 1) : 1 : p < w ? 1 : p > w ? -1 : d[g + 1] ? l(u, f, d, g + 1) : -1;
       };
       t.sort(function(u, f) {
         return l(u, f, n);
@@ -1807,10 +1828,10 @@ var Ke = function() {
   var e = this, t = e._self._c;
   return t("div", { staticClass: "table-wrapper quintable" }, [t("div", { staticClass: "breakpoints quintable--breakpoints" }, [t("div", { ref: "xs" }), t("div", { ref: "sm", staticClass: "d-none d-sm-block" }), t("div", { ref: "md", staticClass: "d-none d-md-block" }), t("div", { ref: "lg", staticClass: "d-none d-lg-block" }), t("div", { ref: "xl", staticClass: "d-none d-xl-block" }), t("div", { ref: "xxl", staticClass: "d-none d-xxl-block" })]), t("div", { staticClass: "header slot slot-header quintable--header" }, [e._t("header")], 2), e._l(e.visibleRowIndexes, function(s) {
     return [e._l(e.rowsFinal[s].cells ? e.rowsFinal[s].cells : e.rowsFinal[s], function(o, n) {
-      return [t("div", { key: "cell-content-portal-" + s + "-" + n }, [t("portal", { attrs: { to: e.portalIdentifier + "-cell-content-portal-target-" + s + "-" + n }, scopedSlots: e._u([{ key: "default", fn: function(l) {
+      return [t("div", { key: "cell-content-portal-" + s + "-" + n }, [t("portal", { attrs: { to: e.portalIdentifier + "-cell-content-portal-target-" + s + "-" + n + "-" + e.currentPortalTargetTypes[`${s}-${n}`], id: e.portalIdentifier + "-cell-content-portal-target-" + s + "-" + n + "-" + e.currentPortalTargetTypes[`${s}-${n}`] }, scopedSlots: e._u([{ key: "default", fn: function(l) {
         return t("div", {}, [o.quintable ? t("div", { staticClass: "cell-inner", class: l.path + " " + l.path + "--quintable" }, [e._v(" Nested support was removed, use slots instead! ")]) : e._t("cell-complete", function() {
           return [e._t("cell-content", function() {
-            return [e.configFinal.columns[n].cellFormatter && e.cellFormatters(n, o).type === "html" ? t("div", { staticClass: "cell-inner", class: l.path + " " + l.path + "--formatted-html", domProps: { innerHTML: e._s(e.cellFormatters(n, o).value) } }) : e.configFinal.columns[n].cellFormatter ? t("div", { staticClass: "cell-inner", class: l.path + " " + l.path + "--formatted-value" }, [e._v(" " + e._s(e.cellFormatters(n, o).value) + " ")]) : o.html ? t("div", { staticClass: "cell-inner", class: l.path + " " + l.path + "--html", domProps: { innerHTML: e._s(o.html) } }) : e._e(), o.text + "" ? t("div", { staticClass: "cell-inner", class: l.path + " " + l.path + "--text" }, [e._v(" " + e._s(o.text) + " ")]) : e._e(), o.component ? t("div", { staticClass: "cell-inner", class: l.path + " " + l.path + "--component" }, [t(o.component.name, e._b({ tag: "component", on: { action: e.handleComponentEvent } }, "component", o.component.props, !1))], 1) : e._e()];
+            return [e.configFinal.columns[n].cellFormatter && e.cellFormatters(n, o).type === "html" ? t("div", { staticClass: "cell-inner", class: l.path + " " + l.path + "--formatted-html", domProps: { innerHTML: e._s(e.cellFormatters(n, o).value) } }) : e.configFinal.columns[n].cellFormatter ? t("div", { staticClass: "cell-inner", class: l.path + " " + l.path + "--formatted-value" }, [e._v(" " + e._s(e.cellFormatters(n, o).value) + " ")]) : o.html ? t("div", { staticClass: "cell-inner", class: l.path + " " + l.path + "--html", domProps: { innerHTML: e._s(o.html) } }) : e._e(), e.valueToString(o.text) ? t("div", { staticClass: "cell-inner", class: l.path + " " + l.path + "--text" }, [e._v(" " + e._s(o.text) + " ")]) : e._e(), o.component ? t("div", { staticClass: "cell-inner", class: l.path + " " + l.path + "--component" }, [t(o.component.name, e._b({ tag: "component", on: { action: e.handleComponentEvent } }, "component", o.component.props, !1))], 1) : e._e()];
           }, { cell: o })];
         }, { cell: o })], 2);
       } }], null, !0) })], 1)];
@@ -1896,7 +1917,7 @@ var Ke = function() {
         return e.onCellClick(o);
       } } }, [e.configFinal.columns[n] && o && e.hiddenBreakpoints.findIndex(
         (l) => l === e.configFinal.columns[n].breakpoint
-      ) === -1 && e.configFinal.columns[n].breakpoint !== "all" && !e.configFinal.stickyCols[n] ? t("portal-target", { attrs: { name: e.portalIdentifier + "-cell-content-portal-target-" + s + "-" + n, "slot-props": {
+      ) === -1 && e.configFinal.columns[n].breakpoint !== "all" && !e.configFinal.stickyCols[n] ? t("portal-target", { attrs: { name: e.portalIdentifier + "-cell-content-portal-target-" + s + "-" + n + "-regular", id: e.portalIdentifier + "-cell-content-portal-target-" + s + "-" + n + "-regular", "slot-props": {
         path: "quintable--table-container--table--tbody--row--cell--inner-cell"
       } } }) : e._e()], 1) : e._e()];
     }), e.configFinal.select && e.configFinal.selectPosition === "post" ? t("td", { staticClass: "select-td post quintable--table-container--table--tbody--row--select-td quintable--table-container--table--tbody--row--select-td--post", class: { "disabled-select": e.rowsFinal[s].disableSelect } }, [e.rowsFinal[s].disableSelect ? e._e() : [e.configFinal.prettySelect ? t("p-check", { staticClass: "p-icon", attrs: { name: "check" }, on: { change: function(o) {
@@ -1933,7 +1954,7 @@ var Ke = function() {
         return e.onCellClick(o);
       } } }, [e._t("generated-cell-complete", function() {
         return [e._t("generated-cell-content", function() {
-          return [t("portal-target", { attrs: { name: e.portalIdentifier + "-cell-content-portal-target-" + s + "-" + n, "slot-props": {
+          return [t("portal-target", { attrs: { name: e.portalIdentifier + "-cell-content-portal-target-" + s + "-" + n + "-generated", "slot-props": {
             path: "quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner"
           } } })];
         }, { cell: o })];
@@ -1955,7 +1976,7 @@ var Ke = function() {
         return e.onCellClick(o);
       } } }, [e._t("sticky-cell-complete", function() {
         return [e._t("sticky-cell-content", function() {
-          return [t("portal-target", { attrs: { name: e.portalIdentifier + "-cell-content-portal-target-" + s + "-" + n, "slot-props": {
+          return [t("portal-target", { attrs: { name: e.portalIdentifier + "-cell-content-portal-target-" + s + "-" + n + "-sticky", "slot-props": {
             path: "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner"
           } } })];
         }, { cell: o })];
@@ -1988,20 +2009,20 @@ var Ke = function() {
   } } }, [t("span", { staticClass: "page-link" }, [t("font-awesome-icon", { attrs: { icon: "angle-right" } })], 1)]), e.pages > e.pageRange ? t("li", { staticClass: "page-item", class: { disabled: e.pages === e.currentPage }, on: { click: function(s) {
     return e.gotoPage("last");
   } } }, [t("span", { staticClass: "page-link" }, [t("font-awesome-icon", { attrs: { icon: "angle-double-right" } })], 1)]) : e._e()], 2)]) : e._e(), e.numberOfVisibleRows ? t("span", { staticClass: "d-inline-block align-middle mb-2 quintable--table-footer-container--pagination-wrapper--pagination-container--visible-rows" }, [e._v(e._s(e.firstVisibleRow) + "-" + e._s(e.lastVisibleRow) + " " + e._s(e.configFinal.numberOfVisibleRowsFillerWord) + " " + e._s(e.numberOfVisibleRows))]) : e._e()]) : e._e()])])]), t("div", { staticClass: "footer slot slot-footer quintable--footer" }, [e._t("footer")], 2)], 2);
-}, Ie = [], Je = /* @__PURE__ */ Qe(
+}, Je = [], We = /* @__PURE__ */ Qe(
   ze,
   Ke,
-  Ie,
+  Je,
   !1,
   null,
-  "87c3b315",
+  "264815ba",
   null,
   null
 );
-const ce = Je.exports;
+const ce = We.exports;
 y.add(de);
-y.add(pe);
 y.add(ge);
+y.add(pe);
 y.add(me);
 y.add(we);
 y.add(be);
@@ -2024,12 +2045,12 @@ let P = function(i) {
     defaultClass: ""
   }));
 };
-const We = {
+const Ie = {
   install: P
 };
 let x = null;
 typeof window != "undefined" ? x = window.Vue : typeof global != "undefined" && (x = global.Vue);
-x && x.use(We);
+x && x.use(Ie);
 const ot = {
   VueQuintable: ce,
   install: P

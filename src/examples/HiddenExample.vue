@@ -43,141 +43,147 @@
       <pre
         data-toolbar-order="copy-to-clipboard"
       ><code class="language-markup">&lt;template&gt;
-        &lt;VueQuintable :dynamicConfig=&quot;dynamicConfig&quot; :config=&quot;config&quot; :rows=&quot;rows&quot;&gt;
-            &lt;template v-slot:header&gt;
-                &lt;div class=&quot;mb-3&quot;&gt;
-                    &lt;p-check class=&quot;p-switch&quot; v-model=&quot;hideAge&quot;&gt;Hide Age Column&lt;/p-check&gt;
-                &lt;/div&gt;
-                &lt;div class=&quot;mb-3&quot;&gt;
-                    &lt;p-check class=&quot;p-switch&quot; v-model=&quot;hideJob&quot;&gt;Hide Job Column&lt;/p-check&gt;
-                &lt;/div&gt;
-                &lt;div class=&quot;mb-3&quot;&gt;
-                    &lt;p-check class=&quot;p-switch&quot; v-model=&quot;hideColumns&quot;&gt;Hide empty columns automatically&lt;/p-check&gt;
-                &lt;/div&gt;
-                &lt;div class=&quot;mb-3&quot;&gt;
-                    &lt;v-select v-model=&quot;ignoreSortingColumns&quot; :reduce=&quot;option=&gt;option.value&quot; :options=&quot;ignoreOptions&quot; :clearable=&quot;false&quot;&gt;&lt;/v-select&gt;
-                &lt;/div&gt;
-            &lt;/template&gt;
-        &lt;/VueQuintable&gt;
+  &lt;VueQuintable :dynamicConfig=&quot;dynamicConfig&quot; :config=&quot;config&quot; :rows=&quot;rows&quot;&gt;
+      &lt;template v-slot:header&gt;
+          &lt;div class=&quot;mb-3&quot;&gt;
+              &lt;p-check class=&quot;p-switch&quot; v-model=&quot;hideAge&quot;&gt;Hide Age Column&lt;/p-check&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;mb-3&quot;&gt;
+              &lt;p-check class=&quot;p-switch&quot; v-model=&quot;hideJob&quot;&gt;Hide Job Column&lt;/p-check&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;mb-3&quot;&gt;
+              &lt;p-check class=&quot;p-switch&quot; v-model=&quot;hideColumns&quot;&gt;Hide empty columns automatically&lt;/p-check&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;mb-3&quot;&gt;
+              &lt;v-select v-model=&quot;ignoreSortingColumns&quot; :reduce=&quot;option=&gt;option.value&quot; :options=&quot;ignoreOptions&quot; :clearable=&quot;false&quot;&gt;&lt;/v-select&gt;
+          &lt;/div&gt;
+      &lt;/template&gt;
+  &lt;/VueQuintable&gt;
 &lt;/template&gt;
 &lt;script&gt;
+import VueQuintable from &quot;../components/VueQuintable.vue&quot;;
+import Chance from &quot;chance&quot;;
 
-    import VueQuintable from &quot;../components/VueQuintable.vue&quot;
-    import Chance from &quot;chance&quot;;
-
-    export default {
-        components:{
-            VueQuintable
+export default {
+  components: {
+    VueQuintable,
+  },
+  data() {
+    return {
+      hideColumns: true,
+      ignoreSortingColumns: &quot;none&quot;,
+      hideAge: false,
+      hideJob: false,
+      dynamicConfig: false,
+      ignoreOptions: [
+        {
+          value: &quot;none&quot;,
+          label: &quot;Don't hide hide empty sorting columns&quot;,
         },
-        data() {
-            return {
-                hideColumns:true,
-                ignoreSortingColumns:&quot;none&quot;,
-                hideAge:false,
-                hideJob:false,
-                dynamicConfig:false,
-                ignoreOptions:[
-                    {
-                        value:&quot;none&quot;,
-                        label:&quot;Don't hide hide empty sorting columns&quot;
-                    },
-                    {
-                        value:&quot;active&quot;,
-                        label:&quot;Don't hide active empty sorting columns&quot;
-                    },
-                    {
-                        value:&quot;all&quot;,
-                        label:&quot;Hide empty sorting columns&quot;
-                    }
-                ]
-            }
+        {
+          value: &quot;active&quot;,
+          label: &quot;Don't hide active empty sorting columns&quot;,
         },
-        computed:{
-            config(){
-
-                 return {
-                    columns: [
-                        {
-                            headline: &quot;Name&quot;,
-                            ignoreEmpty:true,
-                        }, {
-                            headline: &quot;Age&quot;,
-                            hidden:this.hideAge,
-                            breakpoint:&quot;lg&quot;,
-                        }, {
-                            headline: &quot;Birth Place&quot;,
-                            sort:true,
-                        }, {
-                            headline: &quot;Job&quot;,
-                            hidden:this.hideJob,
-                            sticky:true,
-                        }
-                    ],
-                     hideEmptyColumns: this.hideColumns,
-                     ignoreSortEmptyColumns:this.ignoreSortingColumns,
-                     pagination:10,
-                 };
-            },
-            rows(){
-
-                let count = 20;
-                const rows = [];
-
-                const chance = new Chance();
-
-                for(let i = 0; i &lt; count; i++){
-                    //first entry with a birth place will be the 13. row
-                    const city = i &lt; 13 ? &quot;&quot; : chance.city();
-
-                    //lase entry with name will be the 8. row
-                    const name = i &gt; 7 ? &quot;&quot; :chance.name({ nationality: 'en' });
-
-                    rows.push([
-                        {
-                            text:name
-                        },
-                        {
-                            text:chance.age()
-                        },
-                        {
-                            text:city,
-                        },
-                        {
-                            text:chance.profession()
-                        },
-                    ]);
-                }
-
-                return rows;
-
-
-            }
+        {
+          value: &quot;all&quot;,
+          label: &quot;Hide empty sorting columns&quot;,
         },
-        watch:{
-            hideColumns(){
-                this.setConfigDynamicForNextTick();
-            },
-            ignoreSortingColumns(){
-                this.setConfigDynamicForNextTick();
-            },
-            hideAge(){
-                this.setConfigDynamicForNextTick();
-            },
-            hideJob(){
-               this.setConfigDynamicForNextTick();
-            },
+      ],
+    };
+  },
+  computed: {
+    config() {
+      return {
+        columns: [
+          {
+            headline: &quot;Name&quot;,
+            ignoreEmpty: true,
+          },
+          {
+            headline: &quot;Age&quot;,
+            hidden: this.hideAge,
+            breakpoint: &quot;lg&quot;,
+          },
+          {
+            headline: &quot;Birth Place&quot;,
+            breakpoint: &quot;md&quot;,
+            sort: true,
+          },
+          {
+            headline: &quot;Birth country&quot;,
+            breakpoint: &quot;lg&quot;,
+          },
+          {
+            headline: &quot;Job&quot;,
+            hidden: this.hideJob,
+            sticky: true,
+          },
+        ],
+        hideEmptyColumns: this.hideColumns,
+        ignoreSortEmptyColumns: this.ignoreSortingColumns,
+        pagination: 10,
+      };
+    },
+    rows() {
+      let count = 20;
+      const rows = [];
 
-        },
-        methods:{
-            setConfigDynamicForNextTick(){
-                this.dynamicConfig = true;
-                this.$nextTick(()=&gt;{
-                    this.dynamicConfig = false;
+      const chance = new Chance();
 
-                });
-            }
-        }
-    }
+      for (let i = 0; i &lt; count; i++) {
+        //first entry with a birth place will be the 13. row
+        const city = i &lt; 13 ? &quot;&quot; : chance.city();
+        //last entry with a birth place will be the 9. row
+        const country = i &gt;= 9 ? &quot;&quot; : chance.country();
+
+        //lase entry with name will be the 8. row
+        const name = i &gt; 7 ? &quot;&quot; : chance.name({ nationality: &quot;en&quot; });
+
+        rows.push([
+          {
+            text: name,
+          },
+          {
+            text: chance.age(),
+          },
+          {
+            text: city,
+          },
+          {
+            text: country,
+          },
+          {
+            text: chance.profession(),
+          },
+        ]);
+      }
+
+      return rows;
+    },
+  },
+  watch: {
+    hideColumns() {
+      this.setConfigDynamicForNextTick();
+    },
+    ignoreSortingColumns() {
+      this.setConfigDynamicForNextTick();
+    },
+    hideAge() {
+      this.setConfigDynamicForNextTick();
+    },
+    hideJob() {
+      this.setConfigDynamicForNextTick();
+    },
+  },
+  methods: {
+    setConfigDynamicForNextTick() {
+      this.dynamicConfig = true;
+      this.$nextTick(() =&gt; {
+        this.dynamicConfig = false;
+      });
+    },
+  },
+};
 &lt;/script&gt;</code></pre>
 
       <!-- @formatter:on -->
@@ -230,7 +236,12 @@ export default {
           },
           {
             headline: "Birth Place",
+            breakpoint: "md",
             sort: true,
+          },
+          {
+            headline: "Birth country",
+            breakpoint: "lg",
           },
           {
             headline: "Job",
@@ -252,6 +263,8 @@ export default {
       for (let i = 0; i < count; i++) {
         //first entry with a birth place will be the 13. row
         const city = i < 13 ? "" : chance.city();
+        //last entry with a birth place will be the 9. row
+        const country = i >= 9 ? "" : chance.country();
 
         //lase entry with name will be the 8. row
         const name = i > 7 ? "" : chance.name({ nationality: "en" });
@@ -265,6 +278,9 @@ export default {
           },
           {
             text: city,
+          },
+          {
+            text: country,
           },
           {
             text: chance.profession(),

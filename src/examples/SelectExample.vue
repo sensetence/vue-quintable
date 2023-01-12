@@ -13,7 +13,7 @@
 
     <VueQuintable
       :preSelectedRows="preSelectedRows"
-      v-model="selectedRows"
+      :selected-rows.sync="selectedRows"
       :config="config"
       :rows="rows"
     ></VueQuintable>
@@ -37,7 +37,7 @@
         &lt;p-check class=&quot;p-switch&quot; v-model=&quot;selectAllRows&quot;&gt;Select rows cross pages&lt;/p-check&gt;
     &lt;/div&gt;
 
-    &lt;VueQuintable :preSelectedRows=&quot;preSelectedRows&quot; v-model=&quot;selectedRows&quot; :config=&quot;config&quot; :rows=&quot;rows&quot;&gt;&lt;/VueQuintable&gt;
+    &lt;VueQuintable :preSelectedRows=&quot;preSelectedRows&quot; selected-rows.sync=&quot;selectedRows&quot; :config=&quot;config&quot; :rows=&quot;rows&quot;&gt;&lt;/VueQuintable&gt;
 &lt;/template&gt;
 &lt;script&gt;
 
