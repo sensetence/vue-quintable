@@ -117,6 +117,11 @@ export default {
             sort: true,
           },
           {
+            headline: "Description",
+            hideHeadlineBreakpoint: "xxl",
+            sticky: true,
+          },
+          {
             headline: "Job",
             breakpoint: "all",
           },
@@ -141,6 +146,9 @@ export default {
           },
           {
             text: chance.city(),
+          },
+          {
+            text: [...Array(50).keys()].map(() => chance.word()).join(" "),
           },
           {
             text: chance.profession(),

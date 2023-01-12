@@ -26,6 +26,11 @@
           ></v-select>
         </div>
       </template>
+      <template #cell-content="{ cell }">
+        <div v-if="cell.type === 'word'">
+          {{ cell.value }}
+        </div>
+      </template>
     </VueQuintable>
 
     <button
@@ -42,23 +47,35 @@
       <!-- @formatter:off -->
       <pre
         data-toolbar-order="copy-to-clipboard"
-      ><code class="language-markup">&lt;template&gt;
+      ><code class="language-markup" v-pre>&lt;template&gt;
   &lt;VueQuintable :dynamicConfig=&quot;dynamicConfig&quot; :config=&quot;config&quot; :rows=&quot;rows&quot;&gt;
       &lt;template v-slot:header&gt;
-          &lt;div class=&quot;mb-3&quot;&gt;
-              &lt;p-check class=&quot;p-switch&quot; v-model=&quot;hideAge&quot;&gt;Hide Age Column&lt;/p-check&gt;
-          &lt;/div&gt;
-          &lt;div class=&quot;mb-3&quot;&gt;
-              &lt;p-check class=&quot;p-switch&quot; v-model=&quot;hideJob&quot;&gt;Hide Job Column&lt;/p-check&gt;
-          &lt;/div&gt;
-          &lt;div class=&quot;mb-3&quot;&gt;
-              &lt;p-check class=&quot;p-switch&quot; v-model=&quot;hideColumns&quot;&gt;Hide empty columns automatically&lt;/p-check&gt;
-          &lt;/div&gt;
-          &lt;div class=&quot;mb-3&quot;&gt;
-              &lt;v-select v-model=&quot;ignoreSortingColumns&quot; :reduce=&quot;option=&gt;option.value&quot; :options=&quot;ignoreOptions&quot; :clearable=&quot;false&quot;&gt;&lt;/v-select&gt;
-          &lt;/div&gt;
+        &lt;div class=&quot;mb-3&quot;&gt;
+          &lt;p-check class=&quot;p-switch&quot; v-model=&quot;hideAge&quot;&gt;Hide Age Column&lt;/p-check&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;mb-3&quot;&gt;
+          &lt;p-check class=&quot;p-switch&quot; v-model=&quot;hideJob&quot;&gt;Hide Job Column&lt;/p-check&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;mb-3&quot;&gt;
+          &lt;p-check class=&quot;p-switch&quot; v-model=&quot;hideColumns&quot;
+            &gt;Hide empty columns automatically&lt;/p-check
+          &gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;mb-3&quot;&gt;
+          &lt;v-select
+            v-model=&quot;ignoreSortingColumns&quot;
+            :reduce=&quot;(option) =&gt; option.value&quot;
+            :options=&quot;ignoreOptions&quot;
+            :clearable=&quot;false&quot;
+          &gt;&lt;/v-select&gt;
+        &lt;/div&gt;
       &lt;/template&gt;
-  &lt;/VueQuintable&gt;
+      &lt;template #cell-content=&quot;{ cell }&quot;&gt;
+        &lt;div v-if=&quot;cell.type === 'word'&quot;&gt;
+          {{ cell.value }}
+        &lt;/div&gt;
+      &lt;/template&gt;
+    &lt;/VueQuintable&gt;
 &lt;/template&gt;
 &lt;script&gt;
 import VueQuintable from &quot;../components/VueQuintable.vue&quot;;
@@ -114,6 +131,10 @@ export default {
             breakpoint: &quot;lg&quot;,
           },
           {
+            headline: &quot;Random Word&quot;,
+            breakpoint: &quot;xl&quot;,
+          },
+          {
             headline: &quot;Job&quot;,
             hidden: this.hideJob,
             sticky: true,
@@ -135,9 +156,10 @@ export default {
         const city = i &lt; 13 ? &quot;&quot; : chance.city();
         //last entry with a birth place will be the 9. row
         const country = i &gt;= 9 ? &quot;&quot; : chance.country();
-
         //lase entry with name will be the 8. row
         const name = i &gt; 7 ? &quot;&quot; : chance.name({ nationality: &quot;en&quot; });
+        //hide cell thought it has content
+        const alwaysHide = i &lt; 15;
 
         rows.push([
           {
@@ -151,6 +173,12 @@ export default {
           },
           {
             text: country,
+          },
+          {
+            type: &quot;word&quot;,
+            text: &quot;asd&quot;,
+            isEmpty: alwaysHide,
+            value: chance.word(),
           },
           {
             text: chance.profession(),
@@ -244,6 +272,10 @@ export default {
             breakpoint: "lg",
           },
           {
+            headline: "Random Word",
+            breakpoint: "xl",
+          },
+          {
             headline: "Job",
             hidden: this.hideJob,
             sticky: true,
@@ -265,9 +297,10 @@ export default {
         const city = i < 13 ? "" : chance.city();
         //last entry with a birth place will be the 9. row
         const country = i >= 9 ? "" : chance.country();
-
         //lase entry with name will be the 8. row
         const name = i > 7 ? "" : chance.name({ nationality: "en" });
+        //hide cell thought it has content
+        const alwaysHide = i < 15;
 
         rows.push([
           {
@@ -281,6 +314,11 @@ export default {
           },
           {
             text: country,
+          },
+          {
+            type: "word",
+            isEmpty: alwaysHide,
+            value: chance.word(),
           },
           {
             text: chance.profession(),

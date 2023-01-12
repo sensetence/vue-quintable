@@ -72,7 +72,7 @@
                   <div
                     class="cell-inner"
                     :class="options.path + ' ' + options.path + '--html'"
-                    v-else-if="cell.html"
+                    v-else-if="valueToString(cell.html)"
                     v-html="cell.html"
                   ></div>
                   <div
@@ -630,6 +630,9 @@
                             "
                             @click="setSortColumn(cIndex)"
                             :class="configFinal.columnClasses[cIndex]"
+                            v-if="
+                              showHeadlines[cIndex] || configFinal.sorts[cIndex]
+                            "
                           >
                             <strong
                               v-html="configFinal.headlines[cIndex]"
@@ -689,6 +692,12 @@
                             </span>
                           </td>
                           <td
+                            :colspan="
+                              !showHeadlines[cIndex] &&
+                              !configFinal.sorts[cIndex]
+                                ? 2
+                                : 1
+                            "
                             :class="
                               configFinal.columnClasses[cIndex] +
                               ' ' +
@@ -786,6 +795,9 @@
                             "
                             @click="setSortColumn(cIndex)"
                             :class="configFinal.columnClasses[cIndex]"
+                            v-if="
+                              showHeadlines[cIndex] || configFinal.sorts[cIndex]
+                            "
                           >
                             <strong
                               v-html="configFinal.headlines[cIndex]"
@@ -846,6 +858,12 @@
                           </td>
 
                           <td
+                            :colspan="
+                              !showHeadlines[cIndex] &&
+                              !configFinal.sorts[cIndex]
+                                ? 2
+                                : 1
+                            "
                             :class="
                               configFinal.columnClasses[cIndex] +
                               ' ' +
@@ -2990,7 +3008,17 @@ export default {
      *
      */
     valueToString: function (value) {
-      return String(value);
+      switch (value) {
+        case "":
+        case null:
+        case false:
+        case undefined:
+          return "";
+        case 0:
+        case "0":
+        default:
+          return String(value);
+      }
     },
 
     /**
@@ -2999,20 +3027,36 @@ export default {
      */
     isColEmpty(i, rowIndex = -1) {
       const rowIndexes = rowIndex > -1 ? [rowIndex] : this.visibleRowIndexes;
-      return (
-        rowIndexes
-          .map((index) => {
-            return this.rowsFinal[index];
-          })
-          .filter((row) => {
-            const cells = row.cells ? row.cells : row;
-            return (
-              this.valueToString(cells[i].text) ||
-              cells[i].html ||
-              cells[i].component
-            );
-          }).length <= 0
-      );
+      const visibleCells = rowIndexes
+        .map((index) => {
+          return this.rowsFinal[index];
+        })
+        .filter((row) => {
+          const cells = row.cells ? row.cells : row;
+
+          if (
+            typeof cells[i].isEmpty === "boolean" &&
+            cells[i].isEmpty === true
+          ) {
+            return false;
+          }
+
+          if (
+            typeof cells[i].text !== "undefined" &&
+            this.valueToString(cells[i].text)
+          ) {
+            return true;
+          }
+
+          if (
+            typeof cells[i].html !== "undefined" &&
+            this.valueToString(cells[i].html)
+          ) {
+            return true;
+          }
+          return false;
+        });
+      return visibleCells.length <= 0;
     },
 
     /**
@@ -3055,7 +3099,7 @@ export default {
         return formatted;
       }
 
-      return cell.html
+      return this.valueToString(cell.html)
         ? cell.html
         : this.valueToString(cell.text)
         ? cell.text
