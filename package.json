@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite --config vite.build.config.js",
     "build": "vite build --config vite.build.config.js",
-    "prod": "vite build --config vite.pack.config.js",
+    "prod-local": "vite build --config vite.pack.config.js",
+    "prod": "node pack.js",
     "preview": "vite preview"
   },
   "main": "./dist/vue-quintable.umd.js",
@@ -35,9 +36,6 @@
     "vue-select": "^3.11.2"
   },
   "devDependencies": {
-    "node-gyp": "^6.1.0",
-    "chance": "^1.1.7",
-    "moment-timezone": "^0.5.35",
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
     "@popperjs/core": "^2.9.3",
@@ -45,11 +43,14 @@
     "@vitejs/plugin-vue2": "^2.2.0",
     "autoprefixer": "^10.4.13",
     "bootstrap": "^5.1.0",
+    "chance": "^1.1.7",
     "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^9.4.0",
+    "moment-timezone": "^0.5.35",
+    "node-gyp": "^6.1.0",
     "prettier": "2.3.1",
     "pretty-checkbox-vue": "^1.1.9",
     "sass": "^1.49.9",
