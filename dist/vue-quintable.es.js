@@ -1,21 +1,20 @@
-import he from "vue-select";
+import ce from "vue-select";
 import { library as y } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon as ue } from "@fortawesome/vue-fontawesome";
-import fe from "v-tooltip";
-import { faAngleDoubleLeft as de, faAngleDoubleRight as ge, faAngleLeft as pe, faAngleRight as me, faCaretDown as we, faCaretUp as be, faCheck as ye, faChevronDown as Se, faChevronUp as Fe, faCircleNotch as ve, faEye as Ce, faEyeSlash as _e, faMinus as ke, faPlus as Re, faSort as Pe, faSortAmountDown as xe, faSortAmountDownAlt as Oe, faSquare as qe, faTimes as Ae } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon as he } from "@fortawesome/vue-fontawesome";
+import ue from "v-tooltip";
+import { faAngleDoubleLeft as fe, faAngleDoubleRight as de, faAngleLeft as ge, faAngleRight as pe, faCaretDown as me, faCaretUp as we, faCheck as be, faChevronDown as ye, faChevronUp as Se, faCircleNotch as ve, faEye as Fe, faEyeSlash as Ce, faMinus as _e, faPlus as ke, faSort as Re, faSortAmountDown as Pe, faSortAmountDownAlt as xe, faSquare as Oe, faTimes as qe } from "@fortawesome/free-solid-svg-icons";
 import ie from "fuzzy.js";
-import $e from "axios";
-import { Wormhole as je, Portal as Te, PortalTarget as Ve } from "portal-vue";
-var Le = typeof globalThis != "undefined" ? globalThis : typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : {};
-function Ee(i) {
+import Ae from "axios";
+var je = typeof globalThis != "undefined" ? globalThis : typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : {};
+function $e(i) {
   return i && i.__esModule && Object.prototype.hasOwnProperty.call(i, "default") ? i.default : i;
 }
-var L = {}, Ue = {
+var E = {}, Te = {
   get exports() {
-    return L;
+    return E;
   },
   set exports(i) {
-    L = i;
+    E = i;
   }
 };
 /*!
@@ -26,7 +25,7 @@ var L = {}, Ue = {
 (function(i, e) {
   (function(t, s) {
     i.exports = s();
-  })(typeof self != "undefined" ? self : Le, function() {
+  })(typeof self != "undefined" ? self : je, function() {
     return function(t) {
       var s = {};
       function l(n) {
@@ -55,10 +54,10 @@ var L = {}, Ue = {
         if (n && (m.render = n.render, m.staticRenderFns = n.staticRenderFns, m._compiled = !0), o && (m.functional = !0), r && (m._scopeId = r), c ? (g = function(b) {
           (b = b || this.$vnode && this.$vnode.ssrContext || this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) || typeof __VUE_SSR_CONTEXT__ == "undefined" || (b = __VUE_SSR_CONTEXT__), a && a.call(this, b), b && b._registeredComponents && b._registeredComponents.add(c);
         }, m._ssrRegister = g) : a && (g = a), g) {
-          var S = m.functional, F = S ? m.render : m.beforeCreate;
+          var S = m.functional, v = S ? m.render : m.beforeCreate;
           S ? (m._injectStyles = g, m.render = function(b, p) {
-            return g.call(p), F(b, p);
-          }) : m.beforeCreate = F ? [].concat(F, g) : [g];
+            return g.call(p), v(b, p);
+          }) : m.beforeCreate = v ? [].concat(v, g) : [g];
         }
         return { esModule: u, exports: f, options: m };
       };
@@ -142,14 +141,14 @@ var L = {}, Ue = {
       n._withStripped = !0, t.exports = { render: n, staticRenderFns: [] };
     }]);
   });
-})(Ue);
-const De = /* @__PURE__ */ Ee(L);
-var E = {}, se = {
+})(Te);
+const Le = /* @__PURE__ */ $e(E);
+var V = {}, se = {
   get exports() {
-    return E;
+    return V;
   },
   set exports(i) {
-    E = i;
+    V = i;
   }
 }, ne = typeof crypto != "undefined" && crypto.getRandomValues && crypto.getRandomValues.bind(crypto) || typeof msCrypto != "undefined" && typeof window.msCrypto.getRandomValues == "function" && msCrypto.getRandomValues.bind(msCrypto);
 if (ne) {
@@ -165,11 +164,11 @@ if (ne) {
     return oe;
   };
 }
-var re = [];
+var ae = [];
 for (var R = 0; R < 256; ++R)
-  re[R] = (R + 256).toString(16).substr(1);
-function Ge(i, e) {
-  var t = e || 0, s = re;
+  ae[R] = (R + 256).toString(16).substr(1);
+function Ee(i, e) {
+  var t = e || 0, s = ae;
   return [
     s[i[t++]],
     s[i[t++]],
@@ -193,18 +192,18 @@ function Ge(i, e) {
     s[i[t++]]
   ].join("");
 }
-var Ne = Ge, Me = E, Be = Ne;
-function He(i, e, t) {
+var Ve = Ee, Ue = V, Me = Ve;
+function De(i, e, t) {
   var s = e && t || 0;
   typeof i == "string" && (e = i === "binary" ? new Array(16) : null, i = null), i = i || {};
-  var l = i.random || (i.rng || Me)();
+  var l = i.random || (i.rng || Ue)();
   if (l[6] = l[6] & 15 | 64, l[8] = l[8] & 63 | 128, e)
     for (var n = 0; n < 16; ++n)
       e[s + n] = l[n];
-  return e || Be(l);
+  return e || Me(l);
 }
-var ae = He;
-function Qe(i, e, t, s, l, n, o, a) {
+var Ge = De;
+function Ne(i, e, t, s, l, n, o, a) {
   var r = typeof i == "function" ? i.options : i;
   e && (r.render = e, r.staticRenderFns = t, r._compiled = !0), s && (r.functional = !0), n && (r._scopeId = "data-v-" + n);
   var c;
@@ -233,13 +232,8 @@ function Qe(i, e, t, s, l, n, o, a) {
     options: r
   };
 }
-je.trackInstances = !1;
-const ze = {
+const Be = {
   name: "VueQuintable",
-  components: {
-    Portal: Te,
-    PortalTarget: Ve
-  },
   props: {
     rows: {
       type: Array,
@@ -369,7 +363,7 @@ const ze = {
       cancelSource: null,
       lastQuery: "",
       pageOffset: 0,
-      uuid: ae(),
+      uuid: Ge(),
       loaderHeight: 0,
       defaultOperator: "equal",
       queryAjaxTimeout: null,
@@ -400,29 +394,11 @@ const ze = {
       return this.verbose;
     },
     /**
-     * Identifier for portals, each nested table has its own
-     *
-     */
-    portalIdentifier() {
-      return ae();
-    },
-    /**
-     * types for portal targets, where to put the contents of default cell slot
-     *
-     */
-    currentPortalTargetTypes() {
-      const i = {};
-      for (let e = 0; e < this.rowsFinal.length; e++)
-        for (let t = 0; t < this.configFinal.columns.length; t++)
-          this.generatedRows[e][t] ? i[`${e}-${t}`] = "generated" : this.stickyRows[e][t] ? i[`${e}-${t}`] = "sticky" : i[`${e}-${t}`] = "regular";
-      return i;
-    },
-    /**
      * Checks if an axios instance has been passed to quintable or the default axios has to be used
      *
      */
     axiosFinal() {
-      return this.axios ? this.axios : $e;
+      return this.axios ? this.axios : Ae;
     },
     /**
      * Set default values for all possible config values
@@ -470,8 +446,8 @@ const ze = {
       this.config.rowsSelect && (m = !0);
       let S = !1;
       this.config.disallowAllOption && (S = !0);
-      let F = !1;
-      this.config.hideEmptyColumns && (F = !0);
+      let v = !1;
+      this.config.hideEmptyColumns && (v = !0);
       let b = "none";
       ["none", "active", "all"].includes(this.config.ignoreSortEmptyColumns) && (b = this.config.ignoreSortEmptyColumns);
       let p = !1;
@@ -480,14 +456,14 @@ const ze = {
       this.config.searchLength && (w = this.config.searchLength);
       let U = "Search...";
       this.config.searchPlaceholder && (U = this.config.searchPlaceholder);
-      let D = "Multiple sort";
-      this.config.multiSortPlaceholder && (D = this.config.multiSortPlaceholder);
-      let G = "Page sort";
-      this.config.pageSortPlaceholder && (G = this.config.pageSortPlaceholder);
+      let M = "Multiple sort";
+      this.config.multiSortPlaceholder && (M = this.config.multiSortPlaceholder);
+      let D = "Page sort";
+      this.config.pageSortPlaceholder && (D = this.config.pageSortPlaceholder);
+      let G = "AND";
+      ["AND", "OR"].includes(this.config.filterRelation) && (G = this.config.filterRelation);
       let N = "AND";
-      ["AND", "OR"].includes(this.config.filterRelation) && (N = this.config.filterRelation);
-      let M = "AND";
-      ["AND", "OR"].includes(this.config.filterGroupRelation) && (M = this.config.filterGroupRelation);
+      ["AND", "OR"].includes(this.config.filterGroupRelation) && (N = this.config.filterGroupRelation);
       let B = "Rows per page:";
       this.config.rowsPlaceholder && (B = this.config.rowsPlaceholder);
       let H = "No rows...";
@@ -524,31 +500,31 @@ const ze = {
       ) && (W = this.config.collapsedRowIcon.toLowerCase());
       let X = 5;
       this.config.pageRange && (X = this.config.pageRange);
-      let Y = "col-12";
-      this.config.searchClass && (Y = this.config.searchClass);
-      let Z = "row";
-      this.config.searchContainerClass && (Z = this.config.searchContainerClass);
-      let I = "GET";
-      this.config.requestMethod && typeof this.config.requestMethod == "string" && ["POST", "GET"].includes(this.config.requestMethod.toUpperCase()) && (I = this.config.requestMethod.toUpperCase());
-      let ee = 0, q = [], A = [], $ = [], k = [], j = [], T = [], v = [], V = [], te = null;
+      let I = "col-12";
+      this.config.searchClass && (I = this.config.searchClass);
+      let Y = "row";
+      this.config.searchContainerClass && (Y = this.config.searchContainerClass);
+      let Z = "GET";
+      this.config.requestMethod && typeof this.config.requestMethod == "string" && ["POST", "GET"].includes(this.config.requestMethod.toUpperCase()) && (Z = this.config.requestMethod.toUpperCase());
+      let ee = 0, q = [], A = [], j = [], k = [], $ = [], T = [], F = [], L = [], te = null;
       if (this.config.columns) {
         ee = this.config.columns.length;
         for (let h = 0; h < this.config.columns.length; h++)
-          v[h] = "", this.config.columns[h] && this.config.columns[h].headline ? (q[h] = this.config.columns[h].headline, v[h] += this.config.columns[h].headline.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/\s+/g, "-").toLowerCase()) : q[h] = "", v[h] += " column-" + (h + 1), this.config.columns[h].classes && (v[h] += " " + this.config.columns[h].classes), this.config.columns[h] && this.config.columns[h].breakpoint ? A[h] = this.config.columns[h].breakpoint : A[h] = "", this.config.columns[h] && this.config.columns[h].sort ? this.config.columns[h].firstSortDirection && typeof this.config.columns[h].firstSortDirection == "string" && ["DESC", "ASC"].includes(
+          F[h] = "", this.config.columns[h] && this.config.columns[h].headline ? (q[h] = this.config.columns[h].headline, F[h] += this.config.columns[h].headline.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/\s+/g, "-").toLowerCase()) : q[h] = "", F[h] += " column-" + (h + 1), this.config.columns[h].classes && (F[h] += " " + this.config.columns[h].classes), this.config.columns[h] && this.config.columns[h].breakpoint ? A[h] = this.config.columns[h].breakpoint : A[h] = "", this.config.columns[h] && this.config.columns[h].sort ? this.config.columns[h].firstSortDirection && typeof this.config.columns[h].firstSortDirection == "string" && ["DESC", "ASC"].includes(
             this.config.columns[h].firstSortDirection.toUpperCase()
-          ) ? k[h] = this.config.columns[h].firstSortDirection.toUpperCase() : k[h] = !0 : k[h] = !1, this.config.columns[h] && this.config.columns[h].ignoreEmpty ? V[h] = !0 : V[h] = !1, this.config.columns[h] && this.config.columns[h].sticky ? j[h] = !0 : j[h] = !1, this.config.columns[h] && this.config.columns[h].hidden ? $[h] = !0 : $[h] = !1, this.config.columns[h] && this.config.columns[h].align ? T[h] = this.config.columns[h].align : T[h] = !1;
+          ) ? k[h] = this.config.columns[h].firstSortDirection.toUpperCase() : k[h] = !0 : k[h] = !1, this.config.columns[h] && this.config.columns[h].ignoreEmpty ? L[h] = !0 : L[h] = !1, this.config.columns[h] && this.config.columns[h].sticky ? $[h] = !0 : $[h] = !1, this.config.columns[h] && this.config.columns[h].hidden ? j[h] = !0 : j[h] = !1, this.config.columns[h] && this.config.columns[h].align ? T[h] = this.config.columns[h].align : T[h] = !1;
         te = this.config.columns;
       }
       return {
         headlines: q,
-        columnClasses: v,
+        columnClasses: F,
         sorts: k,
         pageSort: o,
         multiSort: n,
         pageSortSelect: r,
         multiSortSelect: a,
-        filterGroupRelation: M,
-        filterRelation: N,
+        filterGroupRelation: N,
+        filterRelation: G,
         rowsSelect: m,
         disallowAllOption: S,
         defaultSelected: z,
@@ -557,16 +533,16 @@ const ze = {
         searchPlaceholder: U,
         useFuzzySearch: d,
         ajaxUrl: c,
-        pageSortPlaceholder: G,
-        multiSortPlaceholder: D,
+        pageSortPlaceholder: D,
+        multiSortPlaceholder: M,
         rowsPlaceholder: B,
         emptyPlaceholder: H,
-        stickyCols: j,
+        stickyCols: $,
         alignments: T,
         breakpoints: A,
-        hiddenCols: $,
-        ignoreEmpty: V,
-        hideEmptyColumns: F,
+        hiddenCols: j,
+        ignoreEmpty: L,
+        hideEmptyColumns: v,
         ignoreSortEmptyColumns: b,
         pagination: i,
         numberOfVisibleRowsFillerWord: e,
@@ -583,9 +559,9 @@ const ze = {
         expandedRowIcon: J,
         collapsedRowIcon: W,
         selectPosition: u,
-        searchClass: Y,
-        searchContainerClass: Z,
-        requestMethod: I,
+        searchClass: I,
+        searchContainerClass: Y,
+        requestMethod: Z,
         storeState: _,
         ajaxRequestDelay: s
       };
@@ -1349,6 +1325,7 @@ const ze = {
         i.target,
         "prevent-toggle"
       );
+      console.log("PREVENT:", s);
       const l = e.toString(), n = parseInt(e);
       this.hiddenColumns[l] && !t && !s && (this.openRows[l] ? (this.$set(this.openRows, l, !1), this.$emit(
         "expand:row",
@@ -1638,7 +1615,7 @@ const ze = {
       });
       let o = (u, f, d, g) => {
         g = g || 0;
-        let m = d[g], S = m.index, F = u.cells ? u.cells : u, b = f.cells ? f.cells : f, p = typeof F[S].sortValue != "undefined" && F[S].sortValue !== null ? F[S].sortValue : F[S].html ? F[S].html : F[S].text, w = typeof b[S].sortValue != "undefined" && b[S].sortValue !== null ? b[S].sortValue : b[S].html ? b[S].html : b[S].text;
+        let m = d[g], S = m.index, v = u.cells ? u.cells : u, b = f.cells ? f.cells : f, p = typeof v[S].sortValue != "undefined" && v[S].sortValue !== null ? v[S].sortValue : v[S].html ? v[S].html : v[S].text, w = typeof b[S].sortValue != "undefined" && b[S].sortValue !== null ? b[S].sortValue : b[S].html ? b[S].html : b[S].text;
         return typeof p == "string" && (p = p.toLowerCase()), typeof w == "string" && (w = w.toLowerCase()), isNaN(p) ? (typeof p == "string" && p.match(/^-?\d+$/) || typeof p == "string" && p.match(/^\d+\.\d+$/)) && (p = parseFloat(p)) : p = parseFloat(p), isNaN(w) ? (typeof w == "string" && w.match(/^-?\d+$/) || typeof w == "string" && w.match(/^\d+\.\d+$/)) && (w = parseFloat(w)) : w = parseFloat(w), m.asc ? p > w ? 1 : p < w ? -1 : d[g + 1] ? o(u, f, d, g + 1) : 1 : p < w ? 1 : p > w ? -1 : d[g + 1] ? o(u, f, d, g + 1) : -1;
       };
       t.sort(function(u, f) {
@@ -1834,19 +1811,9 @@ const ze = {
     window.removeEventListener("resize", this.breakpointListener);
   }
 };
-var Ke = function() {
+var He = function() {
   var e = this, t = e._self._c;
-  return t("div", { staticClass: "table-wrapper quintable" }, [t("div", { staticClass: "breakpoints quintable--breakpoints" }, [t("div", { ref: "xs" }), t("div", { ref: "sm", staticClass: "d-none d-sm-block" }), t("div", { ref: "md", staticClass: "d-none d-md-block" }), t("div", { ref: "lg", staticClass: "d-none d-lg-block" }), t("div", { ref: "xl", staticClass: "d-none d-xl-block" }), t("div", { ref: "xxl", staticClass: "d-none d-xxl-block" })]), t("div", { staticClass: "header slot slot-header quintable--header" }, [e._t("header")], 2), e._l(e.visibleRowIndexes, function(s) {
-    return [e._l(e.rowsFinal[s].cells ? e.rowsFinal[s].cells : e.rowsFinal[s], function(l, n) {
-      return [t("div", { key: "cell-content-portal-" + s + "-" + n }, [t("portal", { attrs: { to: e.portalIdentifier + "-cell-content-portal-target-" + s + "-" + n + "-" + e.currentPortalTargetTypes[`${s}-${n}`], id: e.portalIdentifier + "-cell-content-portal-target-" + s + "-" + n + "-" + e.currentPortalTargetTypes[`${s}-${n}`] }, scopedSlots: e._u([{ key: "default", fn: function(o) {
-        return t("div", {}, [l.quintable ? t("div", { staticClass: "cell-inner", class: o.path + " " + o.path + "--quintable" }, [e._v(" Nested support was removed, use slots instead! ")]) : e._t("cell-complete", function() {
-          return [e._t("cell-content", function() {
-            return [e.configFinal.columns[n].cellFormatter && e.cellFormatters(n, l).type === "html" ? t("div", { staticClass: "cell-inner", class: o.path + " " + o.path + "--formatted-html", domProps: { innerHTML: e._s(e.cellFormatters(n, l).value) } }) : e.configFinal.columns[n].cellFormatter ? t("div", { staticClass: "cell-inner", class: o.path + " " + o.path + "--formatted-value" }, [e._v(" " + e._s(e.cellFormatters(n, l).value) + " ")]) : e.valueToString(l.html) ? t("div", { staticClass: "cell-inner", class: o.path + " " + o.path + "--html", domProps: { innerHTML: e._s(l.html) } }) : e._e(), e.valueToString(l.text) ? t("div", { staticClass: "cell-inner", class: o.path + " " + o.path + "--text" }, [e._v(" " + e._s(l.text) + " ")]) : e._e(), l.component ? t("div", { staticClass: "cell-inner", class: o.path + " " + o.path + "--component" }, [t(l.component.name, e._b({ tag: "component", on: { action: e.handleComponentEvent } }, "component", l.component.props, !1))], 1) : e._e()];
-          }, { cell: l })];
-        }, { cell: l })], 2);
-      } }], null, !0) })], 1)];
-    })];
-  }), e.configFinal.search ? t("div", { staticClass: "mb-3 quintable--search-container", class: e.configFinal.searchContainerClass }, [e._t("before-search"), e._t("search", function() {
+  return t("div", { staticClass: "table-wrapper quintable" }, [t("div", { staticClass: "breakpoints quintable--breakpoints" }, [t("div", { ref: "xs" }), t("div", { ref: "sm", staticClass: "d-none d-sm-block" }), t("div", { ref: "md", staticClass: "d-none d-md-block" }), t("div", { ref: "lg", staticClass: "d-none d-lg-block" }), t("div", { ref: "xl", staticClass: "d-none d-xl-block" }), t("div", { ref: "xxl", staticClass: "d-none d-xxl-block" })]), t("div", { staticClass: "header slot slot-header quintable--header" }, [e._t("header")], 2), e.configFinal.search ? t("div", { staticClass: "mb-3 quintable--search-container", class: e.configFinal.searchContainerClass }, [e._t("before-search"), e._t("search", function() {
     return [t("div", { staticClass: "quintable--search-container--input-container", class: e.configFinal.searchClass }, [t("input", { directives: [{ name: "model", rawName: "v-model", value: e.query, expression: "query" }], staticClass: "form-control", attrs: { type: "search", placeholder: e.configFinal.searchPlaceholder }, domProps: { value: e.query }, on: { input: function(s) {
       s.target.composing || (e.query = s.target.value);
     } } })])];
@@ -1925,11 +1892,11 @@ var Ke = function() {
                   trigger: cell.tooltip ? 'hover' : 'manual',
                 }` }], key: "vue-quintable-" + e.uuid + "-cell-" + s + "-" + n, staticClass: "vue-quintable-cell quintable--table-container--table--tbody--row--cell", class: e.cellClassesParsed[s][n] + " " + e.configFinal.columnClasses[n], attrs: { id: "vue-quintable-" + e.uuid + "-cell-" + s + "-" + n }, on: { click: function(o) {
         return e.onCellClick(l);
-      } } }, [e.configFinal.columns[n] && l && e.hiddenBreakpoints.findIndex(
-        (o) => o === e.configFinal.columns[n].breakpoint
-      ) === -1 && e.configFinal.columns[n].breakpoint !== "all" && !e.configFinal.stickyCols[n] ? t("portal-target", { attrs: { name: e.portalIdentifier + "-cell-content-portal-target-" + s + "-" + n + "-regular", id: e.portalIdentifier + "-cell-content-portal-target-" + s + "-" + n + "-regular", "slot-props": {
-        path: "quintable--table-container--table--tbody--row--cell--inner-cell"
-      } } }) : e._e()], 1) : e._e()];
+      } } }, [e._t("cell-complete", function() {
+        return [e._t("cell-content", function() {
+          return [e.configFinal.columns[n].cellFormatter && e.cellFormatters(n, l).type === "html" ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--row--cell--inner-cell--formatted-html", domProps: { innerHTML: e._s(e.cellFormatters(n, l).value) } }) : e.configFinal.columns[n].cellFormatter ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--row--cell--inner-cell--formatted-value" }, [e._v(" " + e._s(e.cellFormatters(n, l).value) + " ")]) : e.valueToString(l.html) ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--row--cell--inner-cell--html", domProps: { innerHTML: e._s(l.html) } }) : e._e(), e.valueToString(l.text) ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--row--cell--inner-cell--text" }, [e._v(" " + e._s(l.text) + " ")]) : e._e(), l.component ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--row--cell--inner-cell--component" }, [t(l.component.name, e._b({ tag: "component", on: { action: e.handleComponentEvent } }, "component", l.component.props, !1))], 1) : e._e()];
+        }, { cell: l })];
+      }, { cell: l })], 2) : e._e()];
     }), e.configFinal.select && e.configFinal.selectPosition === "post" ? t("td", { staticClass: "select-td post quintable--table-container--table--tbody--row--select-td quintable--table-container--table--tbody--row--select-td--post", class: { "disabled-select": e.rowsFinal[s].disableSelect } }, [e.rowsFinal[s].disableSelect ? e._e() : [e.configFinal.prettySelect ? t("p-check", { staticClass: "p-icon", attrs: { name: "check" }, on: { change: function(l) {
       return e.checkListener(l, s);
     } }, model: { value: e.selected[s], callback: function(l) {
@@ -1964,9 +1931,7 @@ var Ke = function() {
         return e.onCellClick(l);
       } } }, [e._t("generated-cell-complete", function() {
         return [e._t("generated-cell-content", function() {
-          return [t("portal-target", { attrs: { name: e.portalIdentifier + "-cell-content-portal-target-" + s + "-" + n + "-generated", "slot-props": {
-            path: "quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner"
-          } } })];
+          return [e.configFinal.columns[n].cellFormatter && e.cellFormatters(n, l).type === "html" ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-html", domProps: { innerHTML: e._s(e.cellFormatters(n, l).value) } }) : e.configFinal.columns[n].cellFormatter ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-value" }, [e._v(" " + e._s(e.cellFormatters(n, l).value) + " ")]) : e.valueToString(l.html) ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--html", domProps: { innerHTML: e._s(l.html) } }) : e._e(), e.valueToString(l.text) ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--text" }, [e._v(" " + e._s(l.text) + " ")]) : e._e(), l.component ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--component" }, [t(l.component.name, e._b({ tag: "component", on: { action: e.handleComponentEvent } }, "component", l.component.props, !1))], 1) : e._e()];
         }, { cell: l })];
       }, { cell: l })], 2)]);
     }), e._l(e.stickyRows[s], function(l, n) {
@@ -1986,9 +1951,7 @@ var Ke = function() {
         return e.onCellClick(l);
       } } }, [e._t("sticky-cell-complete", function() {
         return [e._t("sticky-cell-content", function() {
-          return [t("portal-target", { attrs: { name: e.portalIdentifier + "-cell-content-portal-target-" + s + "-" + n + "-sticky", "slot-props": {
-            path: "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner"
-          } } })];
+          return [e.configFinal.columns[n].cellFormatter && e.cellFormatters(n, l).type === "html" ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--formatted-html", domProps: { innerHTML: e._s(e.cellFormatters(n, l).value) } }) : e.configFinal.columns[n].cellFormatter ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--formatted-value" }, [e._v(" " + e._s(e.cellFormatters(n, l).value) + " ")]) : e.valueToString(l.html) ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--html", domProps: { innerHTML: e._s(l.html) } }) : e._e(), e.valueToString(l.text) ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--text" }, [e._v(" " + e._s(l.text) + " ")]) : e._e(), l.component ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--component" }, [t(l.component.name, e._b({ tag: "component", on: { action: e.handleComponentEvent } }, "component", l.component.props, !1))], 1) : e._e()];
         }, { cell: l })];
       }, { cell: l })], 2)]);
     })], 2)])])])]) : e._e()] : e._e()];
@@ -2018,18 +1981,19 @@ var Ke = function() {
     return e.gotoPage("next");
   } } }, [t("span", { staticClass: "page-link" }, [t("font-awesome-icon", { attrs: { icon: "angle-right" } })], 1)]), e.pages > e.pageRange ? t("li", { staticClass: "page-item", class: { disabled: e.pages === e.currentPage }, on: { click: function(s) {
     return e.gotoPage("last");
-  } } }, [t("span", { staticClass: "page-link" }, [t("font-awesome-icon", { attrs: { icon: "angle-double-right" } })], 1)]) : e._e()], 2)]) : e._e(), e.numberOfVisibleRows ? t("span", { staticClass: "d-inline-block align-middle mb-2 quintable--table-footer-container--pagination-wrapper--pagination-container--visible-rows" }, [e._v(e._s(e.firstVisibleRow) + "-" + e._s(e.lastVisibleRow) + " " + e._s(e.configFinal.numberOfVisibleRowsFillerWord) + " " + e._s(e.numberOfVisibleRows))]) : e._e()]) : e._e()])])]), t("div", { staticClass: "footer slot slot-footer quintable--footer" }, [e._t("footer")], 2)], 2);
-}, Je = [], We = /* @__PURE__ */ Qe(
-  ze,
-  Ke,
-  Je,
+  } } }, [t("span", { staticClass: "page-link" }, [t("font-awesome-icon", { attrs: { icon: "angle-double-right" } })], 1)]) : e._e()], 2)]) : e._e(), e.numberOfVisibleRows ? t("span", { staticClass: "d-inline-block align-middle mb-2 quintable--table-footer-container--pagination-wrapper--pagination-container--visible-rows" }, [e._v(e._s(e.firstVisibleRow) + "-" + e._s(e.lastVisibleRow) + " " + e._s(e.configFinal.numberOfVisibleRowsFillerWord) + " " + e._s(e.numberOfVisibleRows))]) : e._e()]) : e._e()])])]), t("div", { staticClass: "footer slot slot-footer quintable--footer" }, [e._t("footer")], 2)]);
+}, Qe = [], ze = /* @__PURE__ */ Ne(
+  Be,
+  He,
+  Qe,
   !1,
   null,
-  "c85d783e",
+  "43964302",
   null,
   null
 );
-const ce = We.exports;
+const re = ze.exports;
+y.add(fe);
 y.add(de);
 y.add(ge);
 y.add(pe);
@@ -2038,8 +2002,8 @@ y.add(we);
 y.add(be);
 y.add(ye);
 y.add(Se);
-y.add(Fe);
 y.add(ve);
+y.add(Fe);
 y.add(Ce);
 y.add(_e);
 y.add(ke);
@@ -2048,24 +2012,23 @@ y.add(Pe);
 y.add(xe);
 y.add(Oe);
 y.add(qe);
-y.add(Ae);
 let P = function(i) {
-  P.installed || (P.installed = !0, i.component("v-select", he), i.component("p-check", De), i.component("font-awesome-icon", ue), i.component("VueQuintable", ce), i.use(fe, {
+  P.installed || (P.installed = !0, i.component("v-select", ce), i.component("p-check", Le), i.component("font-awesome-icon", he), i.component("VueQuintable", re), i.use(ue, {
     defaultTemplate: '<div class="quintable-tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
     defaultClass: ""
   }));
 };
-const Xe = {
+const Ke = {
   install: P
 };
 let x = null;
 typeof window != "undefined" ? x = window.Vue : typeof global != "undefined" && (x = global.Vue);
-x && x.use(Xe);
-const lt = {
-  VueQuintable: ce,
+x && x.use(Ke);
+const tt = {
+  VueQuintable: re,
   install: P
 };
 export {
-  lt as default
+  tt as default
 };
 //# sourceMappingURL=vue-quintable.es.js.map

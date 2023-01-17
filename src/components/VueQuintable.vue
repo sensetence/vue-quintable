@@ -12,95 +12,6 @@
       <slot name="header"></slot>
     </div>
 
-    <template v-for="rIndex in visibleRowIndexes">
-      <template
-        v-for="(cell, cIndex) in rowsFinal[rIndex].cells
-          ? rowsFinal[rIndex].cells
-          : rowsFinal[rIndex]"
-      >
-        <div :key="'cell-content-portal-' + rIndex + '-' + cIndex">
-          <portal
-            :to="
-              portalIdentifier +
-              '-cell-content-portal-target-' +
-              rIndex +
-              '-' +
-              cIndex +
-              '-' +
-              currentPortalTargetTypes[`${rIndex}-${cIndex}`]
-            "
-            :id="
-              portalIdentifier +
-              '-cell-content-portal-target-' +
-              rIndex +
-              '-' +
-              cIndex +
-              '-' +
-              currentPortalTargetTypes[`${rIndex}-${cIndex}`]
-            "
-          >
-            <div slot-scope="options">
-              <div
-                class="cell-inner"
-                :class="options.path + ' ' + options.path + '--quintable'"
-                v-if="cell.quintable"
-              >
-                Nested support was removed, use slots instead!
-              </div>
-              <slot :cell="cell" v-else :name="'cell-complete'">
-                <slot :name="'cell-content'" :cell="cell">
-                  <div
-                    class="cell-inner"
-                    :class="
-                      options.path + ' ' + options.path + '--formatted-html'
-                    "
-                    v-if="
-                      configFinal.columns[cIndex].cellFormatter &&
-                      cellFormatters(cIndex, cell).type === 'html'
-                    "
-                    v-html="cellFormatters(cIndex, cell).value"
-                  ></div>
-                  <div
-                    class="cell-inner"
-                    :class="
-                      options.path + ' ' + options.path + '--formatted-value'
-                    "
-                    v-else-if="configFinal.columns[cIndex].cellFormatter"
-                  >
-                    {{ cellFormatters(cIndex, cell).value }}
-                  </div>
-                  <div
-                    class="cell-inner"
-                    :class="options.path + ' ' + options.path + '--html'"
-                    v-else-if="valueToString(cell.html)"
-                    v-html="cell.html"
-                  ></div>
-                  <div
-                    class="cell-inner"
-                    :class="options.path + ' ' + options.path + '--text'"
-                    v-if="valueToString(cell.text)"
-                  >
-                    {{ cell.text }}
-                  </div>
-                  <div
-                    class="cell-inner"
-                    :class="options.path + ' ' + options.path + '--component'"
-                    v-if="cell.component"
-                  >
-                    <component
-                      :is="cell.component.name"
-                      v-bind="cell.component.props"
-                      @action="handleComponentEvent"
-                    ></component>
-                  </div>
-                </slot>
-              </slot>
-            </div>
-          </portal>
-        </div>
-      </template>
-    </template>
-
     <div
       v-if="configFinal.search"
       class="mb-3 quintable--search-container"
@@ -461,36 +372,50 @@
                     'vue-quintable-' + uuid + '-cell-' + rIndex + '-' + cIndex
                   "
                 >
-                  <portal-target
-                    v-if="
-                      configFinal.columns[cIndex] &&
-                      cell &&
-                      hiddenBreakpoints.findIndex(
-                        (x) => x === configFinal.columns[cIndex].breakpoint
-                      ) === -1 &&
-                      configFinal.columns[cIndex].breakpoint !== 'all' &&
-                      !configFinal.stickyCols[cIndex]
-                    "
-                    :name="
-                      portalIdentifier +
-                      '-cell-content-portal-target-' +
-                      rIndex +
-                      '-' +
-                      cIndex +
-                      '-regular'
-                    "
-                    :id="
-                      portalIdentifier +
-                      '-cell-content-portal-target-' +
-                      rIndex +
-                      '-' +
-                      cIndex +
-                      '-regular'
-                    "
-                    :slot-props="{
-                      path: 'quintable--table-container--table--tbody--row--cell--inner-cell',
-                    }"
-                  ></portal-target>
+                  <slot :cell="cell" :name="'cell-complete'">
+                    <slot :cell="cell" :name="'cell-content'">
+                      <div
+                        class="cell-inner"
+                        :class="'quintable--table-container--table--tbody--row--cell--inner-cell--formatted-html'"
+                        v-if="
+                          configFinal.columns[cIndex].cellFormatter &&
+                          cellFormatters(cIndex, cell).type === 'html'
+                        "
+                        v-html="cellFormatters(cIndex, cell).value"
+                      ></div>
+                      <div
+                        class="cell-inner"
+                        :class="'quintable--table-container--table--tbody--row--cell--inner-cell--formatted-value'"
+                        v-else-if="configFinal.columns[cIndex].cellFormatter"
+                      >
+                        {{ cellFormatters(cIndex, cell).value }}
+                      </div>
+                      <div
+                        class="cell-inner"
+                        :class="'quintable--table-container--table--tbody--row--cell--inner-cell--html'"
+                        v-else-if="valueToString(cell.html)"
+                        v-html="cell.html"
+                      ></div>
+                      <div
+                        class="cell-inner"
+                        :class="'quintable--table-container--table--tbody--row--cell--inner-cell--text'"
+                        v-if="valueToString(cell.text)"
+                      >
+                        {{ cell.text }}
+                      </div>
+                      <div
+                        class="cell-inner"
+                        :class="'quintable--table-container--table--tbody--row--cell--inner-cell--component'"
+                        v-if="cell.component"
+                      >
+                        <component
+                          :is="cell.component.name"
+                          v-bind="cell.component.props"
+                          @action="handleComponentEvent"
+                        ></component>
+                      </div>
+                    </slot>
+                  </slot>
                 </td>
               </template>
 
@@ -724,19 +649,48 @@
                                 :cell="cell"
                                 :name="'generated-cell-content'"
                               >
-                                <portal-target
-                                  :name="
-                                    portalIdentifier +
-                                    '-cell-content-portal-target-' +
-                                    rIndex +
-                                    '-' +
-                                    cIndex +
-                                    '-generated'
+                                <div
+                                  class="cell-inner"
+                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-html'"
+                                  v-if="
+                                    configFinal.columns[cIndex].cellFormatter &&
+                                    cellFormatters(cIndex, cell).type === 'html'
                                   "
-                                  :slot-props="{
-                                    path: 'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner',
-                                  }"
-                                ></portal-target>
+                                  v-html="cellFormatters(cIndex, cell).value"
+                                ></div>
+                                <div
+                                  class="cell-inner"
+                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-value'"
+                                  v-else-if="
+                                    configFinal.columns[cIndex].cellFormatter
+                                  "
+                                >
+                                  {{ cellFormatters(cIndex, cell).value }}
+                                </div>
+                                <div
+                                  class="cell-inner"
+                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--html'"
+                                  v-else-if="valueToString(cell.html)"
+                                  v-html="cell.html"
+                                ></div>
+                                <div
+                                  class="cell-inner"
+                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--text'"
+                                  v-if="valueToString(cell.text)"
+                                >
+                                  {{ cell.text }}
+                                </div>
+                                <div
+                                  class="cell-inner"
+                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--component'"
+                                  v-if="cell.component"
+                                >
+                                  <component
+                                    :is="cell.component.name"
+                                    v-bind="cell.component.props"
+                                    @action="handleComponentEvent"
+                                  ></component>
+                                </div>
                               </slot>
                             </slot>
                           </td>
@@ -884,19 +838,48 @@
                           >
                             <slot :cell="cell" :name="'sticky-cell-complete'">
                               <slot :cell="cell" :name="'sticky-cell-content'">
-                                <portal-target
-                                  :name="
-                                    portalIdentifier +
-                                    '-cell-content-portal-target-' +
-                                    rIndex +
-                                    '-' +
-                                    cIndex +
-                                    '-sticky'
+                                <div
+                                  class="cell-inner"
+                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--formatted-html'"
+                                  v-if="
+                                    configFinal.columns[cIndex].cellFormatter &&
+                                    cellFormatters(cIndex, cell).type === 'html'
                                   "
-                                  :slot-props="{
-                                    path: 'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner',
-                                  }"
-                                ></portal-target>
+                                  v-html="cellFormatters(cIndex, cell).value"
+                                ></div>
+                                <div
+                                  class="cell-inner"
+                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--formatted-value'"
+                                  v-else-if="
+                                    configFinal.columns[cIndex].cellFormatter
+                                  "
+                                >
+                                  {{ cellFormatters(cIndex, cell).value }}
+                                </div>
+                                <div
+                                  class="cell-inner"
+                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--html'"
+                                  v-else-if="valueToString(cell.html)"
+                                  v-html="cell.html"
+                                ></div>
+                                <div
+                                  class="cell-inner"
+                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--text'"
+                                  v-if="valueToString(cell.text)"
+                                >
+                                  {{ cell.text }}
+                                </div>
+                                <div
+                                  class="cell-inner"
+                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--component'"
+                                  v-if="cell.component"
+                                >
+                                  <component
+                                    :is="cell.component.name"
+                                    v-bind="cell.component.props"
+                                    @action="handleComponentEvent"
+                                  ></component>
+                                </div>
                               </slot>
                             </slot>
                           </td>
@@ -1155,16 +1138,9 @@
 import fuzzy from "fuzzy.js";
 import axios from "axios";
 import randomUUID from "uuid/v4";
-import { Portal, PortalTarget, Wormhole } from "portal-vue";
-
-Wormhole.trackInstances = false;
 
 export default {
   name: "VueQuintable",
-  components: {
-    Portal,
-    PortalTarget,
-  },
   props: {
     rows: {
       type: Array,
@@ -1352,34 +1328,6 @@ export default {
      */
     DEBUG() {
       return this.verbose;
-    },
-
-    /**
-     * Identifier for portals, each nested table has its own
-     *
-     */
-    portalIdentifier() {
-      return randomUUID();
-    },
-
-    /**
-     * types for portal targets, where to put the contents of default cell slot
-     *
-     */
-    currentPortalTargetTypes() {
-      const names = {};
-      for (let i = 0; i < this.rowsFinal.length; i++) {
-        for (let j = 0; j < this.configFinal.columns.length; j++) {
-          if (this.generatedRows[i][j]) {
-            names[`${i}-${j}`] = "generated";
-          } else if (this.stickyRows[i][j]) {
-            names[`${i}-${j}`] = "sticky";
-          } else {
-            names[`${i}-${j}`] = "regular";
-          }
-        }
-      }
-      return names;
     },
 
     /**
@@ -3201,6 +3149,7 @@ export default {
         e.target,
         "prevent-toggle"
       );
+      console.log("PREVENT:", shouldPrevent);
 
       const index = rowIndex.toString();
       const i = parseInt(rowIndex);

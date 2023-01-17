@@ -40,4 +40,40 @@ Updates for version 2.3.0
 ### Fixed
 - class names
 
+## [2.3.1] - 2023-01-11
+Updates for version 2.3.1
+
+### Fixed
+- minor fixes
+- 
+## [2.3.2] - 2023-01-11
+Updates for version 2.3.2
+
+### Fixed
+- minor fixes
+- 
+## [2.3.3] - 2023-01-11
+Updates for version 2.3.3
+
+### Fixed
+- minor fixes
+
+## [2.3.4] - 2023-01-11
+Updates for version 2.3.4
+
+### Fixed
+- minor fixes
+
+## [2.3.5] - 2023-01-11
+Updates for version 2.3.5
+
+### Fixed
+- minor fixes
+
+## [2.3.6] - 2023-01-17
+Updates for version 2.3.6
+
+### Removed
+- PortalVue because it was causing performance issues for large tables
+
 

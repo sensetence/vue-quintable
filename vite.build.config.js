@@ -8,6 +8,9 @@ import { resolve } from "path";
 import { defineConfig } from "vite";
 import { camelCase } from "lodash";
 import { config } from "./package.json";
+import dns from 'dns'
+
+dns.setDefaultResultOrder('verbatim')
 
 const name = config.packageName;
 

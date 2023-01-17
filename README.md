@@ -126,9 +126,9 @@ You can define some slots to customize the table as you want to.
 - cell-complete | *deprecated*
 - cell-content | custom content for cells, cell is delivered as slot scope. Used also for generated and sticky cells
 - generated-cell-complete | *deprecated*
-- generated-cell-content  | custom content for generated cells, optional, overrides cell-content
+- generated-cell-content  | custom content for generated cells
 - sticky-cell-complete | *deprecated*
-- sticky-cell-content  | custom content for sticky cells, optional, overrides cell-content
+- sticky-cell-content  | custom content for sticky cells
 
 ```html
 <template v-slot:header>Your HTML-Code</template>

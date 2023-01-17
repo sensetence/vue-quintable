@@ -1,6 +1,6 @@
 {
   "name": "@sensetence/vue-quintable",
-  "version": "2.3.5",
+  "version": "2.3.6",
   "private": false,
   "scripts": {
     "dev": "vite --config vite.build.config.js",
@@ -27,7 +27,6 @@
     "axios": "^0.21.1",
     "core-js": "^3.9.1",
     "fuzzy.js": "^0.1.0",
-    "portal-vue": "2.1.7",
     "prismjs": "^1.23.0",
     "uuid": "^3.4.0",
     "v-tooltip": "^2.1.3",
