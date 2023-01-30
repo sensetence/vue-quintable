@@ -9,7 +9,7 @@ var je = typeof globalThis != "undefined" ? globalThis : typeof window != "undef
 function $e(i) {
   return i && i.__esModule && Object.prototype.hasOwnProperty.call(i, "default") ? i.default : i;
 }
-var E = {}, Te = {
+var E = {}, Le = {
   get exports() {
     return E;
   },
@@ -141,8 +141,8 @@ var E = {}, Te = {
       n._withStripped = !0, t.exports = { render: n, staticRenderFns: [] };
     }]);
   });
-})(Te);
-const Le = /* @__PURE__ */ $e(E);
+})(Le);
+const Te = /* @__PURE__ */ $e(E);
 var V = {}, se = {
   get exports() {
     return V;
@@ -506,13 +506,13 @@ const Be = {
       this.config.searchContainerClass && (Y = this.config.searchContainerClass);
       let Z = "GET";
       this.config.requestMethod && typeof this.config.requestMethod == "string" && ["POST", "GET"].includes(this.config.requestMethod.toUpperCase()) && (Z = this.config.requestMethod.toUpperCase());
-      let ee = 0, q = [], A = [], j = [], k = [], $ = [], T = [], F = [], L = [], te = null;
+      let ee = 0, q = [], A = [], j = [], k = [], $ = [], L = [], F = [], T = [], te = null;
       if (this.config.columns) {
         ee = this.config.columns.length;
         for (let h = 0; h < this.config.columns.length; h++)
           F[h] = "", this.config.columns[h] && this.config.columns[h].headline ? (q[h] = this.config.columns[h].headline, F[h] += this.config.columns[h].headline.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/\s+/g, "-").toLowerCase()) : q[h] = "", F[h] += " column-" + (h + 1), this.config.columns[h].classes && (F[h] += " " + this.config.columns[h].classes), this.config.columns[h] && this.config.columns[h].breakpoint ? A[h] = this.config.columns[h].breakpoint : A[h] = "", this.config.columns[h] && this.config.columns[h].sort ? this.config.columns[h].firstSortDirection && typeof this.config.columns[h].firstSortDirection == "string" && ["DESC", "ASC"].includes(
             this.config.columns[h].firstSortDirection.toUpperCase()
-          ) ? k[h] = this.config.columns[h].firstSortDirection.toUpperCase() : k[h] = !0 : k[h] = !1, this.config.columns[h] && this.config.columns[h].ignoreEmpty ? L[h] = !0 : L[h] = !1, this.config.columns[h] && this.config.columns[h].sticky ? $[h] = !0 : $[h] = !1, this.config.columns[h] && this.config.columns[h].hidden ? j[h] = !0 : j[h] = !1, this.config.columns[h] && this.config.columns[h].align ? T[h] = this.config.columns[h].align : T[h] = !1;
+          ) ? k[h] = this.config.columns[h].firstSortDirection.toUpperCase() : k[h] = !0 : k[h] = !1, this.config.columns[h] && this.config.columns[h].ignoreEmpty ? T[h] = !0 : T[h] = !1, this.config.columns[h] && this.config.columns[h].sticky ? $[h] = !0 : $[h] = !1, this.config.columns[h] && this.config.columns[h].hidden ? j[h] = !0 : j[h] = !1, this.config.columns[h] && this.config.columns[h].align ? L[h] = this.config.columns[h].align : L[h] = !1;
         te = this.config.columns;
       }
       return {
@@ -538,10 +538,10 @@ const Be = {
         rowsPlaceholder: B,
         emptyPlaceholder: H,
         stickyCols: $,
-        alignments: T,
+        alignments: L,
         breakpoints: A,
         hiddenCols: j,
-        ignoreEmpty: L,
+        ignoreEmpty: T,
         hideEmptyColumns: v,
         ignoreSortEmptyColumns: b,
         pagination: i,
@@ -1325,7 +1325,6 @@ const Be = {
         i.target,
         "prevent-toggle"
       );
-      console.log("PREVENT:", s);
       const l = e.toString(), n = parseInt(e);
       this.hiddenColumns[l] && !t && !s && (this.openRows[l] ? (this.$set(this.openRows, l, !1), this.$emit(
         "expand:row",
@@ -1335,7 +1334,7 @@ const Be = {
         "expand:row",
         this.rowsFinal[this.sortedIndexes[l]],
         "expand:row"
-      )), this.generatedUpdatedKey = Date.now()), this.$emit("click:row", this.rowsFinal[n], "click:row");
+      )), this.generatedUpdatedKey = Date.now()), this.$emit("click:row", this.rowsFinal[n], "click:row", i.target);
     },
     /**
      * Event listener for clicked cell. Emits and event that row was clicked
@@ -1988,7 +1987,7 @@ var He = function() {
   Qe,
   !1,
   null,
-  "43964302",
+  "eca88d63",
   null,
   null
 );
@@ -2013,7 +2012,7 @@ y.add(xe);
 y.add(Oe);
 y.add(qe);
 let P = function(i) {
-  P.installed || (P.installed = !0, i.component("v-select", ce), i.component("p-check", Le), i.component("font-awesome-icon", he), i.component("VueQuintable", re), i.use(ue, {
+  P.installed || (P.installed = !0, i.component("v-select", ce), i.component("p-check", Te), i.component("font-awesome-icon", he), i.component("VueQuintable", re), i.use(ue, {
     defaultTemplate: '<div class="quintable-tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
     defaultClass: ""
   }));

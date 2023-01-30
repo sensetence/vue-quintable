@@ -3149,7 +3149,6 @@ export default {
         e.target,
         "prevent-toggle"
       );
-      console.log("PREVENT:", shouldPrevent);
 
       const index = rowIndex.toString();
       const i = parseInt(rowIndex);
@@ -3174,7 +3173,7 @@ export default {
         this.generatedUpdatedKey = Date.now();
       }
 
-      this.$emit("click:row", this.rowsFinal[i], "click:row");
+      this.$emit("click:row", this.rowsFinal[i], "click:row", e.target);
     },
 
     /**
