@@ -133,9 +133,31 @@ You can define some slots to customize the table as you want to.
 ```html
 <template v-slot:header>Your HTML-Code</template>
 
+//for content of regular table cells
 <template v-slot:cell-content="{cell}">
-    <button>
-        {{cell.text}}
+    <button v-if="cell.any_property ==='any_value'" class="cell-content-button">
+        {{cell.any_property}}
+    </button>
+</template>
+
+//for content of responsive generated table cells
+<template v-slot:generated-cell-content="{cell}">
+    <button v-if="cell.any_property ==='any_value'" class="generated-cell-content--button">
+        {{cell.any_property}}
+    </button>
+</template>
+
+//for content of sticky table cells
+<template v-slot:sticky-cell-content="{cell}">
+    <button v-if="cell.any_property ==='any_value'" class="sticky-cell-content-button">
+        {{cell.any_property}}
+    </button>
+</template>
+
+//for same content of regular, responsive generated and sticky table cells
+<template v-for="slotName in ['cell-content','generated-cell-content','cell-sticky']" #[slotName]="{cell}">
+    <button v-if="cell.any_property ==='any_value'" :key="`button-${slotName}`" :class="`${slotName}`-cell-button">
+        {{cell.any_property}}
     </button>
 </template>
 ```

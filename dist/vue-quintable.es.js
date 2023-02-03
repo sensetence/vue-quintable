@@ -1917,7 +1917,10 @@ var He = function() {
         e.$set(e.selected, s, a);
     }, function(l) {
       return e.checkListener(l, s);
-    }] } })])]], 2) : e._e()], 2), (e.generatedRows[s] || e.stickyRows[s]) && e.visibleRows[s] ? [e.generatedUpdatedKey && e.openRows[s] && Object.keys(e.generatedRows[s]).length || Object.keys(e.stickyRows[s]).length ? t("tr", { key: "generated-row-" + s + "-" + e.rowsUpdatedKey + "-" + e.generatedUpdatedKey, ref: "generated-row-highlighted-on-hover-" + s, refInFor: !0, staticClass: "generated-row quintable--table-container--table--tbody--generated-row", on: { mouseenter: function(l) {
+    }] } })])]], 2) : e._e()], 2), (e.generatedRows[s] || e.stickyRows[s]) && e.visibleRows[s] ? [e.generatedUpdatedKey && e.openRows[s] && Object.keys(e.generatedRows[s]).length || Object.keys(e.stickyRows[s]).length ? t("tr", { key: "generated-row-" + s + "-" + e.rowsUpdatedKey + "-" + e.generatedUpdatedKey, ref: "generated-row-highlighted-on-hover-" + s, refInFor: !0, staticClass: "generated-row quintable--table-container--table--tbody--generated-row", class: {
+      "parent-row-expanded": e.openRows[s],
+      "parent-row-collapses": e.hiddenColumns[s] > 0 && !e.openRows[s]
+    }, on: { mouseenter: function(l) {
       return e.onMouseenterRow(s);
     }, click: function(l) {
       return e.onRowClick(l, s);
@@ -1995,7 +1998,7 @@ var He = function() {
   Qe,
   !1,
   null,
-  "271f211c",
+  "ec30f52e",
   null,
   null
 );

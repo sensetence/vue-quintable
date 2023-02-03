@@ -471,6 +471,11 @@
                   generated-row
                   quintable--table-container--table--tbody--generated-row
                 "
+                :class="{
+                  'parent-row-expanded': openRows[rIndex],
+                  'parent-row-collapses':
+                    hiddenColumns[rIndex] > 0 && !openRows[rIndex],
+                }"
                 v-if="
                   (generatedUpdatedKey &&
                     openRows[rIndex] &&

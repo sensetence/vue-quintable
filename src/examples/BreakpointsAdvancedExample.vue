@@ -131,7 +131,7 @@ export default {
   },
   computed: {
     rows() {
-      let count = 150;
+      let count = 10;
       const rows = [];
 
       const chance = new Chance();
