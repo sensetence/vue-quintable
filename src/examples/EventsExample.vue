@@ -14,6 +14,7 @@
       >
         Event {{ event.event }} was fired with data:
         <div>{{ event.data }}</div>
+        <div class="mt-2" v-if="event.target">Target:{{ event.target }}</div>
       </div>
     </div>
 
@@ -57,6 +58,18 @@
       <pre
         data-toolbar-order="copy-to-clipboard"
       ><code class="language-markup" v-pre>&lt;template&gt;
+    &lt;div class=&quot;list-group mb-3&quot; v-if=&quot;this.eventsLog.length&quot;&gt;
+      &lt;div
+        :key=&quot;index&quot;
+        class=&quot;list-group-item&quot;
+        v-for=&quot;(event, index) in eventsLog&quot;
+        :class=&quot;{ 'bg-info text-white': index === eventsLog.length - 1 }&quot;
+      &gt;
+        Event {{ event.event }} was fired with data:
+        &lt;div&gt;{{ event.data }}&lt;/div&gt;
+        &lt;div class=&quot;mt-2&quot; v-if=&quot;event.target&quot;&gt;Target:{{ event.target }}&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
     &lt;VueQuintable
       @update:sort=&quot;eventListener&quot;
       @update:page=&quot;eventListener&quot;
@@ -146,10 +159,14 @@ export default {
       return rows;
     },
   },
-  methods: {
-    eventListener(data, event) {
+ methods: {
+    eventListener(data, event, target) {
       const eventsLog = this.eventsLog;
-      eventsLog.push({ event: event, data: JSON.stringify(data) });
+      eventsLog.push({
+        event: event,
+        data: JSON.stringify(data),
+        target: target ? target.outerHTML : null,
+      });
       this.eventsLog = eventsLog;
 
       if (this.eventsLog.length &gt; 5) {
@@ -231,9 +248,13 @@ export default {
     },
   },
   methods: {
-    eventListener(data, event) {
+    eventListener(data, event, target) {
       const eventsLog = this.eventsLog;
-      eventsLog.push({ event: event, data: JSON.stringify(data) });
+      eventsLog.push({
+        event: event,
+        data: JSON.stringify(data),
+        target: target ? target.outerHTML : null,
+      });
       this.eventsLog = eventsLog;
 
       if (this.eventsLog.length > 5) {

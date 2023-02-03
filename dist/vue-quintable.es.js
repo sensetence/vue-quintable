@@ -2,7 +2,7 @@ import ce from "vue-select";
 import { library as y } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon as he } from "@fortawesome/vue-fontawesome";
 import ue from "v-tooltip";
-import { faAngleDoubleLeft as fe, faAngleDoubleRight as de, faAngleLeft as ge, faAngleRight as pe, faCaretDown as me, faCaretUp as we, faCheck as be, faChevronDown as ye, faChevronUp as Se, faCircleNotch as ve, faEye as Fe, faEyeSlash as Ce, faMinus as _e, faPlus as ke, faSort as Re, faSortAmountDown as Pe, faSortAmountDownAlt as xe, faSquare as Oe, faTimes as qe } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDoubleLeft as fe, faAngleDoubleRight as de, faAngleLeft as ge, faAngleRight as pe, faCaretDown as me, faCaretUp as we, faCheck as be, faChevronDown as ye, faChevronUp as Se, faCircleNotch as ve, faEye as Fe, faEyeSlash as Ce, faMinus as _e, faPlus as Re, faSort as ke, faSortAmountDown as Pe, faSortAmountDownAlt as xe, faSquare as Oe, faTimes as qe } from "@fortawesome/free-solid-svg-icons";
 import ie from "fuzzy.js";
 import Ae from "axios";
 var je = typeof globalThis != "undefined" ? globalThis : typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : {};
@@ -165,8 +165,8 @@ if (ne) {
   };
 }
 var ae = [];
-for (var R = 0; R < 256; ++R)
-  ae[R] = (R + 256).toString(16).substr(1);
+for (var k = 0; k < 256; ++k)
+  ae[k] = (k + 256).toString(16).substr(1);
 function Ee(i, e) {
   var t = e || 0, s = ae;
   return [
@@ -498,27 +498,27 @@ const Be = {
       this.config.collapsedRowIcon && typeof this.config.collapsedRowIcon == "string" && ["chevron-down", "plus", "caret-down", "eye"].includes(
         this.config.collapsedRowIcon.toLowerCase()
       ) && (W = this.config.collapsedRowIcon.toLowerCase());
-      let X = 5;
-      this.config.pageRange && (X = this.config.pageRange);
-      let I = "col-12";
-      this.config.searchClass && (I = this.config.searchClass);
+      let I = 5;
+      this.config.pageRange && (I = this.config.pageRange);
+      let X = "col-12";
+      this.config.searchClass && (X = this.config.searchClass);
       let Y = "row";
       this.config.searchContainerClass && (Y = this.config.searchContainerClass);
       let Z = "GET";
       this.config.requestMethod && typeof this.config.requestMethod == "string" && ["POST", "GET"].includes(this.config.requestMethod.toUpperCase()) && (Z = this.config.requestMethod.toUpperCase());
-      let ee = 0, q = [], A = [], j = [], k = [], $ = [], L = [], F = [], T = [], te = null;
+      let ee = 0, q = [], A = [], j = [], R = [], $ = [], L = [], F = [], T = [], te = null;
       if (this.config.columns) {
         ee = this.config.columns.length;
         for (let h = 0; h < this.config.columns.length; h++)
           F[h] = "", this.config.columns[h] && this.config.columns[h].headline ? (q[h] = this.config.columns[h].headline, F[h] += this.config.columns[h].headline.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/\s+/g, "-").toLowerCase()) : q[h] = "", F[h] += " column-" + (h + 1), this.config.columns[h].classes && (F[h] += " " + this.config.columns[h].classes), this.config.columns[h] && this.config.columns[h].breakpoint ? A[h] = this.config.columns[h].breakpoint : A[h] = "", this.config.columns[h] && this.config.columns[h].sort ? this.config.columns[h].firstSortDirection && typeof this.config.columns[h].firstSortDirection == "string" && ["DESC", "ASC"].includes(
             this.config.columns[h].firstSortDirection.toUpperCase()
-          ) ? k[h] = this.config.columns[h].firstSortDirection.toUpperCase() : k[h] = !0 : k[h] = !1, this.config.columns[h] && this.config.columns[h].ignoreEmpty ? T[h] = !0 : T[h] = !1, this.config.columns[h] && this.config.columns[h].sticky ? $[h] = !0 : $[h] = !1, this.config.columns[h] && this.config.columns[h].hidden ? j[h] = !0 : j[h] = !1, this.config.columns[h] && this.config.columns[h].align ? L[h] = this.config.columns[h].align : L[h] = !1;
+          ) ? R[h] = this.config.columns[h].firstSortDirection.toUpperCase() : R[h] = !0 : R[h] = !1, this.config.columns[h] && this.config.columns[h].ignoreEmpty ? T[h] = !0 : T[h] = !1, this.config.columns[h] && this.config.columns[h].sticky ? $[h] = !0 : $[h] = !1, this.config.columns[h] && this.config.columns[h].hidden ? j[h] = !0 : j[h] = !1, this.config.columns[h] && this.config.columns[h].align ? L[h] = this.config.columns[h].align : L[h] = !1;
         te = this.config.columns;
       }
       return {
         headlines: q,
         columnClasses: F,
-        sorts: k,
+        sorts: R,
         pageSort: o,
         multiSort: n,
         pageSortSelect: r,
@@ -551,7 +551,7 @@ const Be = {
         selectAllRows: C,
         hoverClass: l,
         expandedAll: f,
-        pageRange: X,
+        pageRange: I,
         prettySelect: g,
         number: ee,
         columns: te,
@@ -559,7 +559,7 @@ const Be = {
         expandedRowIcon: J,
         collapsedRowIcon: W,
         selectPosition: u,
-        searchClass: I,
+        searchClass: X,
         searchContainerClass: Y,
         requestMethod: Z,
         storeState: _,
@@ -991,6 +991,14 @@ const Be = {
     },
     filtersFinal() {
       return !this.configFinal.storeState || !this.storedState.filters ? this.filters : this.storedState.filters;
+    },
+    rowClasses() {
+      const i = {};
+      for (let e = 0; e < this.visibleRowIndexes.length; e++) {
+        const t = this.visibleRowIndexes[e], s = [];
+        this.rowsFinal[t].classes && s.push(this.rowsFinal[t].classes), this.hoveredRow === t && s.push(this.configFinal.hoverClass), this.openRows[t] && s.push("row-expanded"), this.hiddenColumns[t] > 0 && !this.openRows[t] && s.push("row-collapsed"), i[t] = s.join(" ");
+      }
+      return i;
     }
   },
   watch: {
@@ -1341,8 +1349,8 @@ const Be = {
      *
      * @param cell Clicked Cell
      */
-    onCellClick(i) {
-      this.$emit("click:cell", i, "click:cell");
+    onCellClick(i, e) {
+      this.$emit("click:cell", e, "click:cell", i.target);
     },
     /**
      * Event listener for hovered row. Sets the hoveredRow data entry
@@ -1861,7 +1869,7 @@ var He = function() {
               content: rowsFinal[rIndex].tooltip,
               trigger: rowsFinal[rIndex].tooltip ? 'hover' : 'manual',
               offset: 5,
-            }` }], key: "vue-quintable-" + e.uuid + "-row-" + s + "-" + e.indexesUpdatedKey, ref: "row-highlighted-on-hover-" + s, refInFor: !0, staticClass: "vue-quintable-row quintable--table-container--table--tbody--row", class: e.hoveredRow === s ? e.configFinal.hoverClass + (e.rowsFinal[s].classes ? " " + e.rowsFinal[s].classes : "") : e.rowsFinal[s].classes ? e.rowsFinal[s].classes : "", style: e.hiddenColumns[s] > 0 ? "cursor:pointer;" : "", attrs: { id: "vue-quintable-" + e.uuid + "-row-" + s }, on: { click: function(l) {
+            }` }], key: "vue-quintable-" + e.uuid + "-row-" + s + "-" + e.indexesUpdatedKey, ref: "row-highlighted-on-hover-" + s, refInFor: !0, staticClass: "vue-quintable-row quintable--table-container--table--tbody--row", class: e.rowClasses[s], style: e.hiddenColumns[s] > 0 ? "cursor:pointer;" : "", attrs: { id: "vue-quintable-" + e.uuid + "-row-" + s }, on: { click: function(l) {
       return e.onRowClick(l, s);
     }, mouseenter: function(l) {
       return e.onMouseenterRow(s);
@@ -1890,7 +1898,7 @@ var He = function() {
                   content: cell.tooltip,
                   trigger: cell.tooltip ? 'hover' : 'manual',
                 }` }], key: "vue-quintable-" + e.uuid + "-cell-" + s + "-" + n, staticClass: "vue-quintable-cell quintable--table-container--table--tbody--row--cell", class: e.cellClassesParsed[s][n] + " " + e.configFinal.columnClasses[n], attrs: { id: "vue-quintable-" + e.uuid + "-cell-" + s + "-" + n }, on: { click: function(o) {
-        return e.onCellClick(l);
+        return e.onCellClick(o, l);
       } } }, [e._t("cell-complete", function() {
         return [e._t("cell-content", function() {
           return [e.configFinal.columns[n].cellFormatter && e.cellFormatters(n, l).type === "html" ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--row--cell--inner-cell--formatted-html", domProps: { innerHTML: e._s(e.cellFormatters(n, l).value) } }) : e.configFinal.columns[n].cellFormatter ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--row--cell--inner-cell--formatted-value" }, [e._v(" " + e._s(e.cellFormatters(n, l).value) + " ")]) : e.valueToString(l.html) ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--row--cell--inner-cell--html", domProps: { innerHTML: e._s(l.html) } }) : e._e(), e.valueToString(l.text) ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--row--cell--inner-cell--text" }, [e._v(" " + e._s(l.text) + " ")]) : e._e(), l.component ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--row--cell--inner-cell--component" }, [t(l.component.name, e._b({ tag: "component", on: { action: e.handleComponentEvent } }, "component", l.component.props, !1))], 1) : e._e()];
@@ -1914,7 +1922,7 @@ var He = function() {
     }, click: function(l) {
       return e.onRowClick(l, s);
     } } }, [t("td", { staticClass: "ps-0 pe-0 pt-0", attrs: { colspan: e.configFinal.number + 1 } }, [t("div", { class: e.hoveredRow === s ? e.configFinal.hoverClass : "" }, [t("table", { staticClass: "mb-2 generated-table quintable--table-container--table--tbody--generated-row--generated-table" }, [t("tbody", [e._l(e.generatedRows[s], function(l, n) {
-      return t("tr", { directives: [{ name: "show", rawName: "v-show", value: e.openRows[s], expression: "openRows[rIndex]" }], key: "vue-quintable-" + e.uuid + "-generated-row-cell-" + s + "-" + n + "-" + e.generatedUpdatedKey, staticClass: "generated-row-cell quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell", attrs: { id: "vue-quintable-" + e.uuid + "-generated-row-cell-" + s + "-" + n } }, [!e.configFinal.hideRowToggle && e.generatedRows[s] && Object.keys(e.generatedRows[s]).length ? t("td", { staticClass: "toggle-cell invisible" }, [e.hiddenColumns[s] > 0 ? t("span", [e.openRows[s] ? t("span", [t("font-awesome-icon", { attrs: { "fixed-width": "", icon: e.configFinal.expandedRowIcon } })], 1) : t("span", [t("font-awesome-icon", { attrs: { "fixed-width": "", icon: e.configFinal.collapsedRowIcon } })], 1)]) : e._e()]) : e._e(), e.showHeadlines[n] || e.configFinal.sorts[n] ? t("td", { staticClass: "generated-cell-element generated-cell-headline quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-headline", class: e.configFinal.columnClasses[n], on: { click: function(o) {
+      return [e.openRows[s] ? t("tr", { key: "vue-quintable-" + e.uuid + "-generated-row-cell-" + s + "-" + n + "-" + e.generatedUpdatedKey, staticClass: "generated-row-cell quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell", attrs: { id: "vue-quintable-" + e.uuid + "-generated-row-cell-" + s + "-" + n } }, [!e.configFinal.hideRowToggle && e.generatedRows[s] && Object.keys(e.generatedRows[s]).length ? t("td", { staticClass: "toggle-cell invisible" }, [e.hiddenColumns[s] > 0 ? t("span", [e.openRows[s] ? t("span", [t("font-awesome-icon", { attrs: { "fixed-width": "", icon: e.configFinal.expandedRowIcon } })], 1) : t("span", [t("font-awesome-icon", { attrs: { "fixed-width": "", icon: e.configFinal.collapsedRowIcon } })], 1)]) : e._e()]) : e._e(), e.showHeadlines[n] || e.configFinal.sorts[n] ? t("td", { staticClass: "generated-cell-element generated-cell-headline quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-headline", class: e.configFinal.columnClasses[n], on: { click: function(o) {
         return e.setSortColumn(n);
       } } }, [e.showHeadlines[n] ? t("strong", { domProps: { innerHTML: e._s(e.configFinal.headlines[n]) } }) : t("span", { staticClass: "headline" }, [t("wbr")]), e.configFinal.sorts[n] && e.hoveredRow === s ? t("span", { staticClass: "sorting-icon ms-2 cursor-pointer quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon" }, [e.currentSortIndexes[n] ? e._e() : t("font-awesome-icon", { staticClass: "text-primary", attrs: { icon: "sort" } }), e.currentSortIndexes[n] && e.currentSortIndexes[n].asc ? t("font-awesome-icon", { staticClass: "text-primary", attrs: { icon: "sort-amount-down-alt" } }) : e._e(), e.currentSortIndexes[n] && !e.currentSortIndexes[n].asc ? t("font-awesome-icon", { staticClass: "text-primary", attrs: { icon: "sort-amount-down" } }) : e._e(), e.currentSortIndexes[n] ? t("span", { staticClass: "ms-1 text-muted", on: { click: function(o) {
         return o.stopPropagation(), o.preventDefault(), e.removeSort(n);
@@ -1923,16 +1931,16 @@ var He = function() {
         content: l.tooltip,
         trigger: l.tooltip ? "hover" : "manual"
       }, expression: `{
-                            placement: 'top',
-                            content: cell.tooltip,
-                            trigger: cell.tooltip ? 'hover' : 'manual',
-                          }` }], staticClass: "generated-cell-element generated-cell-element-content generated-cell-content quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-content", class: e.configFinal.columnClasses[n] + " " + e.cellClassesParsed[s][n], attrs: { colspan: !e.showHeadlines[n] && !e.configFinal.sorts[n] ? 2 : 1 }, on: { click: function(o) {
-        return e.onCellClick(l);
+                              placement: 'top',
+                              content: cell.tooltip,
+                              trigger: cell.tooltip ? 'hover' : 'manual',
+                            }` }], staticClass: "generated-cell-element generated-cell-element-content generated-cell-content quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-content", class: e.configFinal.columnClasses[n] + " " + e.cellClassesParsed[s][n], attrs: { colspan: !e.showHeadlines[n] && !e.configFinal.sorts[n] ? 2 : 1 }, on: { click: function(o) {
+        return e.onCellClick(o, l);
       } } }, [e._t("generated-cell-complete", function() {
         return [e._t("generated-cell-content", function() {
           return [e.configFinal.columns[n].cellFormatter && e.cellFormatters(n, l).type === "html" ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-html", domProps: { innerHTML: e._s(e.cellFormatters(n, l).value) } }) : e.configFinal.columns[n].cellFormatter ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-value" }, [e._v(" " + e._s(e.cellFormatters(n, l).value) + " ")]) : e.valueToString(l.html) ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--html", domProps: { innerHTML: e._s(l.html) } }) : e._e(), e.valueToString(l.text) ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--text" }, [e._v(" " + e._s(l.text) + " ")]) : e._e(), l.component ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--component" }, [t(l.component.name, e._b({ tag: "component", on: { action: e.handleComponentEvent } }, "component", l.component.props, !1))], 1) : e._e()];
         }, { cell: l })];
-      }, { cell: l })], 2)]);
+      }, { cell: l })], 2)]) : e._e()];
     }), e._l(e.stickyRows[s], function(l, n) {
       return t("tr", { key: "vue-quintable-" + e.uuid + "-sticky-row-cell-" + s + "-" + n, staticClass: "sticky-row-cell quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell", attrs: { id: "vue-quintable-" + e.uuid + "-sticky-row-cell-" + s + "-" + n } }, [!e.configFinal.hideRowToggle && e.generatedRows[s] && Object.keys(e.generatedRows[s]).length ? t("td", { staticClass: "toggle-cell invisible" }, [e.hiddenColumns[s] > 0 ? t("span", [e.openRows[s] ? t("span", [t("font-awesome-icon", { attrs: { "fixed-width": "", icon: e.configFinal.expandedRowIcon } })], 1) : t("span", [t("font-awesome-icon", { attrs: { "fixed-width": "", icon: e.configFinal.collapsedRowIcon } })], 1)]) : e._e()]) : e._e(), e.showHeadlines[n] || e.configFinal.sorts[n] ? t("td", { staticClass: "generated-cell-element sticky-cell-headline quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-headline", class: e.configFinal.columnClasses[n], on: { click: function(o) {
         return e.setSortColumn(n);
@@ -1947,7 +1955,7 @@ var He = function() {
                             content: cell.tooltip,
                             trigger: cell.tooltip ? 'hover' : 'manual',
                           }` }], staticClass: "generated-cell-element generated-cell-element-content sticky-cell-content quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-content", class: e.configFinal.columnClasses[n] + " " + e.cellClassesParsed[s][n], attrs: { colspan: !e.showHeadlines[n] && !e.configFinal.sorts[n] ? 2 : 1 }, on: { click: function(o) {
-        return e.onCellClick(l);
+        return e.onCellClick(o, l);
       } } }, [e._t("sticky-cell-complete", function() {
         return [e._t("sticky-cell-content", function() {
           return [e.configFinal.columns[n].cellFormatter && e.cellFormatters(n, l).type === "html" ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--formatted-html", domProps: { innerHTML: e._s(e.cellFormatters(n, l).value) } }) : e.configFinal.columns[n].cellFormatter ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--formatted-value" }, [e._v(" " + e._s(e.cellFormatters(n, l).value) + " ")]) : e.valueToString(l.html) ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--html", domProps: { innerHTML: e._s(l.html) } }) : e._e(), e.valueToString(l.text) ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--text" }, [e._v(" " + e._s(l.text) + " ")]) : e._e(), l.component ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--component" }, [t(l.component.name, e._b({ tag: "component", on: { action: e.handleComponentEvent } }, "component", l.component.props, !1))], 1) : e._e()];
@@ -1987,7 +1995,7 @@ var He = function() {
   Qe,
   !1,
   null,
-  "eca88d63",
+  "271f211c",
   null,
   null
 );
@@ -2005,8 +2013,8 @@ y.add(ve);
 y.add(Fe);
 y.add(Ce);
 y.add(_e);
-y.add(ke);
 y.add(Re);
+y.add(ke);
 y.add(Pe);
 y.add(xe);
 y.add(Oe);

@@ -259,16 +259,7 @@
                 indexesUpdatedKey
               "
               @click="onRowClick($event, rIndex)"
-              :class="
-                hoveredRow === rIndex
-                  ? configFinal.hoverClass +
-                    (rowsFinal[rIndex].classes
-                      ? ' ' + rowsFinal[rIndex].classes
-                      : '')
-                  : rowsFinal[rIndex].classes
-                  ? rowsFinal[rIndex].classes
-                  : ''
-              "
+              :class="rowClasses[rIndex]"
               :id="'vue-quintable-' + uuid + '-row-' + rIndex"
               @mouseenter="onMouseenterRow(rIndex)"
             >
@@ -364,7 +355,7 @@
                     configFinal.columns[cIndex].breakpoint !== 'all' &&
                     !configFinal.stickyCols[cIndex]
                   "
-                  @click="onCellClick(cell)"
+                  @click="onCellClick($event, cell)"
                   :key="
                     'vue-quintable-' + uuid + '-cell-' + rIndex + '-' + cIndex
                   "
@@ -499,202 +490,208 @@
                       "
                     >
                       <tbody>
-                        <tr
-                          class="
-                            generated-row-cell
-                            quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell
-                          "
+                        <template
                           v-for="(cell, cIndex) in generatedRows[rIndex]"
-                          :key="
-                            'vue-quintable-' +
-                            uuid +
-                            '-generated-row-cell-' +
-                            rIndex +
-                            '-' +
-                            cIndex +
-                            '-' +
-                            generatedUpdatedKey
-                          "
-                          :id="
-                            'vue-quintable-' +
-                            uuid +
-                            '-generated-row-cell-' +
-                            rIndex +
-                            '-' +
-                            cIndex
-                          "
-                          v-show="openRows[rIndex]"
                         >
-                          <td
-                            v-if="
-                              !configFinal.hideRowToggle &&
-                              generatedRows[rIndex] &&
-                              Object.keys(generatedRows[rIndex]).length
-                            "
-                            class="toggle-cell invisible"
-                          >
-                            <span v-if="hiddenColumns[rIndex] > 0">
-                              <span v-if="!openRows[rIndex]"
-                                ><font-awesome-icon
-                                  fixed-width
-                                  :icon="configFinal.collapsedRowIcon"
-                                ></font-awesome-icon
-                              ></span>
-                              <span v-else
-                                ><font-awesome-icon
-                                  fixed-width
-                                  :icon="configFinal.expandedRowIcon"
-                                ></font-awesome-icon
-                              ></span>
-                            </span>
-                          </td>
-                          <td
+                          <tr
                             class="
-                              generated-cell-element generated-cell-headline
-                              quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-headline
+                              generated-row-cell
+                              quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell
                             "
-                            @click="setSortColumn(cIndex)"
-                            :class="configFinal.columnClasses[cIndex]"
-                            v-if="
-                              showHeadlines[cIndex] || configFinal.sorts[cIndex]
+                            :key="
+                              'vue-quintable-' +
+                              uuid +
+                              '-generated-row-cell-' +
+                              rIndex +
+                              '-' +
+                              cIndex +
+                              '-' +
+                              generatedUpdatedKey
                             "
+                            :id="
+                              'vue-quintable-' +
+                              uuid +
+                              '-generated-row-cell-' +
+                              rIndex +
+                              '-' +
+                              cIndex
+                            "
+                            v-if="openRows[rIndex]"
                           >
-                            <strong
-                              v-html="configFinal.headlines[cIndex]"
-                              v-if="showHeadlines[cIndex]"
-                            >
-                            </strong>
-                            <span v-else class="headline"><wbr /></span>
-
-                            <span
-                              class="
-                                sorting-icon
-                                ms-2
-                                cursor-pointer
-                                quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon
-                              "
+                            <td
                               v-if="
-                                configFinal.sorts[cIndex] &&
-                                hoveredRow === rIndex
+                                !configFinal.hideRowToggle &&
+                                generatedRows[rIndex] &&
+                                Object.keys(generatedRows[rIndex]).length
+                              "
+                              class="toggle-cell invisible"
+                            >
+                              <span v-if="hiddenColumns[rIndex] > 0">
+                                <span v-if="!openRows[rIndex]"
+                                  ><font-awesome-icon
+                                    fixed-width
+                                    :icon="configFinal.collapsedRowIcon"
+                                  ></font-awesome-icon
+                                ></span>
+                                <span v-else
+                                  ><font-awesome-icon
+                                    fixed-width
+                                    :icon="configFinal.expandedRowIcon"
+                                  ></font-awesome-icon
+                                ></span>
+                              </span>
+                            </td>
+                            <td
+                              class="
+                                generated-cell-element generated-cell-headline
+                                quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-headline
+                              "
+                              @click="setSortColumn(cIndex)"
+                              :class="configFinal.columnClasses[cIndex]"
+                              v-if="
+                                showHeadlines[cIndex] ||
+                                configFinal.sorts[cIndex]
                               "
                             >
-                              <font-awesome-icon
-                                v-if="!currentSortIndexes[cIndex]"
-                                icon="sort"
-                                class="text-primary"
-                              />
-                              <font-awesome-icon
-                                v-if="
-                                  currentSortIndexes[cIndex] &&
-                                  currentSortIndexes[cIndex].asc
-                                "
-                                icon="sort-amount-down-alt"
-                                class="text-primary"
-                              />
-                              <font-awesome-icon
-                                v-if="
-                                  currentSortIndexes[cIndex] &&
-                                  !currentSortIndexes[cIndex].asc
-                                "
-                                icon="sort-amount-down"
-                                class="text-primary"
-                              />
-                              <span
-                                v-if="currentSortIndexes[cIndex]"
-                                @click.stop.prevent="removeSort(cIndex)"
-                                class="ms-1 text-muted"
+                              <strong
+                                v-html="configFinal.headlines[cIndex]"
+                                v-if="showHeadlines[cIndex]"
                               >
+                              </strong>
+                              <span v-else class="headline"><wbr /></span>
+
+                              <span
+                                class="
+                                  sorting-icon
+                                  ms-2
+                                  cursor-pointer
+                                  quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon
+                                "
+                                v-if="
+                                  configFinal.sorts[cIndex] &&
+                                  hoveredRow === rIndex
+                                "
+                              >
+                                <font-awesome-icon
+                                  v-if="!currentSortIndexes[cIndex]"
+                                  icon="sort"
+                                  class="text-primary"
+                                />
+                                <font-awesome-icon
+                                  v-if="
+                                    currentSortIndexes[cIndex] &&
+                                    currentSortIndexes[cIndex].asc
+                                  "
+                                  icon="sort-amount-down-alt"
+                                  class="text-primary"
+                                />
+                                <font-awesome-icon
+                                  v-if="
+                                    currentSortIndexes[cIndex] &&
+                                    !currentSortIndexes[cIndex].asc
+                                  "
+                                  icon="sort-amount-down"
+                                  class="text-primary"
+                                />
                                 <span
-                                  class="badge bg-info text-white"
-                                  v-if="numberOfSorts > 1"
+                                  v-if="currentSortIndexes[cIndex]"
+                                  @click.stop.prevent="removeSort(cIndex)"
+                                  class="ms-1 text-muted"
                                 >
-                                  {{ currentSortIndexes[cIndex].order + 1 }}
+                                  <span
+                                    class="badge bg-info text-white"
+                                    v-if="numberOfSorts > 1"
+                                  >
+                                    {{ currentSortIndexes[cIndex].order + 1 }}
+                                  </span>
+                                  <small v-else>
+                                    <font-awesome-icon icon="times" />
+                                  </small>
                                 </span>
-                                <small v-else>
-                                  <font-awesome-icon icon="times" />
-                                </small>
                               </span>
-                            </span>
-                          </td>
-                          <td
-                            :colspan="
-                              !showHeadlines[cIndex] &&
-                              !configFinal.sorts[cIndex]
-                                ? 2
-                                : 1
-                            "
-                            :class="
-                              configFinal.columnClasses[cIndex] +
-                              ' ' +
-                              cellClassesParsed[rIndex][cIndex]
-                            "
-                            class="
-                              generated-cell-element
-                              generated-cell-element-content
-                              generated-cell-content
-                              quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-content
-                            "
-                            @click="onCellClick(cell)"
-                            v-tooltip="{
-                              placement: 'top',
-                              content: cell.tooltip,
-                              trigger: cell.tooltip ? 'hover' : 'manual',
-                            }"
-                          >
-                            <slot
-                              :cell="cell"
-                              :name="'generated-cell-complete'"
+                            </td>
+                            <td
+                              :colspan="
+                                !showHeadlines[cIndex] &&
+                                !configFinal.sorts[cIndex]
+                                  ? 2
+                                  : 1
+                              "
+                              :class="
+                                configFinal.columnClasses[cIndex] +
+                                ' ' +
+                                cellClassesParsed[rIndex][cIndex]
+                              "
+                              class="
+                                generated-cell-element
+                                generated-cell-element-content
+                                generated-cell-content
+                                quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-content
+                              "
+                              @click="onCellClick($event, cell)"
+                              v-tooltip="{
+                                placement: 'top',
+                                content: cell.tooltip,
+                                trigger: cell.tooltip ? 'hover' : 'manual',
+                              }"
                             >
                               <slot
                                 :cell="cell"
-                                :name="'generated-cell-content'"
+                                :name="'generated-cell-complete'"
                               >
-                                <div
-                                  class="cell-inner"
-                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-html'"
-                                  v-if="
-                                    configFinal.columns[cIndex].cellFormatter &&
-                                    cellFormatters(cIndex, cell).type === 'html'
-                                  "
-                                  v-html="cellFormatters(cIndex, cell).value"
-                                ></div>
-                                <div
-                                  class="cell-inner"
-                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-value'"
-                                  v-else-if="
-                                    configFinal.columns[cIndex].cellFormatter
-                                  "
+                                <slot
+                                  :cell="cell"
+                                  :name="'generated-cell-content'"
                                 >
-                                  {{ cellFormatters(cIndex, cell).value }}
-                                </div>
-                                <div
-                                  class="cell-inner"
-                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--html'"
-                                  v-else-if="valueToString(cell.html)"
-                                  v-html="cell.html"
-                                ></div>
-                                <div
-                                  class="cell-inner"
-                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--text'"
-                                  v-if="valueToString(cell.text)"
-                                >
-                                  {{ cell.text }}
-                                </div>
-                                <div
-                                  class="cell-inner"
-                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--component'"
-                                  v-if="cell.component"
-                                >
-                                  <component
-                                    :is="cell.component.name"
-                                    v-bind="cell.component.props"
-                                    @action="handleComponentEvent"
-                                  ></component>
-                                </div>
+                                  <div
+                                    class="cell-inner"
+                                    :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-html'"
+                                    v-if="
+                                      configFinal.columns[cIndex]
+                                        .cellFormatter &&
+                                      cellFormatters(cIndex, cell).type ===
+                                        'html'
+                                    "
+                                    v-html="cellFormatters(cIndex, cell).value"
+                                  ></div>
+                                  <div
+                                    class="cell-inner"
+                                    :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-value'"
+                                    v-else-if="
+                                      configFinal.columns[cIndex].cellFormatter
+                                    "
+                                  >
+                                    {{ cellFormatters(cIndex, cell).value }}
+                                  </div>
+                                  <div
+                                    class="cell-inner"
+                                    :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--html'"
+                                    v-else-if="valueToString(cell.html)"
+                                    v-html="cell.html"
+                                  ></div>
+                                  <div
+                                    class="cell-inner"
+                                    :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--text'"
+                                    v-if="valueToString(cell.text)"
+                                  >
+                                    {{ cell.text }}
+                                  </div>
+                                  <div
+                                    class="cell-inner"
+                                    :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--component'"
+                                    v-if="cell.component"
+                                  >
+                                    <component
+                                      :is="cell.component.name"
+                                      v-bind="cell.component.props"
+                                      @action="handleComponentEvent"
+                                    ></component>
+                                  </div>
+                                </slot>
                               </slot>
-                            </slot>
-                          </td>
-                        </tr>
+                            </td>
+                          </tr>
+                        </template>
                         <tr
                           v-for="(cell, cIndex) in stickyRows[rIndex]"
                           class="
@@ -829,7 +826,7 @@
                               sticky-cell-content
                               quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-content
                             "
-                            @click="onCellClick(cell)"
+                            @click="onCellClick($event, cell)"
                             v-tooltip="{
                               placement: 'top',
                               content: cell.tooltip,
@@ -2517,6 +2514,32 @@ export default {
       }
       return this.storedState.filters;
     },
+    rowClasses() {
+      const allRowclasses = {};
+      for (let x = 0; x < this.visibleRowIndexes.length; x++) {
+        const rIndex = this.visibleRowIndexes[x];
+
+        const rowClasses = [];
+        if (this.rowsFinal[rIndex].classes) {
+          rowClasses.push(this.rowsFinal[rIndex].classes);
+        }
+        if (this.hoveredRow === rIndex) {
+          rowClasses.push(this.configFinal.hoverClass);
+        }
+
+        if (this.openRows[rIndex]) {
+          rowClasses.push("row-expanded");
+        }
+
+        if (this.hiddenColumns[rIndex] > 0 && !this.openRows[rIndex]) {
+          rowClasses.push("row-collapsed");
+        }
+
+        allRowclasses[rIndex] = rowClasses.join(" ");
+      }
+
+      return allRowclasses;
+    },
   },
 
   watch: {
@@ -3181,8 +3204,8 @@ export default {
      *
      * @param cell Clicked Cell
      */
-    onCellClick(cell) {
-      this.$emit("click:cell", cell, "click:cell");
+    onCellClick(e, cell) {
+      this.$emit("click:cell", cell, "click:cell", e.target);
     },
 
     /**
