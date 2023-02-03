@@ -473,7 +473,7 @@
                 "
                 :class="{
                   'parent-row-expanded': openRows[rIndex],
-                  'parent-row-collapses':
+                  'parent-row-collapsed':
                     hiddenColumns[rIndex] > 0 && !openRows[rIndex],
                 }"
                 v-if="

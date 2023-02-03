@@ -1919,7 +1919,7 @@ var He = function() {
       return e.checkListener(l, s);
     }] } })])]], 2) : e._e()], 2), (e.generatedRows[s] || e.stickyRows[s]) && e.visibleRows[s] ? [e.generatedUpdatedKey && e.openRows[s] && Object.keys(e.generatedRows[s]).length || Object.keys(e.stickyRows[s]).length ? t("tr", { key: "generated-row-" + s + "-" + e.rowsUpdatedKey + "-" + e.generatedUpdatedKey, ref: "generated-row-highlighted-on-hover-" + s, refInFor: !0, staticClass: "generated-row quintable--table-container--table--tbody--generated-row", class: {
       "parent-row-expanded": e.openRows[s],
-      "parent-row-collapses": e.hiddenColumns[s] > 0 && !e.openRows[s]
+      "parent-row-collapsed": e.hiddenColumns[s] > 0 && !e.openRows[s]
     }, on: { mouseenter: function(l) {
       return e.onMouseenterRow(s);
     }, click: function(l) {
@@ -1998,7 +1998,7 @@ var He = function() {
   Qe,
   !1,
   null,
-  "ec30f52e",
+  "2c2d700b",
   null,
   null
 );
