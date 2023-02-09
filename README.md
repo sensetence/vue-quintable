@@ -155,7 +155,7 @@ You can define some slots to customize the table as you want to.
 </template>
 
 //for same content of regular, responsive generated and sticky table cells
-<template v-for="slotName in ['cell-content','generated-cell-content','cell-sticky']" #[slotName]="{cell}">
+<template v-for="slotName in ['cell-content','generated-cell-content','sticky-cell-content']" #[slotName]="{cell}">
     <button v-if="cell.any_property ==='any_value'" :key="`button-${slotName}`" :class="`${slotName}`-cell-button">
         {{cell.any_property}}
     </button>
