@@ -294,14 +294,15 @@ The following will give you an overview how to configure the VueQuintable for yo
 
 ##### Property *cells* for property *rows* properties
 
-| Key       | Type    | Pre-condition                                             | Description                                                  |
-| --------- | ------- | --------------------------------------------------------- | ------------------------------------------------------------ |
-| text      | String  | non of the following are set: *html*, *component*         | Content string                                               |
-| html      | String  | non of the following are set: *text*, *component*         | HTML content string                                          |
-| component | String  | non of the following are set: *text*, *html*              | Custom component object, see code example below. Should not be used, use slot *cell-content* instead |
-| classes   | String  | -                                                         | Additional CSS classes for cell                              |
-| align     | String  | -                                                         | Text alignment for whole column, this will overwrite *columns* and *rows* align values |
-| isEmpty   | Boolean | non of the following are set: *text*, *html*, *component* | Flag for custom cells (e.g for slot generation). This is checked for hiding empty cells and the flag will overwrite potential content of *text* and *html* if set to true |
+| Key       | Type           | Pre-condition                                             | Description                                                  |
+| --------- | -------------- | --------------------------------------------------------- | ------------------------------------------------------------ |
+| text      | String         | non of the following are set: *html*, *component*         | Content string                                               |
+| html      | String         | non of the following are set: *text*, *component*         | HTML content string                                          |
+| component | String         | non of the following are set: *text*, *html*              | Custom component object, see code example below. Should not be used, use slot *cell-content* instead |
+| classes   | String         | -                                                         | Additional CSS classes for cell                              |
+| align     | String         | -                                                         | Text alignment for whole column, this will overwrite *columns* and *rows* align values |
+| isEmpty   | Boolean        | non of the following are set: *text*, *html*, *component* | Flag for custom cells (e.g for slot generation). This is checked for hiding empty cells and the flag will overwrite potential content of *text* and *html* if set to true |
+| sortValue | String\|Number | *sort* is enabled for the column of the cell              | cell value for the sorting of the column, especially useful if the sorting is enabled for formatted or html/component |
 
 Lets have a look on an example for *rows* and *cells*
 
