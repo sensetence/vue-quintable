@@ -3018,6 +3018,13 @@ export default {
           }
 
           if (
+            typeof cells[i].isEmpty === "boolean" &&
+            cells[i].isEmpty === false
+          ) {
+            return true;
+          }
+
+          if (
             typeof cells[i].text !== "undefined" &&
             this.valueToString(cells[i].text)
           ) {

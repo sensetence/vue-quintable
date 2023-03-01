@@ -1263,7 +1263,7 @@ const Be = {
     isColEmpty(i, e = -1) {
       return (e > -1 ? [e] : this.visibleRowIndexes).map((l) => this.rowsFinal[l]).filter((l) => {
         const n = l.cells ? l.cells : l;
-        return typeof n[i].isEmpty == "boolean" && n[i].isEmpty === !0 ? !1 : !!(typeof n[i].text != "undefined" && this.valueToString(n[i].text) || typeof n[i].html != "undefined" && this.valueToString(n[i].html));
+        return typeof n[i].isEmpty == "boolean" && n[i].isEmpty === !0 ? !1 : !!(typeof n[i].isEmpty == "boolean" && n[i].isEmpty === !1 || typeof n[i].text != "undefined" && this.valueToString(n[i].text) || typeof n[i].html != "undefined" && this.valueToString(n[i].html));
       }).length <= 0;
     },
     /**
@@ -1998,7 +1998,7 @@ var He = function() {
   Qe,
   !1,
   null,
-  "2c2d700b",
+  "40f9fbfe",
   null,
   null
 );
