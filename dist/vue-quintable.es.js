@@ -2,7 +2,7 @@ import ce from "vue-select";
 import { library as y } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon as he } from "@fortawesome/vue-fontawesome";
 import ue from "v-tooltip";
-import { faAngleDoubleLeft as fe, faAngleDoubleRight as de, faAngleLeft as ge, faAngleRight as pe, faCaretDown as me, faCaretUp as we, faCheck as be, faChevronDown as ye, faChevronUp as Se, faCircleNotch as ve, faEye as Fe, faEyeSlash as Ce, faMinus as _e, faPlus as Re, faSort as ke, faSortAmountDown as Pe, faSortAmountDownAlt as xe, faSquare as Oe, faTimes as qe } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDoubleLeft as fe, faAngleDoubleRight as de, faAngleLeft as ge, faAngleRight as pe, faCaretDown as me, faCaretUp as we, faCheck as be, faChevronDown as ye, faChevronUp as Se, faCircleNotch as Fe, faEye as ve, faEyeSlash as Ce, faMinus as _e, faPlus as Re, faSort as ke, faSortAmountDown as Pe, faSortAmountDownAlt as xe, faSquare as Oe, faTimes as qe } from "@fortawesome/free-solid-svg-icons";
 import ie from "fuzzy.js";
 import Ae from "axios";
 var je = typeof globalThis != "undefined" ? globalThis : typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : {};
@@ -54,10 +54,10 @@ var E = {}, Le = {
         if (n && (m.render = n.render, m.staticRenderFns = n.staticRenderFns, m._compiled = !0), o && (m.functional = !0), r && (m._scopeId = r), c ? (g = function(b) {
           (b = b || this.$vnode && this.$vnode.ssrContext || this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) || typeof __VUE_SSR_CONTEXT__ == "undefined" || (b = __VUE_SSR_CONTEXT__), a && a.call(this, b), b && b._registeredComponents && b._registeredComponents.add(c);
         }, m._ssrRegister = g) : a && (g = a), g) {
-          var S = m.functional, v = S ? m.render : m.beforeCreate;
+          var S = m.functional, F = S ? m.render : m.beforeCreate;
           S ? (m._injectStyles = g, m.render = function(b, p) {
-            return g.call(p), v(b, p);
-          }) : m.beforeCreate = v ? [].concat(v, g) : [g];
+            return g.call(p), F(b, p);
+          }) : m.beforeCreate = F ? [].concat(F, g) : [g];
         }
         return { esModule: u, exports: f, options: m };
       };
@@ -446,8 +446,8 @@ const Be = {
       this.config.rowsSelect && (m = !0);
       let S = !1;
       this.config.disallowAllOption && (S = !0);
-      let v = !1;
-      this.config.hideEmptyColumns && (v = !0);
+      let F = !1;
+      this.config.hideEmptyColumns && (F = !0);
       let b = "none";
       ["none", "active", "all"].includes(this.config.ignoreSortEmptyColumns) && (b = this.config.ignoreSortEmptyColumns);
       let p = !1;
@@ -506,18 +506,18 @@ const Be = {
       this.config.searchContainerClass && (Y = this.config.searchContainerClass);
       let Z = "GET";
       this.config.requestMethod && typeof this.config.requestMethod == "string" && ["POST", "GET"].includes(this.config.requestMethod.toUpperCase()) && (Z = this.config.requestMethod.toUpperCase());
-      let ee = 0, q = [], A = [], j = [], R = [], $ = [], L = [], F = [], T = [], te = null;
+      let ee = 0, q = [], A = [], j = [], R = [], $ = [], L = [], v = [], T = [], te = null;
       if (this.config.columns) {
         ee = this.config.columns.length;
         for (let h = 0; h < this.config.columns.length; h++)
-          F[h] = "", this.config.columns[h] && this.config.columns[h].headline ? (q[h] = this.config.columns[h].headline, F[h] += this.config.columns[h].headline.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/\s+/g, "-").toLowerCase()) : q[h] = "", F[h] += " column-" + (h + 1), this.config.columns[h].classes && (F[h] += " " + this.config.columns[h].classes), this.config.columns[h] && this.config.columns[h].breakpoint ? A[h] = this.config.columns[h].breakpoint : A[h] = "", this.config.columns[h] && this.config.columns[h].sort ? this.config.columns[h].firstSortDirection && typeof this.config.columns[h].firstSortDirection == "string" && ["DESC", "ASC"].includes(
+          v[h] = "", this.config.columns[h] && this.config.columns[h].headline ? (q[h] = this.config.columns[h].headline, v[h] += this.config.columns[h].headline.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/\s+/g, "-").toLowerCase()) : q[h] = "", v[h] += " column-" + (h + 1), this.config.columns[h].classes && (v[h] += " " + this.config.columns[h].classes), this.config.columns[h] && this.config.columns[h].breakpoint ? A[h] = this.config.columns[h].breakpoint : A[h] = "", this.config.columns[h] && this.config.columns[h].sort ? this.config.columns[h].firstSortDirection && typeof this.config.columns[h].firstSortDirection == "string" && ["DESC", "ASC"].includes(
             this.config.columns[h].firstSortDirection.toUpperCase()
           ) ? R[h] = this.config.columns[h].firstSortDirection.toUpperCase() : R[h] = !0 : R[h] = !1, this.config.columns[h] && this.config.columns[h].ignoreEmpty ? T[h] = !0 : T[h] = !1, this.config.columns[h] && this.config.columns[h].sticky ? $[h] = !0 : $[h] = !1, this.config.columns[h] && this.config.columns[h].hidden ? j[h] = !0 : j[h] = !1, this.config.columns[h] && this.config.columns[h].align ? L[h] = this.config.columns[h].align : L[h] = !1;
         te = this.config.columns;
       }
       return {
         headlines: q,
-        columnClasses: F,
+        columnClasses: v,
         sorts: R,
         pageSort: o,
         multiSort: n,
@@ -542,7 +542,7 @@ const Be = {
         breakpoints: A,
         hiddenCols: j,
         ignoreEmpty: T,
-        hideEmptyColumns: v,
+        hideEmptyColumns: F,
         ignoreSortEmptyColumns: b,
         pagination: i,
         numberOfVisibleRowsFillerWord: e,
@@ -1622,7 +1622,7 @@ const Be = {
       });
       let o = (u, f, d, g) => {
         g = g || 0;
-        let m = d[g], S = m.index, v = u.cells ? u.cells : u, b = f.cells ? f.cells : f, p = typeof v[S].sortValue != "undefined" && v[S].sortValue !== null ? v[S].sortValue : v[S].html ? v[S].html : v[S].text, w = typeof b[S].sortValue != "undefined" && b[S].sortValue !== null ? b[S].sortValue : b[S].html ? b[S].html : b[S].text;
+        let m = d[g], S = m.index, F = u.cells ? u.cells : u, b = f.cells ? f.cells : f, p = typeof F[S].sortValue != "undefined" && F[S].sortValue !== null ? F[S].sortValue : F[S].html ? F[S].html : F[S].text, w = typeof b[S].sortValue != "undefined" && b[S].sortValue !== null ? b[S].sortValue : b[S].html ? b[S].html : b[S].text;
         return typeof p == "string" && (p = p.toLowerCase()), typeof w == "string" && (w = w.toLowerCase()), isNaN(p) ? (typeof p == "string" && p.match(/^-?\d+$/) || typeof p == "string" && p.match(/^\d+\.\d+$/)) && (p = parseFloat(p)) : p = parseFloat(p), isNaN(w) ? (typeof w == "string" && w.match(/^-?\d+$/) || typeof w == "string" && w.match(/^\d+\.\d+$/)) && (w = parseFloat(w)) : w = parseFloat(w), m.asc ? p > w ? 1 : p < w ? -1 : d[g + 1] ? o(u, f, d, g + 1) : 1 : p < w ? 1 : p > w ? -1 : d[g + 1] ? o(u, f, d, g + 1) : -1;
       };
       t.sort(function(u, f) {
@@ -1778,7 +1778,12 @@ const Be = {
       const t = localStorage.getItem(
         `vue-quintable-${this.identifier}-filters`
       );
-      t && this.$set(this.storedState, "filters", JSON.parse(t));
+      if (t) {
+        const r = JSON.parse(t);
+        for (let c in this.filters)
+          Object.prototype.hasOwnProperty.call(this.filters, c) && !Object.prototype.hasOwnProperty.call(r, c) && (r[c] = this.filters[c]);
+        this.$set(this.storedState, "filters", r);
+      }
       const s = localStorage.getItem(
         `vue-quintable-${this.identifier}-query`
       );
@@ -1998,7 +2003,7 @@ var He = function() {
   Qe,
   !1,
   null,
-  "40f9fbfe",
+  "f044561b",
   null,
   null
 );
@@ -2012,8 +2017,8 @@ y.add(we);
 y.add(be);
 y.add(ye);
 y.add(Se);
-y.add(ve);
 y.add(Fe);
+y.add(ve);
 y.add(Ce);
 y.add(_e);
 y.add(Re);

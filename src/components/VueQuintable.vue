@@ -4175,8 +4175,21 @@ export default {
       const filters = localStorage.getItem(
         `vue-quintable-${this.identifier}-filters`
       );
+
       if (filters) {
-        this.$set(this.storedState, "filters", JSON.parse(filters));
+        const storedFilters = JSON.parse(filters);
+
+        //merge new filters into stored filters
+        for (let key in this.filters) {
+          if (
+            Object.prototype.hasOwnProperty.call(this.filters, key) &&
+            !Object.prototype.hasOwnProperty.call(storedFilters, key)
+          ) {
+            storedFilters[key] = this.filters[key];
+          }
+        }
+
+        this.$set(this.storedState, "filters", storedFilters);
       }
 
       const query = localStorage.getItem(
