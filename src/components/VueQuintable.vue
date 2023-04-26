@@ -3208,16 +3208,16 @@ export default {
         this.generatedUpdatedKey = Date.now();
       }
 
-      this.$emit("click:row", this.rowsFinal[i], "click:row", e.target);
+      this.$emit("click:row", this.rowsFinal[i], "click:row", e.target, e);
     },
 
     /**
-     * Event listener for clicked cell. Emits and event that row was clicked
      *
-     * @param cell Clicked Cell
+     * @param e
+     * @param cell
      */
     onCellClick(e, cell) {
-      this.$emit("click:cell", cell, "click:cell", e.target);
+      this.$emit("click:cell", cell, "click:cell", e.target, e);
     },
 
     /**

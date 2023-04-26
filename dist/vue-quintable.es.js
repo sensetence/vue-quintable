@@ -1342,15 +1342,15 @@ const Be = {
         "expand:row",
         this.rowsFinal[this.sortedIndexes[l]],
         "expand:row"
-      )), this.generatedUpdatedKey = Date.now()), this.$emit("click:row", this.rowsFinal[n], "click:row", i.target);
+      )), this.generatedUpdatedKey = Date.now()), this.$emit("click:row", this.rowsFinal[n], "click:row", i.target, i);
     },
     /**
-     * Event listener for clicked cell. Emits and event that row was clicked
      *
-     * @param cell Clicked Cell
+     * @param e
+     * @param cell
      */
     onCellClick(i, e) {
-      this.$emit("click:cell", e, "click:cell", i.target);
+      this.$emit("click:cell", e, "click:cell", i.target, i);
     },
     /**
      * Event listener for hovered row. Sets the hoveredRow data entry
@@ -2003,7 +2003,7 @@ var He = function() {
   Qe,
   !1,
   null,
-  "f044561b",
+  "d3aae2a9",
   null,
   null
 );
