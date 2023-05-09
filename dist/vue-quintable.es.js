@@ -2,7 +2,7 @@ import ce from "vue-select";
 import { library as y } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon as he } from "@fortawesome/vue-fontawesome";
 import ue from "v-tooltip";
-import { faAngleDoubleLeft as fe, faAngleDoubleRight as de, faAngleLeft as ge, faAngleRight as pe, faCaretDown as me, faCaretUp as we, faCheck as be, faChevronDown as ye, faChevronUp as Se, faCircleNotch as Fe, faEye as ve, faEyeSlash as Ce, faMinus as _e, faPlus as Re, faSort as ke, faSortAmountDown as Pe, faSortAmountDownAlt as xe, faSquare as Oe, faTimes as qe } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDoubleLeft as fe, faAngleDoubleRight as de, faAngleLeft as ge, faAngleRight as pe, faCaretDown as me, faCaretUp as we, faCheck as be, faChevronDown as ye, faChevronUp as Se, faCircleNotch as Fe, faEye as ve, faEyeSlash as Ce, faMinus as _e, faPlus as ke, faSort as Re, faSortAmountDown as Pe, faSortAmountDownAlt as xe, faSquare as Oe, faTimes as qe } from "@fortawesome/free-solid-svg-icons";
 import ie from "fuzzy.js";
 import Ae from "axios";
 var je = typeof globalThis != "undefined" ? globalThis : typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : {};
@@ -165,8 +165,8 @@ if (ne) {
   };
 }
 var ae = [];
-for (var k = 0; k < 256; ++k)
-  ae[k] = (k + 256).toString(16).substr(1);
+for (var R = 0; R < 256; ++R)
+  ae[R] = (R + 256).toString(16).substr(1);
 function Ee(i, e) {
   var t = e || 0, s = ae;
   return [
@@ -506,19 +506,19 @@ const Be = {
       this.config.searchContainerClass && (Y = this.config.searchContainerClass);
       let Z = "GET";
       this.config.requestMethod && typeof this.config.requestMethod == "string" && ["POST", "GET"].includes(this.config.requestMethod.toUpperCase()) && (Z = this.config.requestMethod.toUpperCase());
-      let ee = 0, q = [], A = [], j = [], R = [], $ = [], L = [], v = [], T = [], te = null;
+      let ee = 0, q = [], A = [], j = [], k = [], $ = [], L = [], v = [], T = [], te = null;
       if (this.config.columns) {
         ee = this.config.columns.length;
         for (let h = 0; h < this.config.columns.length; h++)
           v[h] = "", this.config.columns[h] && this.config.columns[h].headline ? (q[h] = this.config.columns[h].headline, v[h] += this.config.columns[h].headline.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/\s+/g, "-").toLowerCase()) : q[h] = "", v[h] += " column-" + (h + 1), this.config.columns[h].classes && (v[h] += " " + this.config.columns[h].classes), this.config.columns[h] && this.config.columns[h].breakpoint ? A[h] = this.config.columns[h].breakpoint : A[h] = "", this.config.columns[h] && this.config.columns[h].sort ? this.config.columns[h].firstSortDirection && typeof this.config.columns[h].firstSortDirection == "string" && ["DESC", "ASC"].includes(
             this.config.columns[h].firstSortDirection.toUpperCase()
-          ) ? R[h] = this.config.columns[h].firstSortDirection.toUpperCase() : R[h] = !0 : R[h] = !1, this.config.columns[h] && this.config.columns[h].ignoreEmpty ? T[h] = !0 : T[h] = !1, this.config.columns[h] && this.config.columns[h].sticky ? $[h] = !0 : $[h] = !1, this.config.columns[h] && this.config.columns[h].hidden ? j[h] = !0 : j[h] = !1, this.config.columns[h] && this.config.columns[h].align ? L[h] = this.config.columns[h].align : L[h] = !1;
+          ) ? k[h] = this.config.columns[h].firstSortDirection.toUpperCase() : k[h] = !0 : k[h] = !1, this.config.columns[h] && this.config.columns[h].ignoreEmpty ? T[h] = !0 : T[h] = !1, this.config.columns[h] && this.config.columns[h].sticky ? $[h] = !0 : $[h] = !1, this.config.columns[h] && this.config.columns[h].hidden ? j[h] = !0 : j[h] = !1, this.config.columns[h] && this.config.columns[h].align ? L[h] = this.config.columns[h].align : L[h] = !1;
         te = this.config.columns;
       }
       return {
         headlines: q,
         columnClasses: v,
-        sorts: R,
+        sorts: k,
         pageSort: o,
         multiSort: n,
         pageSortSelect: r,
@@ -1319,6 +1319,22 @@ const Be = {
       return i instanceof HTMLElement && i.tagName.toLowerCase() === e.toLowerCase() ? !0 : i instanceof Element && i.parentNode && this.hasSomeParentTagName(i.parentNode, e);
     },
     /**
+     * Event listener for mouse wheel clicked row
+     *
+     * @param e Click Event
+     * @param rowIndex Index of clicked row
+     */
+    onRowAuxClick(i, e) {
+      const t = parseInt(e);
+      this.$emit(
+        "auxclick:row",
+        this.rowsFinal[t],
+        "auxclick:row",
+        i.target,
+        i
+      );
+    },
+    /**
      * Event listener for clicked row. Emits an event if the row has been expanded or collapsed. Emits and event that row was clicked
      *
      * @param e Click Event
@@ -1351,6 +1367,14 @@ const Be = {
      */
     onCellClick(i, e) {
       this.$emit("click:cell", e, "click:cell", i.target, i);
+    },
+    /**
+     *
+     * @param e
+     * @param cell
+     */
+    onCellAuxClick(i, e) {
+      this.$emit("auxclick:cell", e, "auxclick:cell", i.target, i);
     },
     /**
      * Event listener for hovered row. Sets the hoveredRow data entry
@@ -1876,6 +1900,8 @@ var He = function() {
               offset: 5,
             }` }], key: "vue-quintable-" + e.uuid + "-row-" + s + "-" + e.indexesUpdatedKey, ref: "row-highlighted-on-hover-" + s, refInFor: !0, staticClass: "vue-quintable-row quintable--table-container--table--tbody--row", class: e.rowClasses[s], style: e.hiddenColumns[s] > 0 ? "cursor:pointer;" : "", attrs: { id: "vue-quintable-" + e.uuid + "-row-" + s }, on: { click: function(l) {
       return e.onRowClick(l, s);
+    }, auxclick: function(l) {
+      return e.onRowAuxClick(l, s);
     }, mouseenter: function(l) {
       return e.onMouseenterRow(s);
     } } }, [e.hasGeneratedRows && !e.configFinal.hideRowToggle ? t("td", { staticClass: "toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td" }, [e.hiddenColumns[s] > 0 ? t("span", [e.openRows[s] ? t("span", [t("font-awesome-icon", { attrs: { "fixed-width": "", icon: e.configFinal.expandedRowIcon } })], 1) : t("span", [t("font-awesome-icon", { attrs: { "fixed-width": "", icon: e.configFinal.collapsedRowIcon } })], 1)]) : e._e()]) : e._e(), e.configFinal.select && e.configFinal.selectPosition === "pre" ? t("td", { staticClass: "select-td pre quintable--table-container--table--tbody--row--select-td quintable--table-container--table--tbody--row--select-td--pre", class: { "disabled-select": e.rowsFinal[s].disableSelect } }, [e.rowsFinal[s].disableSelect ? e._e() : [e.configFinal.prettySelect ? t("p-check", { staticClass: "p-icon", attrs: { name: "check" }, on: { change: function(l) {
@@ -1904,6 +1930,8 @@ var He = function() {
                   trigger: cell.tooltip ? 'hover' : 'manual',
                 }` }], key: "vue-quintable-" + e.uuid + "-cell-" + s + "-" + n, staticClass: "vue-quintable-cell quintable--table-container--table--tbody--row--cell", class: e.cellClassesParsed[s][n] + " " + e.configFinal.columnClasses[n], attrs: { id: "vue-quintable-" + e.uuid + "-cell-" + s + "-" + n }, on: { click: function(o) {
         return e.onCellClick(o, l);
+      }, auxclick: function(o) {
+        return e.onCellAuxClick(o, l);
       } } }, [e._t("cell-complete", function() {
         return [e._t("cell-content", function() {
           return [e.configFinal.columns[n].cellFormatter && e.cellFormatters(n, l).type === "html" ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--row--cell--inner-cell--formatted-html", domProps: { innerHTML: e._s(e.cellFormatters(n, l).value) } }) : e.configFinal.columns[n].cellFormatter ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--row--cell--inner-cell--formatted-value" }, [e._v(" " + e._s(e.cellFormatters(n, l).value) + " ")]) : e.valueToString(l.html) ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--row--cell--inner-cell--html", domProps: { innerHTML: e._s(l.html) } }) : e._e(), e.valueToString(l.text) ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--row--cell--inner-cell--text" }, [e._v(" " + e._s(l.text) + " ")]) : e._e(), l.component ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--row--cell--inner-cell--component" }, [t(l.component.name, e._b({ tag: "component", on: { action: e.handleComponentEvent } }, "component", l.component.props, !1))], 1) : e._e()];
@@ -2003,7 +2031,7 @@ var He = function() {
   Qe,
   !1,
   null,
-  "d3aae2a9",
+  "e88b3e29",
   null,
   null
 );
@@ -2021,8 +2049,8 @@ y.add(Fe);
 y.add(ve);
 y.add(Ce);
 y.add(_e);
-y.add(Re);
 y.add(ke);
+y.add(Re);
 y.add(Pe);
 y.add(xe);
 y.add(Oe);

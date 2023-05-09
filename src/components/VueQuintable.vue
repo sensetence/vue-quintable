@@ -259,6 +259,7 @@
                 indexesUpdatedKey
               "
               @click="onRowClick($event, rIndex)"
+              @auxclick="onRowAuxClick($event, rIndex)"
               :class="rowClasses[rIndex]"
               :id="'vue-quintable-' + uuid + '-row-' + rIndex"
               @mouseenter="onMouseenterRow(rIndex)"
@@ -356,6 +357,7 @@
                     !configFinal.stickyCols[cIndex]
                   "
                   @click="onCellClick($event, cell)"
+                  @auxclick="onCellAuxClick($event, cell)"
                   :key="
                     'vue-quintable-' + uuid + '-cell-' + rIndex + '-' + cIndex
                   "
@@ -3164,6 +3166,22 @@ export default {
     },
 
     /**
+     * Event listener for mouse wheel clicked row
+     *
+     * @param e Click Event
+     * @param rowIndex Index of clicked row
+     */
+    onRowAuxClick(e, rowIndex) {
+      const i = parseInt(rowIndex);
+      this.$emit(
+        "auxclick:row",
+        this.rowsFinal[i],
+        "auxclick:row",
+        e.target,
+        e
+      );
+    },
+    /**
      * Event listener for clicked row. Emits an event if the row has been expanded or collapsed. Emits and event that row was clicked
      *
      * @param e Click Event
@@ -3218,6 +3236,15 @@ export default {
      */
     onCellClick(e, cell) {
       this.$emit("click:cell", cell, "click:cell", e.target, e);
+    },
+
+    /**
+     *
+     * @param e
+     * @param cell
+     */
+    onCellAuxClick(e, cell) {
+      this.$emit("auxclick:cell", cell, "auxclick:cell", e.target, e);
     },
 
     /**
