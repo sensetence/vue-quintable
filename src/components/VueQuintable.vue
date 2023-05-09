@@ -260,6 +260,7 @@
               "
               @click="onRowClick($event, rIndex)"
               @auxclick="onRowAuxClick($event, rIndex)"
+              @mousedown="onRowMousedown($event)"
               :class="rowClasses[rIndex]"
               :id="'vue-quintable-' + uuid + '-row-' + rIndex"
               @mouseenter="onMouseenterRow(rIndex)"
@@ -358,6 +359,7 @@
                   "
                   @click="onCellClick($event, cell)"
                   @auxclick="onCellAuxClick($event, cell)"
+                  @mousedown="onCellMousedown($event)"
                   :key="
                     'vue-quintable-' + uuid + '-cell-' + rIndex + '-' + cIndex
                   "
@@ -3172,14 +3174,26 @@ export default {
      * @param rowIndex Index of clicked row
      */
     onRowAuxClick(e, rowIndex) {
-      const i = parseInt(rowIndex);
-      this.$emit(
-        "auxclick:row",
-        this.rowsFinal[i],
-        "auxclick:row",
-        e.target,
-        e
-      );
+      if (e.button === 1) {
+        const i = parseInt(rowIndex);
+        this.$emit(
+          "auxclick:row",
+          this.rowsFinal[i],
+          "auxclick:row",
+          e.target,
+          e
+        );
+      }
+    },
+    /**
+     * Event listener for mousedown row, just for supporting mouse wheel click
+     *
+     * @param e Click Event
+     */
+    onRowMousedown(e) {
+      if (e.which === 2) {
+        e.preventDefault();
+      }
     },
     /**
      * Event listener for clicked row. Emits an event if the row has been expanded or collapsed. Emits and event that row was clicked
@@ -3244,7 +3258,20 @@ export default {
      * @param cell
      */
     onCellAuxClick(e, cell) {
-      this.$emit("auxclick:cell", cell, "auxclick:cell", e.target, e);
+      if (e.button === 1) {
+        this.$emit("auxclick:cell", cell, "auxclick:cell", e.target, e);
+      }
+    },
+
+    /**
+     * Event listener for mousedown cell, just for supporting mouse wheel click
+     *
+     * @param e Click Event
+     */
+    onCellMousedown(e) {
+      if (e.which === 2) {
+        e.preventDefault();
+      }
     },
 
     /**

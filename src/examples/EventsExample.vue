@@ -25,6 +25,8 @@
       @update:rows-per-page="eventListener"
       @click:row="eventListener"
       @click:cell="eventListener"
+      @auxclick:cell="eventListener"
+      @auxclick:row="eventListener"
       @expand:row="eventListener"
       @filtered:rows="eventListener"
       @hover:row="eventListener"
