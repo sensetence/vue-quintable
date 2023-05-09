@@ -259,7 +259,7 @@ export default {
       });
       this.eventsLog = eventsLog;
 
-      if (this.eventsLog.length > 5) {
+      if (this.eventsLog.length > 4) {
         const eventsLog = this.eventsLog;
         eventsLog.splice(0, 1);
         this.eventsLog = eventsLog;
