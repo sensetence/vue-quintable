@@ -124,7 +124,7 @@
                 :class="headerClass[hIndex]"
                 :title="configFinal.columns[hIndex].title"
                 :key="'headline-' + hIndex"
-                @click="setSortColumn(hIndex)"
+                @click.stop="setSortColumn(hIndex)"
               >
                 <span
                   class="
@@ -393,21 +393,21 @@
                       ></div>
                       <div
                         class="cell-inner"
-                        :class="'quintable--table-container--table--tbody--row--cell--inner-cell--text'"
-                        v-if="valueToString(cell.text)"
-                      >
-                        {{ cell.text }}
-                      </div>
-                      <div
-                        class="cell-inner"
                         :class="'quintable--table-container--table--tbody--row--cell--inner-cell--component'"
-                        v-if="cell.component"
+                        v-else-if="cell.component"
                       >
                         <component
                           :is="cell.component.name"
                           v-bind="cell.component.props"
                           @action="handleComponentEvent"
                         ></component>
+                      </div>
+                      <div
+                        class="cell-inner"
+                        :class="'quintable--table-container--table--tbody--row--cell--inner-cell--text'"
+                        v-else-if="valueToString(cell.text)"
+                      >
+                        {{ cell.text }}
                       </div>
                     </slot>
                   </slot>
@@ -555,7 +555,7 @@
                                 generated-cell-element generated-cell-headline
                                 quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-headline
                               "
-                              @click="setSortColumn(cIndex)"
+                              @click.stop="setSortColumn(cIndex)"
                               :class="configFinal.columnClasses[cIndex]"
                               v-if="
                                 showHeadlines[cIndex] ||
@@ -680,21 +680,21 @@
                                   ></div>
                                   <div
                                     class="cell-inner"
-                                    :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--text'"
-                                    v-if="valueToString(cell.text)"
-                                  >
-                                    {{ cell.text }}
-                                  </div>
-                                  <div
-                                    class="cell-inner"
                                     :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--component'"
-                                    v-if="cell.component"
+                                    v-else-if="cell.component"
                                   >
                                     <component
                                       :is="cell.component.name"
                                       v-bind="cell.component.props"
                                       @action="handleComponentEvent"
                                     ></component>
+                                  </div>
+                                  <div
+                                    class="cell-inner"
+                                    :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--text'"
+                                    v-else-if="valueToString(cell.text)"
+                                  >
+                                    {{ cell.text }}
                                   </div>
                                 </slot>
                               </slot>
@@ -753,7 +753,7 @@
                               sticky-cell-headline
                               quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-headline
                             "
-                            @click="setSortColumn(cIndex)"
+                            @click.stop="setSortColumn(cIndex)"
                             :class="configFinal.columnClasses[cIndex]"
                             v-if="
                               showHeadlines[cIndex] || configFinal.sorts[cIndex]
@@ -870,21 +870,21 @@
                                 ></div>
                                 <div
                                   class="cell-inner"
-                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--text'"
-                                  v-if="valueToString(cell.text)"
-                                >
-                                  {{ cell.text }}
-                                </div>
-                                <div
-                                  class="cell-inner"
                                   :class="'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--component'"
-                                  v-if="cell.component"
+                                  v-else-if="cell.component"
                                 >
                                   <component
                                     :is="cell.component.name"
                                     v-bind="cell.component.props"
                                     @action="handleComponentEvent"
                                   ></component>
+                                </div>
+                                <div
+                                  class="cell-inner"
+                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--text'"
+                                  v-else-if="valueToString(cell.text)"
+                                >
+                                  {{ cell.text }}
                                 </div>
                               </slot>
                             </slot>
@@ -2559,7 +2559,11 @@ export default {
             let cells = val[i].cells ? val[i].cells : val[i];
             if (cells.length !== this.config.columns.length) {
               console.error(
-                `Row cell count on index ${i} doesn't fit for column config! expected: ${this.config.columns.length}, got: ${cells.length}`,
+                `Column count on row index ${i} doesn't fit for column config! expected: ${this.config.columns.length}, got: ${cells.length}` +
+                  (this.configFinal.ajaxUrl
+                    ? ` | URL: ${this.configFinal.ajaxUrl}`
+                    : "") +
+                  (this.identifier ? ` | IDENTIFIER: ${this.identifier}` : ""),
                 val[i]
               );
             }
@@ -3702,7 +3706,7 @@ export default {
     /**
      * Add a column to the sorting or change the sort direction of set sorting column
      *
-     * @param index the column
+     * @param sortIndex the column
      * @param asc bool if it shall be set to a direction
      */
     setSortColumn(sortIndex, asc) {

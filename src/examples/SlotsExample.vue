@@ -5,12 +5,12 @@
       Customized with configured slots
     </p>
     <VueQuintable :config="config" :rows="rows">
-      <template v-slot:cell-complete="context">
+      <template v-slot:cell-content="context">
         <div class="btn btn-sm btn-info" @click.stop="alert(context.cell.text)">
           {{ context.cell.text }}
         </div>
       </template>
-      <template v-slot:generated-cell-complete="context">
+      <template v-slot:generated-cell-content="context">
         <div
           class="btn btn-sm btn-warning"
           @click.stop="alert(context.cell.text)"
@@ -18,7 +18,7 @@
           {{ context.cell.text }}
         </div>
       </template>
-      <template v-slot:sticky-cell-complete="context">
+      <template v-slot:sticky-cell-content="context">
         <div
           class="btn btn-sm btn-danger"
           @click.stop="alert(context.cell.text)"
@@ -97,12 +97,12 @@
         data-toolbar-order="copy-to-clipboard"
       ><code class="language-markup" v-pre>&lt;template&gt;
      &lt;VueQuintable :config=&quot;config&quot; :rows=&quot;rows&quot;&gt;
-      &lt;template v-slot:cell-complete=&quot;context&quot;&gt;
+      &lt;template v-slot:cell-content=&quot;context&quot;&gt;
         &lt;div class=&quot;btn btn-sm btn-info&quot; @click.stop=&quot;alert(context.cell.text)&quot;&gt;
           {{ context.cell.text }}
         &lt;/div&gt;
       &lt;/template&gt;
-      &lt;template v-slot:generated-cell-complete=&quot;context&quot;&gt;
+      &lt;template v-slot:generated-cell-content=&quot;context&quot;&gt;
         &lt;div
           class=&quot;btn btn-sm btn-warning&quot;
           @click.stop=&quot;alert(context.cell.text)&quot;
@@ -110,7 +110,7 @@
           {{ context.cell.text }}
         &lt;/div&gt;
       &lt;/template&gt;
-      &lt;template v-slot:sticky-cell-complete=&quot;context&quot;&gt;
+      &lt;template v-slot:sticky-cell-content=&quot;context&quot;&gt;
         &lt;div
           class=&quot;btn btn-sm btn-danger&quot;
           @click.stop=&quot;alert(context.cell.text)&quot;

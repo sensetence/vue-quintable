@@ -5,7 +5,7 @@
       Nested VueQuintable
     </p>
     <VueQuintable :config="config" :rows="rows">
-      <template v-slot:cell-complete="context">
+      <template v-slot:generated-cell-content="context">
         <div v-if="context.cell.type === 'nested'">
           <VueQuintable
             class="ms-4"
@@ -15,7 +15,7 @@
           >
             <template v-slot:cell-complete="context">
               <strong v-if="context.cell.type === 'strong'">{{
-                context.cell.text
+                context.cell.value
               }}</strong>
             </template>
           </VueQuintable>
@@ -44,8 +44,8 @@
             :rows=&quot;rowsNested&quot;
             :config=&quot;configNested&quot;
           &gt;
-            &lt;template v-slot:cell-complete=&quot;context&quot;&gt;
-              &lt;strong v-if=&quot;context.cell.type === &apos;strong&apos;&quot;&gt;{{context.cell.text }}&lt;/strong&gt;
+            &lt;template v-slot:generated-cell-content=&quot;context&quot;&gt;
+              &lt;strong v-if=&quot;context.cell.type === &apos;strong&apos;&quot;&gt;{{context.cell.value }}&lt;/strong&gt;
             &lt;/template&gt;
           &lt;/VueQuintable&gt;
         &lt;/div&gt;
@@ -74,8 +74,8 @@ export default {
             headline: &quot;Age&quot;,
           },
           {
-            headline: &quot;Birth&amp;nbsp;Time&quot;,
-            sticky: true,
+            headline: &quot;Children&quot;,
+            breakpoint: &quot;all&quot;,
           },
           {
             headline: &quot;Job&quot;,
@@ -113,20 +113,20 @@ export default {
     configNested() {
       return {
         columns: [
+        {
+            headline: &quot;Name&quot;,
+            align: &quot;center&quot;,
+            sort:true,
+          },
           {
-            headline: &quot;Country&quot;,
+            headline: &quot;Country of Birth&quot;,
             cellFormatter: (cell) =&gt; {
-              return { value: &quot;Country: &quot; + cell.text };
+              return { value: &quot;Country: &quot; + cell.value };
             },
             align: &quot;center&quot;,
           },
           {
-            headline: &quot;City&quot;,
-            breakpoint: &quot;lg&quot;,
-            align: &quot;center&quot;,
-          },
-          {
-            headline: &quot;Time&quot;,
+            headline: &quot;Time of Birth&quot;,
             breakpoint: &quot;xl&quot;,
             align: &quot;center&quot;,
           },
@@ -135,6 +135,7 @@ export default {
     },
 
     rowsNested() {
+      const chance = new Chance();
       const hours = Math.ceil(Math.random() * 24);
       const minutes = Math.ceil(Math.random() * 59);
 
@@ -142,25 +143,25 @@ export default {
       m.set({ hour: hours, minute: minutes, second: 0, millisecond: 0 });
 
       const timeB = m.format(&quot;hh:mm A&quot;);
-
       const timeNY = m.tz(&quot;America/New_York&quot;).format(&quot;hh:mm A&quot;);
-
       const timeH = m.tz(&quot;America/Chicago&quot;).format(&quot;hh:mm A&quot;);
+
+
       return [
         [
-          { text: &quot;Germany&quot; },
-          { text: &quot;Berlin&quot; },
-          { type: &quot;strong&quot;, text: timeB },
+          { text: chance.name({ nationality: &quot;en&quot; }) },
+          { value: chance.country({ full: true })},
+          { type: &quot;strong&quot;, value: timeB },
         ],
         [
-          { text: &quot;United States&quot; },
-          { text: &quot;New York&quot; },
-          { type: &quot;strong&quot;, text: timeNY },
+          { text: chance.name({ nationality: &quot;en&quot; }) },
+          { value: chance.country({ full: true }) },
+          { type: &quot;strong&quot;, value: timeNY },
         ],
         [
-          { text: &quot;United States&quot; },
-          { text: &quot;Chicago&quot; },
-          { type: &quot;strong&quot;, text: timeH },
+          { text: chance.name({ nationality: &quot;en&quot; }) },
+          { value: chance.country({ full: true }) },
+          { type: &quot;strong&quot;, value: timeH },
         ],
       ];
     },
@@ -194,8 +195,8 @@ export default {
             breakpoint: "lg",
           },
           {
-            headline: "Birth&nbsp;Time",
-            sticky: true,
+            headline: "Children",
+            breakpoint: "all",
           },
           {
             headline: "Job",
@@ -234,19 +235,19 @@ export default {
       return {
         columns: [
           {
-            headline: "Country",
+            headline: "Name",
+            align: "center",
+            sort: true,
+          },
+          {
+            headline: "Country of Birth",
             cellFormatter: (cell) => {
-              return { value: "Country: " + cell.text };
+              return { value: "Country: " + cell.value };
             },
             align: "center",
           },
           {
-            headline: "City",
-            breakpoint: "lg",
-            align: "center",
-          },
-          {
-            headline: "Time",
+            headline: "Time of Birth",
             breakpoint: "xl",
             align: "center",
           },
@@ -258,29 +259,30 @@ export default {
       const hours = Math.ceil(Math.random() * 24);
       const minutes = Math.ceil(Math.random() * 59);
 
-      var m = moment.tz("Europe/Berlin");
+      let m = moment.tz("Europe/Berlin");
       m.set({ hour: hours, minute: minutes, second: 0, millisecond: 0 });
 
       const timeB = m.format("hh:mm A");
-
       const timeNY = m.tz("America/New_York").format("hh:mm A");
-
       const timeH = m.tz("America/Chicago").format("hh:mm A");
+
+      const chance = new Chance();
+
       return [
         [
-          { text: "Germany" },
-          { text: "Berlin" },
-          { type: "strong", text: timeB },
+          { text: chance.name({ nationality: "en" }) },
+          { value: chance.country({ full: true }) },
+          { type: "strong", value: timeB },
         ],
         [
-          { text: "United States" },
-          { text: "New York" },
-          { type: "strong", text: timeNY },
+          { text: chance.name({ nationality: "en" }) },
+          { value: chance.country({ full: true }) },
+          { type: "strong", value: timeNY },
         ],
         [
-          { text: "United States" },
-          { text: "Chicago" },
-          { type: "strong", text: timeH },
+          { text: chance.name({ nationality: "en" }) },
+          { value: chance.country({ full: true }) },
+          { type: "strong", value: timeH },
         ],
       ];
     },
