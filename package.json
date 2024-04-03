@@ -1,6 +1,6 @@
 {
   "name": "@sensetence/vue-quintable",
-  "version": "2.3.17",
+  "version": "2.3.20",
   "private": false,
   "scripts": {
     "dev": "vite --config vite.build.config.js",
@@ -52,6 +52,7 @@
     "node-gyp": "^6.1.0",
     "prettier": "2.3.1",
     "pretty-checkbox-vue": "^1.1.9",
+    "sanitize-filename": "^1.6.3",
     "sass": "^1.49.9",
     "sass-loader": "^8.0.2",
     "vite": "^4.0.4",

@@ -1,20 +1,20 @@
-import ce from "vue-select";
+import fe from "vue-select";
 import { library as y } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon as he } from "@fortawesome/vue-fontawesome";
-import ue from "v-tooltip";
-import { faAngleDoubleLeft as fe, faAngleDoubleRight as de, faAngleLeft as ge, faAngleRight as pe, faCaretDown as me, faCaretUp as we, faCheck as be, faChevronDown as ye, faChevronUp as Se, faCircleNotch as Fe, faEye as ve, faEyeSlash as Ce, faMinus as _e, faPlus as ke, faSort as Re, faSortAmountDown as Pe, faSortAmountDownAlt as xe, faSquare as Oe, faTimes as qe } from "@fortawesome/free-solid-svg-icons";
-import ie from "fuzzy.js";
-import Ae from "axios";
-var je = typeof globalThis != "undefined" ? globalThis : typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : {};
-function $e(i) {
+import { FontAwesomeIcon as de } from "@fortawesome/vue-fontawesome";
+import ge from "v-tooltip";
+import { faAngleDoubleLeft as pe, faAngleDoubleRight as me, faAngleLeft as we, faAngleRight as be, faCaretDown as ye, faCaretUp as Se, faCheck as ve, faChevronDown as Fe, faChevronUp as Ce, faCircleNotch as Re, faEye as ke, faEyeSlash as _e, faMinus as Pe, faPlus as xe, faSort as Oe, faSortAmountDown as qe, faSortAmountDownAlt as Ae, faSquare as je, faTimes as $e } from "@fortawesome/free-solid-svg-icons";
+import oe from "fuzzy.js";
+import Te from "axios";
+var Ee = typeof globalThis != "undefined" ? globalThis : typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : {};
+function Le(i) {
   return i && i.__esModule && Object.prototype.hasOwnProperty.call(i, "default") ? i.default : i;
 }
-var T = {}, Ee = {
+var L = {}, Ve = {
   get exports() {
-    return T;
+    return L;
   },
   set exports(i) {
-    T = i;
+    L = i;
   }
 };
 /*!
@@ -25,7 +25,7 @@ var T = {}, Ee = {
 (function(i, e) {
   (function(t, s) {
     i.exports = s();
-  })(typeof self != "undefined" ? self : je, function() {
+  })(typeof self != "undefined" ? self : Ee, function() {
     return function(t) {
       var s = {};
       function o(n) {
@@ -54,10 +54,10 @@ var T = {}, Ee = {
         if (n && (m.render = n.render, m.staticRenderFns = n.staticRenderFns, m._compiled = !0), l && (m.functional = !0), r && (m._scopeId = r), c ? (g = function(b) {
           (b = b || this.$vnode && this.$vnode.ssrContext || this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) || typeof __VUE_SSR_CONTEXT__ == "undefined" || (b = __VUE_SSR_CONTEXT__), a && a.call(this, b), b && b._registeredComponents && b._registeredComponents.add(c);
         }, m._ssrRegister = g) : a && (g = a), g) {
-          var S = m.functional, F = S ? m.render : m.beforeCreate;
+          var S = m.functional, v = S ? m.render : m.beforeCreate;
           S ? (m._injectStyles = g, m.render = function(b, p) {
-            return g.call(p), F(b, p);
-          }) : m.beforeCreate = F ? [].concat(F, g) : [g];
+            return g.call(p), v(b, p);
+          }) : m.beforeCreate = v ? [].concat(v, g) : [g];
         }
         return { esModule: u, exports: f, options: m };
       };
@@ -141,34 +141,34 @@ var T = {}, Ee = {
       n._withStripped = !0, t.exports = { render: n, staticRenderFns: [] };
     }]);
   });
-})(Ee);
-const Le = /* @__PURE__ */ $e(T);
-var V = {}, se = {
+})(Ve);
+const Ue = /* @__PURE__ */ Le(L);
+var V = {}, le = {
   get exports() {
     return V;
   },
   set exports(i) {
     V = i;
   }
-}, ne = typeof crypto != "undefined" && crypto.getRandomValues && crypto.getRandomValues.bind(crypto) || typeof msCrypto != "undefined" && typeof window.msCrypto.getRandomValues == "function" && msCrypto.getRandomValues.bind(msCrypto);
-if (ne) {
-  var oe = new Uint8Array(16);
-  se.exports = function() {
-    return ne(oe), oe;
+}, ae = typeof crypto != "undefined" && crypto.getRandomValues && crypto.getRandomValues.bind(crypto) || typeof msCrypto != "undefined" && typeof window.msCrypto.getRandomValues == "function" && msCrypto.getRandomValues.bind(msCrypto);
+if (ae) {
+  var re = new Uint8Array(16);
+  le.exports = function() {
+    return ae(re), re;
   };
 } else {
-  var le = new Array(16);
-  se.exports = function() {
+  var ce = new Array(16);
+  le.exports = function() {
     for (var e = 0, t; e < 16; e++)
-      e & 3 || (t = Math.random() * 4294967296), le[e] = t >>> ((e & 3) << 3) & 255;
-    return le;
+      e & 3 || (t = Math.random() * 4294967296), ce[e] = t >>> ((e & 3) << 3) & 255;
+    return ce;
   };
 }
-var ae = [];
-for (var R = 0; R < 256; ++R)
-  ae[R] = (R + 256).toString(16).substr(1);
-function Te(i, e) {
-  var t = e || 0, s = ae;
+var he = [];
+for (var _ = 0; _ < 256; ++_)
+  he[_] = (_ + 256).toString(16).substr(1);
+function Me(i, e) {
+  var t = e || 0, s = he;
   return [
     s[i[t++]],
     s[i[t++]],
@@ -192,18 +192,18 @@ function Te(i, e) {
     s[i[t++]]
   ].join("");
 }
-var Ve = Te, Ue = V, Me = Ve;
-function De(i, e, t) {
+var De = Me, Ge = V, Ne = De;
+function Be(i, e, t) {
   var s = e && t || 0;
   typeof i == "string" && (e = i === "binary" ? new Array(16) : null, i = null), i = i || {};
-  var o = i.random || (i.rng || Ue)();
+  var o = i.random || (i.rng || Ge)();
   if (o[6] = o[6] & 15 | 64, o[8] = o[8] & 63 | 128, e)
     for (var n = 0; n < 16; ++n)
       e[s + n] = o[n];
-  return e || Me(o);
+  return e || Ne(o);
 }
-var Ge = De;
-function Ne(i, e, t, s, o, n, l, a) {
+var He = Be;
+function Qe(i, e, t, s, o, n, l, a) {
   var r = typeof i == "function" ? i.options : i;
   e && (r.render = e, r.staticRenderFns = t, r._compiled = !0), s && (r.functional = !0), n && (r._scopeId = "data-v-" + n);
   var c;
@@ -232,7 +232,7 @@ function Ne(i, e, t, s, o, n, l, a) {
     options: r
   };
 }
-const Be = {
+const Ke = {
   name: "VueQuintable",
   props: {
     rows: {
@@ -363,7 +363,7 @@ const Be = {
       cancelSource: null,
       lastQuery: "",
       pageOffset: 0,
-      uuid: Ge(),
+      uuid: He(),
       loaderHeight: 0,
       defaultOperator: "equal",
       queryAjaxTimeout: null,
@@ -382,7 +382,8 @@ const Be = {
           return !(i instanceof RegExp) || typeof e != "string" ? !1 : i.test(e);
         }
       },
-      storedState: {}
+      storedState: {},
+      activeRow: null
     };
   },
   computed: {
@@ -398,7 +399,7 @@ const Be = {
      *
      */
     axiosFinal() {
-      return this.axios ? this.axios : Ae;
+      return this.axios ? this.axios : Te;
     },
     /**
      * Set default values for all possible config values
@@ -424,145 +425,154 @@ const Be = {
       this.config.ajaxRequestDelay && (s = this.config.ajaxRequestDelay);
       let o = "bg-muted";
       this.config.hoverClass === !1 ? o = "" : this.config.hoverClass && this.config.hoverClass !== !0 && (o = this.config.hoverClass);
-      let n = !1;
-      this.config.multiSort && (n = !0);
+      let n = "bg-muted";
+      this.config.activeClass === !1 ? n = "" : this.config.activeClass && this.config.activeClass !== !0 && (n = this.config.activeClass);
       let l = !1;
-      this.config.pageSort && (l = !0);
+      this.config.multiSort && (l = !0);
       let a = !1;
-      this.config.multiSortSelect && (a = !0);
+      this.config.pageSort && (a = !0);
       let r = !1;
-      this.config.pageSortSelect && (r = !0);
+      this.config.multiSortSelect && (r = !0);
       let c = !1;
-      this.config.ajaxUrl && (c = this.config.ajaxUrl);
-      let u = "post";
-      ["pre", "post"].includes(this.config.selectPosition) && (u = this.config.selectPosition);
-      let f = !1;
-      this.config.expandedAll && (f = !0);
+      this.config.pageSortSelect && (c = !0);
+      let u = !1;
+      this.config.ajaxUrl && (u = this.config.ajaxUrl);
+      let f = "post";
+      ["pre", "post"].includes(this.config.selectPosition) && (f = this.config.selectPosition);
       let d = !1;
-      this.config.useFuzzySearch && (d = !0);
+      this.config.expandedAll && (d = !0);
       let g = !1;
-      this.config.prettySelect && (g = !0);
+      this.config.useFuzzySearch && (g = !0);
       let m = !1;
-      this.config.rowsSelect && (m = !0);
+      this.config.prettySelect && (m = !0);
       let S = !1;
-      this.config.disallowAllOption && (S = !0);
-      let F = !1;
-      this.config.hideEmptyColumns && (F = !0);
-      let b = "none";
-      ["none", "active", "all"].includes(this.config.ignoreSortEmptyColumns) && (b = this.config.ignoreSortEmptyColumns);
+      this.config.rowsSelect && (S = !0);
+      let v = !1;
+      this.config.keepSelect && (v = !0);
+      let b = !1;
+      this.config.disallowAllOption && (b = !0);
       let p = !1;
-      this.config.search && (p = !0);
-      let w = 1;
-      this.config.searchLength && (w = this.config.searchLength);
-      let U = "Search...";
-      this.config.searchPlaceholder && (U = this.config.searchPlaceholder);
-      let M = "Multiple sort";
-      this.config.multiSortPlaceholder && (M = this.config.multiSortPlaceholder);
-      let D = "Page sort";
-      this.config.pageSortPlaceholder && (D = this.config.pageSortPlaceholder);
-      let G = "AND";
-      ["AND", "OR"].includes(this.config.filterRelation) && (G = this.config.filterRelation);
-      let N = "AND";
-      ["AND", "OR"].includes(this.config.filterGroupRelation) && (N = this.config.filterGroupRelation);
-      let B = "Rows per page:";
-      this.config.rowsPlaceholder && (B = this.config.rowsPlaceholder);
-      let H = "No rows...";
-      this.config.emptyPlaceholder && (H = this.config.emptyPlaceholder);
-      let Q = !1;
-      this.config.selectAll && (Q = !0);
+      this.config.hideEmptyColumns && (p = !0);
+      let w = "none";
+      ["none", "active", "all"].includes(this.config.ignoreSortEmptyColumns) && (w = this.config.ignoreSortEmptyColumns);
+      let U = !1;
+      this.config.search && (U = !0);
+      let M = 1;
+      this.config.searchLength && (M = this.config.searchLength);
+      let D = "Search...";
+      this.config.searchPlaceholder && (D = this.config.searchPlaceholder);
+      let G = "Multiple sort";
+      this.config.multiSortPlaceholder && (G = this.config.multiSortPlaceholder);
+      let N = "Page sort";
+      this.config.pageSortPlaceholder && (N = this.config.pageSortPlaceholder);
+      let B = "AND";
+      ["AND", "OR"].includes(this.config.filterRelation) && (B = this.config.filterRelation);
+      let H = "AND";
+      ["AND", "OR"].includes(this.config.filterGroupRelation) && (H = this.config.filterGroupRelation);
+      let Q = "Rows per page:";
+      this.config.rowsPlaceholder && (Q = this.config.rowsPlaceholder);
+      let K = "No rows...";
+      this.config.emptyPlaceholder && (K = this.config.emptyPlaceholder);
+      let z = !1;
+      this.config.selectAll && (z = !0);
       let C = !1;
-      this.config.selectAllRows && (C = !0), c && C && (console.warn(
+      this.config.selectAllRows && (C = !0), u && C && (console.warn(
         "Option selectAllRows was deactivated automatically because ajaxUrl is set!"
       ), C = !1);
-      let _ = !1;
-      this.config.storeState && (_ = !0), !this.identifier && this.config.storeState && (console.warn(
+      let R = !1;
+      this.config.storeState && (R = !0), !this.identifier && this.config.storeState && (console.warn(
         "Option storeState was deactivated automatically because table identifier is not set!"
-      ), _ = !1);
+      ), R = !1);
       const O = "test-local-storage";
       try {
         localStorage.setItem(O, O), localStorage.removeItem(O);
       } catch (h) {
         console.warn(
           "Option storeState was deactivated automatically because local storage is not available!"
-        ), _ = !1;
+        ), R = !1;
       }
-      let z = !1;
-      this.config.defaultSelected && (z = !0);
-      let K = !1;
-      this.config.hideRowToggle && (K = !0);
-      let J = "chevron-up";
+      let I = !1;
+      this.config.defaultSelected && (I = !0);
+      let J = !1;
+      this.config.hideRowToggle && (J = !0);
+      let W = !1;
+      this.config.enableRowTabIndex && (W = !0);
+      let X = "chevron-up";
       this.config.expandedRowIcon && typeof this.config.expandedRowIcon == "string" && ["chevron-up", "minus", "caret-up", "eye-slash"].includes(
         this.config.expandedRowIcon.toLowerCase()
-      ) && (J = this.config.expandedRowIcon.toLowerCase());
-      let W = "chevron-down";
+      ) && (X = this.config.expandedRowIcon.toLowerCase());
+      let Y = "chevron-down";
       this.config.collapsedRowIcon && typeof this.config.collapsedRowIcon == "string" && ["chevron-down", "plus", "caret-down", "eye"].includes(
         this.config.collapsedRowIcon.toLowerCase()
-      ) && (W = this.config.collapsedRowIcon.toLowerCase());
-      let I = 5;
-      this.config.pageRange && (I = this.config.pageRange);
-      let X = "col-12";
-      this.config.searchClass && (X = this.config.searchClass);
-      let Y = "row";
-      this.config.searchContainerClass && (Y = this.config.searchContainerClass);
-      let Z = "GET";
-      this.config.requestMethod && typeof this.config.requestMethod == "string" && ["POST", "GET"].includes(this.config.requestMethod.toUpperCase()) && (Z = this.config.requestMethod.toUpperCase());
-      let ee = 0, q = [], A = [], j = [], k = [], $ = [], E = [], v = [], L = [], te = null;
+      ) && (Y = this.config.collapsedRowIcon.toLowerCase());
+      let Z = 5;
+      this.config.pageRange && (Z = this.config.pageRange);
+      let ee = "col-12";
+      this.config.searchClass && (ee = this.config.searchClass);
+      let te = "row";
+      this.config.searchContainerClass && (te = this.config.searchContainerClass);
+      let ie = "GET";
+      this.config.requestMethod && typeof this.config.requestMethod == "string" && ["POST", "GET"].includes(this.config.requestMethod.toUpperCase()) && (ie = this.config.requestMethod.toUpperCase());
+      let se = 0, q = [], A = [], j = [], k = [], $ = [], T = [], F = [], E = [], ne = null;
       if (this.config.columns) {
-        ee = this.config.columns.length;
+        se = this.config.columns.length;
         for (let h = 0; h < this.config.columns.length; h++)
-          v[h] = "", this.config.columns[h] && this.config.columns[h].headline ? (q[h] = this.config.columns[h].headline, v[h] += this.config.columns[h].headline.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/\s+/g, "-").toLowerCase()) : q[h] = "", v[h] += " column-" + (h + 1), this.config.columns[h].classes && (v[h] += " " + this.config.columns[h].classes), this.config.columns[h] && this.config.columns[h].breakpoint ? A[h] = this.config.columns[h].breakpoint : A[h] = "", this.config.columns[h] && this.config.columns[h].sort ? this.config.columns[h].firstSortDirection && typeof this.config.columns[h].firstSortDirection == "string" && ["DESC", "ASC"].includes(
+          F[h] = "", this.config.columns[h] && this.config.columns[h].headline ? (q[h] = this.config.columns[h].headline, F[h] += this.config.columns[h].headline.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/\s+/g, "-").toLowerCase()) : q[h] = "", F[h] += " column-" + (h + 1), this.config.columns[h].classes && (F[h] += " " + this.config.columns[h].classes), this.config.columns[h] && this.config.columns[h].breakpoint ? A[h] = this.config.columns[h].breakpoint : A[h] = "", this.config.columns[h] && this.config.columns[h].sort ? this.config.columns[h].firstSortDirection && typeof this.config.columns[h].firstSortDirection == "string" && ["DESC", "ASC"].includes(
             this.config.columns[h].firstSortDirection.toUpperCase()
-          ) ? k[h] = this.config.columns[h].firstSortDirection.toUpperCase() : k[h] = !0 : k[h] = !1, this.config.columns[h] && this.config.columns[h].ignoreEmpty ? L[h] = !0 : L[h] = !1, this.config.columns[h] && this.config.columns[h].sticky ? $[h] = !0 : $[h] = !1, this.config.columns[h] && this.config.columns[h].hidden ? j[h] = !0 : j[h] = !1, this.config.columns[h] && this.config.columns[h].align ? E[h] = this.config.columns[h].align : E[h] = !1;
-        te = this.config.columns;
+          ) ? k[h] = this.config.columns[h].firstSortDirection.toUpperCase() : k[h] = !0 : k[h] = !1, this.config.columns[h] && this.config.columns[h].ignoreEmpty ? E[h] = !0 : E[h] = !1, this.config.columns[h] && this.config.columns[h].sticky ? $[h] = !0 : $[h] = !1, this.config.columns[h] && this.config.columns[h].hidden ? j[h] = !0 : j[h] = !1, this.config.columns[h] && this.config.columns[h].align ? T[h] = this.config.columns[h].align : T[h] = !1;
+        ne = this.config.columns;
       }
       return {
         headlines: q,
-        columnClasses: v,
+        columnClasses: F,
         sorts: k,
-        pageSort: l,
-        multiSort: n,
-        pageSortSelect: r,
-        multiSortSelect: a,
-        filterGroupRelation: N,
-        filterRelation: G,
-        rowsSelect: m,
-        disallowAllOption: S,
-        defaultSelected: z,
-        searchLength: w,
-        search: p,
-        searchPlaceholder: U,
-        useFuzzySearch: d,
-        ajaxUrl: c,
-        pageSortPlaceholder: D,
-        multiSortPlaceholder: M,
-        rowsPlaceholder: B,
-        emptyPlaceholder: H,
+        pageSort: a,
+        multiSort: l,
+        pageSortSelect: c,
+        multiSortSelect: r,
+        filterGroupRelation: H,
+        filterRelation: B,
+        rowsSelect: S,
+        keepSelect: v,
+        disallowAllOption: b,
+        defaultSelected: I,
+        searchLength: M,
+        search: U,
+        searchPlaceholder: D,
+        useFuzzySearch: g,
+        ajaxUrl: u,
+        pageSortPlaceholder: N,
+        multiSortPlaceholder: G,
+        rowsPlaceholder: Q,
+        emptyPlaceholder: K,
         stickyCols: $,
-        alignments: E,
+        alignments: T,
         breakpoints: A,
         hiddenCols: j,
-        ignoreEmpty: L,
-        hideEmptyColumns: F,
-        ignoreSortEmptyColumns: b,
+        ignoreEmpty: E,
+        hideEmptyColumns: p,
+        ignoreSortEmptyColumns: w,
         pagination: i,
         numberOfVisibleRowsFillerWord: e,
         select: t,
-        selectAll: Q,
+        selectAll: z,
         selectAllRows: C,
         hoverClass: o,
-        expandedAll: f,
-        pageRange: I,
-        prettySelect: g,
-        number: ee,
-        columns: te,
-        hideRowToggle: K,
-        expandedRowIcon: J,
-        collapsedRowIcon: W,
-        selectPosition: u,
-        searchClass: X,
-        searchContainerClass: Y,
-        requestMethod: Z,
-        storeState: _,
+        activeClass: n,
+        expandedAll: d,
+        pageRange: Z,
+        prettySelect: m,
+        number: se,
+        columns: ne,
+        hideRowToggle: J,
+        enableRowTabIndex: W,
+        expandedRowIcon: X,
+        collapsedRowIcon: Y,
+        selectPosition: f,
+        searchClass: ee,
+        searchContainerClass: te,
+        requestMethod: ie,
+        storeState: R,
         ajaxRequestDelay: s
       };
     },
@@ -867,7 +877,7 @@ const Be = {
           for (let n = 0; n < t.length; n++) {
             let l = t[n], a = l.html ? l.html : l.text;
             if (a) {
-              if (this.configFinal.useFuzzySearch && ie(
+              if (this.configFinal.useFuzzySearch && oe(
                 (a + "").toLowerCase(),
                 (this.query + "").toLowerCase()
               ).score > 6) {
@@ -882,7 +892,7 @@ const Be = {
           }
           if (t.keywords)
             for (let n = 0; n < t.keywords.length; n++) {
-              if (this.configFinal.useFuzzySearch && ie(
+              if (this.configFinal.useFuzzySearch && oe(
                 (t.keywords[n] + "").toLowerCase(),
                 (this.query + "").toLowerCase()
               ).score > 6) {
@@ -996,7 +1006,7 @@ const Be = {
       const i = {};
       for (let e = 0; e < this.visibleRowIndexes.length; e++) {
         const t = this.visibleRowIndexes[e], s = [];
-        this.rowsFinal[t].classes && s.push(this.rowsFinal[t].classes), this.hoveredRow === t && s.push(this.configFinal.hoverClass), this.openRows[t] && s.push("row-expanded"), this.hiddenColumns[t] > 0 && !this.openRows[t] && s.push("row-collapsed"), i[t] = s.join(" ");
+        this.rowsFinal[t].classes && s.push(this.rowsFinal[t].classes), this.hoveredRow === t && s.push(this.configFinal.hoverClass), this.activeRow === t && s.push(this.configFinal.activeClass), this.openRows[t] && s.push("row-expanded"), this.hiddenColumns[t] > 0 && !this.openRows[t] && s.push("row-collapsed"), i[t] = s.join(" ");
       }
       return i;
     }
@@ -1080,7 +1090,7 @@ const Be = {
       handler(i, e) {
         if (JSON.stringify(i) === JSON.stringify(e) || this.configFinal.ajaxUrl)
           return;
-        this.currentPage !== 1 ? this.currentPage = 1 : this.resetSelect("filteredRows watcher");
+        this.currentPage !== 1 ? this.currentPage = 1 : this.configFinal.keepSelect || this.resetSelect("filteredRows watcher");
         const t = [];
         for (let s = 0; s < i.length; s++) {
           const o = s.toString();
@@ -1229,6 +1239,9 @@ const Be = {
         for (let i = 0; i < this.sortOrder.length; i++)
           typeof this.sortOrder[i] == "object" ? this.setSortColumn(this.sortOrder[i].index, this.sortOrder[i].asc) : typeof this.sortOrder[i] == "number" && this.setSortColumn(this.sortOrder[i]);
       }
+    },
+    activeRow(i) {
+      this.$emit("click:row", this.rowsFinal[i], "active:row");
     }
   },
   methods: {
@@ -1368,7 +1381,7 @@ const Be = {
         "expand:row",
         this.rowsFinal[this.sortedIndexes[o]],
         "expand:row"
-      )), this.generatedUpdatedKey = Date.now()), this.$emit("click:row", this.rowsFinal[n], "click:row", i.target, i);
+      )), this.generatedUpdatedKey = Date.now()), this.configFinal.enableRowTabIndex && (this.activeRow === n ? this.activeRow = null : this.activeRow = n), this.$emit("click:row", this.rowsFinal[n], "click:row", i.target, i);
     },
     /**
      *
@@ -1664,7 +1677,7 @@ const Be = {
       });
       let l = (u, f, d, g) => {
         g = g || 0;
-        let m = d[g], S = m.index, F = u.cells ? u.cells : u, b = f.cells ? f.cells : f, p = typeof F[S].sortValue != "undefined" && F[S].sortValue !== null ? F[S].sortValue : F[S].html ? F[S].html : F[S].text, w = typeof b[S].sortValue != "undefined" && b[S].sortValue !== null ? b[S].sortValue : b[S].html ? b[S].html : b[S].text;
+        let m = d[g], S = m.index, v = u.cells ? u.cells : u, b = f.cells ? f.cells : f, p = typeof v[S].sortValue != "undefined" && v[S].sortValue !== null ? v[S].sortValue : v[S].html ? v[S].html : v[S].text, w = typeof b[S].sortValue != "undefined" && b[S].sortValue !== null ? b[S].sortValue : b[S].html ? b[S].html : b[S].text;
         return typeof p == "string" && (p = p.toLowerCase()), typeof w == "string" && (w = w.toLowerCase()), isNaN(p) ? (typeof p == "string" && p.match(/^-?\d+$/) || typeof p == "string" && p.match(/^\d+\.\d+$/)) && (p = parseFloat(p)) : p = parseFloat(p), isNaN(w) ? (typeof w == "string" && w.match(/^-?\d+$/) || typeof w == "string" && w.match(/^\d+\.\d+$/)) && (w = parseFloat(w)) : w = parseFloat(w), m.asc ? p > w ? 1 : p < w ? -1 : d[g + 1] ? l(u, f, d, g + 1) : 1 : p < w ? 1 : p > w ? -1 : d[g + 1] ? l(u, f, d, g + 1) : -1;
       };
       t.sort(function(u, f) {
@@ -1680,7 +1693,7 @@ const Be = {
         const f = u.toString();
         this.$set(this.sortedIndexes, f, parseInt(a[u].index));
       }
-      !this.pageSort && !i && (this.currentPage = 1), !this.configFinal.selectAllRows && !this.pageSort && !i && this.resetSelect("sort method"), this.recomputeEssentials();
+      !this.pageSort && !i && (this.currentPage = 1), !this.configFinal.selectAllRows && !this.pageSort && !i && !this.configFinal.keepSelect && this.resetSelect("sort method"), this.recomputeEssentials();
     },
     /**
      * Trigger recomputing of the essential parts of the table to ensure correct displaying
@@ -1721,7 +1734,8 @@ const Be = {
     /**
      * Load new rows via ajax including filters, search query and pagination
      *
-     * @param clear
+     * @param clearSortAndPage
+     * @param clearSelected
      * @param accessor
      */
     loadViaAjax(i = !1, e = !0, t = null) {
@@ -1741,6 +1755,7 @@ const Be = {
         filters: this.filtersFinal,
         perPage: this.currentRowsPerPage,
         page: this.currentPage,
+        hiddenColumns: this.configFinal.hiddenCols,
         sort: this.numberOfSorts > 0 ? {
           indexes: this.currentSortIndexes,
           columns: this.sortingColumns
@@ -1813,6 +1828,9 @@ const Be = {
         const e = Object.values(this.selected).filter((t) => t).length;
         this.configFinal.selectAllRows ? this.allSelectedCustom = e && e === this.rowsFinal.length : this.allSelectedCustom = e && e === this.visibleRows.filter((t) => t).length, i && this.$delete(this.storedState, "selected-rows");
       }
+    },
+    checkKey(i) {
+      this.activeRow !== null && (i.preventDefault(), i.keyCode === 40 && (this.activeRow === this.rowsFinal.length - 1 ? this.activeRow = 0 : this.activeRow++), i.keyCode === 38 && (this.activeRow === 0 ? this.activeRow = this.rowsFinal.length - 1 : this.activeRow--));
     }
   },
   created() {
@@ -1856,16 +1874,16 @@ const Be = {
     }
     !this.configFinal.selectAllRows && i && i === this.visibleRows.filter((t) => t).length ? this.allSelectedCustom = !0 : this.configFinal.selectAllRows && i && i === this.rowsFinal.length && (this.allSelectedCustom = !0), this.initialSearchTerm && (this.query = this.initialSearchTerm), this.storedState.query && (this.query = this.storedState.query), this.storedState["rows-per-page"] && (this.customRowsPerPage = this.storedState["rows-per-page"]), this.storedState["sort-indexes"] && (this.currentSortIndexes = this.storedState["sort-indexes"], this.sort(!0)), this.storedState["current-page"] && this.$nextTick(() => {
       this.currentPage = this.storedState["current-page"];
-    }), this.$nextTick(this.checkStoredSelectedRows);
+    }), this.$nextTick(this.checkStoredSelectedRows), this.configFinal.enableRowTabIndex && document.addEventListener("keydown", this.checkKey);
   },
   mounted() {
     this.configFinal.ajaxUrl && this.loadViaAjax(!1, !0, "MOUNTED"), this.configFinal.defaultSelected && this.checkAll(!0), this.generateHiddenBreakpoints(), window.addEventListener("resize", this.breakpointListener);
   },
   beforeDestroy() {
-    window.removeEventListener("resize", this.breakpointListener);
+    window.removeEventListener("resize", this.breakpointListener), this.configFinal.enableRowTabIndex && document.removeEventListener("keydown", this.checkKey);
   }
 };
-var He = function() {
+var ze = function() {
   var e = this, t = e._self._c;
   return t("div", { staticClass: "table-wrapper quintable" }, [t("div", { staticClass: "breakpoints quintable--breakpoints" }, [t("div", { ref: "xs" }), t("div", { ref: "sm", staticClass: "d-none d-sm-block" }), t("div", { ref: "md", staticClass: "d-none d-md-block" }), t("div", { ref: "lg", staticClass: "d-none d-lg-block" }), t("div", { ref: "xl", staticClass: "d-none d-xl-block" }), t("div", { ref: "xxl", staticClass: "d-none d-xxl-block" })]), t("div", { staticClass: "header slot slot-header quintable--header" }, [e._t("header")], 2), e.configFinal.search ? t("div", { staticClass: "mb-3 quintable--search-container", class: e.configFinal.searchContainerClass }, [e._t("before-search"), e._t("search", function() {
     return [t("div", { staticClass: "quintable--search-container--input-container", class: e.configFinal.searchClass }, [t("input", { directives: [{ name: "model", rawName: "v-model", value: e.query, expression: "query" }], staticClass: "form-control", attrs: { type: "search", placeholder: e.configFinal.searchPlaceholder }, domProps: { value: e.query }, on: { input: function(s) {
@@ -1916,7 +1934,7 @@ var He = function() {
               content: rowsFinal[rIndex].tooltip,
               trigger: rowsFinal[rIndex].tooltip ? 'hover' : 'manual',
               offset: 5,
-            }` }], key: "vue-quintable-" + e.uuid + "-row-" + s + "-" + e.indexesUpdatedKey, ref: "row-highlighted-on-hover-" + s, refInFor: !0, staticClass: "vue-quintable-row quintable--table-container--table--tbody--row", class: e.rowClasses[s], style: e.hiddenColumns[s] > 0 ? "cursor:pointer;" : "", attrs: { id: "vue-quintable-" + e.uuid + "-row-" + s }, on: { click: function(o) {
+            }` }], key: "vue-quintable-" + e.uuid + "-row-" + s + "-" + e.indexesUpdatedKey, ref: "row-highlighted-" + s, refInFor: !0, staticClass: "vue-quintable-row quintable--table-container--table--tbody--row", class: e.rowClasses[s], style: e.hiddenColumns[s] > 0 ? "cursor:pointer;" : "", attrs: { id: "vue-quintable-" + e.uuid + "-row-" + s }, on: { click: function(o) {
       return e.onRowClick(o, s);
     }, auxclick: function(o) {
       return e.onRowAuxClick(o, s);
@@ -1972,14 +1990,17 @@ var He = function() {
         e.$set(e.selected, s, a);
     }, function(o) {
       return e.checkListener(o, s);
-    }] } })])]], 2) : e._e()], 2), (e.generatedRows[s] || e.stickyRows[s]) && e.visibleRows[s] ? [e.generatedUpdatedKey && e.openRows[s] && Object.keys(e.generatedRows[s]).length || Object.keys(e.stickyRows[s]).length ? t("tr", { key: "generated-row-" + s + "-" + e.rowsUpdatedKey + "-" + e.generatedUpdatedKey, ref: "generated-row-highlighted-on-hover-" + s, refInFor: !0, staticClass: "generated-row quintable--table-container--table--tbody--generated-row", class: {
+    }] } })])]], 2) : e._e()], 2), (e.generatedRows[s] || e.stickyRows[s]) && e.visibleRows[s] ? [e.generatedUpdatedKey && e.openRows[s] && Object.keys(e.generatedRows[s]).length || Object.keys(e.stickyRows[s]).length ? t("tr", { key: "generated-row-" + s + "-" + e.rowsUpdatedKey + "-" + e.generatedUpdatedKey, ref: "generated-row-highlighted-" + s, refInFor: !0, staticClass: "generated-row quintable--table-container--table--tbody--generated-row", class: {
       "parent-row-expanded": e.openRows[s],
       "parent-row-collapsed": e.hiddenColumns[s] > 0 && !e.openRows[s]
     }, on: { mouseenter: function(o) {
       return e.onMouseenterRow(s);
     }, click: function(o) {
       return e.onRowClick(o, s);
-    } } }, [t("td", { staticClass: "ps-0 pe-0 pt-0", attrs: { colspan: e.configFinal.number + 1 } }, [t("div", { class: e.hoveredRow === s ? e.configFinal.hoverClass : "" }, [t("table", { staticClass: "mb-2 generated-table quintable--table-container--table--tbody--generated-row--generated-table" }, [t("tbody", [e._l(e.generatedRows[s], function(o, n) {
+    } } }, [t("td", { staticClass: "ps-0 pe-0 pt-0", attrs: { colspan: e.configFinal.number + 1 } }, [t("div", { class: {
+      [e.configFinal.hoverClass]: e.hoveredRow === s,
+      [e.configFinal.activeClass]: e.activeRow === s
+    } }, [t("table", { staticClass: "mb-2 generated-table quintable--table-container--table--tbody--generated-row--generated-table" }, [t("tbody", [e._l(e.generatedRows[s], function(o, n) {
       return [e.openRows[s] ? t("tr", { key: "vue-quintable-" + e.uuid + "-generated-row-cell-" + s + "-" + n + "-" + e.generatedUpdatedKey, staticClass: "generated-row-cell quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell", attrs: { id: "vue-quintable-" + e.uuid + "-generated-row-cell-" + s + "-" + n } }, [!e.configFinal.hideRowToggle && e.generatedRows[s] && Object.keys(e.generatedRows[s]).length ? t("td", { staticClass: "toggle-cell invisible" }, [e.hiddenColumns[s] > 0 ? t("span", [e.openRows[s] ? t("span", [t("font-awesome-icon", { attrs: { "fixed-width": "", icon: e.configFinal.expandedRowIcon } })], 1) : t("span", [t("font-awesome-icon", { attrs: { "fixed-width": "", icon: e.configFinal.collapsedRowIcon } })], 1)]) : e._e()]) : e._e(), e.showHeadlines[n] || e.configFinal.sorts[n] ? t("td", { staticClass: "generated-cell-element generated-cell-headline quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-headline", class: e.configFinal.columnClasses[n], on: { click: function(l) {
         return l.stopPropagation(), e.setSortColumn(n);
       } } }, [e.showHeadlines[n] ? t("strong", { domProps: { innerHTML: e._s(e.configFinal.headlines[n]) } }) : t("span", { staticClass: "headline" }, [t("wbr")]), e.configFinal.sorts[n] && e.hoveredRow === s ? t("span", { staticClass: "sorting-icon ms-2 cursor-pointer quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon" }, [e.currentSortIndexes[n] ? e._e() : t("font-awesome-icon", { staticClass: "text-primary", attrs: { icon: "sort" } }), e.currentSortIndexes[n] && e.currentSortIndexes[n].asc ? t("font-awesome-icon", { staticClass: "text-primary", attrs: { icon: "sort-amount-down-alt" } }) : e._e(), e.currentSortIndexes[n] && !e.currentSortIndexes[n].asc ? t("font-awesome-icon", { staticClass: "text-primary", attrs: { icon: "sort-amount-down" } }) : e._e(), e.currentSortIndexes[n] ? t("span", { staticClass: "ms-1 text-muted", on: { click: function(l) {
@@ -1996,7 +2017,7 @@ var He = function() {
         return e.onCellClick(l, o);
       } } }, [e._t("generated-cell-complete", function() {
         return [e._t("generated-cell-content", function() {
-          return [e.configFinal.columns[n].cellFormatter && e.cellFormatters(n, o).type === "html" ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-html", domProps: { innerHTML: e._s(e.cellFormatters(n, o).value) } }) : e.configFinal.columns[n].cellFormatter ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-value" }, [e._v(" " + e._s(e.cellFormatters(n, o).value) + " ")]) : e.valueToString(o.html) ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--html", domProps: { innerHTML: e._s(o.html) } }) : o.component ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--component" }, [t(o.component.name, e._b({ tag: "component", on: { action: e.handleComponentEvent } }, "component", o.component.props, !1))], 1) : e.valueToString(o.text) ? t("div", { staticClass: "cell-inner", class: "quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--text" }, [e._v(" " + e._s(o.text) + " ")]) : e._e()];
+          return [e.configFinal.columns[n].cellFormatter && e.cellFormatters(n, o).type === "html" ? t("div", { staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-html", domProps: { innerHTML: e._s(e.cellFormatters(n, o).value) } }) : e.configFinal.columns[n].cellFormatter ? t("div", { staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-value" }, [e._v(" " + e._s(e.cellFormatters(n, o).value) + " ")]) : e.valueToString(o.html) ? t("div", { staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--html", domProps: { innerHTML: e._s(o.html) } }) : o.component ? t("div", { staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--component" }, [t(o.component.name, e._b({ tag: "component", on: { action: e.handleComponentEvent } }, "component", o.component.props, !1))], 1) : e.valueToString(o.text) ? t("div", { staticClass: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--text" }, [e._v(" " + e._s(o.text) + " ")]) : e._e()];
         }, { cell: o })];
       }, { cell: o })], 2)]) : e._e()];
     }), e._l(e.stickyRows[s], function(o, n) {
@@ -2047,53 +2068,53 @@ var He = function() {
   } } }, [t("span", { staticClass: "page-link" }, [t("font-awesome-icon", { attrs: { icon: "angle-right" } })], 1)]), e.pages > e.pageRange ? t("li", { staticClass: "page-item", class: { disabled: e.pages === e.currentPage }, on: { click: function(s) {
     return e.gotoPage("last");
   } } }, [t("span", { staticClass: "page-link" }, [t("font-awesome-icon", { attrs: { icon: "angle-double-right" } })], 1)]) : e._e()], 2)]) : e._e(), e.numberOfVisibleRows ? t("span", { staticClass: "d-inline-block align-middle mb-2 quintable--table-footer-container--pagination-wrapper--pagination-container--visible-rows" }, [e._v(e._s(e.firstVisibleRow) + "-" + e._s(e.lastVisibleRow) + " " + e._s(e.configFinal.numberOfVisibleRowsFillerWord) + " " + e._s(e.numberOfVisibleRows))]) : e._e()]) : e._e()])])]), t("div", { staticClass: "footer slot slot-footer quintable--footer" }, [e._t("footer")], 2)]);
-}, Qe = [], ze = /* @__PURE__ */ Ne(
-  Be,
-  He,
-  Qe,
+}, Ie = [], Je = /* @__PURE__ */ Qe(
+  Ke,
+  ze,
+  Ie,
   !1,
   null,
-  "139f4bf4",
+  "85850bec",
   null,
   null
 );
-const re = ze.exports;
-y.add(fe);
-y.add(de);
-y.add(ge);
+const ue = Je.exports;
 y.add(pe);
 y.add(me);
 y.add(we);
 y.add(be);
 y.add(ye);
 y.add(Se);
-y.add(Fe);
 y.add(ve);
+y.add(Fe);
 y.add(Ce);
-y.add(_e);
-y.add(ke);
 y.add(Re);
+y.add(ke);
+y.add(_e);
 y.add(Pe);
 y.add(xe);
 y.add(Oe);
 y.add(qe);
+y.add(Ae);
+y.add(je);
+y.add($e);
 let P = function(i) {
-  P.installed || (P.installed = !0, i.component("v-select", ce), i.component("p-check", Le), i.component("font-awesome-icon", he), i.component("VueQuintable", re), i.use(ue, {
+  P.installed || (P.installed = !0, i.component("v-select", fe), i.component("p-check", Ue), i.component("font-awesome-icon", de), i.component("VueQuintable", ue), i.use(ge, {
     defaultTemplate: '<div class="quintable-tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
     defaultClass: ""
   }));
 };
-const Ke = {
+const We = {
   install: P
 };
 let x = null;
 typeof window != "undefined" ? x = window.Vue : typeof global != "undefined" && (x = global.Vue);
-x && x.use(Ke);
-const tt = {
-  VueQuintable: re,
+x && x.use(We);
+const nt = {
+  VueQuintable: ue,
   install: P
 };
 export {
-  tt as default
+  nt as default
 };
 //# sourceMappingURL=vue-quintable.es.js.map

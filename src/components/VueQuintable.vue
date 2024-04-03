@@ -249,7 +249,7 @@
                 offset: 5,
               }"
               :style="hiddenColumns[rIndex] > 0 ? 'cursor:pointer;' : ''"
-              :ref="'row-highlighted-on-hover-' + rIndex"
+              :ref="'row-highlighted-' + rIndex"
               :key="
                 'vue-quintable-' +
                 uuid +
@@ -462,7 +462,7 @@
               <tr
                 @mouseenter="onMouseenterRow(rIndex)"
                 @click="onRowClick($event, rIndex)"
-                :ref="'generated-row-highlighted-on-hover-' + rIndex"
+                :ref="'generated-row-highlighted-' + rIndex"
                 :key="
                   'generated-row-' +
                   rIndex +
@@ -489,7 +489,10 @@
               >
                 <td :colspan="configFinal.number + 1" class="ps-0 pe-0 pt-0">
                   <div
-                    :class="hoveredRow === rIndex ? configFinal.hoverClass : ''"
+                    :class="{
+                      [configFinal.hoverClass]: hoveredRow === rIndex,
+                      [configFinal.activeClass]: activeRow === rIndex,
+                    }"
                   >
                     <table
                       class="
@@ -653,8 +656,10 @@
                                   :name="'generated-cell-content'"
                                 >
                                   <div
-                                    class="cell-inner"
-                                    :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-html'"
+                                    class="
+                                      cell-inner
+                                      quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-html
+                                    "
                                     v-if="
                                       configFinal.columns[cIndex]
                                         .cellFormatter &&
@@ -664,8 +669,10 @@
                                     v-html="cellFormatters(cIndex, cell).value"
                                   ></div>
                                   <div
-                                    class="cell-inner"
-                                    :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-value'"
+                                    class="
+                                      cell-inner
+                                      quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-value
+                                    "
                                     v-else-if="
                                       configFinal.columns[cIndex].cellFormatter
                                     "
@@ -673,14 +680,18 @@
                                     {{ cellFormatters(cIndex, cell).value }}
                                   </div>
                                   <div
-                                    class="cell-inner"
-                                    :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--html'"
+                                    class="
+                                      cell-inner
+                                      quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--html
+                                    "
                                     v-else-if="valueToString(cell.html)"
                                     v-html="cell.html"
                                   ></div>
                                   <div
-                                    class="cell-inner"
-                                    :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--component'"
+                                    class="
+                                      cell-inner
+                                      quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--component
+                                    "
                                     v-else-if="cell.component"
                                   >
                                     <component
@@ -690,8 +701,10 @@
                                     ></component>
                                   </div>
                                   <div
-                                    class="cell-inner"
-                                    :class="'quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--text'"
+                                    class="
+                                      cell-inner
+                                      quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--text
+                                    "
                                     v-else-if="valueToString(cell.text)"
                                   >
                                     {{ cell.text }}
@@ -1324,6 +1337,7 @@ export default {
         },
       },
       storedState: {},
+      activeRow: null,
     };
   },
 
@@ -1394,6 +1408,13 @@ export default {
         hoverClass = this.config.hoverClass;
       }
 
+      let activeClass = "bg-muted";
+      if (this.config.activeClass === false) {
+        activeClass = "";
+      } else if (this.config.activeClass && this.config.activeClass !== true) {
+        activeClass = this.config.activeClass;
+      }
+
       let multiSort = false;
       if (this.config.multiSort) {
         multiSort = true;
@@ -1441,6 +1462,11 @@ export default {
       let rowsSelect = false;
       if (this.config.rowsSelect) {
         rowsSelect = true;
+      }
+
+      let keepSelect = false;
+      if (this.config.keepSelect) {
+        keepSelect = true;
       }
 
       let disallowAllOption = false;
@@ -1553,6 +1579,11 @@ export default {
       let hideRowToggle = false;
       if (this.config.hideRowToggle) {
         hideRowToggle = true;
+      }
+
+      let enableRowTabIndex = false;
+      if (this.config.enableRowTabIndex) {
+        enableRowTabIndex = true;
       }
 
       let expandedRowIcon = "chevron-up";
@@ -1695,6 +1726,7 @@ export default {
         filterGroupRelation: filterGroupRelation,
         filterRelation: filterRelation,
         rowsSelect: rowsSelect,
+        keepSelect: keepSelect,
         disallowAllOption: disallowAllOption,
         defaultSelected: defaultSelected,
         searchLength: searchLength,
@@ -1719,12 +1751,14 @@ export default {
         selectAll: selectAll,
         selectAllRows: selectAllRows,
         hoverClass: hoverClass,
+        activeClass: activeClass,
         expandedAll: expandedAll,
         pageRange: pageRange,
         prettySelect: prettySelect,
         number: number,
         columns: columns,
         hideRowToggle: hideRowToggle,
+        enableRowTabIndex: enableRowTabIndex,
         expandedRowIcon: expandedRowIcon,
         collapsedRowIcon: collapsedRowIcon,
         selectPosition: selectPosition,
@@ -2536,6 +2570,10 @@ export default {
           rowClasses.push(this.configFinal.hoverClass);
         }
 
+        if (this.activeRow === rIndex) {
+          rowClasses.push(this.configFinal.activeClass);
+        }
+
         if (this.openRows[rIndex]) {
           rowClasses.push("row-expanded");
         }
@@ -2691,7 +2729,7 @@ export default {
 
         if (this.currentPage !== 1) {
           this.currentPage = 1;
-        } else {
+        } else if (!this.configFinal.keepSelect) {
           this.resetSelect("filteredRows watcher");
         }
 
@@ -2977,6 +3015,9 @@ export default {
         }
       },
     },
+    activeRow(val) {
+      this.$emit("click:row", this.rowsFinal[val], "active:row");
+    },
   },
   methods: {
     /**
@@ -3240,10 +3281,16 @@ export default {
             "collapse:row"
           );
         }
-
         this.generatedUpdatedKey = Date.now();
       }
 
+      if (this.configFinal.enableRowTabIndex) {
+        if (this.activeRow === i) {
+          this.activeRow = null;
+        } else {
+          this.activeRow = i;
+        }
+      }
       this.$emit("click:row", this.rowsFinal[i], "click:row", e.target, e);
     },
 
@@ -3925,7 +3972,12 @@ export default {
         this.currentPage = 1;
       }
 
-      if (!this.configFinal.selectAllRows && !this.pageSort && !preventReset) {
+      if (
+        !this.configFinal.selectAllRows &&
+        !this.pageSort &&
+        !preventReset &&
+        !this.configFinal.keepSelect
+      ) {
         this.resetSelect("sort method");
       }
 
@@ -4009,7 +4061,8 @@ export default {
     /**
      * Load new rows via ajax including filters, search query and pagination
      *
-     * @param clear
+     * @param clearSortAndPage
+     * @param clearSelected
      * @param accessor
      */
     loadViaAjax(
@@ -4070,6 +4123,7 @@ export default {
         filters: this.filtersFinal,
         perPage: this.currentRowsPerPage,
         page: this.currentPage,
+        hiddenColumns: this.configFinal.hiddenCols,
         sort:
           this.numberOfSorts > 0
             ? {
@@ -4227,6 +4281,26 @@ export default {
         }
       }
     },
+    checkKey(event) {
+      if (this.activeRow === null) {
+        return;
+      }
+      event.preventDefault();
+      if (event.keyCode === 40) {
+        if (this.activeRow === this.rowsFinal.length - 1) {
+          this.activeRow = 0;
+        } else {
+          this.activeRow++;
+        }
+      }
+      if (event.keyCode === 38) {
+        if (this.activeRow === 0) {
+          this.activeRow = this.rowsFinal.length - 1;
+        } else {
+          this.activeRow--;
+        }
+      }
+    },
   },
   created() {
     if (this.configFinal.storeState) {
@@ -4340,6 +4414,10 @@ export default {
       });
     }
     this.$nextTick(this.checkStoredSelectedRows);
+
+    if (this.configFinal.enableRowTabIndex) {
+      document.addEventListener("keydown", this.checkKey);
+    }
   },
   mounted() {
     if (this.configFinal.ajaxUrl) {
@@ -4358,6 +4436,9 @@ export default {
   beforeDestroy() {
     //release listener from window resize
     window.removeEventListener("resize", this.breakpointListener);
+    if (this.configFinal.enableRowTabIndex) {
+      document.removeEventListener("keydown", this.checkKey);
+    }
   },
 };
 </script>
