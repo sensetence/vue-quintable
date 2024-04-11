@@ -1066,7 +1066,7 @@ const Ke = {
       deep: !0
     },
     filtersFinal(i) {
-      this.$emit("update:filters", i);
+      this.$emit("update:filters", i, "update:filters");
     },
     /**
      * Trigger reload current page without changing filter/search/page from outside
@@ -1183,7 +1183,7 @@ const Ke = {
         this.configFinal.storeState && localStorage.setItem(
           `vue-quintable-${this.identifier}-selected-rows`,
           JSON.stringify(i)
-        ), this.$emit("input", e), this.$emit("update:selected-rows", e);
+        ), this.$emit("input", e), this.$emit("update:selected-rows", e, "update:selected-rows");
       },
       deep: !0
     },
@@ -1241,7 +1241,7 @@ const Ke = {
       }
     },
     activeRow(i) {
-      this.$emit("active:row", this.rowsFinal[i], "active:row");
+      this.$emit("active:row", this.rowsFinal[i], "active:row", i);
     }
   },
   methods: {
@@ -1345,7 +1345,8 @@ const Ke = {
           this.rowsFinal[t],
           "auxclick:row",
           i.target,
-          i
+          i,
+          t
         );
       }
     },
@@ -1376,12 +1377,14 @@ const Ke = {
       this.hiddenColumns[o] && !t && !s && (this.openRows[o] ? (this.$set(this.openRows, o, !1), this.$emit(
         "expand:row",
         this.rowsFinal[this.sortedIndexes[o]],
-        "collapse:row"
+        "collapse:row",
+        this.sortedIndexes[o]
       )) : (this.$set(this.openRows, o, !0), this.$emit(
         "expand:row",
         this.rowsFinal[this.sortedIndexes[o]],
-        "expand:row"
-      )), this.generatedUpdatedKey = Date.now()), this.configFinal.enableRowTabIndex && (this.activeRow === n ? this.activeRow = null : this.activeRow = n), this.$emit("click:row", this.rowsFinal[n], "click:row", i.target, i);
+        "expand:row",
+        this.sortedIndexes[o]
+      )), this.generatedUpdatedKey = Date.now()), this.configFinal.enableRowTabIndex && (this.activeRow === n ? this.activeRow = null : this.activeRow = n), this.$emit("click:row", this.rowsFinal[n], "click:row", i.target, i, n);
     },
     /**
      *
@@ -2074,7 +2077,7 @@ var ze = function() {
   Ie,
   !1,
   null,
-  "a897f615",
+  "b2b1f24e",
   null,
   null
 );

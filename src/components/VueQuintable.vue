@@ -2686,7 +2686,7 @@ export default {
       deep: true,
     },
     filtersFinal(val) {
-      this.$emit("update:filters", val);
+      this.$emit("update:filters", val, "update:filters");
     },
     /**
      * Trigger reload current page without changing filter/search/page from outside
@@ -2915,7 +2915,7 @@ export default {
         }
 
         this.$emit("input", selected);
-        this.$emit("update:selected-rows", selected);
+        this.$emit("update:selected-rows", selected, "update:selected-rows");
       },
       deep: true,
     },
@@ -3016,7 +3016,7 @@ export default {
       },
     },
     activeRow(val) {
-      this.$emit("active:row", this.rowsFinal[val], "active:row");
+      this.$emit("active:row", this.rowsFinal[val], "active:row", val);
     },
   },
   methods: {
@@ -3226,7 +3226,8 @@ export default {
           this.rowsFinal[i],
           "auxclick:row",
           e.target,
-          e
+          e,
+          i
         );
       }
     },
@@ -3271,14 +3272,16 @@ export default {
           this.$emit(
             "expand:row",
             this.rowsFinal[this.sortedIndexes[index]],
-            "expand:row"
+            "expand:row",
+            this.sortedIndexes[index]
           );
         } else {
           this.$set(this.openRows, index, false);
           this.$emit(
             "expand:row",
             this.rowsFinal[this.sortedIndexes[index]],
-            "collapse:row"
+            "collapse:row",
+            this.sortedIndexes[index]
           );
         }
         this.generatedUpdatedKey = Date.now();
@@ -3291,7 +3294,7 @@ export default {
           this.activeRow = i;
         }
       }
-      this.$emit("click:row", this.rowsFinal[i], "click:row", e.target, e);
+      this.$emit("click:row", this.rowsFinal[i], "click:row", e.target, e, i);
     },
 
     /**
