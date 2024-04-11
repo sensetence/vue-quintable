@@ -3016,7 +3016,7 @@ export default {
       },
     },
     activeRow(val) {
-      this.$emit("click:row", this.rowsFinal[val], "active:row");
+      this.$emit("active:row", this.rowsFinal[val], "active:row");
     },
   },
   methods: {

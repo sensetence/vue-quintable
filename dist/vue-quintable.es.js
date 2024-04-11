@@ -1241,7 +1241,7 @@ const Ke = {
       }
     },
     activeRow(i) {
-      this.$emit("click:row", this.rowsFinal[i], "active:row");
+      this.$emit("active:row", this.rowsFinal[i], "active:row");
     }
   },
   methods: {
@@ -2074,7 +2074,7 @@ var ze = function() {
   Ie,
   !1,
   null,
-  "85850bec",
+  "a897f615",
   null,
   null
 );
