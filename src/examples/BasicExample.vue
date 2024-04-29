@@ -143,7 +143,6 @@ export default {
             headline: "Job",
           },
         ],
-        enableRowTabIndex: true,
       },
 
       rows: [

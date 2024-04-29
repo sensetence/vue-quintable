@@ -2727,6 +2727,13 @@ export default {
           return;
         }
 
+        const realCurrentIndex = this.visibleRowIndexes.findIndex(
+          (x) => x === this.activeRow
+        );
+        if (realCurrentIndex < 0) {
+          this.activeRow = null;
+        }
+
         if (this.currentPage !== 1) {
           this.currentPage = 1;
         } else if (!this.configFinal.keepSelect) {
@@ -2853,6 +2860,8 @@ export default {
       this.clearLists();
       this.initLists();
 
+      this.activeRow = null;
+
       this.$nextTick(() => {
         this.recomputeEssentials();
         this.$forceUpdate();
@@ -2879,6 +2888,8 @@ export default {
 
       this.initLists();
       this.$forceUpdate();
+
+      this.activeRow = null;
 
       if (this.configFinal.ajaxUrl) {
         this.loadViaAjax(false, true, "CONFIG");
@@ -2926,6 +2937,7 @@ export default {
      */
     currentPage(val) {
       this.pageOffset = 0;
+      this.activeRow = null;
 
       this.$emit("update:page", val, "update:page");
 
@@ -3016,7 +3028,8 @@ export default {
       },
     },
     activeRow(val) {
-      this.$emit("active:row", this.rowsFinal[val], "active:row", val);
+      const realIndex = this.visibleRowIndexes.findIndex((x) => x === val);
+      this.$emit("active:row", this.rowsFinal[val], "active:row", realIndex);
     },
   },
   methods: {
@@ -4288,19 +4301,27 @@ export default {
       if (this.activeRow === null) {
         return;
       }
-      event.preventDefault();
       if (event.keyCode === 40) {
-        if (this.activeRow === this.rowsFinal.length - 1) {
+        event.preventDefault();
+        const realCurrentIndex = this.visibleRowIndexes.findIndex(
+          (x) => x === this.activeRow
+        );
+        if (realCurrentIndex === this.visibleRowIndexes.length - 1) {
           this.activeRow = 0;
         } else {
-          this.activeRow++;
+          this.activeRow = this.visibleRowIndexes[realCurrentIndex + 1];
         }
       }
       if (event.keyCode === 38) {
-        if (this.activeRow === 0) {
-          this.activeRow = this.rowsFinal.length - 1;
+        event.preventDefault();
+        const realCurrentIndex = this.visibleRowIndexes.findIndex(
+          (x) => x === this.activeRow
+        );
+        if (realCurrentIndex === 0) {
+          this.activeRow =
+            this.visibleRowIndexes[this.visibleRowIndexes.length - 1];
         } else {
-          this.activeRow--;
+          this.activeRow = this.visibleRowIndexes[realCurrentIndex - 1];
         }
       }
     },

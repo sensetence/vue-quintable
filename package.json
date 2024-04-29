@@ -1,6 +1,6 @@
 {
   "name": "@sensetence/vue-quintable",
-  "version": "2.3.22",
+  "version": "2.3.23",
   "private": false,
   "scripts": {
     "dev": "vite --config vite.build.config.js",
