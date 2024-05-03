@@ -2,7 +2,7 @@ import fe from "vue-select";
 import { library as y } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon as de } from "@fortawesome/vue-fontawesome";
 import ge from "v-tooltip";
-import { faAngleDoubleLeft as pe, faAngleDoubleRight as me, faAngleLeft as we, faAngleRight as be, faCaretDown as ye, faCaretUp as Se, faCheck as ve, faChevronDown as Ce, faChevronUp as Fe, faCircleNotch as Re, faEye as ke, faEyeSlash as _e, faMinus as xe, faPlus as Pe, faSort as Oe, faSortAmountDown as qe, faSortAmountDownAlt as Ae, faSquare as je, faTimes as $e } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDoubleLeft as pe, faAngleDoubleRight as me, faAngleLeft as we, faAngleRight as be, faCaretDown as ye, faCaretUp as Se, faCheck as ve, faChevronDown as Fe, faChevronUp as Ce, faCircleNotch as Re, faEye as ke, faEyeSlash as _e, faMinus as xe, faPlus as Pe, faSort as Oe, faSortAmountDown as qe, faSortAmountDownAlt as Ae, faSquare as je, faTimes as $e } from "@fortawesome/free-solid-svg-icons";
 import oe from "fuzzy.js";
 import Te from "axios";
 var Ee = typeof globalThis != "undefined" ? globalThis : typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : {};
@@ -399,7 +399,7 @@ const Qe = {
      *
      */
     axiosFinal() {
-      return this.axios ? this.axios : Te;
+      return this.axios ? this.axios : this.$globalVueQuintableaxios ? this.$globalVueQuintableaxios : Te;
     },
     /**
      * Set default values for all possible config values
@@ -475,10 +475,10 @@ const Qe = {
       this.config.emptyPlaceholder && (Q = this.config.emptyPlaceholder);
       let K = !1;
       this.config.selectAll && (K = !0);
-      let F = !1;
-      this.config.selectAllRows && (F = !0), u && F && (console.warn(
+      let C = !1;
+      this.config.selectAllRows && (C = !0), u && C && (console.warn(
         "Option selectAllRows was deactivated automatically because ajaxUrl is set!"
-      ), F = !1);
+      ), C = !1);
       let R = !1;
       this.config.storeState && (R = !0), !this.identifier && this.config.storeState && (console.warn(
         "Option storeState was deactivated automatically because table identifier is not set!"
@@ -513,18 +513,18 @@ const Qe = {
       this.config.searchContainerClass && (te = this.config.searchContainerClass);
       let ie = "GET";
       this.config.requestMethod && typeof this.config.requestMethod == "string" && ["POST", "GET"].includes(this.config.requestMethod.toUpperCase()) && (ie = this.config.requestMethod.toUpperCase());
-      let se = 0, q = [], A = [], j = [], k = [], $ = [], T = [], C = [], E = [], ne = null;
+      let se = 0, q = [], A = [], j = [], k = [], $ = [], T = [], F = [], E = [], ne = null;
       if (this.config.columns) {
         se = this.config.columns.length;
         for (let h = 0; h < this.config.columns.length; h++)
-          C[h] = "", this.config.columns[h] && this.config.columns[h].headline ? (q[h] = this.config.columns[h].headline, C[h] += this.config.columns[h].headline.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/\s+/g, "-").toLowerCase()) : q[h] = "", C[h] += " column-" + (h + 1), this.config.columns[h].classes && (C[h] += " " + this.config.columns[h].classes), this.config.columns[h] && this.config.columns[h].breakpoint ? A[h] = this.config.columns[h].breakpoint : A[h] = "", this.config.columns[h] && this.config.columns[h].sort ? this.config.columns[h].firstSortDirection && typeof this.config.columns[h].firstSortDirection == "string" && ["DESC", "ASC"].includes(
+          F[h] = "", this.config.columns[h] && this.config.columns[h].headline ? (q[h] = this.config.columns[h].headline, F[h] += this.config.columns[h].headline.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/\s+/g, "-").toLowerCase()) : q[h] = "", F[h] += " column-" + (h + 1), this.config.columns[h].classes && (F[h] += " " + this.config.columns[h].classes), this.config.columns[h] && this.config.columns[h].breakpoint ? A[h] = this.config.columns[h].breakpoint : A[h] = "", this.config.columns[h] && this.config.columns[h].sort ? this.config.columns[h].firstSortDirection && typeof this.config.columns[h].firstSortDirection == "string" && ["DESC", "ASC"].includes(
             this.config.columns[h].firstSortDirection.toUpperCase()
           ) ? k[h] = this.config.columns[h].firstSortDirection.toUpperCase() : k[h] = !0 : k[h] = !1, this.config.columns[h] && this.config.columns[h].ignoreEmpty ? E[h] = !0 : E[h] = !1, this.config.columns[h] && this.config.columns[h].sticky ? $[h] = !0 : $[h] = !1, this.config.columns[h] && this.config.columns[h].hidden ? j[h] = !0 : j[h] = !1, this.config.columns[h] && this.config.columns[h].align ? T[h] = this.config.columns[h].align : T[h] = !1;
         ne = this.config.columns;
       }
       return {
         headlines: q,
-        columnClasses: C,
+        columnClasses: F,
         sorts: k,
         pageSort: a,
         multiSort: l,
@@ -556,7 +556,7 @@ const Qe = {
         numberOfVisibleRowsFillerWord: e,
         select: t,
         selectAll: K,
-        selectAllRows: F,
+        selectAllRows: C,
         hoverClass: o,
         activeClass: n,
         expandedAll: d,
@@ -890,16 +890,16 @@ const Qe = {
               }
             }
           }
-          if (t.keywords)
-            for (let n = 0; n < t.keywords.length; n++) {
+          if (this.rowsFinal[e].keywords)
+            for (let n = 0; n < this.rowsFinal[e].keywords.length; n++) {
               if (this.configFinal.useFuzzySearch && oe(
-                (t.keywords[n] + "").toLowerCase(),
+                (this.rowsFinal[e].keywords[n] + "").toLowerCase(),
                 (this.query + "").toLowerCase()
               ).score > 6) {
                 s = !0;
                 break;
               }
-              if ((t.keywords[n] + "").toLowerCase().indexOf((this.query + "").toLowerCase()) !== -1) {
+              if ((this.rowsFinal[e].keywords[n] + "").toLowerCase().indexOf((this.query + "").toLowerCase()) !== -1) {
                 s = !0;
                 break;
               }
@@ -2095,7 +2095,7 @@ var Ke = function() {
   ze,
   !1,
   null,
-  "847a5e4e",
+  "7538489a",
   null,
   null
 );
@@ -2107,8 +2107,8 @@ y.add(be);
 y.add(ye);
 y.add(Se);
 y.add(ve);
-y.add(Ce);
 y.add(Fe);
+y.add(Ce);
 y.add(Re);
 y.add(ke);
 y.add(_e);
@@ -2119,11 +2119,11 @@ y.add(qe);
 y.add(Ae);
 y.add(je);
 y.add($e);
-let x = function(i) {
+let x = function(i, e) {
   x.installed || (x.installed = !0, i.component("v-select", fe), i.component("p-check", Ue), i.component("font-awesome-icon", de), i.component("VueQuintable", ue), i.use(ge, {
     defaultTemplate: '<div class="quintable-tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
     defaultClass: ""
-  }));
+  }), e.axios && (i.prototype.$globalVueQuintableaxios = e.axios));
 };
 const We = {
   install: x

@@ -1355,7 +1355,11 @@ export default {
      *
      */
     axiosFinal() {
-      return this.axios ? this.axios : axios;
+      return this.axios
+        ? this.axios
+        : this.$globalVueQuintableaxios
+        ? this.$globalVueQuintableaxios
+        : axios;
     },
 
     /**
@@ -2358,12 +2362,12 @@ export default {
             }
           }
           //check set per row keywords
-          if (row.keywords) {
-            for (let k = 0; k < row.keywords.length; k++) {
+          if (this.rowsFinal[i].keywords) {
+            for (let k = 0; k < this.rowsFinal[i].keywords.length; k++) {
               if (
                 this.configFinal.useFuzzySearch &&
                 fuzzy(
-                  (row.keywords[k] + "").toLowerCase(),
+                  (this.rowsFinal[i].keywords[k] + "").toLowerCase(),
                   (this.query + "").toLowerCase()
                 ).score > 6
               ) {
@@ -2372,7 +2376,7 @@ export default {
               }
 
               if (
-                (row.keywords[k] + "")
+                (this.rowsFinal[i].keywords[k] + "")
                   .toLowerCase()
                   .indexOf((this.query + "").toLowerCase()) !== -1
               ) {

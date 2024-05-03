@@ -58,7 +58,7 @@ library.add(faTimes);
 import VueQuintable from "./components/VueQuintable.vue";
 
 // Declare install function executed by Vue.use()
-let install = function (Vue) {
+let install = function (Vue, options) {
   if (install.installed) return;
 
   install.installed = true;
@@ -71,6 +71,10 @@ let install = function (Vue) {
       '<div class="quintable-tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
     defaultClass: "",
   });
+
+  if (options.axios) {
+    Vue.prototype.$globalVueQuintableaxios = options.axios;
+  }
 };
 
 // Create module definition for Vue.use()

@@ -202,6 +202,7 @@
 
                     rows.push(
                         {
+                            keywords: ['Row ' + i],
                             cells:[
                                 {
                                     text:name
@@ -359,6 +360,7 @@ export default {
         const age = chance.age();
 
         rows.push({
+          keywords: ["ROW " + i],
           cells: [
             {
               text: name,
