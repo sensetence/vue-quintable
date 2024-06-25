@@ -299,11 +299,17 @@
                 "
                 :class="{ 'disabled-select': rowsFinal[rIndex].disableSelect }"
               >
-                <template v-if="!rowsFinal[rIndex].disableSelect">
+                <template
+                  v-if="
+                    !rowsFinal[rIndex].disableSelect ||
+                    rowsFinal[rIndex].showDisabledSelect
+                  "
+                >
                   <p-check
                     v-if="configFinal.prettySelect"
                     name="check"
                     class="p-icon"
+                    :disabled="rowsFinal[rIndex].disableSelect"
                     v-model="selected[rIndex]"
                     @change="checkListener($event, rIndex)"
                   >
@@ -320,6 +326,7 @@
                     <input
                       type="checkbox"
                       v-model="selected[rIndex]"
+                      :disabled="rowsFinal[rIndex].disableSelect"
                       @change="checkListener($event, rIndex)"
                     />
                   </label>
