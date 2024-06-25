@@ -10,18 +10,19 @@ import sanitize from "sanitize-filename";
 
 let outDir = resolve(__dirname, "dist");
 
-
-if(process.env.BUILD_DEST_DIRECTORY){
+if (process.env.BUILD_DEST_DIRECTORY) {
   const absolute = isAbsolute(process.env.BUILD_DEST_DIRECTORY);
   const arr = process.env.BUILD_DEST_DIRECTORY.split(sep);
-  outDir = arr.map((s, index)=>{
-    if(absolute && index === 0 || s === '.'|| s === '..'){
-      return s;
-    }
-    return sanitize(s)
-  }).join(sep);
+  outDir = arr
+    .map((s, index) => {
+      if ((absolute && index === 0) || s === "." || s === "..") {
+        return s;
+      }
+      return sanitize(s);
+    })
+    .join(sep);
 
-  if(!absolute){
+  if (!absolute) {
     outDir = resolve(__dirname, outDir);
   }
 }

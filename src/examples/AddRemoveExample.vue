@@ -684,7 +684,6 @@ export default {
     },
 
     componentListener(data) {
-      console.log(data);
       if (data.type === "delete-row") {
         this.rows.splice(data.index, 1);
         this.rowCount--;

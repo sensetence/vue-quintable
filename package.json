@@ -1,12 +1,12 @@
 {
   "name": "@sensetence/vue-quintable",
-  "version": "2.3.26",
+  "version": "2.3.29",
   "private": false,
   "scripts": {
     "dev": "vite --config vite.build.config.js",
     "build": "vite build --config vite.build.config.js",
     "prod-local": "vite build --config vite.pack.config.js",
-    "prod": "node pack.js",
+    "prod": "node ./pack.js",
     "preview": "vite preview"
   },
   "main": "./dist/vue-quintable.umd.js",

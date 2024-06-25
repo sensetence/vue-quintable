@@ -433,11 +433,17 @@
                 "
                 :class="{ 'disabled-select': rowsFinal[rIndex].disableSelect }"
               >
-                <template v-if="!rowsFinal[rIndex].disableSelect">
+                <template
+                  v-if="
+                    !rowsFinal[rIndex].disableSelect ||
+                    rowsFinal[rIndex].showDisabledSelect
+                  "
+                >
                   <p-check
                     v-if="configFinal.prettySelect"
                     name="check"
                     class="p-icon"
+                    :disabled="rowsFinal[rIndex].disableSelect"
                     v-model="selected[rIndex]"
                     @change="checkListener($event, rIndex)"
                   >
@@ -454,6 +460,7 @@
                     <input
                       type="checkbox"
                       v-model="selected[rIndex]"
+                      :disabled="rowsFinal[rIndex].disableSelect"
                       @change="checkListener($event, rIndex)"
                     />
                   </label>
@@ -2648,7 +2655,10 @@ export default {
 
           for (let j = 0; j < indexes.length; j++) {
             const index = indexes[j];
-            if (this.rowsFinal[index][key] === value) {
+            if (
+              !this.rowsFinal[index].disableSelect &&
+              this.rowsFinal[index][key] === value
+            ) {
               this.$set(this.selected, index, true);
               counter++;
             }
@@ -2657,9 +2667,17 @@ export default {
 
         if (!this.configFinal.selectAllRows) {
           this.allSelectedCustom =
-            counter && counter === this.visibleRows.filter((x) => x).length;
+            counter &&
+            counter ===
+              this.rowsFinal.filter(
+                (x, index) =>
+                  !x.disableSelect &&
+                  this.visibleRows[this.sortedIndexes[index]]
+              ).length;
         } else {
-          this.allSelectedCustom = counter && counter === this.rowsFinal.length;
+          this.allSelectedCustom =
+            counter &&
+            counter === this.rowsFinal.filter((x) => !x.disableSelect).length;
         }
       } else {
         this.allSelectedCustom = false;
@@ -3428,10 +3446,11 @@ export default {
         if (Object.prototype.hasOwnProperty.call(this.sortedIndexes, index)) {
           index = parseInt(index);
           if (
-            (!this.configFinal.selectAllRows &&
+            !this.rowsFinal[this.sortedIndexes[index]].disableSelect &&
+            ((!this.configFinal.selectAllRows &&
               this.visibleRows[this.sortedIndexes[index]]) ||
-            (this.configFinal.selectAllRows &&
-              this.filteredRows[this.sortedIndexes[index]])
+              (this.configFinal.selectAllRows &&
+                this.filteredRows[this.sortedIndexes[index]]))
           ) {
             this.$set(this.selected, this.sortedIndexes[index], value);
             counter++;
@@ -3444,9 +3463,17 @@ export default {
       if (value) {
         if (!this.configFinal.selectAllRows) {
           this.allSelectedCustom =
-            counter && counter === this.visibleRows.filter((x) => x).length;
+            counter &&
+            counter ===
+              this.rowsFinal.filter(
+                (x, index) =>
+                  !x.disableSelect &&
+                  this.visibleRows[this.sortedIndexes[index]]
+              ).length;
         } else {
-          this.allSelectedCustom = counter && counter === this.rowsFinal.length;
+          this.allSelectedCustom =
+            counter &&
+            counter === this.rowsFinal.filter((x) => !x.disableSelect).length;
         }
       }
     },
@@ -4407,7 +4434,7 @@ export default {
       if (row.selected) {
         this.$set(this.selected, i, true);
       }
-      if (row.selected || row.disableSelect) {
+      if (row.selected) {
         counter++;
       }
     }
@@ -4415,13 +4442,17 @@ export default {
     if (
       !this.configFinal.selectAllRows &&
       counter &&
-      counter === this.visibleRows.filter((x) => x).length
+      counter ===
+        this.rowsFinal.filter(
+          (x, index) =>
+            !x.disableSelect && this.visibleRows[this.sortedIndexes[index]]
+        ).length
     ) {
       this.allSelectedCustom = true;
     } else if (
       this.configFinal.selectAllRows &&
       counter &&
-      counter === this.rowsFinal.length
+      counter === this.rowsFinal.filter((x) => !x.disableSelect).length
     ) {
       this.allSelectedCustom = true;
     }
