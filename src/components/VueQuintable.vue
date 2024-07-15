@@ -3941,6 +3941,11 @@ export default {
             : cellsA[i].html
             ? cellsA[i].html
             : cellsA[i].text;
+
+        if (typeof cellsA[i].computeSortValue === "function") {
+          aValue = cellsA[i].computeSortValue(this.currentSortIndexes);
+        }
+
         let bValue =
           typeof cellsB[i].sortValue !== "undefined" &&
           cellsB[i].sortValue !== null
@@ -3948,6 +3953,10 @@ export default {
             : cellsB[i].html
             ? cellsB[i].html
             : cellsB[i].text;
+
+        if (typeof cellsB[i].computeSortValue === "function") {
+          aValue = cellsB[i].computeSortValue(this.currentSortIndexes);
+        }
 
         if (typeof aValue === "string") {
           aValue = aValue.toLowerCase();

@@ -1,5 +1,5 @@
 import fe from "vue-select";
-import { library as y } from "@fortawesome/fontawesome-svg-core";
+import { library as S } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon as de } from "@fortawesome/vue-fontawesome";
 import ge from "v-tooltip";
 import { faAngleDoubleLeft as pe, faAngleDoubleRight as me, faAngleLeft as we, faAngleRight as be, faCaretDown as ye, faCaretUp as Se, faCheck as ve, faChevronDown as Fe, faChevronUp as Ce, faCircleNotch as Re, faEye as ke, faEyeSlash as _e, faMinus as xe, faPlus as Pe, faSort as Oe, faSortAmountDown as qe, faSortAmountDownAlt as Ae, faSquare as je, faTimes as $e } from "@fortawesome/free-solid-svg-icons";
@@ -54,8 +54,8 @@ var L = {}, Ve = {
         if (l && (m.render = l.render, m.staticRenderFns = l.staticRenderFns, m._compiled = !0), o && (m.functional = !0), r && (m._scopeId = r), c ? (g = function(b) {
           (b = b || this.$vnode && this.$vnode.ssrContext || this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) || typeof __VUE_SSR_CONTEXT__ == "undefined" || (b = __VUE_SSR_CONTEXT__), a && a.call(this, b), b && b._registeredComponents && b._registeredComponents.add(c);
         }, m._ssrRegister = g) : a && (g = a), g) {
-          var S = m.functional, v = S ? m.render : m.beforeCreate;
-          S ? (m._injectStyles = g, m.render = function(b, p) {
+          var w = m.functional, v = w ? m.render : m.beforeCreate;
+          w ? (m._injectStyles = g, m.render = function(b, p) {
             return g.call(p), v(b, p);
           }) : m.beforeCreate = v ? [].concat(v, g) : [g];
         }
@@ -445,16 +445,16 @@ const Qe = {
       this.config.useFuzzySearch && (g = !0);
       let m = !1;
       this.config.prettySelect && (m = !0);
-      let S = !1;
-      this.config.rowsSelect && (S = !0);
+      let w = !1;
+      this.config.rowsSelect && (w = !0);
       let v = !1;
       this.config.keepSelect && (v = !0);
       let b = !1;
       this.config.disallowAllOption && (b = !0);
       let p = !1;
       this.config.hideEmptyColumns && (p = !0);
-      let w = "none";
-      ["none", "active", "all"].includes(this.config.ignoreSortEmptyColumns) && (w = this.config.ignoreSortEmptyColumns);
+      let y = "none";
+      ["none", "active", "all"].includes(this.config.ignoreSortEmptyColumns) && (y = this.config.ignoreSortEmptyColumns);
       let U = !1;
       this.config.search && (U = !0);
       let D = 1;
@@ -532,7 +532,7 @@ const Qe = {
         multiSortSelect: r,
         filterGroupRelation: H,
         filterRelation: B,
-        rowsSelect: S,
+        rowsSelect: w,
         keepSelect: v,
         disallowAllOption: b,
         defaultSelected: z,
@@ -551,7 +551,7 @@ const Qe = {
         hiddenCols: j,
         ignoreEmpty: E,
         hideEmptyColumns: p,
-        ignoreSortEmptyColumns: w,
+        ignoreSortEmptyColumns: y,
         pagination: i,
         numberOfVisibleRowsFillerWord: e,
         select: t,
@@ -1687,8 +1687,10 @@ const Qe = {
       });
       let o = (u, f, d, g) => {
         g = g || 0;
-        let m = d[g], S = m.index, v = u.cells ? u.cells : u, b = f.cells ? f.cells : f, p = typeof v[S].sortValue != "undefined" && v[S].sortValue !== null ? v[S].sortValue : v[S].html ? v[S].html : v[S].text, w = typeof b[S].sortValue != "undefined" && b[S].sortValue !== null ? b[S].sortValue : b[S].html ? b[S].html : b[S].text;
-        return typeof p == "string" && (p = p.toLowerCase()), typeof w == "string" && (w = w.toLowerCase()), isNaN(p) ? (typeof p == "string" && p.match(/^-?\d+$/) || typeof p == "string" && p.match(/^\d+\.\d+$/)) && (p = parseFloat(p)) : p = parseFloat(p), isNaN(w) ? (typeof w == "string" && w.match(/^-?\d+$/) || typeof w == "string" && w.match(/^\d+\.\d+$/)) && (w = parseFloat(w)) : w = parseFloat(w), m.asc ? p > w ? 1 : p < w ? -1 : d[g + 1] ? o(u, f, d, g + 1) : 1 : p < w ? 1 : p > w ? -1 : d[g + 1] ? o(u, f, d, g + 1) : -1;
+        let m = d[g], w = m.index, v = u.cells ? u.cells : u, b = f.cells ? f.cells : f, p = typeof v[w].sortValue != "undefined" && v[w].sortValue !== null ? v[w].sortValue : v[w].html ? v[w].html : v[w].text;
+        typeof v[w].computeSortValue == "function" && (p = v[w].computeSortValue(this.currentSortIndexes));
+        let y = typeof b[w].sortValue != "undefined" && b[w].sortValue !== null ? b[w].sortValue : b[w].html ? b[w].html : b[w].text;
+        return typeof b[w].computeSortValue == "function" && (p = b[w].computeSortValue(this.currentSortIndexes)), typeof p == "string" && (p = p.toLowerCase()), typeof y == "string" && (y = y.toLowerCase()), isNaN(p) ? (typeof p == "string" && p.match(/^-?\d+$/) || typeof p == "string" && p.match(/^\d+\.\d+$/)) && (p = parseFloat(p)) : p = parseFloat(p), isNaN(y) ? (typeof y == "string" && y.match(/^-?\d+$/) || typeof y == "string" && y.match(/^\d+\.\d+$/)) && (y = parseFloat(y)) : y = parseFloat(y), m.asc ? p > y ? 1 : p < y ? -1 : d[g + 1] ? o(u, f, d, g + 1) : 1 : p < y ? 1 : p > y ? -1 : d[g + 1] ? o(u, f, d, g + 1) : -1;
       };
       t.sort(function(u, f) {
         return o(u, f, l);
@@ -2101,30 +2103,30 @@ var Ke = function() {
   ze,
   !1,
   null,
-  "df39853c",
+  "61ae31d6",
   null,
   null
 );
 const ue = Je.exports;
-y.add(pe);
-y.add(me);
-y.add(we);
-y.add(be);
-y.add(ye);
-y.add(Se);
-y.add(ve);
-y.add(Fe);
-y.add(Ce);
-y.add(Re);
-y.add(ke);
-y.add(_e);
-y.add(xe);
-y.add(Pe);
-y.add(Oe);
-y.add(qe);
-y.add(Ae);
-y.add(je);
-y.add($e);
+S.add(pe);
+S.add(me);
+S.add(we);
+S.add(be);
+S.add(ye);
+S.add(Se);
+S.add(ve);
+S.add(Fe);
+S.add(Ce);
+S.add(Re);
+S.add(ke);
+S.add(_e);
+S.add(xe);
+S.add(Pe);
+S.add(Oe);
+S.add(qe);
+S.add(Ae);
+S.add(je);
+S.add($e);
 let x = function(i, e) {
   x.installed || (x.installed = !0, i.component("v-select", fe), i.component("p-check", Ue), i.component("font-awesome-icon", de), i.component("VueQuintable", ue), i.use(ge, {
     defaultTemplate: '<div class="quintable-tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
