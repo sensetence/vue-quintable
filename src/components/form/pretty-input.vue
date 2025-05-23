@@ -6,28 +6,27 @@
         :name="name"
         :checked="shouldBeChecked"
         :value="value"
-        :indeterminate="_indeterminate"
         @change="updateInput"
         :disabled="_disabled"
         :required="_required"
     />
     <div :class="onClasses">
-      <slot name="extra"></slot>
+      <slot name="extra"/>
       <label>
-        <slot></slot>
+        <slot/>
       </label>
     </div>
     <div v-if="_toggle" :class="offClasses">
-      <slot name="off-extra"></slot>
-      <slot name="off-label"></slot>
+      <slot name="off-extra"/>
+      <slot name="off-label"/>
     </div>
     <div v-if="_hover" :class="hoverClasses">
-      <slot name="hover-extra"></slot>
-      <slot name="hover-label"></slot>
+      <slot name="hover-extra"/>
+      <slot name="hover-label"/>
     </div>
     <div v-if="_indeterminate" :class="indeterminateClasses">
-      <slot name="indeterminate-extra"></slot>
-      <slot name="indeterminate-label"></slot>
+      <slot name="indeterminate-extra"/>
+      <slot name="indeterminate-label"/>
     </div>
   </div>
 </template>
@@ -69,17 +68,13 @@ export default defineComponent({
     _type() {
       if (this.$options.input_type) return this.$options.input_type;
       if (this.type) return this.type;
-
       return "checkbox";
     },
     shouldBeChecked() {
       if (this.modelValue !== undefined) {
-        // radio
         if (this._type === "radio") {
           return this.modelValue === this.value;
         }
-
-        // checkbox
         if (this.modelValue instanceof Array) {
           return this.modelValue.includes(this.value);
         }
@@ -89,7 +84,6 @@ export default defineComponent({
         return typeof this.modelValue === "string" ? true : !!this.modelValue;
       }
 
-      // this.modelValue === undefined
       if (this.m_checked === undefined)
         return typeof this.checked === "string" ? true : !!this.checked;
       else return this.m_checked;
@@ -135,7 +129,6 @@ export default defineComponent({
         "p-on": this._toggle
       };
       if (this.color) classes[`p-${this.color}`] = true;
-
       return classes;
     },
     offClasses() {
@@ -144,7 +137,6 @@ export default defineComponent({
         "p-off": true
       };
       if (this.offColor) classes[`p-${this.offColor}`] = true;
-
       return classes;
     },
     hoverClasses() {
@@ -153,7 +145,6 @@ export default defineComponent({
         "p-is-hover": true
       };
       if (this.hoverColor) classes[`p-${this.hoverColor}`] = true;
-
       return classes;
     },
     indeterminateClasses() {
@@ -162,7 +153,6 @@ export default defineComponent({
         "p-is-indeterminate": true
       };
       if (this.indeterminateColor) classes[`p-${this.indeterminateColor}`] = true;
-
       return classes;
     }
   },
@@ -170,17 +160,22 @@ export default defineComponent({
   watch: {
     checked(v) {
       this.m_checked = typeof v === "string" ? true : !!v;
-    },
-    indeterminate(v) {
-      // this.$refs.input.indeterminate = v;
     }
   },
 
   mounted() {
-    // if (this.$vnode.data && !this.$vnode.data.staticClass)
     this.default_mode = true;
-    // if (this._indeterminate) this.$refs.input.indeterminate = true;
     this.$el.setAttribute(`p-${this._type}`, "");
+
+    if (this.$refs.input && this._indeterminate) {
+      (this.$refs.input as HTMLInputElement).indeterminate = true;
+    }
+  },
+
+  updated() {
+    if (this.$refs.input) {
+      (this.$refs.input as HTMLInputElement).indeterminate = this._indeterminate;
+    }
   },
 
   methods: {
@@ -191,20 +186,16 @@ export default defineComponent({
       }
 
       this.$emit("update:indeterminate", false);
-
       const isChecked = event.target.checked;
-
       this.m_checked = isChecked;
 
       if (this.modelValue instanceof Array) {
         const newValue = [...this.modelValue];
-
         if (isChecked) {
           newValue.push(this.value);
         } else {
           newValue.splice(newValue.indexOf(this.value), 1);
         }
-
         this.$emit("change", newValue);
       } else {
         this.$emit(

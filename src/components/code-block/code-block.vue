@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted, nextTick, defineProps} from 'vue';
+import {ref, onMounted, nextTick} from 'vue';
 import Prism from "prismjs";
 import "prismjs/themes/prism-okaidia.css";
 import "prismjs/plugins/line-numbers/prism-line-numbers.css";
@@ -16,7 +16,7 @@ import "prismjs/plugins/toolbar/prism-toolbar.min.js";
 import "prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js";
 
 // the code cannot be passed as child because vue removes whitespaces
-const props = defineProps({
+defineProps({
   code: {
     type: String,
     required: true

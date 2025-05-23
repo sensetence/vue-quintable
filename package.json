@@ -21,6 +21,9 @@
     "vue-select": "^4.0.0-beta.6"
   },
   "devDependencies": {
+    "@types/chance": "^1.1.6",
+    "@types/prismjs": "^1.26.5",
+    "@types/vue-select": "^3.16.8",
     "@vitejs/plugin-vue": "^5.2.3",
     "@vue/tsconfig": "^0.7.0",
     "bootstrap": "^5.3.6",
