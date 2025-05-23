@@ -5,11 +5,11 @@
         <div class="col-12">
           <div class="text-center">
             <img
-              alt="VueQuintable Logo"
-              title="VueQuintable Logo"
-              src="./assets/banner.png"
-              width="400"
-              height="300"
+                alt="VueQuintable Logo"
+                title="VueQuintable Logo"
+                src="./assets/banner.png"
+                width="400"
+                height="300"
             />
             <h1 class="mb-4">VueQuintable Demo</h1>
           </div>
@@ -18,10 +18,10 @@
       <div class="row">
         <div class="col-12">
           <v-select
-            class="mb-3"
-            :clearable="false"
-            v-model="example"
-            :options="examples"
+              class="mb-3"
+              :clearable="false"
+              v-model="example"
+              :options="examples"
           ></v-select>
           <div class="example-content">
             <component :is="example.value"></component>
@@ -50,7 +50,7 @@ import SlotsExample from "./examples/SlotsExample.vue";
 import AddRemoveExample from "./examples/AddRemoveExample.vue";
 import TooltipsExample from "./examples/TooltipsExample.vue";
 import HiddenExample from "./examples/HiddenExample.vue";
-import ComputedRowsExample from "./examples/ComputedRowsExample.vue";
+import ComputedRowsExample from "../../src/examples/computed-rows-example.vue";
 import CellFormattersExample from "./examples/FormatterExample.vue";
 import AjaxExample from "./examples/AjaxExample.vue";
 import AjaxSelectExample from "./examples/AjaxSelectExample.vue";
@@ -78,14 +78,14 @@ import "prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js";
 // );
 
 axiosCustom.interceptors.request.use(
-  (config) => {
-    console.warn("Custom axios", config);
+    (config) => {
+      console.warn("Custom axios", config);
 
-    return config;
-  },
-  (error) => {
-    console.log("ERROR AXIOS", error);
-  }
+      return config;
+    },
+    (error) => {
+      console.log("ERROR AXIOS", error);
+    }
 );
 
 export default {
@@ -110,7 +110,7 @@ export default {
     SlotsExample,
     HiddenExample,
     AddRemoveExample,
-    ComputedRowsExample,
+    ComputedRowsExample: ComputedRowsExample,
     CellFormattersExample,
     StoreStateExample,
     AjaxStoreStateExample,
