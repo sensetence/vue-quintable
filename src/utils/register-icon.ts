@@ -7,14 +7,44 @@ import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome';
 import {
     faChevronUp,
     faChevronDown,
-    faInfoCircle
+    faInfoCircle,
+    faAngleDoubleLeft,
+    faAngleDoubleRight,
+    faAngleLeft,
+    faAngleRight,
+    faSort,
+    faSortAmountDown,
+    faSortAmountDownAlt,
+    faSortAmountUp,
+    faSortAmountUpAlt,
+    faTimes,
+    faCheck,
+    faSquare,
+    faCircleNotch,
+    faPlus,
+    faCaretUp,
 } from '@fortawesome/free-solid-svg-icons';
 
 // import the icons you want to use
 library.add(
     faChevronUp,
     faChevronDown,
-    faInfoCircle
+    faInfoCircle,
+    faAngleDoubleLeft,
+    faAngleDoubleRight,
+    faAngleLeft,
+    faAngleRight,
+    faSort,
+    faSortAmountDown,
+    faSortAmountDownAlt,
+    faSortAmountUp,
+    faSortAmountUpAlt,
+    faTimes,
+    faCheck,
+    faSquare,
+    faCircleNotch,
+    faPlus,
+    faCaretUp,
 );
 
 export function registerIconComponents(app: App) {

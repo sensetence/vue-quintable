@@ -1,9 +1,6 @@
 <template>
   <div class="content">
-    <p class="alert alert-info">
-      <font-awesome-icon class="me-2" icon="info-circle"/>
-      Just a simple table
-    </p>
+    <alert-info>Just a simple table.</alert-info>
 
     <!-- table -->
     <vue-quintable :config="config" :rows="rows"/>
@@ -16,6 +13,7 @@
 
 <script setup lang="ts">
 import {ref} from "vue";
+import AlertInfo from "../components/alert/alert-info.vue";
 import VueQuintable from "../components/table/vue-quintable.vue";
 import CodeBlock from "../components/code-block/code-block.vue";
 import ShowHideButton from "../components/code-block/show-hide-button.vue";

@@ -1,6 +1,6 @@
 <template>
   <button
-      class="btn btn-secondary"
+      class="btn btn-secondary mt-3"
       @click="toggleCode"
   >
     <font-awesome-icon :icon="showCode ? 'chevron-up' : 'chevron-down'"/>

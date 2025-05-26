@@ -982,26 +982,19 @@
       <div class="row">
         <div class="col-lg-4 quintable--table-footer-container--sort-container">
           <div
-              class="
-              pb-lg-0 pb-3
-              float-start
-              quintable--table-footer-container--sort-container--sort-select
-            "
+              :class="`pb-lg-0 pb-3 float-start quintable--table-footer-container--sort-container--sort-select flex-inline ${configFinal.pageSort ? 'me-3' : ''}`.trim()"
               v-if="configFinal.multiSortSelect || configFinal.pageSortSelect"
           >
-            <span
-                :class="configFinal.pageSort ? 'me-3' : ''"
+            <p-check
                 v-if="configFinal.multiSortSelect"
-            ><p-check
                 class="
                   p-switch
                   quintable--table-footer-container--sort-container--sort-select--multi-sort-select
                 "
                 v-model="multiSort"
                 value="true"
-            >{{ configFinal.multiSortPlaceholder }}</p-check
-            ></span
-            >
+            >{{ configFinal.multiSortPlaceholder }}
+            </p-check>
             <p-check
                 v-if="configFinal.pageSortSelect"
                 class="
@@ -2956,7 +2949,8 @@ export default {
         }
 
         this.$emit("input", selected);
-        this.$emit("update:selected-rows", selected, "update:selected-rows");
+        this.$emit("update:selected-rows", selected);
+        this.$emit("dennis", selected);
       },
       deep: true,
     },
@@ -4744,5 +4738,11 @@ nav.disabled {
   visibility: visible;
   opacity: 1;
   transition: opacity 0.15s;
+}
+
+.flex-inline {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 </style>

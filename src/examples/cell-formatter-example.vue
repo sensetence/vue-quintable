@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <alert-info>Rows are calculated and passed as a computed property.</alert-info>
+    <alert-info>Cells will be formatted by custom formatting functions.</alert-info>
 
     <!-- table -->
     <vue-quintable :config="config" :rows="rows"/>
@@ -14,10 +14,10 @@
 <script setup lang="ts">
 import {computed, ref} from 'vue';
 import Chance from "chance";
-import AlertInfo from "../components/alert/alert-info.vue";
 import VueQuintable from "../components/table/vue-quintable.vue";
 import ShowHideButton from "../components/code-block/show-hide-button.vue";
 import CodeBlock from "../components/code-block/code-block.vue";
+import AlertInfo from "../components/alert/alert-info.vue";
 
 const showCode = ref(false);
 
@@ -26,15 +26,30 @@ const config = {
   columns: [
     {
       headline: "Name",
+      cellFormatter: (cell) => {
+        return "Name: " + cell.content.name;
+      },
     },
     {
       headline: "Age",
+      cellFormatter: (cell) => {
+        return {
+          value: "<strong>" + cell.content.age + "</strong>",
+          type: "html",
+        };
+      },
     },
     {
       headline: "Birth Place",
+      cellFormatter: (cell) => {
+        return cell.content.city;
+      },
     },
     {
       headline: "Job",
+      cellFormatter: (cell) => {
+        return cell.content.profession;
+      },
     },
   ],
 };
@@ -46,18 +61,25 @@ const rows = computed(() => {
   const chance = new Chance();
 
   for (let i = 0; i < count; i++) {
+    const row = {
+      name: chance.name({nationality: "en"}),
+      age: chance.age(),
+      city: chance.city(),
+      profession: chance.profession(),
+    };
+
     rows.push([
       {
-        text: chance.name({nationality: "en"}),
+        content: row,
       },
       {
-        text: chance.age(),
+        content: row,
       },
       {
-        text: chance.city(),
+        content: row,
       },
       {
-        text: chance.profession(),
+        content: row,
       },
     ]);
   }
@@ -70,8 +92,8 @@ const code = `&lt;template&gt;
   &lt;vue-quintable :config=&quot;config&quot; :rows=&quot;rows&quot;/&gt;
 &lt;/template&gt;
 
-&lt;script setup&gt;
-import {computed, ref} from 'vue';
+&lt;script setup lang=&quot;ts&quot;&gt;
+import {computed} from 'vue';
 import Chance from &quot;chance&quot;;
 import VueQuintable from &quot;../components/table/vue-quintable.vue&quot;;
 
@@ -80,15 +102,30 @@ const config = {
   columns: [
     {
       headline: &quot;Name&quot;,
+      cellFormatter: (cell) =&gt; {
+        return &quot;Name: &quot; + cell.content.name;
+      },
     },
     {
       headline: &quot;Age&quot;,
+      cellFormatter: (cell) =&gt; {
+        return {
+          value: &quot;&lt;strong&gt;&quot; + cell.content.age + &quot;&lt;/strong&gt;&quot;,
+          type: &quot;html&quot;,
+        };
+      },
     },
     {
       headline: &quot;Birth Place&quot;,
+      cellFormatter: (cell) =&gt; {
+        return cell.content.city;
+      },
     },
     {
       headline: &quot;Job&quot;,
+      cellFormatter: (cell) =&gt; {
+        return cell.content.profession;
+      },
     },
   ],
 };
@@ -100,18 +137,25 @@ const rows = computed(() =&gt; {
   const chance = new Chance();
 
   for (let i = 0; i &lt; count; i++) {
+    const row = {
+      name: chance.name({nationality: &quot;en&quot;}),
+      age: chance.age(),
+      city: chance.city(),
+      profession: chance.profession(),
+    };
+
     rows.push([
       {
-        text: chance.name({nationality: &quot;en&quot;}),
+        content: row,
       },
       {
-        text: chance.age(),
+        content: row,
       },
       {
-        text: chance.city(),
+        content: row,
       },
       {
-        text: chance.profession(),
+        content: row,
       },
     ]);
   }

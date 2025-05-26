@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <alert-info>Rows are calculated and passed as a computed property.</alert-info>
+    <alert-info>Switch pages by clicking on pagination below.</alert-info>
 
     <!-- table -->
     <vue-quintable :config="config" :rows="rows"/>
@@ -14,10 +14,10 @@
 <script setup lang="ts">
 import {computed, ref} from 'vue';
 import Chance from "chance";
-import AlertInfo from "../components/alert/alert-info.vue";
 import VueQuintable from "../components/table/vue-quintable.vue";
 import ShowHideButton from "../components/code-block/show-hide-button.vue";
 import CodeBlock from "../components/code-block/code-block.vue";
+import AlertInfo from "../components/alert/alert-info.vue";
 
 const showCode = ref(false);
 
@@ -37,10 +37,13 @@ const config = {
       headline: "Job",
     },
   ],
+  pagination: 5,
+  pageRange: 3,
+  rowsSelect: true,
 };
 
 const rows = computed(() => {
-  let count = 10;
+  let count = 250;
   const rows = [];
 
   const chance = new Chance();
@@ -70,8 +73,8 @@ const code = `&lt;template&gt;
   &lt;vue-quintable :config=&quot;config&quot; :rows=&quot;rows&quot;/&gt;
 &lt;/template&gt;
 
-&lt;script setup&gt;
-import {computed, ref} from 'vue';
+&lt;script setup lang=&quot;ts&quot;&gt;
+import {computed} from 'vue';
 import Chance from &quot;chance&quot;;
 import VueQuintable from &quot;../components/table/vue-quintable.vue&quot;;
 
@@ -91,10 +94,13 @@ const config = {
       headline: &quot;Job&quot;,
     },
   ],
+  pagination: 5,
+  pageRange: 3,
+  rowsSelect: true,
 };
 
 const rows = computed(() =&gt; {
-  let count = 10;
+  let count = 250;
   const rows = [];
 
   const chance = new Chance();

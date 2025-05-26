@@ -5,11 +5,11 @@
         <div class="col-12">
           <div class="text-center">
             <img
-                alt="VueQuintable Logo"
-                title="VueQuintable Logo"
-                src="./assets/banner.png"
-                width="400"
-                height="300"
+              alt="VueQuintable Logo"
+              title="VueQuintable Logo"
+              src="./assets/banner.png"
+              width="400"
+              height="300"
             />
             <h1 class="mb-4">VueQuintable Demo</h1>
           </div>
@@ -18,10 +18,10 @@
       <div class="row">
         <div class="col-12">
           <v-select
-              class="mb-3"
-              :clearable="false"
-              v-model="example"
-              :options="examples"
+            class="mb-3"
+            :clearable="false"
+            v-model="example"
+            :options="examples"
           ></v-select>
           <div class="example-content">
             <component :is="example.value"></component>
@@ -36,27 +36,27 @@
 import axiosCustom from "axios";
 
 import BasicExample from "./examples/BasicExample.vue";
-import SelectExample from "./examples/SelectExample.vue";
-import PaginationExample from "./examples/PaginationExample.vue";
-import SortExample from "./examples/SortExample.vue";
-import BreakpointsExample from "./examples/BreakpointsExample.vue";
-import BindedExample from "./examples/BindedExample.vue";
-import EventsExample from "./examples/EventsExample.vue";
-import AjaxLoadedExample from "./examples/AjaxLoadedExample.vue";
-import FiltersExample from "./examples/FiltersExample.vue";
-import ComponentsExample from "./examples/ComponentsExample.vue";
-import NestedExample from "./examples/NestedExample.vue";
-import SlotsExample from "./examples/SlotsExample.vue";
-import AddRemoveExample from "./examples/AddRemoveExample.vue";
-import TooltipsExample from "./examples/TooltipsExample.vue";
-import HiddenExample from "./examples/HiddenExample.vue";
+import SelectExample from "../../src/examples/select-example.vue";
+import PaginationExample from "../../src/examples/pagination-example.vue";
+import SortExample from "../../src/examples/sort-example.vue";
+import BreakpointsExample from "../../src/examples/breakpoints-example.vue";
+import VueBindedExample from "../../src/examples/vue-binded-example.vue";
+import EventsExample from "../../src/examples/events-example.vue";
+import AjaxLoadedExample from "../../src/examples/ajax-loaded-example.vue";
+import FilterExample from "../../src/examples/filter-example.vue";
+import ComponentExample from "../../src/examples/component-example.vue";
+import NestedExample from "../../src/examples/nested-example.vue";
+import SlotsExample from "../../src/examples/slots-example.vue";
+import AddRemoveExample from "../../src/examples/add-remove-example.vue";
+import TooltipsExample from "../../src/examples/tooltips-example.vue";
+import HideShowExample from "../../src/examples/hide-show-example.vue";
 import ComputedRowsExample from "../../src/examples/computed-rows-example.vue";
-import CellFormattersExample from "./examples/FormatterExample.vue";
-import AjaxExample from "./examples/AjaxExample.vue";
-import AjaxSelectExample from "./examples/AjaxSelectExample.vue";
-import BreakpointsAdvancedExample from "./examples/BreakpointsAdvancedExample.vue";
-import StoreStateExample from "./examples/StoreStateExample.vue";
-import AjaxStoreStateExample from "./examples/AjaxStoreStateExample.vue";
+import CellFormatterExample from "../../src/examples/cell-formatter-example.vue";
+import AjaxExample from "../../src/examples/ajax-example.vue";
+import AjaxSelectExample from "../../src/examples/ajax-select-example.vue";
+import BreakpointsAdvancedExample from "../../src/examples/breakpoints-advanced-example.vue";
+import StoreStateExample from "../../src/examples/store-state-example.vue";
+import AjaxStoreStateExample from "../../src/examples/ajax-store-state-example.vue";
 
 import Prism from "prismjs";
 import "prismjs/themes/prism-okaidia.css";
@@ -78,14 +78,14 @@ import "prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js";
 // );
 
 axiosCustom.interceptors.request.use(
-    (config) => {
-      console.warn("Custom axios", config);
+  (config) => {
+    console.warn("Custom axios", config);
 
-      return config;
-    },
-    (error) => {
-      console.log("ERROR AXIOS", error);
-    }
+    return config;
+  },
+  (error) => {
+    console.log("ERROR AXIOS", error);
+  }
 );
 
 export default {
@@ -93,27 +93,27 @@ export default {
   components: {
     // VueQuintable,
     BasicExample,
-    BreakpointsExample,
-    AjaxSelectExample,
-    BreakpointsAdvancedExample,
-    AjaxExample,
-    AjaxLoadedExample,
-    PaginationExample,
-    SortExample,
-    BindedExample,
-    TooltipsExample,
-    SelectExample,
-    FiltersExample,
-    ComponentsExample,
-    EventsExample,
-    NestedExample,
-    SlotsExample,
-    HiddenExample,
-    AddRemoveExample,
+    BreakpointsExample: BreakpointsExample,
+    AjaxSelectExample: AjaxSelectExample,
+    BreakpointsAdvancedExample: BreakpointsAdvancedExample,
+    AjaxExample: AjaxExample,
+    AjaxLoadedExample: AjaxLoadedExample,
+    PaginationExample: PaginationExample,
+    SortExample: SortExample,
+    BindedExample: VueBindedExample,
+    TooltipsExample: TooltipsExample,
+    SelectExample: SelectExample,
+    FiltersExample: FilterExample,
+    ComponentsExample: ComponentExample,
+    EventsExample: EventsExample,
+    NestedExample: NestedExample,
+    SlotsExample: SlotsExample,
+    HiddenExample: HideShowExample,
+    AddRemoveExample: AddRemoveExample,
     ComputedRowsExample: ComputedRowsExample,
-    CellFormattersExample,
-    StoreStateExample,
-    AjaxStoreStateExample,
+    CellFormattersExample: CellFormatterExample,
+    StoreStateExample: StoreStateExample,
+    AjaxStoreStateExample: AjaxStoreStateExample,
   },
 
   data() {
