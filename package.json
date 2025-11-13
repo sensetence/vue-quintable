@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prod-local": "vite build --config vite.pack.config.ts",
+    "build": "vue-tsc -b && vite build --config vite.build.config.ts",
+    "prod": "node ./pack.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
@@ -22,17 +24,28 @@
     "vue-select": "^4.0.0-beta.6"
   },
   "devDependencies": {
+    "@popperjs/core": "^2.11.8",
     "@types/chance": "^1.1.6",
+    "@types/node": "^22.10.2",
     "@types/prismjs": "^1.26.5",
+    "@types/sortablejs": "^1.15.8",
     "@types/vue-select": "^3.16.8",
-    "@vitejs/plugin-vue": "^5.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.46.4",
+    "@typescript-eslint/parser": "^8.46.4",
+    "@vitejs/plugin-vue": "5.2.4",
     "@vue/tsconfig": "^0.7.0",
     "bootstrap": "^5.3.6",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-vue": "^10.5.1",
     "moment-timezone": "^0.6.0",
+    "prettier": "^3.4.2",
     "prismjs": "^1.30.0",
     "sass-embedded": "^1.89.0",
     "typescript": "~5.8.3",
-    "vite": "^6.3.5",
+    "vite": "^7.2",
+    "vue-eslint-parser": "^10.2.0",
     "vue-tsc": "^2.2.8"
   },
   "homepage": "https://sensetence.com/vue-quintable/",

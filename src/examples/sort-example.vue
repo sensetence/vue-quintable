@@ -3,20 +3,16 @@
     <alert-info>Hover and click on headlines for sorting.</alert-info>
 
     <!-- table -->
-    <vue-quintable
-        :sort-order="sortOrder"
-        :config="config"
-        :rows="rows"
-    />
+    <vue-quintable :sort-order="sortOrder" :config="config" :rows="rows" />
 
     <!-- code -->
-    <show-hide-button v-model:showCode="showCode"/>
-    <code-block v-if="showCode" :code="code"/>
+    <show-hide-button v-model:show-code="showCode" />
+    <code-block v-if="showCode" :code="code" />
   </div>
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from "vue";
+import { computed, ref } from "vue";
 import Chance from "chance";
 import AlertInfo from "../components/alert/alert-info.vue";
 import VueQuintable from "../components/table/vue-quintable.vue";
@@ -71,7 +67,7 @@ const rows = computed(() => {
 
     rows.push([
       {
-        text: chance.name({nationality: "en"}),
+        text: chance.name({ nationality: "en" }),
       },
       {
         text: chance.age(),
@@ -81,12 +77,12 @@ const rows = computed(() => {
       },
       {
         html:
-            '<span class="me-2">' +
-            chance.profession() +
-            "</span><em>" +
-            "[" +
-            randSortValue +
-            "]</em>",
+          '<span class="me-2">' +
+          chance.profession() +
+          "</span><em>" +
+          "[" +
+          randSortValue +
+          "]</em>",
         sortValue: randSortValue,
       },
     ]);

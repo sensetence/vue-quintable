@@ -3,25 +3,33 @@
     <alert-info>Toggle switches to hide/show columns.</alert-info>
 
     <!-- table -->
-    <vue-quintable :dynamic-config="dynamicConfig" :config="config" :rows="rows">
+    <vue-quintable
+      :dynamic-config="dynamicConfig"
+      :config="config"
+      :rows="rows"
+    >
       <template #header>
         <div class="mb-3">
-          <p-quintable-check class="p-switch" v-model="hideAge">Hide Age Column</p-quintable-check>
+          <quintable-p-check v-model="hideAge" class="p-switch"
+            >Hide Age Column</quintable-p-check
+          >
         </div>
         <div class="mb-3">
-          <p-quintable-check class="p-switch" v-model="hideJob">Hide Job Column</p-quintable-check>
+          <quintable-p-check v-model="hideJob" class="p-switch"
+            >Hide Job Column</quintable-p-check
+          >
         </div>
         <div class="mb-3">
-          <p-quintable-check class="p-switch" v-model="hideColumns">
+          <quintable-p-check v-model="hideColumns" class="p-switch">
             Hide empty columns automatically
-          </p-quintable-check>
+          </quintable-p-check>
         </div>
         <div class="mb-3">
-          <v-quintable-select
-              v-model="ignoreSortingColumns"
-              :reduce="(option) => option.value"
-              :options="ignoreOptions"
-              :clearable="false"
+          <quintable-v-select
+            v-model="ignoreSortingColumns"
+            :reduce="(option: any) => option.value"
+            :options="ignoreOptions"
+            :clearable="false"
           />
         </div>
       </template>
@@ -32,19 +40,19 @@
     </vue-quintable>
 
     <!-- code -->
-    <show-hide-button v-model:showCode="showCode"/>
-    <code-block v-if="showCode" :code="code" class="mt-3"/>
+    <show-hide-button v-model:show-code="showCode" />
+    <code-block v-if="showCode" :code="code" class="mt-3" />
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref, computed, watch, nextTick} from 'vue';
-import Chance from 'chance';
+import { ref, computed, watch, nextTick } from "vue";
+import Chance from "chance";
 
-import VueQuintable from '../components/table/vue-quintable.vue';
-import AlertInfo from '../components/alert/alert-info.vue';
-import CodeBlock from '../components/code-block/code-block.vue';
-import ShowHideButton from '../components/code-block/show-hide-button.vue';
+import VueQuintable from "../components/table/vue-quintable.vue";
+import AlertInfo from "../components/alert/alert-info.vue";
+import CodeBlock from "../components/code-block/code-block.vue";
+import ShowHideButton from "../components/code-block/show-hide-button.vue";
 
 const showCode = ref(false);
 
@@ -53,13 +61,13 @@ const chance = new Chance();
 const hideAge = ref(false);
 const hideJob = ref(false);
 const hideColumns = ref(true);
-const ignoreSortingColumns = ref('none');
+const ignoreSortingColumns = ref("none");
 const dynamicConfig = ref(false);
 
 const ignoreOptions = [
-  {value: 'none', label: "Don't hide empty sorting columns"},
-  {value: 'active', label: "Don't hide active empty sorting columns"},
-  {value: 'all', label: 'Hide empty sorting columns'},
+  { value: "none", label: "Don't hide empty sorting columns" },
+  { value: "active", label: "Don't hide active empty sorting columns" },
+  { value: "all", label: "Hide empty sorting columns" },
 ];
 
 function setConfigDynamicForNextTick() {
@@ -71,12 +79,12 @@ function setConfigDynamicForNextTick() {
 
 const config = computed(() => ({
   columns: [
-    {headline: 'Name', ignoreEmpty: true},
-    {headline: 'Age', hidden: hideAge.value, breakpoint: 'lg'},
-    {headline: 'Birth Place', breakpoint: 'md', sort: true},
-    {headline: 'Birth country', breakpoint: 'lg'},
-    {headline: 'Random Word', breakpoint: 'xl'},
-    {headline: 'Job', hidden: hideJob.value, sticky: true},
+    { headline: "Name", ignoreEmpty: true },
+    { headline: "Age", hidden: hideAge.value, breakpoint: "lg" },
+    { headline: "Birth Place", breakpoint: "md", sort: true },
+    { headline: "Birth country", breakpoint: "lg" },
+    { headline: "Random Word", breakpoint: "xl" },
+    { headline: "Job", hidden: hideJob.value, sticky: true },
   ],
   hideEmptyColumns: hideColumns.value,
   ignoreSortEmptyColumns: ignoreSortingColumns.value,
@@ -88,43 +96,46 @@ const rows = computed(() => {
   const data = [];
 
   for (let i = 0; i < 20; i++) {
-    const city = i < 13 ? '' : chance.city();
-    const country = i >= 9 ? '' : chance.country();
-    const name = i > 7 ? '' : chance.name({nationality: 'en'});
+    const city = i < 13 ? "" : chance.city();
+    const country = i >= 9 ? "" : chance.country();
+    const name = i > 7 ? "" : chance.name({ nationality: "en" });
     const alwaysHide = i < 15;
 
     data.push([
-      {text: name},
-      {text: chance.age()},
-      {text: city},
-      {text: country},
-      {type: 'word', text: 'asd', isEmpty: alwaysHide, value: chance.word()},
-      {text: chance.profession()},
+      { text: name },
+      { text: chance.age() },
+      { text: city },
+      { text: country },
+      { type: "word", text: "asd", isEmpty: alwaysHide, value: chance.word() },
+      { text: chance.profession() },
     ]);
   }
 
   return data;
 });
 
-watch([hideColumns, hideAge, hideJob, ignoreSortingColumns], setConfigDynamicForNextTick);
+watch(
+  [hideColumns, hideAge, hideJob, ignoreSortingColumns],
+  setConfigDynamicForNextTick,
+);
 
 // example code
 const code = `&lt;template&gt;
   &lt;vue-quintable :dynamic-config=&quot;dynamicConfig&quot; :config=&quot;config&quot; :rows=&quot;rows&quot;&gt;
     &lt;template #header&gt;
       &lt;div class=&quot;mb-3&quot;&gt;
-        &lt;p-quintable-check class=&quot;p-switch&quot; v-model=&quot;hideAge&quot;&gt;Hide Age Column&lt;/p-quintable-check&gt;
+        &lt;quintable-p-check class=&quot;p-switch&quot; v-model=&quot;hideAge&quot;&gt;Hide Age Column&lt;/quintable-p-check&gt;
       &lt;/div&gt;
       &lt;div class=&quot;mb-3&quot;&gt;
-        &lt;p-quintable-check class=&quot;p-switch&quot; v-model=&quot;hideJob&quot;&gt;Hide Job Column&lt;/p-quintable-check&gt;
+        &lt;quintable-p-check class=&quot;p-switch&quot; v-model=&quot;hideJob&quot;&gt;Hide Job Column&lt;/quintable-p-check&gt;
       &lt;/div&gt;
       &lt;div class=&quot;mb-3&quot;&gt;
-        &lt;p-quintable-check class=&quot;p-switch&quot; v-model=&quot;hideColumns&quot;&gt;
+        &lt;quintable-p-check class=&quot;p-switch&quot; v-model=&quot;hideColumns&quot;&gt;
           Hide empty columns automatically
-        &lt;/p-quintable-check&gt;
+        &lt;/quintable-p-check&gt;
       &lt;/div&gt;
       &lt;div class=&quot;mb-3&quot;&gt;
-        &lt;v-quintable-select
+        &lt;quintable-v-select
             v-model=&quot;ignoreSortingColumns&quot;
             :reduce=&quot;(option) =&gt; option.value&quot;
             :options=&quot;ignoreOptions&quot;
@@ -204,5 +215,4 @@ const rows = computed(() =&gt; {
 
 watch([hideColumns, hideAge, hideJob, ignoreSortingColumns], setConfigDynamicForNextTick);
 &lt;/script&gt;`;
-
 </script>

@@ -1,18 +1,20 @@
 <template>
   <div class="content">
-    <alert-info>Cells will be formatted by custom formatting functions.</alert-info>
+    <alert-info
+      >Cells will be formatted by custom formatting functions.</alert-info
+    >
 
     <!-- table -->
-    <vue-quintable :config="config" :rows="rows"/>
+    <vue-quintable :config="config" :rows="rows" />
 
     <!-- code -->
-    <show-hide-button v-model:showCode="showCode"/>
-    <code-block v-if="showCode" :code="code"/>
+    <show-hide-button v-model:show-code="showCode" />
+    <code-block v-if="showCode" :code="code" />
   </div>
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from 'vue';
+import { computed, ref } from "vue";
 import Chance from "chance";
 import VueQuintable from "../components/table/vue-quintable.vue";
 import ShowHideButton from "../components/code-block/show-hide-button.vue";
@@ -26,13 +28,13 @@ const config = {
   columns: [
     {
       headline: "Name",
-      cellFormatter: (cell) => {
+      cellFormatter: (cell: any) => {
         return "Name: " + cell.content.name;
       },
     },
     {
       headline: "Age",
-      cellFormatter: (cell) => {
+      cellFormatter: (cell: any) => {
         return {
           value: "<strong>" + cell.content.age + "</strong>",
           type: "html",
@@ -41,13 +43,13 @@ const config = {
     },
     {
       headline: "Birth Place",
-      cellFormatter: (cell) => {
+      cellFormatter: (cell: any) => {
         return cell.content.city;
       },
     },
     {
       headline: "Job",
-      cellFormatter: (cell) => {
+      cellFormatter: (cell: any) => {
         return cell.content.profession;
       },
     },
@@ -62,7 +64,7 @@ const rows = computed(() => {
 
   for (let i = 0; i < count; i++) {
     const row = {
-      name: chance.name({nationality: "en"}),
+      name: chance.name({ nationality: "en" }),
       age: chance.age(),
       city: chance.city(),
       profession: chance.profession(),

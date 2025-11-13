@@ -1,64 +1,65 @@
 <template>
   <div class="content">
     <alert-info>
-      Do some filtering/sorting/selecting and then reload the page, state stays the same.
+      Do some filtering/sorting/selecting and then reload the page, state stays
+      the same.
     </alert-info>
 
     <!-- table -->
     <vue-quintable
-        :config="config"
-        :filters.sync="filters"
-        :selected-rows.sync="selected"
-        :rows="rows"
-        :identifier="identifier"
+      v-model:filters="filters"
+      v-model:selected-rows="selected"
+      :config="config"
+      :rows="rows"
+      :identifier="identifier"
     >
       <template #header>
-        <v-quintable-select
-            v-model="active"
-            :options="activeOptions"
-            :reduce="(x) => x.value"
-            :clearable="false"
-            class="mb-3"
+        <quintable-v-select
+          v-model="active"
+          :options="activeOptions"
+          :reduce="(x: any) => x.value"
+          :clearable="false"
+          class="mb-3"
         />
       </template>
     </vue-quintable>
 
     <!-- code -->
-    <show-hide-button v-model:showCode="showCode"/>
-    <code-block v-if="showCode" :code="code"/>
+    <show-hide-button v-model:show-code="showCode" />
+    <code-block v-if="showCode" :code="code" />
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref, reactive, watch, onMounted} from 'vue';
-import Chance from 'chance';
-import VueQuintable from '../components/table/vue-quintable.vue';
-import AlertInfo from '../components/alert/alert-info.vue';
+import { ref, reactive, watch, onMounted } from "vue";
+import Chance from "chance";
+import VueQuintable from "../components/table/vue-quintable.vue";
+import AlertInfo from "../components/alert/alert-info.vue";
 import CodeBlock from "../components/code-block/code-block.vue";
 import ShowHideButton from "../components/code-block/show-hide-button.vue";
 
 const showCode = ref(false);
 
 // table data
-const identifier = 'stored-state-table';
+const identifier = "stored-state-table";
 const activeOptions = [
-  {label: 'All', value: 'both'},
-  {label: 'Only Active', value: true},
-  {label: 'Only Not Active', value: false},
+  { label: "All", value: "both" },
+  { label: "Only Active", value: true },
+  { label: "Only Not Active", value: false },
 ];
 
-const active = ref<'both' | boolean>('both');
+const active = ref<"both" | boolean>("both");
 const filters = reactive<Record<string, any>>({});
 const selected = ref<any[]>([]);
 const rows = ref<any[]>([]);
 
 const config = {
   columns: [
-    {headline: 'Name'},
-    {headline: 'Age', sort: true},
-    {headline: 'Birth Place'},
-    {headline: 'Job'},
-    {headline: 'Active'},
+    { headline: "Name" },
+    { headline: "Age", sort: true },
+    { headline: "Birth Place" },
+    { headline: "Job" },
+    { headline: "Active" },
   ],
   pagination: 5,
   selectAllRows: true,
@@ -76,6 +77,7 @@ onMounted(() => {
     const stored = localStorage.getItem(`${identifier}-stored-rows`);
     storedRows = stored ? JSON.parse(stored) : null;
   } catch (e) {
+    console.log(e);
   }
 
   if (!storedRows) {
@@ -84,20 +86,24 @@ onMounted(() => {
     for (let i = 0; i < 250; i++) {
       const isActive = Math.random() >= 0.5;
       tempRows.push({
-        filters: {active: isActive},
+        filters: { active: isActive },
         cells: [
-          {text: chance.name({nationality: 'en'})},
-          {text: chance.age()},
-          {text: chance.city()},
-          {text: chance.profession()},
-          {text: isActive ? 'Yes' : 'No'},
+          { text: chance.name({ nationality: "en" }) },
+          { text: chance.age() },
+          { text: chance.city() },
+          { text: chance.profession() },
+          { text: isActive ? "Yes" : "No" },
         ],
       });
     }
     rows.value = tempRows;
     try {
-      localStorage.setItem(`${identifier}-stored-rows`, JSON.stringify(tempRows));
+      localStorage.setItem(
+        `${identifier}-stored-rows`,
+        JSON.stringify(tempRows),
+      );
     } catch (e) {
+      console.log(e);
     }
   } else {
     rows.value = storedRows;
@@ -105,7 +111,7 @@ onMounted(() => {
 });
 
 watch(active, (val) => {
-  if (val === 'both') {
+  if (val === "both") {
     delete filters.active;
   } else {
     filters.active = val;
@@ -113,8 +119,8 @@ watch(active, (val) => {
 });
 
 watch(filters, () => {
-  if (typeof filters.active === 'undefined') {
-    active.value = 'both';
+  if (typeof filters.active === "undefined") {
+    active.value = "both";
   } else if (filters.active !== active.value) {
     active.value = filters.active;
   }
@@ -124,13 +130,13 @@ watch(filters, () => {
 const code = `&lt;template&gt;
   &lt;vue-quintable
       :config=&quot;config&quot;
-      :filters.sync=&quot;filters&quot;
-      :selected-rows.sync=&quot;selected&quot;
+      v-model:filters=&quot;filters&quot;
+      v-model=selected-rows.sync=&quot;selected&quot;
       :rows=&quot;rows&quot;
       :identifier=&quot;identifier&quot;
   &gt;
     &lt;template #header&gt;
-      &lt;v-quintable-select
+      &lt;quintable-v-select
           v-model=&quot;active&quot;
           :options=&quot;activeOptions&quot;
           :reduce=&quot;(x) =&gt; x.value&quot;
@@ -226,6 +232,5 @@ watch(filters, () =&gt; {
     active.value = filters.active;
   }
 });
-&lt;/script&gt;`
-
+&lt;/script&gt;`;
 </script>

@@ -1,14 +1,14 @@
 <template>
   <div :class="classes">
     <input
-        ref="input"
-        type="radio"
-        :name="name"
-        :value="value"
-        :checked="shouldBeChecked"
-        :disabled="_disabled"
-        :required="_required"
-        @change="updateInput"
+      ref="input"
+      type="radio"
+      :name="name"
+      :value="value"
+      :checked="shouldBeChecked"
+      :disabled="_disabled"
+      :required="_required"
+      @change="updateInput"
     />
     <div :class="onClasses">
       <slot name="extra"></slot>
@@ -82,7 +82,7 @@ export default {
     },
   },
 
-  emits: ['update:modelValue', 'change'],
+  emits: ["update:model-value", "change"],
 
   data() {
     return {
@@ -164,7 +164,7 @@ export default {
   },
 
   mounted() {
-    if (!this.$el.className || this.$el.className === 'pretty') {
+    if (!this.$el.className || this.$el.className === "pretty") {
       this.default_mode = true;
     }
     if (this.m_checked === undefined && this.checked !== undefined) {
@@ -175,7 +175,8 @@ export default {
 
   methods: {
     updateInput() {
-      this.$emit("update:modelValue", this.value);
+      console.log("radio changed", this.value);
+      this.$emit("update:model-value", this.value);
       this.$emit("change", this.value);
     },
   },
@@ -183,6 +184,5 @@ export default {
 </script>
 
 <style>
-@import '../../assets/styles/pretty-checkbox.css';
+@import "../../assets/styles/pretty-checkbox.css";
 </style>
-

@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <div class="table-wrapper quintable">
     <div class="breakpoints quintable--breakpoints">
@@ -13,28 +14,28 @@
     </div>
 
     <div
-        v-if="configFinal.search"
-        class="mb-3 quintable--search-container"
-        :class="configFinal.searchContainerClass"
+      v-if="configFinal.search"
+      class="mb-3 quintable--search-container"
+      :class="configFinal.searchContainerClass"
     >
       <slot name="before-search"></slot>
       <slot
-          name="search"
-          :value="query"
-          :loading="loading"
-          :setSearchQuery="setSearchQuery"
-          :placeholder="configFinal.searchPlaceholder"
-          :search-class="configFinal.searchClass"
+        name="search"
+        :value="query"
+        :loading="loading"
+        :set-search-query="setSearchQuery"
+        :placeholder="configFinal.searchPlaceholder"
+        :search-class="configFinal.searchClass"
       >
         <div
-            class="quintable--search-container--input-container"
-            :class="configFinal.searchClass"
+          class="quintable--search-container--input-container"
+          :class="configFinal.searchClass"
         >
           <input
-              type="search"
-              :placeholder="configFinal.searchPlaceholder"
-              v-model="query"
-              class="form-control"
+            v-model="query"
+            type="search"
+            :placeholder="configFinal.searchPlaceholder"
+            class="form-control"
           />
         </div>
       </slot>
@@ -43,440 +44,401 @@
     <div class="slot slot-after-search quintable--after-search-container">
       <slot name="after-search-container"></slot>
     </div>
-    <div class="clearfix quintable--table-container" ref="height-wrapper">
+    <div ref="height-wrapper" class="clearfix quintable--table-container">
       <table
-          class="vue-quintable table quintable--table-container--table"
-          :class="tableClasses"
-          v-if="!ajaxLoading"
+        v-if="!ajaxLoading"
+        ref="table"
+        class="vue-quintable table quintable--table-container--table"
+        :class="tableClasses"
       >
         <thead v-if="configFinal.headlines.length">
-        <tr
-            class="
-              vue-quintable-header-row
-              quintable--table-container--table--header-row
-            "
-        >
-          <th
-              class="
-                placeholder-th
-                toggle-th toggle-cell
-                quintable--table-container--table--header-row--placeholder-th
-              "
+          <tr
+            class="vue-quintable-header-row quintable--table-container--table--header-row"
+          >
+            <th
               v-if="hasGeneratedRows && !configFinal.hideRowToggle"
-          >
-            <wbr/>
-          </th>
-          <th
+              class="placeholder-th toggle-th toggle-cell quintable--table-container--table--header-row--placeholder-th"
+            >
+              <wbr />
+            </th>
+            <th
               v-if="configFinal.select && configFinal.selectPosition === 'pre'"
-              class="
-                select-th
-                pre
-                quintable--table-container--table--header-row--select-th
-                quintable--table-container--table--header-row--select-th--pre
-              "
-          >
-            <template v-if="configFinal.selectAll && !noRows">
-              <p-quintable-check
+              class="select-th pre quintable--table-container--table--header-row--select-th quintable--table-container--table--header-row--select-th--pre"
+            >
+              <template v-if="configFinal.selectAll && !noRows">
+                <quintable-p-check
                   v-if="configFinal.prettySelect"
+                  v-model="allSelectedProperty"
                   name="check"
                   class="p-icon p-smooth"
-                  v-model="allSelectedProperty"
                   @change="checkAll()"
-              >
-                <template #extra>
+                >
+                  <template #extra>
                     <span
-                    ><font-awesome-icon
+                      ><quintable-font-awesome-icon
                         v-if="allSelectedProperty"
                         icon="check"
                         class="text-success icon-check"
                     /></span>
-                  <span class="p-1"
-                  ><font-awesome-icon
-                      v-if="someSelected && !allSelectedProperty"
-                      icon="square"
-                      class="text-success icon-check"
-                  /></span>
-                </template>
-              </p-quintable-check>
-              <label v-else class="mb-0 mt-0">
-                <input
-                    type="checkbox"
+                    <span class="p-1"
+                      ><quintable-font-awesome-icon
+                        v-if="someSelected && !allSelectedProperty"
+                        icon="square"
+                        class="text-success icon-check"
+                    /></span>
+                  </template>
+                </quintable-p-check>
+                <label v-else class="mb-0 mt-0">
+                  <input
                     v-model="allSelectedProperty"
+                    type="checkbox"
                     @change="checkAll()"
-                />
-              </label>
-            </template>
-          </th>
-          <template v-for="(headline, hIndex) in configFinal.headlines">
-            <th
+                  />
+                </label>
+              </template>
+            </th>
+            <template v-for="(headline, hIndex) in configFinal.headlines">
+              <th
                 v-if="
                   ((configFinal.columns[hIndex] &&
                     !configFinal.columns[hIndex].breakpoint) ||
                     hiddenBreakpoints.findIndex(
                       (x) =>
                         configFinal.columns[hIndex] &&
-                        x === configFinal.columns[hIndex].breakpoint
+                        x === configFinal.columns[hIndex].breakpoint,
                     ) === -1) &&
                   !configFinal.columns[hIndex].sticky &&
                   !configFinal.hiddenCols[hIndex] &&
                   !emptyColumns[hIndex]
                 "
+                :key="'headline-' + hIndex"
                 :class="headerClass[hIndex]"
                 :title="configFinal.columns[hIndex].title"
-                :key="'headline-' + hIndex"
                 @click.stop="setSortColumn(hIndex)"
-            >
-                <span
-                    class="
-                    headline
-                    quintable--table-container--table--header-row--th--headline
-                  "
-                    v-html="headline"
-                    v-if="showHeadlines[hIndex]"
-                ></span>
-              <span
-                  class="
-                    headline
-                    quintable--table-container--table--header-row--th--headline
-                  "
-                  v-else
-              ><wbr
-              /></span>
-              <span
-                  class="
-                    sorting-icon
-                    ms-2
-                    quintable--table-container--table--header-row--th--sorting-icon
-                  "
-                  v-if="configFinal.sorts[hIndex]"
               >
-                  <font-awesome-icon
-                      v-if="!currentSortIndexes[hIndex]"
-                      icon="sort"
-                      class="text-primary"
+                <!-- eslint-disable-next-line vue/no-v-html -->
+                <span
+                  v-if="showHeadlines[hIndex]"
+                  class="headline quintable--table-container--table--header-row--th--headline"
+                  v-html="headline"
+                ></span>
+                <span
+                  v-else
+                  class="headline quintable--table-container--table--header-row--th--headline"
+                  ><wbr
+                /></span>
+                <span
+                  v-if="configFinal.sorts[hIndex]"
+                  class="sorting-icon ms-2 quintable--table-container--table--header-row--th--sorting-icon"
+                >
+                  <quintable-font-awesome-icon
+                    v-if="!currentSortIndexes[hIndex]"
+                    icon="sort"
+                    class="text-primary"
                   />
-                  <font-awesome-icon
-                      v-if="
+                  <quintable-font-awesome-icon
+                    v-if="
                       currentSortIndexes[hIndex] &&
                       currentSortIndexes[hIndex].asc
                     "
-                      icon="sort-amount-down-alt"
-                      class="text-primary"
+                    icon="sort-amount-down-alt"
+                    class="text-primary"
                   />
-                  <font-awesome-icon
-                      v-if="
+                  <quintable-font-awesome-icon
+                    v-if="
                       currentSortIndexes[hIndex] &&
                       !currentSortIndexes[hIndex].asc
                     "
-                      icon="sort-amount-down"
-                      class="text-primary"
+                    icon="sort-amount-down"
+                    class="text-primary"
                   />
                   <span
-                      v-if="currentSortIndexes[hIndex]"
-                      @click.stop.prevent="removeSort(hIndex)"
-                      class="ms-1 text-muted"
+                    v-if="currentSortIndexes[hIndex]"
+                    class="ms-1 text-muted"
+                    @click.stop.prevent="removeSort(hIndex)"
                   >
                     <span
-                        class="badge bg-info text-white"
-                        v-if="numberOfSorts > 1"
+                      v-if="numberOfSorts > 1"
+                      class="badge bg-info text-white"
                     >
                       {{ currentSortIndexes[hIndex].order + 1 }}
                     </span>
                     <small v-else>
-                      <font-awesome-icon icon="times"/>
+                      <quintable-font-awesome-icon icon="times" />
                     </small>
                   </span>
                 </span>
-            </th>
-          </template>
-          <th
+              </th>
+            </template>
+            <th
               v-if="configFinal.select && configFinal.selectPosition === 'post'"
-              class="
-                select-th
-                post
-                quintable--table-container--table--header-row--select-th
-                quintable--table-container--table--header-row--select-th--post
-              "
-          >
-            <template v-if="configFinal.selectAll && !noRows">
-              <p-quintable-check
+              class="select-th post quintable--table-container--table--header-row--select-th quintable--table-container--table--header-row--select-th--post"
+            >
+              <template v-if="configFinal.selectAll && !noRows">
+                <quintable-p-check
                   v-if="configFinal.prettySelect"
+                  v-model="allSelectedProperty"
                   name="check"
                   class="p-icon p-smooth"
-                  v-model="allSelectedProperty"
                   @change="checkAll()"
-              >
-                <template #extra>
+                >
+                  <template #extra>
                     <span
-                    ><font-awesome-icon
+                      ><quintable-font-awesome-icon
                         v-if="allSelectedProperty"
                         icon="check"
                         class="text-success icon-check"
                     /></span>
-                  <span
-                  ><font-awesome-icon
-                      v-if="someSelected && !allSelectedProperty"
-                      icon="square"
-                      class="text-success icon-check"
-                  /></span>
-                </template>
-              </p-quintable-check>
-              <label v-else class="mb-0 mt-0">
-                <input
-                    type="checkbox"
+                    <span
+                      ><quintable-font-awesome-icon
+                        v-if="someSelected && !allSelectedProperty"
+                        icon="square"
+                        class="text-success icon-check"
+                    /></span>
+                  </template>
+                </quintable-p-check>
+                <label v-else class="mb-0 mt-0">
+                  <input
                     v-model="allSelectedProperty"
+                    type="checkbox"
                     @change="checkAll()"
-                />
-              </label>
-            </template>
-          </th>
-        </tr>
+                  />
+                </label>
+              </template>
+            </th>
+          </tr>
         </thead>
         <tbody
-            @mouseleave="onMouseleaveTable"
-            class="quintable--table-container--table--tbody"
+          class="quintable--table-container--table--tbody"
+          @mouseleave="onMouseleaveTable"
         >
-        <template v-for="rIndex in visibleRowIndexes" :key="
-                'vue-quintable-' +
-                uuid +
-                '-row-' +
-                rIndex +
-                '-' +
-                indexesUpdatedKey
-              ">
-          <tr
-              class="
-                vue-quintable-row
-                quintable--table-container--table--tbody--row
-              "
+          <template
+            v-for="rIndex in visibleRowIndexes"
+            :key="
+              'vue-quintable-' +
+              uuid +
+              '-row-' +
+              rIndex +
+              '-' +
+              indexesUpdatedKey
+            "
+          >
+            <tr
+              :id="'vue-quintable-' + uuid + '-row-' + rIndex"
+              :ref="'row-highlighted-' + rIndex"
               v-tooltip="{
                 placement: 'top',
                 content: rowsFinal[rIndex].tooltip,
                 trigger: rowsFinal[rIndex].tooltip ? 'hover' : 'manual',
                 offset: 5,
               }"
+              :class="rowClasses[rIndex]"
+              class="vue-quintable-row quintable--table-container--table--tbody--row"
               :style="hiddenColumns[rIndex] > 0 ? 'cursor:pointer;' : ''"
-              :ref="'row-highlighted-' + rIndex"
-
               @click="onRowClick($event, rIndex)"
               @auxclick="onRowAuxClick($event, rIndex)"
               @mousedown="onRowMousedown($event)"
-              :class="rowClasses[rIndex]"
-              :id="'vue-quintable-' + uuid + '-row-' + rIndex"
               @mouseenter="onMouseenterRow(rIndex)"
-          >
-            <td
-                class="
-                  toggle toggle-td toggle-cell
-                  quintable--table-container--table--tbody--row--toggle-td
-                "
-                v-if="hasGeneratedRows && !configFinal.hideRowToggle"
             >
+              <td
+                v-if="hasGeneratedRows && !configFinal.hideRowToggle"
+                class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td"
+              >
                 <span v-if="hiddenColumns[rIndex] > 0">
                   <span v-if="!openRows[rIndex]"
-                  ><font-awesome-icon
+                    ><quintable-font-awesome-icon
                       fixed-width
                       :icon="configFinal.collapsedRowIcon"
-                  ></font-awesome-icon
+                    ></quintable-font-awesome-icon
                   ></span>
                   <span v-else
-                  ><font-awesome-icon
+                    ><quintable-font-awesome-icon
                       fixed-width
                       :icon="configFinal.expandedRowIcon"
-                  ></font-awesome-icon
+                    ></quintable-font-awesome-icon
                   ></span>
                 </span>
-            </td>
-            <td
+              </td>
+              <td
                 v-if="
                   configFinal.select && configFinal.selectPosition === 'pre'
                 "
-                class="
-                  select-td
-                  pre
-                  quintable--table-container--table--tbody--row--select-td
-                  quintable--table-container--table--tbody--row--select-td--pre
-                "
+                class="select-td pre quintable--table-container--table--tbody--row--select-td quintable--table-container--table--tbody--row--select-td--pre"
                 :class="{ 'disabled-select': rowsFinal[rIndex].disableSelect }"
-            >
-              <template
+              >
+                <template
                   v-if="
                     !rowsFinal[rIndex].disableSelect ||
                     rowsFinal[rIndex].showDisabledSelect
                   "
-              >
-                <p-quintable-check
+                >
+                  <quintable-p-check
                     v-if="configFinal.prettySelect"
+                    v-model="selected[rIndex]"
                     name="check"
                     class="p-icon"
                     :disabled="rowsFinal[rIndex].disableSelect"
-                    v-model="selected[rIndex]"
                     @change="checkListener($event, rIndex)"
-                >
-                  <template #extra>
+                  >
+                    <template #extra>
                       <span
-                      ><font-awesome-icon
+                        ><quintable-font-awesome-icon
                           v-if="selected[rIndex]"
                           icon="check"
                           class="text-success icon-check"
                       /></span>
-                  </template>
-                </p-quintable-check>
-                <label v-else class="mb-0 mt-0">
-                  <input
-                      type="checkbox"
+                    </template>
+                  </quintable-p-check>
+                  <label v-else class="mb-0 mt-0">
+                    <input
                       v-model="selected[rIndex]"
+                      type="checkbox"
                       :disabled="rowsFinal[rIndex].disableSelect"
                       @change="checkListener($event, rIndex)"
-                  />
-                </label>
-              </template>
-            </td>
+                    />
+                  </label>
+                </template>
+              </td>
 
-            <template
+              <template
                 v-for="(cell, cIndex) in rowsFinal[rIndex].cells
                   ? rowsFinal[rIndex].cells
                   : rowsFinal[rIndex]"
-            >
-              <td
-                  class="
-                    vue-quintable-cell
-                    quintable--table-container--table--tbody--row--cell
-                  "
-                  v-tooltip="{
-                    placement: 'left',
-                    content: cell.tooltip,
-                    trigger: cell.tooltip ? 'hover' : 'manual',
-                  }"
-                  :class="
-                    cellClassesParsed[rIndex][cIndex] +
-                    ' ' +
-                    configFinal.columnClasses[cIndex]
-                  "
+              >
+                <td
                   v-if="
                     !configFinal.hiddenCols[cIndex] &&
                     !emptyColumns[cIndex] &&
                     configFinal.columns[cIndex] &&
                     cell &&
                     hiddenBreakpoints.findIndex(
-                      (x) => x === configFinal.columns[cIndex].breakpoint
+                      (x) => x === configFinal.columns[cIndex].breakpoint,
                     ) === -1 &&
                     configFinal.columns[cIndex].breakpoint !== 'all' &&
                     !configFinal.stickyCols[cIndex]
                   "
-                  @click="onCellClick($event, cell)"
-                  @auxclick="onCellAuxClick($event, cell)"
-                  @mousedown="onCellMousedown($event)"
-                  :key="
-                    'vue-quintable-' + uuid + '-cell-' + rIndex + '-' + cIndex
-                  "
                   :id="
                     'vue-quintable-' + uuid + '-cell-' + rIndex + '-' + cIndex
                   "
-              >
-                <slot :cell="cell" :name="'cell-complete'">
-                  <slot :cell="cell" :name="'cell-content'">
-                    <div
-                        class="cell-inner"
-                        :class="'quintable--table-container--table--tbody--row--cell--inner-cell--formatted-html'"
+                  :key="
+                    'vue-quintable-' + uuid + '-cell-' + rIndex + '-' + cIndex
+                  "
+                  v-tooltip="{
+                    placement: 'left',
+                    content: cell.tooltip,
+                    trigger: cell.tooltip ? 'hover' : 'manual',
+                  }"
+                  class="vue-quintable-cell quintable--table-container--table--tbody--row--cell"
+                  :class="
+                    cellClassesParsed[rIndex][cIndex] +
+                    ' ' +
+                    configFinal.columnClasses[cIndex]
+                  "
+                  @click="onCellClick($event, cell)"
+                  @auxclick="onCellAuxClick($event, cell)"
+                  @mousedown="onCellMousedown($event)"
+                >
+                  <slot :cell="cell" :name="'cell-complete'">
+                    <slot :cell="cell" :name="'cell-content'">
+                      <div
                         v-if="
                           configFinal.columns[cIndex].cellFormatter &&
                           cellFormatters(cIndex, cell).type === 'html'
                         "
+                        class="cell-inner"
+                        :class="'quintable--table-container--table--tbody--row--cell--inner-cell--formatted-html'"
                         v-html="cellFormatters(cIndex, cell).value"
-                    ></div>
-                    <div
+                      ></div>
+                      <div
+                        v-else-if="configFinal.columns[cIndex].cellFormatter"
                         class="cell-inner"
                         :class="'quintable--table-container--table--tbody--row--cell--inner-cell--formatted-value'"
-                        v-else-if="configFinal.columns[cIndex].cellFormatter"
-                    >
-                      {{ cellFormatters(cIndex, cell).value }}
-                    </div>
-                    <div
+                      >
+                        {{ cellFormatters(cIndex, cell).value }}
+                      </div>
+                      <div
+                        v-else-if="valueToString(cell.html)"
                         class="cell-inner"
                         :class="'quintable--table-container--table--tbody--row--cell--inner-cell--html'"
-                        v-else-if="valueToString(cell.html)"
                         v-html="cell.html"
-                    ></div>
-                    <div
+                      ></div>
+                      <div
+                        v-else-if="cell.component"
                         class="cell-inner"
                         :class="'quintable--table-container--table--tbody--row--cell--inner-cell--component'"
-                        v-else-if="cell.component"
-                    >
-                      <component
+                      >
+                        <component
                           :is="cell.component.name"
                           v-bind="cell.component.props"
                           @action="handleComponentEvent"
-                      ></component>
-                    </div>
-                    <div
+                        ></component>
+                      </div>
+                      <div
+                        v-else-if="valueToString(cell.text)"
                         class="cell-inner"
                         :class="'quintable--table-container--table--tbody--row--cell--inner-cell--text'"
-                        v-else-if="valueToString(cell.text)"
-                    >
-                      {{ cell.text }}
-                    </div>
+                      >
+                        {{ cell.text }}
+                      </div>
+                    </slot>
                   </slot>
-                </slot>
-              </td>
-            </template>
+                </td>
+              </template>
 
-            <td
+              <td
                 v-if="
                   configFinal.select && configFinal.selectPosition === 'post'
                 "
-                class="
-                  select-td
-                  post
-                  quintable--table-container--table--tbody--row--select-td
-                  quintable--table-container--table--tbody--row--select-td--post
-                "
+                class="select-td post quintable--table-container--table--tbody--row--select-td quintable--table-container--table--tbody--row--select-td--post"
                 :class="{ 'disabled-select': rowsFinal[rIndex].disableSelect }"
-            >
-              <template
+              >
+                <template
                   v-if="
                     !rowsFinal[rIndex].disableSelect ||
                     rowsFinal[rIndex].showDisabledSelect
                   "
-              >
-                <p-quintable-check
+                >
+                  <quintable-p-check
                     v-if="configFinal.prettySelect"
+                    v-model="selected[rIndex]"
                     name="check"
                     class="p-icon"
                     :disabled="rowsFinal[rIndex].disableSelect"
-                    v-model="selected[rIndex]"
                     @change="checkListener($event, rIndex)"
-                >
-                  <template #extra>
+                  >
+                    <template #extra>
                       <span
-                      ><font-awesome-icon
+                        ><quintable-font-awesome-icon
                           v-if="selected[rIndex]"
                           icon="check"
                           class="text-success icon-check"
                       /></span>
-                  </template>
-                </p-quintable-check>
-                <label v-else class="mb-0 mt-0">
-                  <input
-                      type="checkbox"
+                    </template>
+                  </quintable-p-check>
+                  <label v-else class="mb-0 mt-0">
+                    <input
                       v-model="selected[rIndex]"
+                      type="checkbox"
                       :disabled="rowsFinal[rIndex].disableSelect"
                       @change="checkListener($event, rIndex)"
-                  />
-                </label>
-              </template>
-            </td>
-          </tr>
-          <template
+                    />
+                  </label>
+                </template>
+              </td>
+            </tr>
+            <template
               v-if="
                 (generatedRows[rIndex] || stickyRows[rIndex]) &&
                 visibleRows[rIndex]
               "
-          >
-            <tr
-                @mouseenter="onMouseenterRow(rIndex)"
-                @click="onRowClick($event, rIndex)"
-                :ref="'generated-row-highlighted-' + rIndex"
+            >
+              <tr
+                v-if="
+                  (generatedUpdatedKey &&
+                    openRows[rIndex] &&
+                    Object.keys(generatedRows[rIndex]).length) ||
+                  Object.keys(stickyRows[rIndex]).length
+                "
                 :key="
                   'generated-row-' +
                   rIndex +
@@ -485,46 +447,41 @@
                   '-' +
                   generatedUpdatedKey
                 "
-                class="
-                  generated-row
-                  quintable--table-container--table--tbody--generated-row
-                "
+                :ref="'generated-row-highlighted-' + rIndex"
+                class="generated-row quintable--table-container--table--tbody--generated-row"
                 :class="{
                   'parent-row-expanded': openRows[rIndex],
                   'parent-row-collapsed':
                     hiddenColumns[rIndex] > 0 && !openRows[rIndex],
                 }"
-                v-if="
-                  (generatedUpdatedKey &&
-                    openRows[rIndex] &&
-                    Object.keys(generatedRows[rIndex]).length) ||
-                  Object.keys(stickyRows[rIndex]).length
-                "
-            >
-              <td :colspan="configFinal.number + 1" class="ps-0 pe-0 pt-0">
-                <div
+                @mouseenter="onMouseenterRow(rIndex)"
+                @click="onRowClick($event, rIndex)"
+              >
+                <td :colspan="configFinal.number + 1" class="ps-0 pe-0 pt-0">
+                  <div
                     :class="{
                       [configFinal.hoverClass]: hoveredRow === rIndex,
                       [configFinal.activeClass]: activeRow === rIndex,
                     }"
-                >
-                  <table
-                      class="
-                        mb-2
-                        generated-table
-                        quintable--table-container--table--tbody--generated-row--generated-table
-                      "
                   >
-                    <tbody>
-                    <template
-                        v-for="(cell, cIndex) in generatedRows[rIndex]"
+                    <table
+                      class="mb-2 generated-table quintable--table-container--table--tbody--generated-row--generated-table"
                     >
-                      <tr
-                          class="
-                              generated-row-cell
-                              quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell
+                      <tbody>
+                        <template
+                          v-for="(cell, cIndex) in generatedRows[rIndex]"
+                        >
+                          <tr
+                            v-if="openRows[rIndex]"
+                            :id="
+                              'vue-quintable-' +
+                              uuid +
+                              '-generated-row-cell-' +
+                              rIndex +
+                              '-' +
+                              cIndex
                             "
-                          :key="
+                            :key="
                               'vue-quintable-' +
                               uuid +
                               '-generated-row-cell-' +
@@ -534,207 +491,167 @@
                               '-' +
                               generatedUpdatedKey
                             "
-                          :id="
-                              'vue-quintable-' +
-                              uuid +
-                              '-generated-row-cell-' +
-                              rIndex +
-                              '-' +
-                              cIndex
-                            "
-                          v-if="openRows[rIndex]"
-                      >
-                        <td
-                            v-if="
+                            class="generated-row-cell quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell"
+                          >
+                            <td
+                              v-if="
                                 !configFinal.hideRowToggle &&
                                 generatedRows[rIndex] &&
                                 Object.keys(generatedRows[rIndex]).length
                               "
-                            class="toggle-cell invisible"
-                        >
+                              class="toggle-cell invisible"
+                            >
                               <span v-if="hiddenColumns[rIndex] > 0">
                                 <span v-if="!openRows[rIndex]"
-                                ><font-awesome-icon
+                                  ><quintable-font-awesome-icon
                                     fixed-width
                                     :icon="configFinal.collapsedRowIcon"
-                                ></font-awesome-icon
+                                  ></quintable-font-awesome-icon
                                 ></span>
                                 <span v-else
-                                ><font-awesome-icon
+                                  ><quintable-font-awesome-icon
                                     fixed-width
                                     :icon="configFinal.expandedRowIcon"
-                                ></font-awesome-icon
+                                  ></quintable-font-awesome-icon
                                 ></span>
                               </span>
-                        </td>
-                        <td
-                            class="
-                                generated-cell-element generated-cell-headline
-                                quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-headline
-                              "
-                            @click.stop="setSortColumn(cIndex)"
-                            :class="configFinal.columnClasses[cIndex]"
-                            v-if="
+                            </td>
+                            <td
+                              v-if="
                                 showHeadlines[cIndex] ||
                                 configFinal.sorts[cIndex]
                               "
-                        >
-                          <strong
-                              v-html="configFinal.headlines[cIndex]"
-                              v-if="showHeadlines[cIndex]"
-                          >
-                          </strong>
-                          <span v-else class="headline"><wbr/></span>
+                              :class="configFinal.columnClasses[cIndex]"
+                              class="generated-cell-element generated-cell-headline quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-headline"
+                              @click.stop="setSortColumn(cIndex)"
+                            >
+                              <strong
+                                v-if="showHeadlines[cIndex]"
+                                v-html="configFinal.headlines[cIndex]"
+                              >
+                              </strong>
+                              <span v-else class="headline"><wbr /></span>
 
-                          <span
-                              class="
-                                  sorting-icon
-                                  ms-2
-                                  cursor-pointer
-                                  quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon
-                                "
-                              v-if="
+                              <span
+                                v-if="
                                   configFinal.sorts[cIndex] &&
                                   hoveredRow === rIndex
                                 "
-                          >
-                                <font-awesome-icon
-                                    v-if="!currentSortIndexes[cIndex]"
-                                    icon="sort"
-                                    class="text-primary"
+                                class="sorting-icon ms-2 cursor-pointer quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon"
+                              >
+                                <quintable-font-awesome-icon
+                                  v-if="!currentSortIndexes[cIndex]"
+                                  icon="sort"
+                                  class="text-primary"
                                 />
-                                <font-awesome-icon
-                                    v-if="
+                                <quintable-font-awesome-icon
+                                  v-if="
                                     currentSortIndexes[cIndex] &&
                                     currentSortIndexes[cIndex].asc
                                   "
-                                    icon="sort-amount-down-alt"
-                                    class="text-primary"
+                                  icon="sort-amount-down-alt"
+                                  class="text-primary"
                                 />
-                                <font-awesome-icon
-                                    v-if="
+                                <quintable-font-awesome-icon
+                                  v-if="
                                     currentSortIndexes[cIndex] &&
                                     !currentSortIndexes[cIndex].asc
                                   "
-                                    icon="sort-amount-down"
-                                    class="text-primary"
+                                  icon="sort-amount-down"
+                                  class="text-primary"
                                 />
                                 <span
-                                    v-if="currentSortIndexes[cIndex]"
-                                    @click.stop.prevent="removeSort(cIndex)"
-                                    class="ms-1 text-muted"
+                                  v-if="currentSortIndexes[cIndex]"
+                                  class="ms-1 text-muted"
+                                  @click.stop.prevent="removeSort(cIndex)"
                                 >
                                   <span
-                                      class="badge bg-info text-white"
-                                      v-if="numberOfSorts > 1"
+                                    v-if="numberOfSorts > 1"
+                                    class="badge bg-info text-white"
                                   >
                                     {{ currentSortIndexes[cIndex].order + 1 }}
                                   </span>
                                   <small v-else>
-                                    <font-awesome-icon icon="times"/>
+                                    <quintable-font-awesome-icon icon="times" />
                                   </small>
                                 </span>
                               </span>
-                        </td>
-                        <td
-                            :colspan="
+                            </td>
+                            <td
+                              v-tooltip="{
+                                placement: 'top',
+                                content: cell.tooltip,
+                                trigger: cell.tooltip ? 'hover' : 'manual',
+                              }"
+                              :colspan="
                                 !showHeadlines[cIndex] &&
                                 !configFinal.sorts[cIndex]
                                   ? 2
                                   : 1
                               "
-                            :class="
+                              :class="
                                 configFinal.columnClasses[cIndex] +
                                 ' ' +
                                 cellClassesParsed[rIndex][cIndex]
                               "
-                            class="
-                                generated-cell-element
-                                generated-cell-element-content
-                                generated-cell-content
-                                quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-content
-                              "
-                            @click="onCellClick($event, cell)"
-                            v-tooltip="{
-                                placement: 'top',
-                                content: cell.tooltip,
-                                trigger: cell.tooltip ? 'hover' : 'manual',
-                              }"
-                        >
-                          <slot
-                              :cell="cell"
-                              :name="'generated-cell-complete'"
-                          >
-                            <slot
-                                :cell="cell"
-                                :name="'generated-cell-content'"
+                              class="generated-cell-element generated-cell-element-content generated-cell-content quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-content"
+                              @click="onCellClick($event, cell)"
                             >
-                              <div
-                                  class="
-                                      cell-inner
-                                      quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-html
-                                    "
-                                  v-if="
+                              <slot
+                                :cell="cell"
+                                :name="'generated-cell-complete'"
+                              >
+                                <slot
+                                  :cell="cell"
+                                  :name="'generated-cell-content'"
+                                >
+                                  <div
+                                    v-if="
                                       configFinal.columns[cIndex]
                                         .cellFormatter &&
                                       cellFormatters(cIndex, cell).type ===
                                         'html'
                                     "
-                                  v-html="cellFormatters(cIndex, cell).value"
-                              ></div>
-                              <div
-                                  class="
-                                      cell-inner
-                                      quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-value
-                                    "
-                                  v-else-if="
+                                    class="cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-html"
+                                    v-html="cellFormatters(cIndex, cell).value"
+                                  ></div>
+                                  <div
+                                    v-else-if="
                                       configFinal.columns[cIndex].cellFormatter
                                     "
-                              >
-                                {{ cellFormatters(cIndex, cell).value }}
-                              </div>
-                              <div
-                                  class="
-                                      cell-inner
-                                      quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--html
-                                    "
-                                  v-else-if="valueToString(cell.html)"
-                                  v-html="cell.html"
-                              ></div>
-                              <div
-                                  class="
-                                      cell-inner
-                                      quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--component
-                                    "
-                                  v-else-if="cell.component"
-                              >
-                                <component
-                                    :is="cell.component.name"
-                                    v-bind="cell.component.props"
-                                    @action="handleComponentEvent"
-                                ></component>
-                              </div>
-                              <div
-                                  class="
-                                      cell-inner
-                                      quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--text
-                                    "
-                                  v-else-if="valueToString(cell.text)"
-                              >
-                                {{ cell.text }}
-                              </div>
-                            </slot>
-                          </slot>
-                        </td>
-                      </tr>
-                    </template>
-                    <tr
-                        v-for="(cell, cIndex) in stickyRows[rIndex]"
-                        class="
-                            sticky-row-cell
-                            quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell
-                          "
-                        :key="
+                                    class="cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-value"
+                                  >
+                                    {{ cellFormatters(cIndex, cell).value }}
+                                  </div>
+                                  <div
+                                    v-else-if="valueToString(cell.html)"
+                                    class="cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--html"
+                                    v-html="cell.html"
+                                  ></div>
+                                  <div
+                                    v-else-if="cell.component"
+                                    class="cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--component"
+                                  >
+                                    <component
+                                      :is="cell.component.name"
+                                      v-bind="cell.component.props"
+                                      @action="handleComponentEvent"
+                                    ></component>
+                                  </div>
+                                  <div
+                                    v-else-if="valueToString(cell.text)"
+                                    class="cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--text"
+                                  >
+                                    {{ cell.text }}
+                                  </div>
+                                </slot>
+                              </slot>
+                            </td>
+                          </tr>
+                        </template>
+                        <tr
+                          v-for="(cell, cIndex) in stickyRows[rIndex]"
+                          :id="
                             'vue-quintable-' +
                             uuid +
                             '-sticky-row-cell-' +
@@ -742,7 +659,7 @@
                             '-' +
                             cIndex
                           "
-                        :id="
+                          :key="
                             'vue-quintable-' +
                             uuid +
                             '-sticky-row-cell-' +
@@ -750,203 +667,182 @@
                             '-' +
                             cIndex
                           "
-                    >
-                      <td
-                          v-if="
+                          class="sticky-row-cell quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell"
+                        >
+                          <td
+                            v-if="
                               !configFinal.hideRowToggle &&
                               generatedRows[rIndex] &&
                               Object.keys(generatedRows[rIndex]).length
                             "
-                          class="toggle-cell invisible"
-                      >
+                            class="toggle-cell invisible"
+                          >
                             <span v-if="hiddenColumns[rIndex] > 0">
                               <span v-if="!openRows[rIndex]"
-                              ><font-awesome-icon
+                                ><quintable-font-awesome-icon
                                   fixed-width
                                   :icon="configFinal.collapsedRowIcon"
-                              ></font-awesome-icon
+                                ></quintable-font-awesome-icon
                               ></span>
                               <span v-else
-                              ><font-awesome-icon
+                                ><quintable-font-awesome-icon
                                   fixed-width
                                   :icon="configFinal.expandedRowIcon"
-                              ></font-awesome-icon
+                                ></quintable-font-awesome-icon
                               ></span>
                             </span>
-                      </td>
-                      <td
-                          class="
-                              generated-cell-element
-                              sticky-cell-headline
-                              quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-headline
-                            "
-                          @click.stop="setSortColumn(cIndex)"
-                          :class="configFinal.columnClasses[cIndex]"
-                          v-if="
+                          </td>
+                          <td
+                            v-if="
                               showHeadlines[cIndex] || configFinal.sorts[cIndex]
                             "
-                      >
-                        <strong
-                            v-html="configFinal.headlines[cIndex]"
-                            v-if="showHeadlines[cIndex]"
-                        >
-                        </strong>
-                        <span v-else class="headline"><wbr/></span>
+                            :class="configFinal.columnClasses[cIndex]"
+                            class="generated-cell-element sticky-cell-headline quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-headline"
+                            @click.stop="setSortColumn(cIndex)"
+                          >
+                            <strong
+                              v-if="showHeadlines[cIndex]"
+                              v-html="configFinal.headlines[cIndex]"
+                            >
+                            </strong>
+                            <span v-else class="headline"><wbr /></span>
 
-                        <span
-                            class="
-                                sorting-icon
-                                ms-2
-                                cursor-pointer
-                                quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon
-                              "
-                            v-if="
+                            <span
+                              v-if="
                                 configFinal.sorts[cIndex] &&
                                 hoveredRow === rIndex
                               "
-                        >
-                              <font-awesome-icon
-                                  v-if="!currentSortIndexes[cIndex]"
-                                  icon="sort"
-                                  class="text-primary"
+                              class="sorting-icon ms-2 cursor-pointer quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon"
+                            >
+                              <quintable-font-awesome-icon
+                                v-if="!currentSortIndexes[cIndex]"
+                                icon="sort"
+                                class="text-primary"
                               />
-                              <font-awesome-icon
-                                  v-if="
+                              <quintable-font-awesome-icon
+                                v-if="
                                   currentSortIndexes[cIndex] &&
                                   currentSortIndexes[cIndex].asc
                                 "
-                                  icon="sort-amount-down-alt"
-                                  class="text-primary"
+                                icon="sort-amount-down-alt"
+                                class="text-primary"
                               />
-                              <font-awesome-icon
-                                  v-if="
+                              <quintable-font-awesome-icon
+                                v-if="
                                   currentSortIndexes[cIndex] &&
                                   !currentSortIndexes[cIndex].asc
                                 "
-                                  icon="sort-amount-down"
-                                  class="text-primary"
+                                icon="sort-amount-down"
+                                class="text-primary"
                               />
                               <span
-                                  v-if="currentSortIndexes[cIndex]"
-                                  @click.stop.prevent="removeSort(cIndex)"
-                                  class="ms-1 text-muted"
+                                v-if="currentSortIndexes[cIndex]"
+                                class="ms-1 text-muted"
+                                @click.stop.prevent="removeSort(cIndex)"
                               >
                                 <span
-                                    class="badge bg-info text-white"
-                                    v-if="numberOfSorts > 1"
+                                  v-if="numberOfSorts > 1"
+                                  class="badge bg-info text-white"
                                 >
                                   {{ currentSortIndexes[cIndex].order + 1 }}
                                 </span>
                                 <small v-else>
-                                  <font-awesome-icon icon="times"/>
+                                  <quintable-font-awesome-icon icon="times" />
                                 </small>
                               </span>
                             </span>
-                      </td>
+                          </td>
 
-                      <td
-                          :colspan="
+                          <td
+                            v-tooltip="{
+                              placement: 'top',
+                              content: cell.tooltip,
+                              trigger: cell.tooltip ? 'hover' : 'manual',
+                            }"
+                            :colspan="
                               !showHeadlines[cIndex] &&
                               !configFinal.sorts[cIndex]
                                 ? 2
                                 : 1
                             "
-                          :class="
+                            :class="
                               configFinal.columnClasses[cIndex] +
                               ' ' +
                               cellClassesParsed[rIndex][cIndex]
                             "
-                          class="
-                              generated-cell-element
-                              generated-cell-element-content
-                              sticky-cell-content
-                              quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-content
-                            "
-                          @click="onCellClick($event, cell)"
-                          v-tooltip="{
-                              placement: 'top',
-                              content: cell.tooltip,
-                              trigger: cell.tooltip ? 'hover' : 'manual',
-                            }"
-                      >
-                        <slot :cell="cell" :name="'sticky-cell-complete'">
-                          <slot :cell="cell" :name="'sticky-cell-content'">
-                            <div
-                                class="cell-inner"
-                                :class="'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--formatted-html'"
-                                v-if="
+                            class="generated-cell-element generated-cell-element-content sticky-cell-content quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-content"
+                            @click="onCellClick($event, cell)"
+                          >
+                            <slot :cell="cell" :name="'sticky-cell-complete'">
+                              <slot :cell="cell" :name="'sticky-cell-content'">
+                                <div
+                                  v-if="
                                     configFinal.columns[cIndex].cellFormatter &&
                                     cellFormatters(cIndex, cell).type === 'html'
                                   "
-                                v-html="cellFormatters(cIndex, cell).value"
-                            ></div>
-                            <div
-                                class="cell-inner"
-                                :class="'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--formatted-value'"
-                                v-else-if="
+                                  class="cell-inner"
+                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--formatted-html'"
+                                  v-html="cellFormatters(cIndex, cell).value"
+                                ></div>
+                                <div
+                                  v-else-if="
                                     configFinal.columns[cIndex].cellFormatter
                                   "
-                            >
-                              {{ cellFormatters(cIndex, cell).value }}
-                            </div>
-                            <div
-                                class="cell-inner"
-                                :class="'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--html'"
-                                v-else-if="valueToString(cell.html)"
-                                v-html="cell.html"
-                            ></div>
-                            <div
-                                class="cell-inner"
-                                :class="'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--component'"
-                                v-else-if="cell.component"
-                            >
-                              <component
-                                  :is="cell.component.name"
-                                  v-bind="cell.component.props"
-                                  @action="handleComponentEvent"
-                              ></component>
-                            </div>
-                            <div
-                                class="cell-inner"
-                                :class="'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--text'"
-                                v-else-if="valueToString(cell.text)"
-                            >
-                              {{ cell.text }}
-                            </div>
-                          </slot>
-                        </slot>
-                      </td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </td>
-            </tr>
+                                  class="cell-inner"
+                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--formatted-value'"
+                                >
+                                  {{ cellFormatters(cIndex, cell).value }}
+                                </div>
+                                <div
+                                  v-else-if="valueToString(cell.html)"
+                                  class="cell-inner"
+                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--html'"
+                                  v-html="cell.html"
+                                ></div>
+                                <div
+                                  v-else-if="cell.component"
+                                  class="cell-inner"
+                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--component'"
+                                >
+                                  <component
+                                    :is="cell.component.name"
+                                    v-bind="cell.component.props"
+                                    @action="handleComponentEvent"
+                                  ></component>
+                                </div>
+                                <div
+                                  v-else-if="valueToString(cell.text)"
+                                  class="cell-inner"
+                                  :class="'quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--text'"
+                                >
+                                  {{ cell.text }}
+                                </div>
+                              </slot>
+                            </slot>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+            </template>
           </template>
-        </template>
         </tbody>
       </table>
 
       <template v-if="noRows && !ajaxLoading">
         <div
-            class="
-            clearfix
-            slot-no-results slot
-            quintable--table-container--no-results
-          "
+          class="clearfix slot-no-results slot quintable--table-container--no-results"
         >
           <slot name="no-results">
             <div
-                class="
-                text-center
-                p-3
-                quintable--table-container--no-results--results
-              "
+              class="text-center p-3 quintable--table-container--no-results--results"
             >
               <em v-html="configFinal.emptyPlaceholder"></em>
             </div>
           </slot>
-          <hr/>
+          <hr />
         </div>
       </template>
     </div>
@@ -954,24 +850,16 @@
     <div v-if="ajaxLoading" class="slot-loading slot quintable--loading">
       <slot name="loading">
         <div
-            class="loader-wrapper quintable--loading--loader-wrapper"
-            :style="'height:' + loaderHeight + 'px;'"
+          class="loader-wrapper quintable--loading--loader-wrapper"
+          :style="'height:' + loaderHeight + 'px;'"
         >
           <div
-              class="
-              loader
-              text-center
-              py-4
-              quintable--loading--loader-wrapper--loader
-            "
+            class="loader text-center py-4 quintable--loading--loader-wrapper--loader"
           >
-            <font-awesome-icon
-                icon="circle-notch"
-                spin
-                class="
-                ajax-loader
-                quintable--loading--loader-wrapper--loader--ajax-loader
-              "
+            <quintable-font-awesome-icon
+              icon="circle-notch"
+              spin
+              class="ajax-loader quintable--loading--loader-wrapper--loader--ajax-loader"
             />
           </div>
         </div>
@@ -982,123 +870,92 @@
       <div class="row">
         <div class="col-lg-4 quintable--table-footer-container--sort-container">
           <div
-              :class="`pb-lg-0 pb-3 float-start quintable--table-footer-container--sort-container--sort-select flex-inline ${configFinal.pageSort ? 'me-3' : ''}`.trim()"
-              v-if="configFinal.multiSortSelect || configFinal.pageSortSelect"
+            v-if="configFinal.multiSortSelect || configFinal.pageSortSelect"
+            :class="
+              `pb-lg-0 pb-3 float-start quintable--table-footer-container--sort-container--sort-select flex-inline ${
+                configFinal.pageSort ? 'me-3' : ''
+              }`.trim()
+            "
           >
-            <p-quintable-check
-                v-if="configFinal.multiSortSelect"
-                class="
-                  p-switch
-                  quintable--table-footer-container--sort-container--sort-select--multi-sort-select
-                "
-                v-model="multiSort"
-                value="true"
-            >{{ configFinal.multiSortPlaceholder }}
-            </p-quintable-check>
-            <p-quintable-check
-                v-if="configFinal.pageSortSelect"
-                class="
-                p-switch
-                quintable--table-footer-container--sort-container--sort-select--page-sort-select
-              "
-                v-model="pageSort"
-                value="true"
-            >{{ configFinal.pageSortPlaceholder }}
-            </p-quintable-check>
+            <quintable-p-check
+              v-if="configFinal.multiSortSelect"
+              v-model="multiSort"
+              class="p-switch quintable--table-footer-container--sort-container--sort-select--multi-sort-select"
+              value="true"
+              >{{ configFinal.multiSortPlaceholder }}
+            </quintable-p-check>
+            <quintable-p-check
+              v-if="configFinal.pageSortSelect"
+              v-model="pageSort"
+              class="p-switch quintable--table-footer-container--sort-container--sort-select--page-sort-select"
+              value="true"
+              >{{ configFinal.pageSortPlaceholder }}
+            </quintable-p-check>
           </div>
         </div>
         <div
-            class="col-lg-8 quintable--table-footer-container--pagination-wrapper"
+          class="col-lg-8 quintable--table-footer-container--pagination-wrapper"
         >
           <div
-              class="
-              float-lg-end
-              me-3
-              pagination-container
-              quintable--table-footer-container--pagination-wrapper--pagination-container
-            "
-              v-if="configFinal && configFinal.pagination"
+            v-if="configFinal && configFinal.pagination"
+            class="float-lg-end me-3 pagination-container quintable--table-footer-container--pagination-wrapper--pagination-container"
           >
             <div
-                v-if="configFinal.rowsSelect"
-                class="
-                mb-2
-                d-inline-block
-                me-3
-                align-middle
-                quintable--table-footer-container--pagination-wrapper--pagination-container--rows-select
-              "
+              v-if="configFinal.rowsSelect"
+              class="mb-2 d-inline-block me-3 align-middle quintable--table-footer-container--pagination-wrapper--pagination-container--rows-select"
             >
               <span
-                  class="
-                  d-inline-block
-                  align-middle
-                  me-2
-                  quintable--table-footer-container--pagination-wrapper--pagination-container--rows-select--placeholder
-                "
-                  v-html="configFinal.rowsPlaceholder"
+                class="d-inline-block align-middle me-2 quintable--table-footer-container--pagination-wrapper--pagination-container--rows-select--placeholder"
+                v-html="configFinal.rowsPlaceholder"
               ></span>
-              <v-quintable-select
-                  class="
-                  d-inline-block
-                  align-middle
-                  quintable--table-footer-container--pagination-wrapper--pagination-container--rows-select--select
-                "
-                  :options="paginationOptionsFilled"
-                  v-model="currentRowsPerPageProperty"
-                  :clearable="false"
+              <quintable-v-select
+                v-model="currentRowsPerPageProperty"
+                class="d-inline-block align-middle quintable--table-footer-container--pagination-wrapper--pagination-container--rows-select--select"
+                :options="paginationOptionsFilled"
+                :clearable="false"
               />
             </div>
             <nav
-                v-if="configFinal && configFinal.pagination && pages > 1"
-                class="
-                d-inline-block
-                align-middle
-                mb-2
-                quintable--table-footer-container--pagination-wrapper--pagination-container--nav
-              "
-                :class="{ 'me-3': numberOfVisibleRows, disabled: ajaxLoading }"
+              v-if="configFinal && configFinal.pagination && pages > 1"
+              class="d-inline-block align-middle mb-2 quintable--table-footer-container--pagination-wrapper--pagination-container--nav"
+              :class="{ 'me-3': numberOfVisibleRows, disabled: ajaxLoading }"
             >
               <ul
-                  class="
-                  pagination
-                  mb-0
-                  quintable--table-footer-container--pagination-wrapper--pagination-container--nav--pagination
-                "
+                class="pagination mb-0 quintable--table-footer-container--pagination-wrapper--pagination-container--nav--pagination"
               >
                 <li
-                    class="page-item"
-                    v-if="pages > pageRange"
-                    :class="{ disabled: currentPage <= 1 }"
-                    @click="gotoPage('first')"
+                  v-if="pages > pageRange"
+                  class="page-item"
+                  :class="{ disabled: currentPage <= 1 }"
+                  @click="gotoPage('first')"
                 >
                   <span class="page-link">
-                    <font-awesome-icon icon="angle-double-left"/>
+                    <quintable-font-awesome-icon icon="angle-double-left" />
                   </span>
                 </li>
                 <li
-                    class="page-item"
-                    :class="{ disabled: currentPage <= 1 }"
-                    @click="gotoPage('prev')"
+                  class="page-item"
+                  :class="{ disabled: currentPage <= 1 }"
+                  @click="gotoPage('prev')"
                 >
                   <span class="page-link">
-                    <font-awesome-icon icon="angle-left"/>
+                    <quintable-font-awesome-icon icon="angle-left" />
                   </span>
                 </li>
                 <li
-                    class="page-item"
-                    v-if="pageRange < pages && visiblePages[0] > 1"
-                    @click="updatePageOffset(-1)"
+                  v-if="pageRange < pages && visiblePages[0] > 1"
+                  class="page-item"
+                  @click="updatePageOffset(-1)"
                 >
                   <span class="page-link"> ... </span>
                 </li>
 
                 <li
-                    :key="'pagination-item-' + page"
-                    class="page-item"
-                    :class="{ active: page === currentPage }"
-                    v-for="page in visiblePages"
-                    @click="gotoPage(page)"
+                  v-for="page in visiblePages"
+                  :key="'pagination-item-' + page"
+                  class="page-item"
+                  :class="{ active: page === currentPage }"
+                  @click="gotoPage(page)"
                 >
                   <span class="page-link">
                     {{ page }}
@@ -1106,47 +963,42 @@
                 </li>
 
                 <li
-                    class="page-item"
-                    v-if="
+                  v-if="
                     pageRange < pages &&
                     visiblePages[visiblePages.length - 1] < pages
                   "
-                    @click="updatePageOffset(1)"
+                  class="page-item"
+                  @click="updatePageOffset(1)"
                 >
                   <span class="page-link"> ... </span>
                 </li>
 
                 <li
-                    class="page-item"
-                    :class="{ disabled: pages === currentPage }"
-                    @click="gotoPage('next')"
+                  class="page-item"
+                  :class="{ disabled: pages === currentPage }"
+                  @click="gotoPage('next')"
                 >
                   <span class="page-link">
-                    <font-awesome-icon icon="angle-right"/>
+                    <quintable-font-awesome-icon icon="angle-right" />
                   </span>
                 </li>
                 <li
-                    class="page-item"
-                    v-if="pages > pageRange"
-                    :class="{ disabled: pages === currentPage }"
-                    @click="gotoPage('last')"
+                  v-if="pages > pageRange"
+                  class="page-item"
+                  :class="{ disabled: pages === currentPage }"
+                  @click="gotoPage('last')"
                 >
                   <span class="page-link">
-                    <font-awesome-icon icon="angle-double-right"/>
+                    <quintable-font-awesome-icon icon="angle-double-right" />
                   </span>
                 </li>
               </ul>
             </nav>
 
             <span
-                class="
-                d-inline-block
-                align-middle
-                mb-2
-                quintable--table-footer-container--pagination-wrapper--pagination-container--visible-rows
-              "
-                v-if="numberOfVisibleRows"
-            >{{ firstVisibleRow }}-{{ lastVisibleRow }}
+              v-if="numberOfVisibleRows"
+              class="d-inline-block align-middle mb-2 quintable--table-footer-container--pagination-wrapper--pagination-container--visible-rows"
+              >{{ firstVisibleRow }}-{{ lastVisibleRow }}
               {{ configFinal.numberOfVisibleRowsFillerWord }}
               {{ numberOfVisibleRows }}</span
             >
@@ -1163,7 +1015,7 @@
 <script>
 import fuzzy from "fuzzy.js";
 import axios from "axios";
-import {v4 as randomUUID} from "uuid";
+import { v4 as randomUUID } from "uuid";
 
 export default {
   name: "VueQuintable",
@@ -1244,6 +1096,7 @@ export default {
     },
     axios: {
       type: Function,
+      default: null,
     },
     identifier: {
       type: String,
@@ -1254,6 +1107,28 @@ export default {
       default: null,
     },
   },
+  emits: [
+    "update:filters",
+    "filtered:rows",
+    "change:breakpoints",
+    "hover:row",
+    "update:search",
+    "update:rows-per-page",
+    "input",
+    "update:selected-rows",
+    "dennis",
+    "update:page",
+    "active:row",
+    "component:event",
+    "auxclick:row",
+    "expand:row",
+    "click:row",
+    "click:cell",
+    "auxclick:cell",
+    "update:sort",
+    "ajax:rows",
+    "ajax:error",
+  ],
   data() {
     return {
       rowsUpdatedKey: Date.now(),
@@ -1363,10 +1238,10 @@ export default {
      */
     axiosFinal() {
       return this.axios
-          ? this.axios
-          : this.$globalVueQuintableaxios
-              ? this.$globalVueQuintableaxios
-              : axios;
+        ? this.axios
+        : this.$globalVueQuintableaxios
+          ? this.$globalVueQuintableaxios
+          : axios;
     },
 
     /**
@@ -1384,22 +1259,22 @@ export default {
       } else if (this.config.pagination) {
         let i = 0;
         while (
-            this.paginationOptions[i] <= this.config.pagination &&
-            i < this.paginationOptions.length
-            ) {
+          this.paginationOptions[i] <= this.config.pagination &&
+          i < this.paginationOptions.length
+        ) {
           i++;
         }
         pagination =
-            this.paginationOptions[
-                Math.min(i - 1, this.paginationOptions.length - 1)
-                ];
+          this.paginationOptions[
+            Math.min(i - 1, this.paginationOptions.length - 1)
+          ];
       }
 
       let numberOfVisibleRowsFillerWord = "of";
 
       if (this.config.numberOfVisibleRowsFillerWord) {
         numberOfVisibleRowsFillerWord =
-            this.config.numberOfVisibleRowsFillerWord;
+          this.config.numberOfVisibleRowsFillerWord;
       }
 
       let select = false;
@@ -1492,7 +1367,7 @@ export default {
 
       let ignoreSortEmptyColumns = "none";
       if (
-          ["none", "active", "all"].includes(this.config.ignoreSortEmptyColumns)
+        ["none", "active", "all"].includes(this.config.ignoreSortEmptyColumns)
       ) {
         ignoreSortEmptyColumns = this.config.ignoreSortEmptyColumns;
       }
@@ -1554,7 +1429,7 @@ export default {
 
       if (ajaxUrl && selectAllRows) {
         console.warn(
-            "Option selectAllRows was deactivated automatically because ajaxUrl is set!"
+          "Option selectAllRows was deactivated automatically because ajaxUrl is set!",
         );
         selectAllRows = false;
       }
@@ -1566,7 +1441,7 @@ export default {
 
       if (!this.identifier && this.config.storeState) {
         console.warn(
-            "Option storeState was deactivated automatically because table identifier is not set!"
+          "Option storeState was deactivated automatically because table identifier is not set!",
         );
         storeState = false;
       }
@@ -1577,7 +1452,8 @@ export default {
         localStorage.removeItem(testLocalStorage);
       } catch (e) {
         console.warn(
-            "Option storeState was deactivated automatically because local storage is not available!"
+          "Option storeState was deactivated automatically because local storage is not available!",
+          e,
         );
         storeState = false;
       }
@@ -1599,22 +1475,22 @@ export default {
 
       let expandedRowIcon = "chevron-up";
       if (
-          this.config.expandedRowIcon &&
-          typeof this.config.expandedRowIcon === "string" &&
-          ["chevron-up", "minus", "caret-up", "eye-slash"].includes(
-              this.config.expandedRowIcon.toLowerCase()
-          )
+        this.config.expandedRowIcon &&
+        typeof this.config.expandedRowIcon === "string" &&
+        ["chevron-up", "minus", "caret-up", "eye-slash"].includes(
+          this.config.expandedRowIcon.toLowerCase(),
+        )
       ) {
         expandedRowIcon = this.config.expandedRowIcon.toLowerCase();
       }
 
       let collapsedRowIcon = "chevron-down";
       if (
-          this.config.collapsedRowIcon &&
-          typeof this.config.collapsedRowIcon === "string" &&
-          ["chevron-down", "plus", "caret-down", "eye"].includes(
-              this.config.collapsedRowIcon.toLowerCase()
-          )
+        this.config.collapsedRowIcon &&
+        typeof this.config.collapsedRowIcon === "string" &&
+        ["chevron-down", "plus", "caret-down", "eye"].includes(
+          this.config.collapsedRowIcon.toLowerCase(),
+        )
       ) {
         collapsedRowIcon = this.config.collapsedRowIcon.toLowerCase();
       }
@@ -1636,9 +1512,9 @@ export default {
 
       let requestMethod = "GET";
       if (
-          this.config.requestMethod &&
-          typeof this.config.requestMethod === "string" &&
-          ["POST", "GET"].includes(this.config.requestMethod.toUpperCase())
+        this.config.requestMethod &&
+        typeof this.config.requestMethod === "string" &&
+        ["POST", "GET"].includes(this.config.requestMethod.toUpperCase())
       ) {
         requestMethod = this.config.requestMethod.toUpperCase();
       }
@@ -1662,9 +1538,9 @@ export default {
           if (this.config.columns[i] && this.config.columns[i].headline) {
             headlines[i] = this.config.columns[i].headline;
             columnClasses[i] += this.config.columns[i].headline
-                .replace(/([a-z])([A-Z])/g, "$1-$2")
-                .replace(/\s+/g, "-")
-                .toLowerCase();
+              .replace(/([a-z])([A-Z])/g, "$1-$2")
+              .replace(/\s+/g, "-")
+              .toLowerCase();
           } else {
             headlines[i] = "";
           }
@@ -1683,14 +1559,14 @@ export default {
 
           if (this.config.columns[i] && this.config.columns[i].sort) {
             if (
-                this.config.columns[i].firstSortDirection &&
-                typeof this.config.columns[i].firstSortDirection === "string" &&
-                ["DESC", "ASC"].includes(
-                    this.config.columns[i].firstSortDirection.toUpperCase()
-                )
+              this.config.columns[i].firstSortDirection &&
+              typeof this.config.columns[i].firstSortDirection === "string" &&
+              ["DESC", "ASC"].includes(
+                this.config.columns[i].firstSortDirection.toUpperCase(),
+              )
             ) {
               sorts[i] =
-                  this.config.columns[i].firstSortDirection.toUpperCase();
+                this.config.columns[i].firstSortDirection.toUpperCase();
             } else {
               sorts[i] = true;
             }
@@ -1789,9 +1665,9 @@ export default {
     visibleRows() {
       //just for updating the computed property
       if (
-          !!this.rowsUpdatedKey &&
-          !this.configFinal.ajaxUrl &&
-          this.currentRowsPerPage !== "All"
+        !!this.rowsUpdatedKey &&
+        !this.configFinal.ajaxUrl &&
+        this.currentRowsPerPage !== "All"
       ) {
         let visible = [];
 
@@ -1815,7 +1691,7 @@ export default {
         let counter = 0;
         for (let index in onlyVisibleSortedRows) {
           if (
-              Object.prototype.hasOwnProperty.call(onlyVisibleSortedRows, index)
+            Object.prototype.hasOwnProperty.call(onlyVisibleSortedRows, index)
           ) {
             index = parseInt(index);
             if (counter < borderHigh && counter >= borderLow) {
@@ -1869,8 +1745,8 @@ export default {
       if (this.generatedUpdatedKey) {
         for (let x = 0; x < this.rowsFinal.length; x++) {
           let cells = this.rowsFinal[x].cells
-              ? this.rowsFinal[x].cells
-              : this.rowsFinal[x];
+            ? this.rowsFinal[x].cells
+            : this.rowsFinal[x];
 
           let generatedCells = {};
 
@@ -1880,17 +1756,17 @@ export default {
               let col = this.configFinal.columns[j];
 
               const hide =
-                  this.configFinal.hiddenCols[j] ||
-                  (!this.configFinal.ignoreEmpty[j] &&
-                      this.configFinal.hideEmptyColumns &&
-                      (this.isColEmpty(j) || this.isColEmpty(j, x))) ||
-                  this.emptyColumns[j];
+                this.configFinal.hiddenCols[j] ||
+                (!this.configFinal.ignoreEmpty[j] &&
+                  this.configFinal.hideEmptyColumns &&
+                  (this.isColEmpty(j) || this.isColEmpty(j, x))) ||
+                this.emptyColumns[j];
 
               if (
-                  !hide &&
-                  col.breakpoint &&
-                  (col.breakpoint.toLocaleLowerCase() === "all" ||
-                      col.breakpoint.toLocaleLowerCase() === bp)
+                !hide &&
+                col.breakpoint &&
+                (col.breakpoint.toLocaleLowerCase() === "all" ||
+                  col.breakpoint.toLocaleLowerCase() === bp)
               ) {
                 if (!col.sticky && !col.alwaysExpanded) {
                   generatedCells[j] = cells[j];
@@ -1909,8 +1785,8 @@ export default {
 
       for (let x = 0; x < this.rowsFinal.length; x++) {
         let cells = this.rowsFinal[x].cells
-            ? this.rowsFinal[x].cells
-            : this.rowsFinal[x];
+          ? this.rowsFinal[x].cells
+          : this.rowsFinal[x];
 
         let stickyCells = {};
 
@@ -1920,20 +1796,20 @@ export default {
             let col = this.configFinal.columns[j];
 
             const hide =
-                this.configFinal.hiddenCols[j] ||
-                (!this.configFinal.ignoreEmpty[j] &&
-                    this.configFinal.hideEmptyColumns &&
-                    (this.isColEmpty(j) || this.isColEmpty(j, x))) ||
-                this.emptyColumns[j];
+              this.configFinal.hiddenCols[j] ||
+              (!this.configFinal.ignoreEmpty[j] &&
+                this.configFinal.hideEmptyColumns &&
+                (this.isColEmpty(j) || this.isColEmpty(j, x))) ||
+              this.emptyColumns[j];
 
             if (!hide && col.sticky) {
               stickyCells[j] = cells[j];
             } else if (
-                !hide &&
-                col.breakpoint &&
-                (col.breakpoint.toLocaleLowerCase() === "all" ||
-                    col.breakpoint.toLocaleLowerCase() === bp) &&
-                col.alwaysExpanded
+              !hide &&
+              col.breakpoint &&
+              (col.breakpoint.toLocaleLowerCase() === "all" ||
+                col.breakpoint.toLocaleLowerCase() === bp) &&
+              col.alwaysExpanded
             ) {
               stickyCells[j] = cells[j];
             }
@@ -2015,8 +1891,8 @@ export default {
     currentRowsPerPage() {
       if (!this.customRowsPerPage) {
         return this.configFinal.pagination
-            ? this.configFinal.pagination
-            : "All";
+          ? this.configFinal.pagination
+          : "All";
       }
       return this.customRowsPerPage;
     },
@@ -2049,8 +1925,8 @@ export default {
         let rAlign = this.rowsFinal[i].align;
 
         let cells = this.rowsFinal[i].cells
-            ? this.rowsFinal[i].cells
-            : this.rowsFinal[i];
+          ? this.rowsFinal[i].cells
+          : this.rowsFinal[i];
 
         for (let j = 0; j < cells.length; j++) {
           let classes = [];
@@ -2096,17 +1972,17 @@ export default {
           for (let j = 0; j < this.configFinal.columns.length; j++) {
             let col = this.configFinal.columns[j];
             const hide =
-                this.configFinal.hiddenCols[j] ||
-                (!this.configFinal.ignoreEmpty[j] &&
-                    this.configFinal.hideEmptyColumns &&
-                    (this.isColEmpty(j) || this.isColEmpty(j, rowIndex))) ||
-                this.emptyColumns[j];
+              this.configFinal.hiddenCols[j] ||
+              (!this.configFinal.ignoreEmpty[j] &&
+                this.configFinal.hideEmptyColumns &&
+                (this.isColEmpty(j) || this.isColEmpty(j, rowIndex))) ||
+              this.emptyColumns[j];
 
             if (
-                !hide &&
-                col.breakpoint &&
-                (col.breakpoint.toLocaleLowerCase() === "all" ||
-                    col.breakpoint.toLocaleLowerCase() === bp)
+              !hide &&
+              col.breakpoint &&
+              (col.breakpoint.toLocaleLowerCase() === "all" ||
+                col.breakpoint.toLocaleLowerCase() === bp)
             ) {
               hidden++;
               break;
@@ -2126,10 +2002,10 @@ export default {
      */
     rowsFinal() {
       return this.configFinal.ajaxUrl
-          ? this.ajaxRows
-          : this.rows
-              ? this.rows
-              : [];
+        ? this.ajaxRows
+        : this.rows
+          ? this.rows
+          : [];
     },
 
     /**
@@ -2178,7 +2054,7 @@ export default {
 
       for (let index in this.currentSortIndexes) {
         if (
-            Object.prototype.hasOwnProperty.call(this.currentSortIndexes, index)
+          Object.prototype.hasOwnProperty.call(this.currentSortIndexes, index)
         ) {
           columns[index] = this.configFinal.columns[index];
         }
@@ -2209,9 +2085,9 @@ export default {
         }
 
         classes.push(
-            iClasses.join(" ") +
+          iClasses.join(" ") +
             "  quintable--table-container--table--header-row--th " +
-            this.configFinal.columnClasses[i]
+            this.configFinal.columnClasses[i],
         );
       }
       return classes;
@@ -2239,8 +2115,8 @@ export default {
       }
 
       return Math.max(
-          1,
-          Math.ceil(this.numberOfVisibleRows / this.currentRowsPerPage)
+        1,
+        Math.ceil(this.numberOfVisibleRows / this.currentRowsPerPage),
       );
     },
 
@@ -2320,10 +2196,10 @@ export default {
       }
 
       if (
-          (!this.configFinal.search && !this.filterActive) ||
-          (!this.filterActive &&
-              this.configFinal.search &&
-              this.query.length < this.configFinal.searchLength)
+        (!this.configFinal.search && !this.filterActive) ||
+        (!this.filterActive &&
+          this.configFinal.search &&
+          this.query.length < this.configFinal.searchLength)
       ) {
         //Skip filtering, no search or filter is active
         return visible;
@@ -2331,14 +2207,14 @@ export default {
       //search per row
       for (let i = 0; i < this.rowsFinal.length; i++) {
         let row = this.rowsFinal[i].cells
-            ? this.rowsFinal[i].cells
-            : this.rowsFinal[i];
+          ? this.rowsFinal[i].cells
+          : this.rowsFinal[i];
         let match = false;
         let searched = false;
 
         if (
-            this.configFinal.search &&
-            this.query.length >= this.configFinal.searchLength
+          this.configFinal.search &&
+          this.query.length >= this.configFinal.searchLength
         ) {
           //check inner html/text per row/col
           for (let j = 0; j < row.length; j++) {
@@ -2348,20 +2224,20 @@ export default {
 
             if (textVal) {
               if (
-                  this.configFinal.useFuzzySearch &&
-                  fuzzy(
-                      (textVal + "").toLowerCase(),
-                      (this.query + "").toLowerCase()
-                  ).score > 6
+                this.configFinal.useFuzzySearch &&
+                fuzzy(
+                  (textVal + "").toLowerCase(),
+                  (this.query + "").toLowerCase(),
+                ).score > 6
               ) {
                 match = true;
                 break;
               }
 
               if (
-                  (textVal + "")
-                      .toLowerCase()
-                      .indexOf((this.query + "").toLowerCase()) !== -1
+                (textVal + "")
+                  .toLowerCase()
+                  .indexOf((this.query + "").toLowerCase()) !== -1
               ) {
                 match = true;
                 break;
@@ -2372,20 +2248,20 @@ export default {
           if (this.rowsFinal[i].keywords) {
             for (let k = 0; k < this.rowsFinal[i].keywords.length; k++) {
               if (
-                  this.configFinal.useFuzzySearch &&
-                  fuzzy(
-                      (this.rowsFinal[i].keywords[k] + "").toLowerCase(),
-                      (this.query + "").toLowerCase()
-                  ).score > 6
+                this.configFinal.useFuzzySearch &&
+                fuzzy(
+                  (this.rowsFinal[i].keywords[k] + "").toLowerCase(),
+                  (this.query + "").toLowerCase(),
+                ).score > 6
               ) {
                 match = true;
                 break;
               }
 
               if (
-                  (this.rowsFinal[i].keywords[k] + "")
-                      .toLowerCase()
-                      .indexOf((this.query + "").toLowerCase()) !== -1
+                (this.rowsFinal[i].keywords[k] + "")
+                  .toLowerCase()
+                  .indexOf((this.query + "").toLowerCase()) !== -1
               ) {
                 match = true;
                 break;
@@ -2416,16 +2292,16 @@ export default {
 
             for (let filter in this.filtersFinal) {
               if (
-                  Object.prototype.hasOwnProperty.call(this.filtersFinal, filter)
+                Object.prototype.hasOwnProperty.call(this.filtersFinal, filter)
               ) {
-                group.items.push({name: filter});
+                group.items.push({ name: filter });
               }
             }
 
             match = this.doFilteringForGroup(
-                this.filtersFinal,
-                this.rowsFinal[i].filters,
-                group
+              this.filtersFinal,
+              this.rowsFinal[i].filters,
+              group,
             );
 
             if (this.DEBUG) {
@@ -2465,7 +2341,7 @@ export default {
       }
 
       return (
-          this.currentPage * this.currentRowsPerPage - this.currentRowsPerPage + 1
+        this.currentPage * this.currentRowsPerPage - this.currentRowsPerPage + 1
       );
     },
 
@@ -2478,8 +2354,8 @@ export default {
         return this.numberOfVisibleRows;
       }
       return Math.min(
-          this.firstVisibleRow + this.currentRowsPerPage - 1,
-          this.numberOfVisibleRows
+        this.firstVisibleRow + this.currentRowsPerPage - 1,
+        this.numberOfVisibleRows,
       );
     },
 
@@ -2501,28 +2377,28 @@ export default {
 
       for (let i = 0; i < this.configFinal.number; i++) {
         if (
-            //headline is not empty
-            this.configFinal.headlines[i] &&
-            //show breakpoints match with set settings
-            //no show breakpoint is set
-            (!this.configFinal.columns[i].showHeadlineBreakpoint ||
-                //show breakpoint is set and the hidden breakpoints contain this breakpoint
-                (this.configFinal.columns[i].showHeadlineBreakpoint &&
-                    this.hiddenBreakpoints.findIndex(
-                        (x) =>
-                            this.configFinal.columns[i] &&
-                            x === this.configFinal.columns[i].showHeadlineBreakpoint
-                    ) !== -1)) &&
-            //hide breakpoints match with set settings
-            //no hide breakpoint is set
-            (!this.configFinal.columns[i].hideHeadlineBreakpoint ||
-                //hide breakpoint is set and the hidden breakpoints contain this breakpoint
-                (this.configFinal.columns[i].hideHeadlineBreakpoint &&
-                    this.hiddenBreakpoints.findIndex(
-                        (x) =>
-                            this.configFinal.columns[i] &&
-                            x === this.configFinal.columns[i].hideHeadlineBreakpoint
-                    ) === -1))
+          //headline is not empty
+          this.configFinal.headlines[i] &&
+          //show breakpoints match with set settings
+          //no show breakpoint is set
+          (!this.configFinal.columns[i].showHeadlineBreakpoint ||
+            //show breakpoint is set and the hidden breakpoints contain this breakpoint
+            (this.configFinal.columns[i].showHeadlineBreakpoint &&
+              this.hiddenBreakpoints.findIndex(
+                (x) =>
+                  this.configFinal.columns[i] &&
+                  x === this.configFinal.columns[i].showHeadlineBreakpoint,
+              ) !== -1)) &&
+          //hide breakpoints match with set settings
+          //no hide breakpoint is set
+          (!this.configFinal.columns[i].hideHeadlineBreakpoint ||
+            //hide breakpoint is set and the hidden breakpoints contain this breakpoint
+            (this.configFinal.columns[i].hideHeadlineBreakpoint &&
+              this.hiddenBreakpoints.findIndex(
+                (x) =>
+                  this.configFinal.columns[i] &&
+                  x === this.configFinal.columns[i].hideHeadlineBreakpoint,
+              ) === -1))
         ) {
           shows.push(true);
         } else {
@@ -2548,11 +2424,11 @@ export default {
         const sort = this.configFinal.sorts[i];
 
         if (
-            !this.configFinal.hideEmptyColumns ||
-            ignoredCol ||
-            (ignore === "none" && sort) ||
-            (ignore === "active" &&
-                Object.keys(this.currentSortIndexes).includes(i + ""))
+          !this.configFinal.hideEmptyColumns ||
+          ignoredCol ||
+          (ignore === "none" && sort) ||
+          (ignore === "active" &&
+            Object.keys(this.currentSortIndexes).includes(i + ""))
         ) {
           cols[i] = false;
         } else {
@@ -2608,12 +2484,12 @@ export default {
             let cells = val[i].cells ? val[i].cells : val[i];
             if (cells.length !== this.config.columns.length) {
               console.error(
-                  `Column count on row index ${i} doesn't fit for column config! expected: ${this.config.columns.length}, got: ${cells.length}` +
+                `Column count on row index ${i} doesn't fit for column config! expected: ${this.config.columns.length}, got: ${cells.length}` +
                   (this.configFinal.ajaxUrl
-                      ? ` | URL: ${this.configFinal.ajaxUrl}`
-                      : "") +
+                    ? ` | URL: ${this.configFinal.ajaxUrl}`
+                    : "") +
                   (this.identifier ? ` | IDENTIFIER: ${this.identifier}` : ""),
-                  val[i]
+                val[i],
               );
             }
           }
@@ -2639,8 +2515,8 @@ export default {
         let counter = 0;
 
         const indexes = this.configFinal.selectAllRows
-            ? this.rowsFinal.map((x, i) => i)
-            : this.visibleRowIndexes;
+          ? this.rowsFinal.map((x, i) => i)
+          : this.visibleRowIndexes;
 
         for (let i = 0; i < val.length; i++) {
           const key = val[i].key;
@@ -2649,8 +2525,8 @@ export default {
           for (let j = 0; j < indexes.length; j++) {
             const index = indexes[j];
             if (
-                !this.rowsFinal[index].disableSelect &&
-                this.rowsFinal[index][key] === value
+              !this.rowsFinal[index].disableSelect &&
+              this.rowsFinal[index][key] === value
             ) {
               this.selected[index] = true;
               counter++;
@@ -2660,17 +2536,17 @@ export default {
 
         if (!this.configFinal.selectAllRows) {
           this.allSelectedCustom =
-              counter &&
-              counter ===
+            counter &&
+            counter ===
               this.rowsFinal.filter(
-                  (x, index) =>
-                      !x.disableSelect &&
-                      this.visibleRows[this.sortedIndexes[index]]
+                (x, index) =>
+                  !x.disableSelect &&
+                  this.visibleRows[this.sortedIndexes[index]],
               ).length;
         } else {
           this.allSelectedCustom =
-              counter &&
-              counter === this.rowsFinal.filter((x) => !x.disableSelect).length;
+            counter &&
+            counter === this.rowsFinal.filter((x) => !x.disableSelect).length;
         }
       } else {
         this.allSelectedCustom = false;
@@ -2685,7 +2561,7 @@ export default {
       handler() {
         if (this.configFinal.ajaxUrl) {
           const clear = !(
-              this.configFinal.storeState && this.storedState.filters
+            this.configFinal.storeState && this.storedState.filters
           );
           this.pageSort = false;
           this.loadViaAjax(clear, clear, "FILTERS");
@@ -2700,8 +2576,8 @@ export default {
         if (this.configFinal.storeState) {
           delete this.storedState.filters;
           localStorage.setItem(
-              `vue-quintable-${this.identifier}-filters`,
-              JSON.stringify(this.filtersFinal)
+            `vue-quintable-${this.identifier}-filters`,
+            JSON.stringify(this.filtersFinal),
           );
         }
       },
@@ -2732,8 +2608,8 @@ export default {
      */
     loading() {
       this.loaderHeight = this.$refs["height-wrapper"]
-          ? this.$refs["height-wrapper"].clientHeight
-          : 0;
+        ? this.$refs["height-wrapper"].clientHeight
+        : 0;
     },
 
     /**
@@ -2743,14 +2619,14 @@ export default {
     filteredRows: {
       handler(val, old) {
         if (
-            JSON.stringify(val) === JSON.stringify(old) ||
-            this.configFinal.ajaxUrl
+          JSON.stringify(val) === JSON.stringify(old) ||
+          this.configFinal.ajaxUrl
         ) {
           return;
         }
 
         const realCurrentIndex = this.visibleRowIndexes.findIndex(
-            (x) => x === this.activeRow
+          (x) => x === this.activeRow,
         );
         if (realCurrentIndex < 0) {
           this.activeRow = null;
@@ -2767,9 +2643,9 @@ export default {
           const index = i.toString();
           if (val[i]) {
             rows.push(
-                this.rowsFinal[
-                    this.sortedIndexes[index] ? this.sortedIndexes[index] : i
-                    ]
+              this.rowsFinal[
+                this.sortedIndexes[index] ? this.sortedIndexes[index] : i
+              ],
             );
           }
         }
@@ -2818,8 +2694,8 @@ export default {
       }
 
       if (
-          val.length >= this.configFinal.searchLength &&
-          this.lastSearchQueryUpdated !== val
+        val.length >= this.configFinal.searchLength &&
+        this.lastSearchQueryUpdated !== val
       ) {
         this.$emit("update:search", val, "update:search");
         this.lastSearchQueryUpdated = val;
@@ -2837,8 +2713,8 @@ export default {
       if (this.configFinal.storeState) {
         delete this.storedState.query;
         localStorage.setItem(
-            `vue-quintable-${this.identifier}-query`,
-            this.query
+          `vue-quintable-${this.identifier}-query`,
+          this.query,
         );
       }
     },
@@ -2851,14 +2727,14 @@ export default {
       this.$emit("update:rows-per-page", val, "update:rows-per-page");
 
       const clear = !(
-          this.configFinal.storeState && this.storedState["rows-per-page"]
+        this.configFinal.storeState && this.storedState["rows-per-page"]
       );
 
       if (this.configFinal.storeState) {
         delete this.storedState["rows-per-page"];
         localStorage.setItem(
-            `vue-quintable-${this.identifier}-rows-per-page`,
-            this.currentRowsPerPage
+          `vue-quintable-${this.identifier}-rows-per-page`,
+          this.currentRowsPerPage,
         );
       }
 
@@ -2899,27 +2775,32 @@ export default {
      * Reset everything if config has been changed (e.g. [re]loaded via ajax)
      *
      */
-    config(val) {
-      if (typeof val !== "object") {
-        throw "config must be an object";
-      }
+    config: {
+      handler(val) {
+        if (typeof val !== "object") {
+          throw "config must be an object";
+        }
 
-      if (this.dynamicConfig) {
-        return;
-      }
+        if (this.dynamicConfig) {
+          return;
+        }
 
-      this.initLists();
-      this.$forceUpdate();
+        this.initLists();
+        this.$forceUpdate();
 
-      this.activeRow = null;
+        this.activeRow = null;
 
-      if (this.configFinal.ajaxUrl) {
-        this.loadViaAjax(false, true, "CONFIG");
-      }
+        console.log(this.configFinal);
 
-      if (this.configFinal.defaultSelected) {
-        this.checkAll(true);
-      }
+        if (this.configFinal.ajaxUrl) {
+          this.loadViaAjax(false, true, "CONFIG");
+        }
+
+        if (this.configFinal.defaultSelected) {
+          this.checkAll(true);
+        }
+      },
+      deep: true,
     },
 
     /**
@@ -2942,8 +2823,8 @@ export default {
 
         if (this.configFinal.storeState) {
           localStorage.setItem(
-              `vue-quintable-${this.identifier}-selected-rows`,
-              JSON.stringify(val)
+            `vue-quintable-${this.identifier}-selected-rows`,
+            JSON.stringify(val),
           );
         }
 
@@ -2965,14 +2846,14 @@ export default {
       this.$emit("update:page", val, "update:page");
 
       const clear = !(
-          this.configFinal.storeState && this.storedState["current-page"]
+        this.configFinal.storeState && this.storedState["current-page"]
       );
 
       if (this.configFinal.storeState) {
         delete this.storedState["current-page"];
         localStorage.setItem(
-            `vue-quintable-${this.identifier}-current-page`,
-            this.currentPage
+          `vue-quintable-${this.identifier}-current-page`,
+          this.currentPage,
         );
       }
 
@@ -3004,11 +2885,11 @@ export default {
         let currentIndex;
         for (let index in this.currentSortIndexes) {
           if (
-              Object.prototype.hasOwnProperty.call(
-                  this.currentSortIndexes,
-                  index
-              ) &&
-              this.currentSortIndexes[index].order === 0
+            Object.prototype.hasOwnProperty.call(
+              this.currentSortIndexes,
+              index,
+            ) &&
+            this.currentSortIndexes[index].order === 0
           ) {
             currentItem = this.currentSortIndexes[index];
             currentIndex = index;
@@ -3017,7 +2898,7 @@ export default {
         }
 
         this.currentSortIndexes = {
-          [currentIndex]: currentItem
+          [currentIndex]: currentItem,
         };
 
         this.sort();
@@ -3056,6 +2937,148 @@ export default {
       this.$emit("active:row", this.rowsFinal[val], "active:row", realIndex);
     },
   },
+  created() {
+    if (this.configFinal.storeState) {
+      const filters = localStorage.getItem(
+        `vue-quintable-${this.identifier}-filters`,
+      );
+
+      if (filters) {
+        const storedFilters = JSON.parse(filters);
+
+        for (let key in this.filters) {
+          if (
+            Object.prototype.hasOwnProperty.call(this.filters, key) &&
+            !Object.prototype.hasOwnProperty.call(storedFilters, key)
+          ) {
+            storedFilters[key] = this.filters[key];
+          }
+        }
+
+        this.storedState.filters = storedFilters;
+      }
+
+      const query = localStorage.getItem(
+        `vue-quintable-${this.identifier}-query`,
+      );
+      if (query) {
+        this.storedState.query = query;
+      }
+
+      const rowsPerPage = localStorage.getItem(
+        `vue-quintable-${this.identifier}-rows-per-page`,
+      );
+      if (rowsPerPage) {
+        this.storedState["rows-per-page"] = parseInt(rowsPerPage);
+      }
+
+      const selectedRows = localStorage.getItem(
+        `vue-quintable-${this.identifier}-selected-rows`,
+      );
+      if (selectedRows) {
+        this.storedState["selected-rows"] = JSON.parse(selectedRows);
+      }
+
+      const page = localStorage.getItem(
+        `vue-quintable-${this.identifier}-current-page`,
+      );
+      if (page) {
+        this.storedState["current-page"] = parseInt(page);
+      }
+
+      const sortIndexes = localStorage.getItem(
+        `vue-quintable-${this.identifier}-sort-indexes`,
+      );
+      if (sortIndexes) {
+        this.storedState["sort-indexes"] = JSON.parse(sortIndexes);
+      }
+    }
+
+    this.initLists();
+
+    //Pre-select rows in case
+    let counter = 0;
+
+    const indexes = this.configFinal.selectAllRows
+      ? this.rowsFinal.map((x, i) => i)
+      : this.visibleRowIndexes;
+    for (let i = 0; i < indexes.length; i++) {
+      let row = this.rowsFinal[i];
+      if (row.selected) {
+        this.selected[i] = true;
+      }
+      if (row.selected) {
+        counter++;
+      }
+    }
+
+    if (
+      !this.configFinal.selectAllRows &&
+      counter &&
+      counter ===
+        this.rowsFinal.filter(
+          (x, index) =>
+            !x.disableSelect && this.visibleRows[this.sortedIndexes[index]],
+        ).length
+    ) {
+      this.allSelectedCustom = true;
+    } else if (
+      this.configFinal.selectAllRows &&
+      counter &&
+      counter === this.rowsFinal.filter((x) => !x.disableSelect).length
+    ) {
+      this.allSelectedCustom = true;
+    }
+
+    if (this.initialSearchTerm) {
+      this.query = this.initialSearchTerm;
+    }
+
+    if (this.storedState.query) {
+      this.query = this.storedState.query;
+    }
+
+    if (this.storedState["rows-per-page"]) {
+      this.customRowsPerPage = this.storedState["rows-per-page"];
+    }
+
+    if (this.storedState["sort-indexes"]) {
+      this.currentSortIndexes = this.storedState["sort-indexes"];
+      this.sort(true);
+    }
+
+    if (this.storedState["current-page"]) {
+      this.$nextTick(() => {
+        this.currentPage = this.storedState["current-page"];
+      });
+    }
+    this.$nextTick(this.checkStoredSelectedRows);
+
+    if (this.configFinal.enableRowTabIndex) {
+      document.addEventListener("keydown", this.checkKey);
+    }
+  },
+  mounted() {
+    if (this.configFinal.ajaxUrl) {
+      this.loadViaAjax(false, true, "MOUNTED");
+    }
+
+    if (this.configFinal.defaultSelected) {
+      this.checkAll(true);
+    }
+
+    this.generateHiddenBreakpoints();
+
+    //bind listener to window resize
+    window.addEventListener("resize", this.breakpointListener);
+  },
+  beforeUnmount() {
+    //release listener from window resize
+    window.removeEventListener("resize", this.breakpointListener);
+    if (this.configFinal.enableRowTabIndex) {
+      document.removeEventListener("keydown", this.checkKey);
+    }
+  },
   methods: {
     /**
      * sets search query from outside (search slot)
@@ -3090,41 +3113,41 @@ export default {
     isColEmpty(i, rowIndex = -1) {
       const rowIndexes = rowIndex > -1 ? [rowIndex] : this.visibleRowIndexes;
       const visibleCells = rowIndexes
-          .map((index) => {
-            return this.rowsFinal[index];
-          })
-          .filter((row) => {
-            const cells = row.cells ? row.cells : row;
+        .map((index) => {
+          return this.rowsFinal[index];
+        })
+        .filter((row) => {
+          const cells = row.cells ? row.cells : row;
 
-            if (
-                typeof cells[i].isEmpty === "boolean" &&
-                cells[i].isEmpty === true
-            ) {
-              return false;
-            }
-
-            if (
-                typeof cells[i].isEmpty === "boolean" &&
-                cells[i].isEmpty === false
-            ) {
-              return true;
-            }
-
-            if (
-                typeof cells[i].text !== "undefined" &&
-                this.valueToString(cells[i].text)
-            ) {
-              return true;
-            }
-
-            if (
-                typeof cells[i].html !== "undefined" &&
-                this.valueToString(cells[i].html)
-            ) {
-              return true;
-            }
+          if (
+            typeof cells[i].isEmpty === "boolean" &&
+            cells[i].isEmpty === true
+          ) {
             return false;
-          });
+          }
+
+          if (
+            typeof cells[i].isEmpty === "boolean" &&
+            cells[i].isEmpty === false
+          ) {
+            return true;
+          }
+
+          if (
+            typeof cells[i].text !== "undefined" &&
+            this.valueToString(cells[i].text)
+          ) {
+            return true;
+          }
+
+          if (
+            typeof cells[i].html !== "undefined" &&
+            this.valueToString(cells[i].html)
+          ) {
+            return true;
+          }
+          return false;
+        });
       return visibleCells.length <= 0;
     },
 
@@ -3155,7 +3178,7 @@ export default {
 
     cellFormatters(cIndex, cell) {
       if (
-          typeof this.configFinal.columns[cIndex].cellFormatter === "function"
+        typeof this.configFinal.columns[cIndex].cellFormatter === "function"
       ) {
         let formatted = this.configFinal.columns[cIndex].cellFormatter(cell);
 
@@ -3169,10 +3192,10 @@ export default {
       }
 
       return this.valueToString(cell.html)
-          ? cell.html
-          : this.valueToString(cell.text)
-              ? cell.text
-              : "";
+        ? cell.html
+        : this.valueToString(cell.text)
+          ? cell.text
+          : "";
     },
 
     /**
@@ -3183,16 +3206,16 @@ export default {
      */
     checkListener(bool, index) {
       let tmp = Object.keys(this.selected)
-          .slice()
-          .map((key) => {
-            return (
-                !!this.selected[key] ||
-                !!(
-                    this.rowsFinal[parseInt(key)] &&
-                    this.rowsFinal[parseInt(key)].disableSelect
-                )
-            );
-          });
+        .slice()
+        .map((key) => {
+          return (
+            !!this.selected[key] ||
+            !!(
+              this.rowsFinal[parseInt(key)] &&
+              this.rowsFinal[parseInt(key)].disableSelect
+            )
+          );
+        });
 
       tmp[index] = !!bool;
 
@@ -3219,15 +3242,15 @@ export default {
      */
     hasSomeParentTheClass(element, className) {
       if (
-          element instanceof HTMLElement &&
-          element.classList.contains(className)
+        element instanceof HTMLElement &&
+        element.classList.contains(className)
       ) {
         return true;
       }
       return (
-          element instanceof Element &&
-          element.parentNode &&
-          this.hasSomeParentTheClass(element.parentNode, className)
+        element instanceof Element &&
+        element.parentNode &&
+        this.hasSomeParentTheClass(element.parentNode, className)
       );
     },
 
@@ -3237,15 +3260,15 @@ export default {
      */
     hasSomeParentTagName(element, tagName) {
       if (
-          element instanceof HTMLElement &&
-          element.tagName.toLowerCase() === tagName.toLowerCase()
+        element instanceof HTMLElement &&
+        element.tagName.toLowerCase() === tagName.toLowerCase()
       ) {
         return true;
       }
       return (
-          element instanceof Element &&
-          element.parentNode &&
-          this.hasSomeParentTagName(element.parentNode, tagName)
+        element instanceof Element &&
+        element.parentNode &&
+        this.hasSomeParentTagName(element.parentNode, tagName)
       );
     },
 
@@ -3259,12 +3282,12 @@ export default {
       if (e.button === 1) {
         const i = parseInt(rowIndex);
         this.$emit(
-            "auxclick:row",
-            this.rowsFinal[i],
-            "auxclick:row",
-            e.target,
-            e,
-            i
+          "auxclick:row",
+          this.rowsFinal[i],
+          "auxclick:row",
+          e.target,
+          e,
+          i,
         );
       }
     },
@@ -3288,16 +3311,16 @@ export default {
       if ((e.target || {}).type === "checkbox") {
         return;
       } else if (
-          this.hasSomeParentTheClass(e.target, "generated-table") &&
-          !this.nested
+        this.hasSomeParentTheClass(e.target, "generated-table") &&
+        !this.nested
       ) {
         return;
       }
 
       let isLink = this.hasSomeParentTagName(e.target, "a");
       let shouldPrevent = this.hasSomeParentTheClass(
-          e.target,
-          "prevent-toggle"
+        e.target,
+        "prevent-toggle",
       );
 
       const index = rowIndex.toString();
@@ -3307,18 +3330,18 @@ export default {
         if (!this.openRows[index]) {
           this.openRows[index] = true;
           this.$emit(
-              "expand:row",
-              this.rowsFinal[this.sortedIndexes[index]],
-              "expand:row",
-              this.sortedIndexes[index]
+            "expand:row",
+            this.rowsFinal[this.sortedIndexes[index]],
+            "expand:row",
+            this.sortedIndexes[index],
           );
         } else {
           this.openRows[index] = false;
           this.$emit(
-              "expand:row",
-              this.rowsFinal[this.sortedIndexes[index]],
-              "collapse:row",
-              this.sortedIndexes[index]
+            "expand:row",
+            this.rowsFinal[this.sortedIndexes[index]],
+            "collapse:row",
+            this.sortedIndexes[index],
           );
         }
         this.generatedUpdatedKey = Date.now();
@@ -3441,11 +3464,11 @@ export default {
         if (Object.prototype.hasOwnProperty.call(this.sortedIndexes, index)) {
           index = parseInt(index);
           if (
-              !this.rowsFinal[this.sortedIndexes[index]].disableSelect &&
-              ((!this.configFinal.selectAllRows &&
-                      this.visibleRows[this.sortedIndexes[index]]) ||
-                  (this.configFinal.selectAllRows &&
-                      this.filteredRows[this.sortedIndexes[index]]))
+            !this.rowsFinal[this.sortedIndexes[index]].disableSelect &&
+            ((!this.configFinal.selectAllRows &&
+              this.visibleRows[this.sortedIndexes[index]]) ||
+              (this.configFinal.selectAllRows &&
+                this.filteredRows[this.sortedIndexes[index]]))
           ) {
             this.selected[this.sortedIndexes[index]] = value;
             counter++;
@@ -3458,17 +3481,17 @@ export default {
       if (value) {
         if (!this.configFinal.selectAllRows) {
           this.allSelectedCustom =
-              counter &&
-              counter ===
+            counter &&
+            counter ===
               this.rowsFinal.filter(
-                  (x, index) =>
-                      !x.disableSelect &&
-                      this.visibleRows[this.sortedIndexes[index]]
+                (x, index) =>
+                  !x.disableSelect &&
+                  this.visibleRows[this.sortedIndexes[index]],
               ).length;
         } else {
           this.allSelectedCustom =
-              counter &&
-              counter === this.rowsFinal.filter((x) => !x.disableSelect).length;
+            counter &&
+            counter === this.rowsFinal.filter((x) => !x.disableSelect).length;
         }
       }
     },
@@ -3485,11 +3508,11 @@ export default {
 
       for (let i = 0; i < this.filterGroups.length; i++) {
         results.push(
-            this.doFilteringForGroup(
-                this.filtersFinal,
-                filterValues,
-                this.filterGroups[i]
-            )
+          this.doFilteringForGroup(
+            this.filtersFinal,
+            filterValues,
+            this.filterGroups[i],
+          ),
         );
 
         if (this.DEBUG && i < this.filterGroups.length - 1) {
@@ -3499,9 +3522,9 @@ export default {
       //######################################
       if (this.DEBUG) {
         console.log(
-            "RESULTS FOR GROUPS:",
-            results,
-            this.configFinal.filterGroupRelation
+          "RESULTS FOR GROUPS:",
+          results,
+          this.configFinal.filterGroupRelation,
         );
       }
       //######################################
@@ -3572,8 +3595,8 @@ export default {
         for (let key in filters) {
           if (Object.prototype.hasOwnProperty.call(filters, key)) {
             if (
-                this.filterGroups.length &&
-                !this.findInFilterGroups(key, this.filterGroups)
+              this.filterGroups.length &&
+              !this.findInFilterGroups(key, this.filterGroups)
             ) {
               continue;
             }
@@ -3595,10 +3618,10 @@ export default {
                 found = true;
                 if (item.items) {
                   found = this.doFilteringForGroup(
-                      filters,
-                      filterValues,
-                      item,
-                      index + 1
+                    filters,
+                    filterValues,
+                    item,
+                    index + 1,
                   );
                 }
 
@@ -3611,23 +3634,23 @@ export default {
                 }
 
                 let operator =
-                    typeof filters[item.name] === "object" &&
-                    filters[item.name] !== null &&
-                    filters[item.name]["operator"] &&
-                    this.operators.includes(filters[item.name]["operator"])
-                        ? filters[item.name]["operator"]
-                        : this.defaultOperator;
+                  typeof filters[item.name] === "object" &&
+                  filters[item.name] !== null &&
+                  filters[item.name]["operator"] &&
+                  this.operators.includes(filters[item.name]["operator"])
+                    ? filters[item.name]["operator"]
+                    : this.defaultOperator;
                 let filterProperties = this.getFilterValues(filters[item.name]);
 
                 const cmpFunction =
-                    typeof filters[item.name].compare === "function"
-                        ? filters[item.name].compare
-                        : this.operatorFunctions[operator];
+                  typeof filters[item.name].compare === "function"
+                    ? filters[item.name].compare
+                    : this.operatorFunctions[operator];
 
                 for (let j = 0; j < filterProperties.length; j++) {
                   const matches = cmpFunction(
-                      filterProperties[j],
-                      filterValues[item.name]
+                    filterProperties[j],
+                    filterValues[item.name],
                   );
                   if (!matches) {
                     found = false;
@@ -3656,8 +3679,8 @@ export default {
         for (let key in filters) {
           if (Object.prototype.hasOwnProperty.call(filters, key)) {
             if (
-                this.filterGroups.length &&
-                !this.findInFilterGroups(key, this.filterGroups)
+              this.filterGroups.length &&
+              !this.findInFilterGroups(key, this.filterGroups)
             ) {
               continue;
             }
@@ -3667,10 +3690,10 @@ export default {
 
               if (item.items) {
                 found = this.doFilteringForGroup(
-                    filters,
-                    filterValues,
-                    item,
-                    index + 1
+                  filters,
+                  filterValues,
+                  item,
+                  index + 1,
                 );
 
                 if (found) {
@@ -3683,23 +3706,23 @@ export default {
               }
 
               let operator =
-                  typeof filters[item.name] === "object" &&
-                  filters[item.name] !== null &&
-                  filters[item.name]["operator"] &&
-                  this.operators.includes(filters[item.name]["operator"])
-                      ? filters[item.name]["operator"]
-                      : this.defaultOperator;
+                typeof filters[item.name] === "object" &&
+                filters[item.name] !== null &&
+                filters[item.name]["operator"] &&
+                this.operators.includes(filters[item.name]["operator"])
+                  ? filters[item.name]["operator"]
+                  : this.defaultOperator;
               let filterProperties = this.getFilterValues(filters[item.name]);
 
               const cmpFunction =
-                  typeof filters[item.name].compare === "function"
-                      ? filters[item.name].compare
-                      : this.operatorFunctions[operator];
+                typeof filters[item.name].compare === "function"
+                  ? filters[item.name].compare
+                  : this.operatorFunctions[operator];
 
               for (let j = 0; j < filterProperties.length; j++) {
                 const matches = cmpFunction(
-                    filterProperties[j],
-                    filterValues[item.name]
+                  filterProperties[j],
+                  filterValues[item.name],
                 );
 
                 if (matches) {
@@ -3736,12 +3759,12 @@ export default {
      */
     getFilterValues(values) {
       return values instanceof RegExp ||
-      typeof values !== "object" ||
-      values === null
-          ? [values]
-          : Array.isArray(values)
-              ? values
-              : this.getFilterValues(values.values);
+        typeof values !== "object" ||
+        values === null
+        ? [values]
+        : Array.isArray(values)
+          ? values
+          : this.getFilterValues(values.values);
     },
 
     /**
@@ -3824,9 +3847,9 @@ export default {
           headline: this.configFinal.headlines[i],
           index: i,
           asc:
-              this.configFinal.sorts[i] === true
-                  ? true
-                  : this.configFinal.sorts[i] === "ASC",
+            this.configFinal.sorts[i] === true
+              ? true
+              : this.configFinal.sorts[i] === "ASC",
           order: this.numberOfSorts,
         };
       } else {
@@ -3842,8 +3865,8 @@ export default {
 
       if (this.configFinal.storeState) {
         localStorage.setItem(
-            `vue-quintable-${this.identifier}-sort-indexes`,
-            JSON.stringify(this.currentSortIndexes)
+          `vue-quintable-${this.identifier}-sort-indexes`,
+          JSON.stringify(this.currentSortIndexes),
         );
       }
 
@@ -3872,8 +3895,8 @@ export default {
 
         if (!visibleIndexes.length) {
           const length = this.configFinal.pagination
-              ? this.configFinal.pagination
-              : this.rowsFinal.length;
+            ? this.configFinal.pagination
+            : this.rowsFinal.length;
           for (let i = 0; i < length; i++) {
             visibleIndexes.push(i);
           }
@@ -3894,7 +3917,7 @@ export default {
           sortedIndexesBefore = Object.assign({}, this.sortedIndexes);
         } else {
           for (let i = 0; i < allRows.length; i++) {
-            sortedIndexesBefore[i.toString()] = i
+            sortedIndexesBefore[i.toString()] = i;
           }
         }
       } else {
@@ -3907,7 +3930,7 @@ export default {
       let sortableIndexes = [];
       for (let index in this.currentSortIndexes) {
         if (
-            Object.prototype.hasOwnProperty.call(this.currentSortIndexes, index)
+          Object.prototype.hasOwnProperty.call(this.currentSortIndexes, index)
         ) {
           let data = this.currentSortIndexes[index];
           data.index = index;
@@ -3930,24 +3953,24 @@ export default {
         let cellsB = b.cells ? b.cells : b;
 
         let aValue =
-            typeof cellsA[i].sortValue !== "undefined" &&
-            cellsA[i].sortValue !== null
-                ? cellsA[i].sortValue
-                : cellsA[i].html
-                    ? cellsA[i].html
-                    : cellsA[i].text;
+          typeof cellsA[i].sortValue !== "undefined" &&
+          cellsA[i].sortValue !== null
+            ? cellsA[i].sortValue
+            : cellsA[i].html
+              ? cellsA[i].html
+              : cellsA[i].text;
 
         if (typeof cellsA[i].computeSortValue === "function") {
           aValue = cellsA[i].computeSortValue(this.currentSortIndexes);
         }
 
         let bValue =
-            typeof cellsB[i].sortValue !== "undefined" &&
-            cellsB[i].sortValue !== null
-                ? cellsB[i].sortValue
-                : cellsB[i].html
-                    ? cellsB[i].html
-                    : cellsB[i].text;
+          typeof cellsB[i].sortValue !== "undefined" &&
+          cellsB[i].sortValue !== null
+            ? cellsB[i].sortValue
+            : cellsB[i].html
+              ? cellsB[i].html
+              : cellsB[i].text;
 
         if (typeof cellsB[i].computeSortValue === "function") {
           aValue = cellsB[i].computeSortValue(this.currentSortIndexes);
@@ -3979,20 +4002,20 @@ export default {
 
         if (currentKey.asc) {
           return aValue > bValue
-              ? 1
-              : aValue < bValue
-                  ? -1
-                  : keys[index + 1]
-                      ? compare(a, b, keys, index + 1)
-                      : 1;
+            ? 1
+            : aValue < bValue
+              ? -1
+              : keys[index + 1]
+                ? compare(a, b, keys, index + 1)
+                : 1;
         } else {
           return aValue < bValue
-              ? 1
-              : aValue > bValue
-                  ? -1
-                  : keys[index + 1]
-                      ? compare(a, b, keys, index + 1)
-                      : -1;
+            ? 1
+            : aValue > bValue
+              ? -1
+              : keys[index + 1]
+                ? compare(a, b, keys, index + 1)
+                : -1;
         }
       };
 
@@ -4031,10 +4054,10 @@ export default {
       }
 
       if (
-          !this.configFinal.selectAllRows &&
-          !this.pageSort &&
-          !preventReset &&
-          !this.configFinal.keepSelect
+        !this.configFinal.selectAllRows &&
+        !this.pageSort &&
+        !preventReset &&
+        !this.configFinal.keepSelect
       ) {
         this.resetSelect("sort method");
       }
@@ -4074,7 +4097,8 @@ export default {
           this.selected[index] = false;
         }
 
-        this.openRows[index] = this.configFinal.expandedAll || this.rowsFinal[i].expanded;
+        this.openRows[index] =
+          this.configFinal.expandedAll || this.rowsFinal[i].expanded;
       }
     },
 
@@ -4112,9 +4136,9 @@ export default {
      * @param accessor
      */
     loadViaAjax(
-        clearSortAndPage = false,
-        clearSelected = true,
-        accessor = null
+      clearSortAndPage = false,
+      clearSelected = true,
+      accessor = null,
     ) {
       if (this.DEBUG) {
         console.log("CALLED FROM:", accessor);
@@ -4124,10 +4148,10 @@ export default {
 
       //Do nothing if there is a query and it is shorter than the minimum search length and either the last entered query is shorter or the last entered query is also shorter than the minimum search length
       if (
-          query &&
-          query.length < this.configFinal.searchLength &&
-          (this.lastQuery.length < query.length ||
-              this.lastQuery.length < this.configFinal.searchLength)
+        query &&
+        query.length < this.configFinal.searchLength &&
+        (this.lastQuery.length < query.length ||
+          this.lastQuery.length < this.configFinal.searchLength)
       ) {
         return;
       }
@@ -4159,8 +4183,8 @@ export default {
       }
 
       this.loaderHeight = this.$refs["height-wrapper"]
-          ? this.$refs["height-wrapper"].clientHeight
-          : 0;
+        ? this.$refs["height-wrapper"].clientHeight
+        : 0;
 
       this.fetching = true;
 
@@ -4171,12 +4195,12 @@ export default {
         page: this.currentPage,
         hiddenColumns: this.configFinal.hiddenCols,
         sort:
-            this.numberOfSorts > 0
-                ? {
-                  indexes: this.currentSortIndexes,
-                  columns: this.sortingColumns,
-                }
-                : null,
+          this.numberOfSorts > 0
+            ? {
+                indexes: this.currentSortIndexes,
+                columns: this.sortingColumns,
+              }
+            : null,
       };
 
       this.cancelSource = this.axiosFinal.CancelToken.source();
@@ -4186,58 +4210,58 @@ export default {
       };
 
       this.axiosFinal
-          .request(this.configFinal.ajaxUrl, {
-            method: this.configFinal.requestMethod,
-            params: this.configFinal.requestMethod === "GET" ? params : null,
-            data: this.configFinal.requestMethod === "POST" ? params : null,
-            cancelToken: this.cancelSource.token,
-            headers,
-          })
-          .then((response) => {
-            if (
-                !response.data.rows ||
-                typeof response.data.rows.length === "undefined"
-            ) {
-              throw "Response data has to contain rows property. Please see Readme.md for details";
-            }
+        .request(this.configFinal.ajaxUrl, {
+          method: this.configFinal.requestMethod,
+          params: this.configFinal.requestMethod === "GET" ? params : null,
+          data: this.configFinal.requestMethod === "POST" ? params : null,
+          cancelToken: this.cancelSource.token,
+          headers,
+        })
+        .then((response) => {
+          if (
+            !response.data.rows ||
+            typeof response.data.rows.length === "undefined"
+          ) {
+            throw "Response data has to contain rows property. Please see Readme.md for details";
+          }
 
-            if (typeof response.data.all === "undefined") {
-              throw "Response data has to contain all property. Please see Readme.md for details";
-            }
+          if (typeof response.data.all === "undefined") {
+            throw "Response data has to contain all property. Please see Readme.md for details";
+          }
 
-            this.ajaxAll = response.data.all;
-            this.ajaxPages = Math.max(
-                1,
-                Math.ceil(response.data.all / this.currentRowsPerPage)
-            );
+          this.ajaxAll = response.data.all;
+          this.ajaxPages = Math.max(
+            1,
+            Math.ceil(response.data.all / this.currentRowsPerPage),
+          );
 
-            this.$emit(
-                "ajax:rows",
-                {
-                  rows: response.data.rows,
-                  old: JSON.parse(JSON.stringify(this.ajaxRows)),
-                  all: this.ajaxAll,
-                },
-                "ajax:rows"
-            );
+          this.$emit(
+            "ajax:rows",
+            {
+              rows: response.data.rows,
+              old: JSON.parse(JSON.stringify(this.ajaxRows)),
+              all: this.ajaxAll,
+            },
+            "ajax:rows",
+          );
 
-            if (response.data.all) {
-              this.ajaxRows = response.data.rows;
-              // this.checkStoredSelectedRows(true);
-              this.initLists();
-            }
+          if (response.data.all) {
+            this.ajaxRows = response.data.rows;
+            // this.checkStoredSelectedRows(true);
+            this.initLists();
+          }
 
+          this.fetching = false;
+        })
+        .catch((error) => {
+          if (this.axiosFinal.isCancel(error)) {
+            console.log("Request canceled", error.message);
+          } else {
             this.fetching = false;
-          })
-          .catch((error) => {
-            if (this.axiosFinal.isCancel(error)) {
-              console.log("Request canceled", error.message);
-            } else {
-              this.fetching = false;
-              console.error(error);
-              this.$emit("ajax:error", error, "ajax:error");
-            }
-          });
+            console.error(error);
+            this.$emit("ajax:error", error, "ajax:error");
+          }
+        });
     },
 
     /**
@@ -4300,7 +4324,7 @@ export default {
       breakpoints.push("all");
 
       if (
-          JSON.stringify(this.hiddenBreakpoints) !== JSON.stringify(breakpoints)
+        JSON.stringify(this.hiddenBreakpoints) !== JSON.stringify(breakpoints)
       ) {
         this.hiddenBreakpoints = breakpoints;
       }
@@ -4313,12 +4337,12 @@ export default {
 
       if (this.storedState["selected-rows"]) {
         this.selected = JSON.parse(
-            JSON.stringify(this.storedState["selected-rows"])
+          JSON.stringify(this.storedState["selected-rows"]),
         );
         const counter = Object.values(this.selected).filter((x) => x).length;
         if (!this.configFinal.selectAllRows) {
           this.allSelectedCustom =
-              counter && counter === this.visibleRows.filter((x) => x).length;
+            counter && counter === this.visibleRows.filter((x) => x).length;
         } else {
           this.allSelectedCustom = counter && counter === this.rowsFinal.length;
         }
@@ -4334,7 +4358,7 @@ export default {
       if (event.keyCode === 40) {
         event.preventDefault();
         const realCurrentIndex = this.visibleRowIndexes.findIndex(
-            (x) => x === this.activeRow
+          (x) => x === this.activeRow,
         );
         if (realCurrentIndex === this.visibleRowIndexes.length - 1) {
           this.activeRow = 0;
@@ -4345,158 +4369,16 @@ export default {
       if (event.keyCode === 38) {
         event.preventDefault();
         const realCurrentIndex = this.visibleRowIndexes.findIndex(
-            (x) => x === this.activeRow
+          (x) => x === this.activeRow,
         );
         if (realCurrentIndex === 0) {
           this.activeRow =
-              this.visibleRowIndexes[this.visibleRowIndexes.length - 1];
+            this.visibleRowIndexes[this.visibleRowIndexes.length - 1];
         } else {
           this.activeRow = this.visibleRowIndexes[realCurrentIndex - 1];
         }
       }
     },
-  },
-  created() {
-    if (this.configFinal.storeState) {
-      const filters = localStorage.getItem(
-          `vue-quintable-${this.identifier}-filters`
-      );
-
-      if (filters) {
-        const storedFilters = JSON.parse(filters);
-
-        for (let key in this.filters) {
-          if (
-              Object.prototype.hasOwnProperty.call(this.filters, key) &&
-              !Object.prototype.hasOwnProperty.call(storedFilters, key)
-          ) {
-            storedFilters[key] = this.filters[key];
-          }
-        }
-
-        this.storedState.filters = storedFilters;
-      }
-
-      const query = localStorage.getItem(
-          `vue-quintable-${this.identifier}-query`
-      );
-      if (query) {
-        this.storedState.query = query;
-      }
-
-      const rowsPerPage = localStorage.getItem(
-          `vue-quintable-${this.identifier}-rows-per-page`
-      );
-      if (rowsPerPage) {
-        this.storedState["rows-per-page"] = parseInt(rowsPerPage);
-      }
-
-      const selectedRows = localStorage.getItem(
-          `vue-quintable-${this.identifier}-selected-rows`
-      );
-      if (selectedRows) {
-        this.storedState["selected-rows"] = JSON.parse(selectedRows);
-      }
-
-      const page = localStorage.getItem(
-          `vue-quintable-${this.identifier}-current-page`
-      );
-      if (page) {
-        this.storedState["current-page"] = parseInt(page);
-      }
-
-      const sortIndexes = localStorage.getItem(
-          `vue-quintable-${this.identifier}-sort-indexes`
-      );
-      if (sortIndexes) {
-        this.storedState["sort-indexes"] = JSON.parse(sortIndexes);
-      }
-    }
-
-    this.initLists();
-
-    //Pre-select rows in case
-    let counter = 0;
-
-    const indexes = this.configFinal.selectAllRows
-        ? this.rowsFinal.map((x, i) => i)
-        : this.visibleRowIndexes;
-    for (let i = 0; i < indexes.length; i++) {
-      let row = this.rowsFinal[i];
-      if (row.selected) {
-        this.selected[i] = true;
-      }
-      if (row.selected) {
-        counter++;
-      }
-    }
-
-    if (
-        !this.configFinal.selectAllRows &&
-        counter &&
-        counter ===
-        this.rowsFinal.filter(
-            (x, index) =>
-                !x.disableSelect && this.visibleRows[this.sortedIndexes[index]]
-        ).length
-    ) {
-      this.allSelectedCustom = true;
-    } else if (
-        this.configFinal.selectAllRows &&
-        counter &&
-        counter === this.rowsFinal.filter((x) => !x.disableSelect).length
-    ) {
-      this.allSelectedCustom = true;
-    }
-
-    if (this.initialSearchTerm) {
-      this.query = this.initialSearchTerm;
-    }
-
-    if (this.storedState.query) {
-      this.query = this.storedState.query;
-    }
-
-    if (this.storedState["rows-per-page"]) {
-      this.customRowsPerPage = this.storedState["rows-per-page"];
-    }
-
-    if (this.storedState["sort-indexes"]) {
-      this.currentSortIndexes = this.storedState["sort-indexes"];
-      this.sort(true);
-    }
-
-    if (this.storedState["current-page"]) {
-      this.$nextTick(() => {
-        this.currentPage = this.storedState["current-page"];
-      });
-    }
-    this.$nextTick(this.checkStoredSelectedRows);
-
-    if (this.configFinal.enableRowTabIndex) {
-      document.addEventListener("keydown", this.checkKey);
-    }
-  },
-  mounted() {
-    if (this.configFinal.ajaxUrl) {
-      this.loadViaAjax(false, true, "MOUNTED");
-    }
-
-    if (this.configFinal.defaultSelected) {
-      this.checkAll(true);
-    }
-
-    this.generateHiddenBreakpoints();
-
-    //bind listener to window resize
-    window.addEventListener("resize", this.breakpointListener);
-  },
-  beforeDestroy() {
-    //release listener from window resize
-    window.removeEventListener("resize", this.breakpointListener);
-    if (this.configFinal.enableRowTabIndex) {
-      document.removeEventListener("keydown", this.checkKey);
-    }
   },
 };
 </script>
@@ -4730,7 +4612,9 @@ nav.disabled {
 .quintable-tooltip[aria-hidden="true"] {
   visibility: hidden;
   opacity: 0;
-  transition: opacity 0.15s, visibility 0.15s;
+  transition:
+    opacity 0.15s,
+    visibility 0.15s;
 }
 
 .quintable-tooltip[aria-hidden="false"] {

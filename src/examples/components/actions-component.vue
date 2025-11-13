@@ -7,7 +7,9 @@
         :class="{ disabled: first }"
         @click="moveRow('up')"
       >
-        <font-awesome-icon icon="chevron-up"></font-awesome-icon>
+        <quintable-font-awesome-icon
+          icon="chevron-up"
+        ></quintable-font-awesome-icon>
       </button>
       <button
         class="btn btn-info"
@@ -15,34 +17,37 @@
         :class="{ disabled: last }"
         @click="moveRow('down')"
       >
-        <font-awesome-icon icon="chevron-down"></font-awesome-icon>
+        <quintable-font-awesome-icon
+          icon="chevron-down"
+        ></quintable-font-awesome-icon>
       </button>
     </div>
-    <div class="btn btn-danger me-2" @click="deleteRow" title="Delete Row">
-      <font-awesome-icon icon="times"></font-awesome-icon>
+    <div class="btn btn-danger me-2" title="Delete Row" @click="deleteRow">
+      <quintable-font-awesome-icon icon="times"></quintable-font-awesome-icon>
     </div>
     <vue-draggable
-        v-model="targetItems"
-        item-key="id"
-        class="drag-area drop-element"
-       group="shared"
-        @add="handleDrop"
+      v-model="targetItems"
+      item-key="id"
+      class="drag-area drop-element"
+      group="shared"
+      @add="handleDrop"
     >
-      <template #default="{ element }">
+      <template #default>
         <div class="card px-3 d-inline-block">
           <div class="py-2 bg-muted">
-            <font-awesome-icon icon="expand"></font-awesome-icon>
+            <quintable-font-awesome-icon
+              icon="expand"
+            ></quintable-font-awesome-icon>
           </div>
         </div>
       </template>
-
     </vue-draggable>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { VueDraggable } from 'vue-draggable-plus';
+import { ref } from "vue";
+import { VueDraggable } from "vue-draggable-plus";
 
 interface Props {
   first?: boolean;
@@ -56,11 +61,9 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
-  (e: 'action', payload: { index: number; type: string; to?: number }): void;
+  (e: "action", payload: { index: number; type: string; to?: number }): void;
 }>();
 
-const checked = ref(false);
-const reference = ref("actions-component");
 const targetItems = ref([]);
 
 const handleDrop = (data: any) => {
@@ -98,14 +101,14 @@ const deleteRow = () => {
 
 <style>
 .drop-element {
-  .drag-element{
-    top:0;
+  .drag-element {
+    top: 0;
     left: 0;
     pointer-events: none;
     position: absolute;
     width: 100%;
     height: 100%;
-    background: rgba(255,255,255,0.5);
+    background: rgba(255, 255, 255, 0.5);
   }
 }
 </style>

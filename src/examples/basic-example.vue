@@ -3,16 +3,16 @@
     <alert-info>Just a simple table.</alert-info>
 
     <!-- table -->
-    <vue-quintable :config="config" :rows="rows"/>
+    <vue-quintable :config="config" :rows="rows" />
 
     <!-- code -->
-    <show-hide-button v-model:showCode="showCode"/>
-    <code-block v-if="showCode" :code="code"/>
+    <show-hide-button v-model:show-code="showCode" />
+    <code-block v-if="showCode" :code="code" />
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
+import { ref } from "vue";
 import AlertInfo from "../components/alert/alert-info.vue";
 import VueQuintable from "../components/table/vue-quintable.vue";
 import CodeBlock from "../components/code-block/code-block.vue";

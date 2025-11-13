@@ -1,4 +1,4 @@
-import {App} from "vue";
+import type {App} from "vue";
 import FloatingVue from 'floating-vue';
 import 'floating-vue/dist/style.css';
 

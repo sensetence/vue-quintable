@@ -1,55 +1,87 @@
 <template>
   <div class="content">
-    <alert-info>Filter rows by adjusting filter and settings switches.</alert-info>
+    <alert-info
+      >Filter rows by adjusting filter and settings switches.</alert-info
+    >
 
     <!-- table -->
     <vue-quintable
-        :filter-groups="filterGroups"
-        :filters="filters"
-        :config="config"
-        :rows="rows"
-        @filtered:rows="visibleRows"
+      :filter-groups="filterGroups"
+      :filters="filters"
+      :config="config"
+      :rows="rows"
+      @filtered:rows="visibleRows"
     >
       <template #header>
         <strong class="mb-2">Filters:</strong>
 
         <div class="clearfix py-2">
-          <p-quintable-check class="p-switch" v-model="activeFilter" :value="true">Active</p-quintable-check>
+          <quintable-p-check
+            v-model="activeFilter"
+            class="p-switch"
+            :value="true"
+            >Active</quintable-p-check
+          >
         </div>
 
         <div class="clearfix py-2">
-          <p-quintable-check class="p-switch" v-model="printableFilter" :value="true">Printable</p-quintable-check>
+          <quintable-p-check
+            v-model="printableFilter"
+            class="p-switch"
+            :value="true"
+            >Printable</quintable-p-check
+          >
         </div>
 
         <div class="clearfix py-2">
-          <p-quintable-check  class="p-switch" v-model="dynamicFilter" :value="true">Regex for name (/Ma/)</p-quintable-check>
+          <quintable-p-check
+            v-model="dynamicFilter"
+            class="p-switch"
+            :value="true"
+            >Regex for name (/Ma/)</quintable-p-check
+          >
         </div>
 
-        <hr/>
+        <hr />
         <strong class="mb-2">Settings:</strong>
         <div class="clearfix py-2">
-          <p-quintable-check class="p-icon p-smooth"  v-model="filterGroupsActive" :value="true">
-
-              Toggle Filter Groups
+          <quintable-p-check
+            v-model="filterGroupsActive"
+            class="p-icon p-smooth"
+            :value="true"
+          >
+            Toggle Filter Groups
             <template #extra>
               <span
-              ><font-awesome-icon
+                ><quintable-font-awesome-icon
                   v-if="filterGroupsActive"
                   icon="check"
                   class="text-success icon-check"
               /></span>
             </template>
-          </p-quintable-check>
+          </quintable-p-check>
         </div>
 
         <div class="card">
           <div class="card-body">
-            <p-quintable-radio value="AND" name="radio" color="info" v-model="config.filterRelation">AND filter relation</p-quintable-radio>
+            <quintable-p-radio
+              v-model="config.filterRelation"
+              value="AND"
+              name="radio"
+              color="info"
+              >AND filter relation</quintable-p-radio
+            >
             <span class="mx-2"></span>
-            <p-quintable-radio value="OR" name="radio" color="info" v-model="config.filterRelation">OR filter relation</p-quintable-radio>
+            <quintable-p-radio
+              v-model="config.filterRelation"
+              value="OR"
+              name="radio"
+              color="info"
+              >OR filter relation</quintable-p-radio
+            >
           </div>
         </div>
-        <hr/>
+        <hr />
       </template>
 
       <template #footer>
@@ -60,19 +92,19 @@
     </vue-quintable>
 
     <!-- code -->
-    <show-hide-button v-model:showCode="showCode"/>
-    <code-block v-if="showCode" :code="code" class="mt-3"/>
+    <show-hide-button v-model:show-code="showCode" />
+    <code-block v-if="showCode" :code="code" class="mt-3" />
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref, computed, reactive, watch} from 'vue';
-import Chance from 'chance';
+import { ref, computed, reactive, watch } from "vue";
+import Chance from "chance";
 
-import VueQuintable from '../components/table/vue-quintable.vue';
-import AlertInfo from '../components/alert/alert-info.vue';
-import CodeBlock from '../components/code-block/code-block.vue';
-import ShowHideButton from '../components/code-block/show-hide-button.vue';
+import VueQuintable from "../components/table/vue-quintable.vue";
+import AlertInfo from "../components/alert/alert-info.vue";
+import CodeBlock from "../components/code-block/code-block.vue";
+import ShowHideButton from "../components/code-block/show-hide-button.vue";
 
 const showCode = ref(false);
 
@@ -86,16 +118,16 @@ const filterGroupsActive = ref(false);
 
 const config = reactive({
   columns: [
-    {headline: 'Name'},
-    {headline: 'Age'},
-    {headline: 'Printable'},
-    {headline: 'Active'},
+    { headline: "Name" },
+    { headline: "Age" },
+    { headline: "Printable" },
+    { headline: "Active" },
   ],
   search: true,
   useFuzzySearch: true,
   searchLength: 3,
-  filterRelation: 'AND',
-  searchPlaceholder: 'Search rows...',
+  filterRelation: "AND",
+  searchPlaceholder: "Search rows...",
 });
 
 const filters = reactive<Record<string, any>>({});
@@ -104,14 +136,14 @@ const filterGroupsDefaults = [
   {
     items: [
       {
-        items: [{name: 'name'}, {name: 'active'}],
-        relation: 'OR',
+        items: [{ name: "name" }, { name: "active" }],
+        relation: "OR",
       },
       {
-        items: [{name: 'printable'}],
+        items: [{ name: "printable" }],
       },
     ],
-    relation: 'AND',
+    relation: "AND",
   },
 ];
 
@@ -125,27 +157,27 @@ const rows = computed(() => {
   for (let i = 0; i < 50; i++) {
     const printable = Math.random() >= 0.5;
     const active = Math.random() >= 0.5;
-    const name = chance.name({nationality: 'en'});
+    const name = chance.name({ nationality: "en" });
     const age = chance.age();
 
     result.push({
-      keywords: ['Row ' + i],
+      keywords: ["Row " + i],
       cells: [
-        {text: name},
-        {text: age},
+        { text: name },
+        { text: age },
         {
           component: {
-            name: 'font-awesome-icon',
+            name: "quintable-font-awesome-icon",
             props: {
-              icon: printable ? 'check' : 'times',
+              icon: printable ? "check" : "times",
             },
           },
         },
         {
           component: {
-            name: 'font-awesome-icon',
+            name: "quintable-font-awesome-icon",
             props: {
-              icon: active ? 'check' : 'times',
+              icon: active ? "check" : "times",
             },
           },
         },
@@ -181,8 +213,8 @@ watch(printableFilter, (val) => {
 watch(dynamicFilter, (val) => {
   if (val) {
     filters.name = {
-      operator: 'matches',
-      values: new RegExp('Ma'),
+      operator: "matches",
+      values: new RegExp("Ma"),
     };
   } else {
     delete filters.name;
@@ -206,38 +238,38 @@ const code = `&lt;template&gt;
       &lt;strong class=&quot;mb-2&quot;&gt;Filters:&lt;/strong&gt;
 
       &lt;div class=&quot;clearfix py-2&quot;&gt;
-        &lt;p-quintable-check class=&quot;p-switch&quot; v-model=&quot;activeFilter&quot; :value=&quot;true&quot;&gt;Active&lt;/p-quintable-check&gt;
+        &lt;quintable-p-check class=&quot;p-switch&quot; v-model=&quot;activeFilter&quot; :value=&quot;true&quot;&gt;Active&lt;/quintable-p-check&gt;
       &lt;/div&gt;
 
       &lt;div class=&quot;clearfix py-2&quot;&gt;
-        &lt;p-quintable-check class=&quot;p-switch&quot; v-model=&quot;printableFilter&quot; :value=&quot;true&quot;&gt;Printable&lt;/p-quintable-check&gt;
+        &lt;quintable-p-check class=&quot;p-switch&quot; v-model=&quot;printableFilter&quot; :value=&quot;true&quot;&gt;Printable&lt;/quintable-p-check&gt;
       &lt;/div&gt;
 
       &lt;div class=&quot;clearfix py-2&quot;&gt;
-        &lt;p-quintable-check class=&quot;p-switch&quot; v-model=&quot;dynamicFilter&quot; :value=&quot;true&quot;&gt;Regex for name (/Ma/)&lt;/p-quintable-check&gt;
+        &lt;quintable-p-check class=&quot;p-switch&quot; v-model=&quot;dynamicFilter&quot; :value=&quot;true&quot;&gt;Regex for name (/Ma/)&lt;/quintable-p-check&gt;
       &lt;/div&gt;
 
       &lt;hr/&gt;
       &lt;strong class=&quot;mb-2&quot;&gt;Settings:&lt;/strong&gt;
 
       &lt;div class=&quot;clearfix py-2&quot;&gt;
-        &lt;p-quintable-check class=&quot;p-icon p-smooth&quot; v-model=&quot;filterGroupsActive&quot; :value=&quot;true&quot;&gt;
+        &lt;quintable-p-check class=&quot;p-icon p-smooth&quot; v-model=&quot;filterGroupsActive&quot; :value=&quot;true&quot;&gt;
           Toggle Filter Groups
           &lt;template #extra&gt;
-            &lt;span&gt;&lt;font-awesome-icon
+            &lt;span&gt;&lt;quintable-font-awesome-icon
                 v-if=&quot;filterGroupsActive&quot;
                 icon=&quot;check&quot;
                 class=&quot;text-success icon-check&quot;
             /&gt;&lt;/span&gt;
           &lt;/template&gt;
-        &lt;/p-quintable-check&gt;
+        &lt;/quintable-p-check&gt;
       &lt;/div&gt;
 
       &lt;div class=&quot;card&quot;&gt;
         &lt;div class=&quot;card-body&quot;&gt;
-          &lt;p-quintable-radio value=&quot;AND&quot; name=&quot;radio&quot; color=&quot;info&quot; v-model=&quot;config.filterRelation&quot;&gt;AND filter relation&lt;/p-quintable-radio&gt;
+          &lt;quintable-p-radio value=&quot;AND&quot; name=&quot;radio&quot; color=&quot;info&quot; v-model=&quot;config.filterRelation&quot;&gt;AND filter relation&lt;/quintable-p-radio&gt;
           &lt;span class=&quot;mx-2&quot;&gt;&lt;/span&gt;
-          &lt;p-quintable-radio value=&quot;OR&quot; name=&quot;radio&quot; color=&quot;info&quot; v-model=&quot;config.filterRelation&quot;&gt;OR filter relation&lt;/p-quintable-radio&gt;
+          &lt;quintable-p-radio value=&quot;OR&quot; name=&quot;radio&quot; color=&quot;info&quot; v-model=&quot;config.filterRelation&quot;&gt;OR filter relation&lt;/quintable-p-radio&gt;
         &lt;/div&gt;
       &lt;/div&gt;
 
@@ -316,7 +348,7 @@ const rows = computed(() =&gt; {
         {text: age},
         {
           component: {
-            name: 'font-awesome-icon',
+            name: 'quintable-font-awesome-icon',
             props: {
               icon: printable ? 'check' : 'times',
             },
@@ -324,7 +356,7 @@ const rows = computed(() =&gt; {
         },
         {
           component: {
-            name: 'font-awesome-icon',
+            name: 'quintable-font-awesome-icon',
             props: {
               icon: active ? 'check' : 'times',
             },

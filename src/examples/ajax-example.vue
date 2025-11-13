@@ -1,22 +1,21 @@
 <template>
   <div class="content">
-    <alert-info>Pagination and sorting will be handled by server side via ajax.</alert-info>
+    <alert-info
+      >Pagination and sorting will be handled by server side via
+      ajax.</alert-info
+    >
 
     <!-- table -->
-    <vue-quintable
-        :axios="axios"
-        :config="config"
-        @ajax:rows="rowsUpdated"
-    />
+    <vue-quintable :axios="axios" :config="config" @ajax:rows="rowsUpdated" />
 
     <!-- code -->
-    <show-hide-button v-model:showCode="showCode"/>
-    <code-block v-if="showCode" :code="code"/>
+    <show-hide-button v-model:show-code="showCode" />
+    <code-block v-if="showCode" :code="code" />
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref} from 'vue';
+import { ref } from "vue";
 import axios from "axios";
 import VueQuintable from "../components/table/vue-quintable.vue";
 import ShowHideButton from "../components/code-block/show-hide-button.vue";
@@ -25,13 +24,13 @@ import AlertInfo from "../components/alert/alert-info.vue";
 
 // Axios interceptor
 axios.interceptors.request.use(
-    (config) => {
-      console.log("Custom axios", config);
-      return config;
-    },
-    (error) => {
-      console.log("ERROR AXIOS", error);
-    }
+  (config) => {
+    console.log("Custom axios", config);
+    return config;
+  },
+  (error) => {
+    console.log("ERROR AXIOS", error);
+  },
 );
 
 const showCode = ref(false);
@@ -40,12 +39,12 @@ const showCode = ref(false);
 const config = {
   // Columns configuration
   columns: [
-    {headline: "Name", sort: true},
-    {headline: "Email", breakpoint: "sm", sort: true},
-    {headline: "Phone", breakpoint: "md"},
-    {headline: "Job Title", breakpoint: "md", sort: true},
-    {headline: "City", breakpoint: "md"},
-    {headline: "Address", breakpoint: "md"},
+    { headline: "Name", sort: true },
+    { headline: "Email", breakpoint: "sm", sort: true },
+    { headline: "Phone", breakpoint: "md" },
+    { headline: "Job Title", breakpoint: "md", sort: true },
+    { headline: "City", breakpoint: "md" },
+    { headline: "Address", breakpoint: "md" },
   ],
   pagination: 5,
   search: true,
@@ -54,11 +53,11 @@ const config = {
   requestMethod: "POST",
 };
 
-const rowsUpdated = (data) => {
+const rowsUpdated = (data: any) => {
   if (data.rows.length) {
     alert("Rows updated from server: " + data.rows.length + " rows.");
   }
-}
+};
 
 // example code
 const code = `&lt;template&gt;

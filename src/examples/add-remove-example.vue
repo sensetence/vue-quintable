@@ -1,54 +1,63 @@
 <template>
   <div class="content">
     <p class="alert alert-info">
-      <font-awesome-icon class="me-2" icon="info-circle"/>
-      Use buttons to add/remove/move rows or Drag&Drop
-      [<a target="_blank" href="https://github.com/Alfred-Skyblue/vue-draggable-plus">vue-draggable-plus</a>].
+      <quintable-font-awesome-icon class="me-2" icon="info-circle" />
+      Use buttons to add/remove/move rows or Drag&Drop [<a
+        target="_blank"
+        href="https://github.com/Alfred-Skyblue/vue-draggable-plus"
+        >vue-draggable-plus</a
+      >].
     </p>
 
     <VueQuintable
-        :table-classes="tableClasses"
-        :config="config"
-        :rows="rows"
-        @component:event="componentListener"
+      :table-classes="tableClasses"
+      :config="config"
+      :rows="rows"
+      @component:event="componentListener"
     >
       <template #header>
         <div class="row">
-          <div class="col-md-2" v-for="key in ['index', 'name', 'age', 'city', 'job']" :key="key">
+          <div
+            v-for="key in ['index', 'name', 'age', 'city', 'job']"
+            :key="key"
+            class="col-md-2"
+          >
             <div class="mb-3">
-              <label :for="key">{{ key.charAt(0).toUpperCase() + key.slice(1) }}</label>
-              <v-quintable-select
-                  v-if="key === 'age'"
-                  :id="key"
-                  v-model="form[key]"
-                  :options="ages"
-                  placeholder="Select Age..."
+              <label :for="key">{{
+                key.charAt(0).toUpperCase() + key.slice(1)
+              }}</label>
+              <quintable-v-select
+                v-if="key === 'age'"
+                :id="key"
+                v-model="form[key]"
+                :options="ages"
+                placeholder="Select Age..."
               />
 
-              <v-quintable-select
-                  v-else-if="key === 'index'"
-                  :id="key"
-                  v-model="form[key]"
-                  :options="indexes"
-                  :clearable="false"
+              <quintable-v-select
+                v-else-if="key === 'index'"
+                :id="key"
+                v-model="form[key]"
+                :options="indexes"
+                :clearable="false"
               />
 
               <input
-                  v-else
-                  :id="key"
-                  v-model="form[key]"
-                  type="text"
-                  class="form-control"
+                v-else
+                :id="key"
+                v-model="form[key]"
+                type="text"
+                class="form-control"
               />
             </div>
           </div>
           <div class="col-md-2">
             <label>
-              <wbr/>
+              <wbr />
             </label>
             <div class="mb-3">
               <span class="btn btn-info" @click="addRow">
-                <font-awesome-icon icon="plus"/> Add Row
+                <quintable-font-awesome-icon icon="plus" /> Add Row
               </span>
             </div>
           </div>
@@ -57,26 +66,26 @@
     </VueQuintable>
 
     <!-- code -->
-    <show-hide-button v-model:showCode="showCode"/>
-    <code-block v-if="showCode" :code="code"/>
+    <show-hide-button v-model:show-code="showCode" />
+    <code-block v-if="showCode" :code="code" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, getCurrentInstance,toRaw } from 'vue';
+import { ref, reactive, computed, onMounted, getCurrentInstance } from "vue";
 import VueQuintable from "../components/table/vue-quintable.vue";
-import DragComponent from './components/drag-component.vue';
-import ActionsComponent from './components/actions-component.vue';
+import DragComponent from "./components/drag-component.vue";
+import ActionsComponent from "./components/actions-component.vue";
 import CodeBlock from "../components/code-block/code-block.vue";
 import ShowHideButton from "../components/code-block/show-hide-button.vue";
-import Chance from 'chance';
+import Chance from "chance";
 
 // Register components globally for dynamic component usage
 const instance = getCurrentInstance();
 if (instance) {
   const app = instance.appContext.app;
-  app.component('drag-component', DragComponent);
-  app.component('actions-component', ActionsComponent);
+  app.component("DragComponent", DragComponent);
+  app.component("ActionsComponent", ActionsComponent);
 }
 
 const showCode = ref(false);
@@ -87,6 +96,7 @@ interface FormData {
   age: number | null;
   city: string;
   job: string;
+  [key: string]: number | string | null;
 }
 
 interface ComponentEvent {
@@ -105,12 +115,12 @@ interface TableRow {
 
 const config = {
   columns: [
-    { headline: '' },
-    { headline: 'Name' },
-    { headline: 'Age', breakpoint: 'md' },
-    { headline: 'Birth Place', breakpoint: 'lg' },
-    { headline: 'Job', breakpoint: 'lg' },
-    { headline: 'Actions', breakpoint: 'sm' },
+    { headline: "" },
+    { headline: "Name" },
+    { headline: "Age", breakpoint: "md" },
+    { headline: "Birth Place", breakpoint: "lg" },
+    { headline: "Job", breakpoint: "lg" },
+    { headline: "Actions", breakpoint: "sm" },
   ],
 };
 
@@ -120,13 +130,13 @@ const dragging = ref<boolean>(false);
 
 const form = reactive<FormData>({
   index: 1,
-  name: '',
+  name: "",
   age: null,
-  city: '',
-  job: '',
+  city: "",
+  job: "",
 });
 
-const tableClasses = computed(() => dragging.value ? 'dragging' : '');
+const tableClasses = computed(() => (dragging.value ? "dragging" : ""));
 
 // Utility function to create a range array
 const arrayRange = (start: number, end: number): number[] =>
@@ -160,31 +170,31 @@ const move = (oldIndex: number, newIndex: number): void => {
 };
 
 const componentListener = (data: ComponentEvent): void => {
-  if (data.type === 'delete-row') {
+  if (data.type === "delete-row") {
     rows.value.splice(data.index, 1);
     rowCount.value--;
     updateIndexes();
-  } else if (data.type === 'move-row' && data.to !== undefined) {
+  } else if (data.type === "move-row" && data.to !== undefined) {
     dragging.value = false;
     move(data.index, data.to);
-  } else if (data.type === 'dragstart') {
+  } else if (data.type === "dragstart") {
     dragging.value = true;
-  } else if (data.type === 'dragend') {
+  } else if (data.type === "dragend") {
     dragging.value = false;
   }
 };
 
 const addRow = (): void => {
-  console.log(form)
+  console.log(form);
   if (!form.name || !form.age || !form.city || !form.job) {
-    alert('You have to fill out all inputs');
+    alert("You have to fill out all inputs");
     return;
   }
 
   const data: TableRow[] = [
     {
       component: {
-        name: 'drag-component',
+        name: "drag-component",
         props: { index: form.index - 1 },
       },
     },
@@ -194,7 +204,7 @@ const addRow = (): void => {
     { text: form.job },
     {
       component: {
-        name: 'actions-component',
+        name: "actions-component",
         props: { index: form.index - 1 },
       },
     },
@@ -207,10 +217,10 @@ const addRow = (): void => {
   }
 
   form.index = 1;
-  form.name = '';
+  form.name = "";
   form.age = null;
-  form.city = '';
-  form.job = '';
+  form.city = "";
+  form.job = "";
   rowCount.value++;
 
   updateIndexes();
@@ -223,17 +233,17 @@ onMounted(() => {
     generated.push([
       {
         component: {
-          name: 'drag-component',
+          name: "drag-component",
           props: { index: i },
         },
       },
-      { text: chance.name({ nationality: 'en' }) },
+      { text: chance.name({ nationality: "en" }) },
       { text: chance.age().toString() },
       { text: chance.city() },
       { text: chance.profession() },
       {
         component: {
-          name: 'actions-component',
+          name: "actions-component",
           props: {
             index: i,
             first: i === 0,
@@ -259,7 +269,7 @@ const code = `&lt;template&gt;
         &lt;div class=&quot;col-md-2&quot; v-for=&quot;key in ['index', 'name', 'age', 'city', 'job']&quot; :key=&quot;key&quot;&gt;
           &lt;div class=&quot;mb-3&quot;&gt;
             &lt;label :for=&quot;key&quot;&gt;{{ key.charAt(0).toUpperCase() + key.slice(1) }}&lt;/label&gt;
-            &lt;v-quintable-select
+            &lt;quintable-v-select
                 v-if=&quot;key === 'age'&quot;
                 :id=&quot;key&quot;
                 v-model=&quot;form[key]&quot;
@@ -267,7 +277,7 @@ const code = `&lt;template&gt;
                 placeholder=&quot;Select Age...&quot;
             /&gt;
 
-            &lt;v-quintable-select
+            &lt;quintable-v-select
                 v-else-if=&quot;key === 'index'&quot;
                 :id=&quot;key&quot;
                 v-model=&quot;form[key]&quot;
@@ -290,7 +300,7 @@ const code = `&lt;template&gt;
           &lt;/label&gt;
           &lt;div class=&quot;mb-3&quot;&gt;
             &lt;span class=&quot;btn btn-info&quot; @click=&quot;addRow&quot;&gt;
-              &lt;font-awesome-icon icon=&quot;plus&quot;/&gt; Add Row
+              &lt;quintable-font-awesome-icon icon=&quot;plus&quot;/&gt; Add Row
             &lt;/span&gt;
           &lt;/div&gt;
         &lt;/div&gt;
@@ -300,7 +310,7 @@ const code = `&lt;template&gt;
 &lt;/template&gt;
 
 &lt;script setup lang=&quot;ts&quot;&gt;
-import { ref, reactive, computed, onMounted, getCurrentInstance,toRaw } from 'vue';
+import { ref, reactive, computed, onMounted, getCurrentInstance } from 'vue';
 import VueQuintable from &quot;../components/table/vue-quintable.vue&quot;;
 import DragComponent from './components/drag-component.vue';
 import ActionsComponent from './components/actions-component.vue';
@@ -310,8 +320,8 @@ import Chance from 'chance';
 const instance = getCurrentInstance();
 if (instance) {
   const app = instance.appContext.app;
-  app.component('drag-component', DragComponent);
-  app.component('actions-component', ActionsComponent);
+  app.component("DragComponent", DragComponent);
+  app.component("ActionsComponent", ActionsComponent);
 }
 
 interface FormData {
@@ -515,7 +525,7 @@ onMounted(() =&gt; {
 }
 
 .vue-quintable.dragging .vue-quintable-cell:after {
-  content: '';
+  content: "";
   position: absolute;
   width: 100%;
   height: 100%;

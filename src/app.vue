@@ -5,10 +5,10 @@
         <div class="col-12">
           <div class="text-center">
             <img
-                alt="VueQuintable Logo"
-                title="VueQuintable Logo"
-                src="./assets/images/banner.png"
-                class="logo"
+              alt="VueQuintable Logo"
+              title="VueQuintable Logo"
+              src="./assets/images/banner.png"
+              class="logo"
             />
             <h1 class="mb-4">VueQuintable Demo</h1>
           </div>
@@ -16,15 +16,15 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <v-quintable-select
-              class="mb-3"
-              :clearable="false"
-              v-model="example"
-              :options="examples"
-              :getOptionKey="(option: SelectItemWithComponent) => option.value"
+          <quintable-v-select
+            v-model="example"
+            class="mb-3"
+            :clearable="false"
+            :options="examples"
+            :get-option-key="(option: SelectItemWithComponent) => option.value"
           />
           <div class="example-content">
-            <component :is="example.component"/>
+            <component :is="example.component" />
           </div>
         </div>
       </div>
@@ -33,7 +33,8 @@
 </template>
 
 <script setup lang="ts">
-import {ref, shallowRef, watch, type ShallowRef, type Component} from "vue";
+import { ref, shallowRef, watch, type ShallowRef, type Component } from "vue";
+import type { SelectItem } from "./types/form";
 
 import BasicExample from "./examples/basic-example.vue";
 import ComputedRowsExample from "./examples/computed-rows-example.vue";
@@ -178,9 +179,9 @@ const examples: SelectItemWithComponent[] = [
 
 // load example from URL parameters
 let urlParams = new URLSearchParams(window.location.search);
-let exampleId = '';
-if (urlParams.has('example')) {
-  exampleId = urlParams.get('example');
+let exampleId = "";
+if (urlParams.has("example")) {
+  exampleId = urlParams.get("example") ?? examples[0].value;
 } else {
   exampleId = examples[0].value;
 }
@@ -190,8 +191,8 @@ const example = ref(examples.find((e) => e.value === exampleId) || examples[0]);
 watch(example, (newExample) => {
   if (newExample) {
     const newUrl = new URL(window.location.href);
-    newUrl.searchParams.set('example', newExample.value);
-    window.history.replaceState({}, '', newUrl.toString());
+    newUrl.searchParams.set("example", newExample.value);
+    window.history.replaceState({}, "", newUrl.toString());
   }
 });
 </script>

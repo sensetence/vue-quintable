@@ -13,21 +13,27 @@
 
       <!-- generated-cell-content slot -->
       <template #generated-cell-content="{ cell }">
-        <div class="btn btn-sm btn-warning" @click.stop="alertMessage(cell.text)">
+        <div
+          class="btn btn-sm btn-warning"
+          @click.stop="alertMessage(cell.text)"
+        >
           {{ cell.text }}
         </div>
       </template>
 
       <!-- sticky-cell-content slot -->
       <template #sticky-cell-content="{ cell }">
-        <div class="btn btn-sm btn-danger" @click.stop="alertMessage(cell.text)">
+        <div
+          class="btn btn-sm btn-danger"
+          @click.stop="alertMessage(cell.text)"
+        >
           {{ cell.text }}
         </div>
       </template>
 
       <!-- header slot -->
       <template #header>
-        <hr/>
+        <hr />
         <div class="alert alert-primary">
           <div class="text-center">
             <h4 class="m-0">VueQuintable</h4>
@@ -48,11 +54,11 @@
       <template #search="{ placeholder, value, setSearchQuery }">
         <div class="col-md-8">
           <input
-              type="search"
-              :value="value"
-              :placeholder="placeholder"
-              class="form-control"
-              @input="setSearchQuery($event.target.value)"
+            type="search"
+            :value="value"
+            :placeholder="placeholder"
+            class="form-control"
+            @input="setSearchQuery(($event.target as HTMLInputElement).value)"
           />
         </div>
       </template>
@@ -68,9 +74,11 @@
 
       <!-- after-search-container slot -->
       <template #after-search-container>
-        <hr/>
-        <p-quintable-check class="p-switch" v-model="showRows">Toggle Rows</p-quintable-check>
-        <hr/>
+        <hr />
+        <quintable-p-check v-model="showRows" class="p-switch"
+          >Toggle Rows</quintable-p-check
+        >
+        <hr />
       </template>
 
       <!-- footer slot -->
@@ -89,19 +97,19 @@
     </vue-quintable>
 
     <!-- code -->
-    <show-hide-button v-model:showCode="showCode"/>
-    <code-block v-if="showCode" :code="code" class="mt-3"/>
+    <show-hide-button v-model:show-code="showCode" />
+    <code-block v-if="showCode" :code="code" class="mt-3" />
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref, computed} from 'vue';
-import Chance from 'chance';
+import { ref, computed } from "vue";
+import Chance from "chance";
 
-import VueQuintable from '../components/table/vue-quintable.vue';
-import AlertInfo from '../components/alert/alert-info.vue';
-import CodeBlock from '../components/code-block/code-block.vue';
-import ShowHideButton from '../components/code-block/show-hide-button.vue';
+import VueQuintable from "../components/table/vue-quintable.vue";
+import AlertInfo from "../components/alert/alert-info.vue";
+import CodeBlock from "../components/code-block/code-block.vue";
+import ShowHideButton from "../components/code-block/show-hide-button.vue";
 
 const showCode = ref(false);
 
@@ -111,13 +119,13 @@ const showRows = ref(true);
 
 const config = {
   columns: [
-    {headline: 'Name'},
-    {headline: 'Age'},
-    {headline: 'Birth Place', sticky: true},
-    {headline: 'Job', breakpoint: 'md'},
+    { headline: "Name" },
+    { headline: "Age" },
+    { headline: "Birth Place", sticky: true },
+    { headline: "Job", breakpoint: "md" },
   ],
   search: true,
-  searchClass: 'col-md-8',
+  searchClass: "col-md-8",
   pagination: true,
 };
 
@@ -127,17 +135,17 @@ const rows = computed(() => {
   const data = [];
   for (let i = 0; i < 500; i++) {
     data.push([
-      {text: chance.name({nationality: 'en'})},
-      {text: chance.age()},
-      {text: chance.city()},
-      {text: chance.profession(), type: 'nested'},
+      { text: chance.name({ nationality: "en" }) },
+      { text: chance.age() },
+      { text: chance.city() },
+      { text: chance.profession(), type: "nested" },
     ]);
   }
   return data;
 });
 
 function alertMessage(text: string) {
-  alert('I clicked the slot ' + text);
+  alert("I clicked the slot " + text);
 }
 
 // Optional: Example code block content
@@ -208,7 +216,7 @@ const code = `&lt;template&gt;
     &lt;!-- after-search-container slot --&gt;
     &lt;template #after-search-container&gt;
       &lt;hr/&gt;
-      &lt;p-quintable-check class=&quot;p-switch&quot; v-model=&quot;showRows&quot;&gt;Toggle Rows&lt;/p-quintable-check&gt;
+      &lt;quintable-p-check class=&quot;p-switch&quot; v-model=&quot;showRows&quot;&gt;Toggle Rows&lt;/quintable-p-check&gt;
       &lt;hr/&gt;
     &lt;/template&gt;
 

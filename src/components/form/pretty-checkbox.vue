@@ -1,14 +1,14 @@
 <template>
   <div :class="classes">
     <input
-        ref="input"
-        type="checkbox"
-        :name="name"
-        :checked="shouldBeChecked"
-        :value="value"
-        @change="updateInput"
-        :disabled="_disabled"
-        :required="_required"
+      ref="input"
+      type="checkbox"
+      :name="name"
+      :value="value"
+      :checked="shouldBeChecked"
+      :disabled="_disabled"
+      :required="_required"
+      @change="updateInput"
     />
     <div :class="onClasses">
       <slot name="extra"></slot>
@@ -36,33 +36,81 @@ export default {
   name: "PrettyCheckbox",
 
   props: {
-    type: String,
-    name: String,
-    value: {},
-    modelValue: {},
-    trueValue: {},
-    falseValue: {},
-    checked: {},
-    disabled: {},
-    required: {},
-    indeterminate: {},
-    color: {
-        type: String,
-        default: null,
+    type: {
+      type: String,
+      default: null,
     },
-    offColor: String,
-    hoverColor: String,
-    indeterminateColor: String,
-    toggle: {},
-    hover: {},
-    focus: {},
+    name: {
+      type: String,
+      default: null,
+    },
+    value: {
+      type: [String, Number, Object, Array, Boolean],
+      default: null,
+    },
+    modelValue: {
+      type: [String, Number, Object, Array, Boolean],
+      default: undefined,
+    },
+    trueValue: {
+      type: [String, Number, Object, Array, Boolean],
+      default: true,
+    },
+    falseValue: {
+      type: [String, Number, Object, Array, Boolean],
+      default: false,
+    },
+    checked: {
+      type: [String, Boolean],
+      default: false,
+    },
+    disabled: {
+      type: [String, Boolean],
+      default: false,
+    },
+    required: {
+      type: [String, Boolean],
+      default: false,
+    },
+    indeterminate: {
+      type: [String, Boolean],
+      default: false,
+    },
+    color: {
+      type: String,
+      default: null,
+    },
+    offColor: {
+      type: String,
+      default: null,
+    },
+    hoverColor: {
+      type: String,
+      default: null,
+    },
+    indeterminateColor: {
+      type: String,
+      default: null,
+    },
+    toggle: {
+      type: [String, Boolean],
+      default: false,
+    },
+    hover: {
+      type: [String, Boolean],
+      default: false,
+    },
+    focus: {
+      type: [String, Boolean],
+      default: false,
+    },
   },
 
-  emits: ['update:modelValue', 'change', 'update:indeterminate'],
+  emits: ["update:modelValue", "change", "update:indeterminate"],
 
   data() {
     return {
-      m_checked: undefined,
+      m_checked: false,
       default_mode: false,
     };
   },
@@ -78,11 +126,7 @@ export default {
         }
         return typeof this.modelValue === "string" ? true : !!this.modelValue;
       }
-
-      if (this.m_checked === undefined)
-        return (this.m_checked =
-            typeof this.checked === "string" ? true : !!this.checked);
-      else return this.m_checked;
+      return this.m_checked;
     },
     _disabled() {
       return typeof this.disabled === "string" ? true : !!this.disabled;
@@ -92,18 +136,18 @@ export default {
     },
     _indeterminate() {
       return typeof this.indeterminate === "string"
-          ? true
-          : !!this.indeterminate;
+        ? true
+        : !!this.indeterminate;
     },
     _trueValue() {
       return typeof this.trueValue === "string"
-          ? this.trueValue
-          : !!this.trueValue;
+        ? this.trueValue
+        : !!this.trueValue;
     },
     _falseValue() {
       return typeof this.falseValue === "string"
-          ? this.falseValue
-          : !!this.falseValue;
+        ? this.falseValue
+        : !!this.falseValue;
     },
     _toggle() {
       return typeof this.toggle === "string" ? true : !!this.toggle;
@@ -164,8 +208,8 @@ export default {
   },
 
   watch: {
-    checked(v) {
-      this.m_checked = v;
+    checked(newValue) {
+      this.m_checked = typeof newValue === "string" ? true : !!newValue;
     },
     indeterminate(v) {
       if (this.$refs.input) {
@@ -174,9 +218,12 @@ export default {
     },
   },
 
+  created() {
+    this.m_checked = typeof this.checked === "string" ? true : !!this.checked;
+  },
+
   mounted() {
-    console.log(this.$el.className);
-    if (!this.$el.className || this.$el.className === 'pretty')
+    if (!this.$el.className || this.$el.className === "pretty")
       this.default_mode = true;
     if (this._indeterminate && this.$refs.input)
       this.$refs.input.indeterminate = true;
@@ -204,12 +251,12 @@ export default {
         this.$emit("change", newValue);
       } else {
         const emitValue = isChecked
-            ? this._trueValue
-                ? this.trueValue
-                : true
-            : this._falseValue
-                ? this.falseValue
-                : false;
+          ? this._trueValue
+            ? this.trueValue
+            : true
+          : this._falseValue
+            ? this.falseValue
+            : false;
         this.$emit("update:modelValue", emitValue);
         this.$emit("change", emitValue);
       }
@@ -219,6 +266,5 @@ export default {
 </script>
 
 <style scoped>
-@import '../../assets/styles/pretty-checkbox.css';
+@import "../../assets/styles/pretty-checkbox.css";
 </style>
-

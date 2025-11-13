@@ -1,30 +1,28 @@
 <template>
   <div class="content">
-    <alert-info>Initially pulled config and rows from server via ajax.</alert-info>
+    <alert-info
+      >Initially pulled config and rows from server via ajax.</alert-info
+    >
 
     <!-- table -->
     <vue-quintable :loading="loading" :config="remoteConfig" :rows="remoteRows">
       <template #loading>
         <div class="text-center py-3 mb-3 text-white bg-success">
           Loading...
-          <font-awesome-icon
-              class="ms-3"
-              icon="circle-notch"
-              spin
-          />
+          <quintable-font-awesome-icon class="ms-3" icon="circle-notch" spin />
         </div>
       </template>
     </vue-quintable>
 
     <!-- code -->
-    <show-hide-button v-model:showCode="showCode"/>
-    <code-block v-if="showCode" :code="code"/>
+    <show-hide-button v-model:show-code="showCode" />
+    <code-block v-if="showCode" :code="code" />
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref, watch, onMounted} from 'vue';
-import axios from 'axios';
+import { ref, watch, onMounted } from "vue";
+import axios from "axios";
 import VueQuintable from "../components/table/vue-quintable.vue";
 import AlertInfo from "../components/alert/alert-info.vue";
 import CodeBlock from "../components/code-block/code-block.vue";
@@ -47,23 +45,23 @@ const remoteRows = ref([]);
 const fetchData = () => {
   loading.value = true;
   axios
-      .get("https://sensetence.com/vue-quintable-demo/data.php?fetch=true")
-      .then((response) => {
-        remoteRows.value = response.data.rows;
-        remoteConfig.value = response.data.config;
-        loading.value = false;
-      });
+    .get("https://sensetence.com/vue-quintable-demo/data.php?fetch=true")
+    .then((response) => {
+      remoteRows.value = response.data.rows;
+      remoteConfig.value = response.data.config;
+      loading.value = false;
+    });
 };
 
 onMounted(fetchData);
 
 watch(
-    () => props.updated,
-    () => {
-      remoteConfig.value = {};
-      remoteRows.value = [];
-      fetchData();
-    }
+  () => props.updated,
+  () => {
+    remoteConfig.value = {};
+    remoteRows.value = [];
+    fetchData();
+  },
 );
 
 // example code
@@ -72,7 +70,7 @@ const code = `&lt;template&gt;
     &lt;template #loading&gt;
       &lt;div class=&quot;text-center py-3 mb-3 text-white bg-success&quot;&gt;
         Loading...
-        &lt;font-awesome-icon
+        &lt;quintable-font-awesome-icon
             class=&quot;ms-3&quot;
             icon=&quot;circle-notch&quot;
             spin

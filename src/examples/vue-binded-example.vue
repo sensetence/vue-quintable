@@ -1,42 +1,44 @@
 <template>
   <div class="content">
-    <alert-info>Change the value in the input to see effect on the table.</alert-info>
+    <alert-info
+      >Change the value in the input to see effect on the table.</alert-info
+    >
 
     <!-- table -->
     <vue-quintable :config="config" :rows="rows">
       <template #header>
-        <input type="text" class="form-control" v-model="input"/>
+        <input v-model="input" type="text" class="form-control" />
       </template>
     </vue-quintable>
 
     <!-- code -->
-    <show-hide-button v-model:showCode="showCode"/>
-    <code-block v-if="showCode" :code="code" class="mt-3"/>
+    <show-hide-button v-model:show-code="showCode" />
+    <code-block v-if="showCode" :code="code" class="mt-3" />
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref, computed, onMounted} from 'vue';
-import Chance from 'chance';
+import { ref, computed, onMounted } from "vue";
+import Chance from "chance";
 
-import VueQuintable from '../components/table/vue-quintable.vue';
-import AlertInfo from '../components/alert/alert-info.vue';
-import CodeBlock from '../components/code-block/code-block.vue';
-import ShowHideButton from '../components/code-block/show-hide-button.vue';
+import VueQuintable from "../components/table/vue-quintable.vue";
+import AlertInfo from "../components/alert/alert-info.vue";
+import CodeBlock from "../components/code-block/code-block.vue";
+import ShowHideButton from "../components/code-block/show-hide-button.vue";
 
 const showCode = ref(false);
 
 // table data
 const chance = new Chance();
-const input = ref('New York');
+const input = ref("New York");
 const age = ref(18);
 
 const config = {
   columns: [
-    {headline: 'Name'},
-    {headline: 'Age'},
-    {headline: 'Birth Place'},
-    {headline: 'Job'},
+    { headline: "Name" },
+    { headline: "Age" },
+    { headline: "Birth Place" },
+    { headline: "Job" },
   ],
 };
 
@@ -44,10 +46,10 @@ const initialRows = computed(() => {
   const rows = [];
   for (let i = 0; i < 10; i++) {
     rows.push([
-      {text: chance.name({nationality: 'en'})},
-      {text: chance.age()},
-      {text: chance.city()},
-      {text: chance.profession()},
+      { text: chance.name({ nationality: "en" }) },
+      { text: chance.age() },
+      { text: chance.city() },
+      { text: chance.profession() },
     ]);
   }
   return rows;

@@ -1,18 +1,20 @@
 <template>
   <div class="content">
-    <alert-info>Rows are calculated and passed as a computed property.</alert-info>
+    <alert-info
+      >Rows are calculated and passed as a computed property.</alert-info
+    >
 
     <!-- table -->
-    <vue-quintable :config="config" :rows="rows"/>
+    <vue-quintable :config="config" :rows="rows" />
 
     <!-- code -->
-    <show-hide-button v-model:showCode="showCode"/>
-    <code-block v-if="showCode" :code="code"/>
+    <show-hide-button v-model:show-code="showCode" />
+    <code-block v-if="showCode" :code="code" />
   </div>
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from 'vue';
+import { computed, ref } from "vue";
 import Chance from "chance";
 import AlertInfo from "../components/alert/alert-info.vue";
 import VueQuintable from "../components/table/vue-quintable.vue";
@@ -48,7 +50,7 @@ const rows = computed(() => {
   for (let i = 0; i < count; i++) {
     rows.push([
       {
-        text: chance.name({nationality: "en"}),
+        text: chance.name({ nationality: "en" }),
       },
       {
         text: chance.age(),

@@ -4,39 +4,51 @@
 
     <!-- options -->
     <div class="mb-3">
-      <p-quintable-check class="p-switch" v-model="selectAllRows">
+      <quintable-p-check v-model="selectAllRows" class="p-switch">
         Select rows cross pages
-      </p-quintable-check>
+      </quintable-p-check>
     </div>
 
     <!-- table -->
     <VueQuintable
-        :preSelectedRows="preSelectedRows"
-        v-model:selected-rows="selectedRows"
-        :config="config"
-        :rows="rows"
+      v-model:selected-rows="selectedRows"
+      :config="config"
+      :rows="rows"
+      :pre-selected-rows="preSelectedRows"
     />
 
     <!-- code -->
-    <show-hide-button v-model:showCode="showCode"/>
-    <code-block v-if="showCode" :code="code"/>
+    <show-hide-button v-model:show-code="showCode" />
+    <code-block v-if="showCode" :code="code" />
   </div>
 </template>
 
 <script setup lang="ts">
-import {computed, ref, watch} from 'vue';
+import { computed, ref, watch } from "vue";
 import Chance from "chance";
 import VueQuintable from "../components/table/vue-quintable.vue";
 import ShowHideButton from "../components/code-block/show-hide-button.vue";
 import CodeBlock from "../components/code-block/code-block.vue";
 import AlertInfo from "../components/alert/alert-info.vue";
 
+interface RowData {
+  selected: boolean;
+  disableSelect?: boolean;
+  index: number;
+  cells: Array<{ text: string | number }>;
+}
+
+interface PreSelectedRow {
+  key: string;
+  value: number;
+}
+
 const showCode = ref(false);
 
 // table data
 const chance = new Chance();
-const selectedRows = ref([]);
-const preSelectedRows = ref([]);
+const selectedRows = ref<RowData[]>([]);
+const preSelectedRows = ref<PreSelectedRow[]>([]);
 const selectAllRows = ref(false);
 
 const config = computed(() => ({
@@ -46,9 +58,9 @@ const config = computed(() => ({
       classes: "first-and-last-name",
       sort: true,
     },
-    {headline: "Age"},
-    {headline: "Birth Place"},
-    {headline: "Job"},
+    { headline: "Age" },
+    { headline: "Birth Place" },
+    { headline: "Job" },
   ],
   selectPosition: "pre",
   select: true,
@@ -70,10 +82,10 @@ const rows = computed(() => {
       disableSelect: i === 1,
       index: i,
       cells: [
-        {text: chance.name({nationality: "en"})},
-        {text: chance.age()},
-        {text: chance.city()},
-        {text: chance.profession()},
+        { text: chance.name({ nationality: "en" }) },
+        { text: chance.age() },
+        { text: chance.city() },
+        { text: chance.profession() },
       ],
     });
   }
@@ -110,22 +122,19 @@ watch(selectAllRows, () => {
 
 watch(selectedRows, () => {
   alert(
-      "Selection Changed - Names:\n" +
+    "Selection Changed - Names:\n" +
       (selectedRows.value.length
-          ? "- " +
-          selectedRows.value
-              .map((row) => row.cells[0].text)
-              .join("\n- ")
-          : "No rows selected")
+        ? "- " + selectedRows.value.map((row) => row.cells[0].text).join("\n- ")
+        : "No rows selected"),
   );
 });
 
 // example code
 const code = `&lt;template&gt;
   &lt;div class=&quot;mb-3&quot;&gt;
-    &lt;p-quintable-check class=&quot;p-switch&quot; v-model=&quot;selectAllRows&quot;&gt;
+    &lt;quintable-p-check class=&quot;p-switch&quot; v-model=&quot;selectAllRows&quot;&gt;
       Select rows cross pages
-    &lt;/p-quintable-check&gt;
+    &lt;/quintable-p-check&gt;
   &lt;/div&gt;
 
   &lt;VueQuintable
@@ -228,5 +237,4 @@ watch(selectedRows, () =&gt; {
   );
 });
 &lt;/script&gt;`;
-
 </script>

@@ -1,18 +1,20 @@
 <template>
   <div class="content">
-    <alert-info>Resize your browser window to see responsive behaviour.</alert-info>
+    <alert-info
+      >Resize your browser window to see responsive behaviour.</alert-info
+    >
 
     <!-- table -->
-    <vue-quintable :config="config" :rows="rows"/>
+    <vue-quintable :config="config" :rows="rows" />
 
     <!-- code -->
-    <show-hide-button v-model:showCode="showCode"/>
-    <code-block v-if="showCode" :code="code"/>
+    <show-hide-button v-model:show-code="showCode" />
+    <code-block v-if="showCode" :code="code" />
   </div>
 </template>
 
 <script setup lang="ts">
-import {computed, ref} from 'vue';
+import { computed, ref } from "vue";
 import Chance from "chance";
 import VueQuintable from "../components/table/vue-quintable.vue";
 import ShowHideButton from "../components/code-block/show-hide-button.vue";
@@ -60,7 +62,7 @@ const rows = computed(() => {
   for (let i = 0; i < count; i++) {
     rows.push([
       {
-        text: chance.name({nationality: "en"}),
+        text: chance.name({ nationality: "en" }),
       },
       {
         text: chance.age(),

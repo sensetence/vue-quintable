@@ -1,15 +1,18 @@
 <template>
   <div class="content">
-    <alert-info>Selecting rows will be persistent, even if pages are changes via ajax.</alert-info>
+    <alert-info
+      >Selecting rows will be persistent, even if pages are changes via
+      ajax.</alert-info
+    >
 
     <!-- table -->
     <vue-quintable
-        v-model:selected-rows="selectedRows"
-        :pre-selected-rows="preSelectedRows"
-        :axios="axios"
-        :config="ajaxConfig"
-        @update:page="onPageChange"
-        @ajax:rows="rowsUpdated"
+      v-model:selected-rows="selectedRows"
+      :pre-selected-rows="preSelectedRows"
+      :axios="axios"
+      :config="ajaxConfig"
+      @update:page="onPageChange"
+      @ajax:rows="rowsUpdated"
     />
 
     <!-- selection info -->
@@ -18,62 +21,79 @@
         <strong>Selected Rows:</strong>
       </p>
       <div class="list-group">
-        <div class="list-group-item" v-for="id in preSelectedRowIds" :key="id">
-          {{ allSelectedRows[id].cells[0].html }}
+        <div v-for="id in preSelectedRowIds" :key="id" class="list-group-item">
+          {{ allSelectedRows[id]?.cells?.[0]?.html }}
         </div>
       </div>
       <div
-          class="btn btn-danger mt-2"
-          v-if="preSelectedRowIds.length"
-          @click="clearSelection"
+        v-if="preSelectedRowIds.length"
+        class="btn btn-danger mt-2"
+        @click="clearSelection"
       >
         Clear
       </div>
-      <div class="clearfix"/>
+      <div class="clearfix" />
     </div>
 
     <!-- code -->
-    <show-hide-button v-model:showCode="showCode"/>
-    <code-block v-if="showCode" :code="code"/>
+    <show-hide-button v-model:show-code="showCode" />
+    <code-block v-if="showCode" :code="code" />
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref, watch, nextTick} from 'vue';
-import axios from 'axios';
+import { ref, watch, nextTick } from "vue";
+import axios from "axios";
 import VueQuintable from "../components/table/vue-quintable.vue";
 import ShowHideButton from "../components/code-block/show-hide-button.vue";
 import CodeBlock from "../components/code-block/code-block.vue";
 import AlertInfo from "../components/alert/alert-info.vue";
 
+// Types
+interface RowData {
+  id: number | string;
+  cells?: Array<{ html?: string; text?: string }>;
+  [key: string]: any;
+}
+
+interface AjaxData {
+  rows: RowData[];
+  [key: string]: any;
+}
+
+interface PreSelectedRow {
+  key: string;
+  value: number | string;
+}
+
 // axios interceptor setup
 axios.interceptors.request.use(
-    (config) => {
-      console.warn("Custom axios", config);
-      return config;
-    },
-    (error) => {
-      console.log("ERROR AXIOS", error);
-    }
+  (config) => {
+    console.warn("Custom axios", config);
+    return config;
+  },
+  (error) => {
+    console.log("ERROR AXIOS", error);
+  },
 );
 
 // table config
 const showCode = ref(false);
-const selectedRows = ref([]);
-const allSelectedRows = ref({});
-const preSelectedRowIds = ref([]);
-const preSelectedRows = ref([]);
-const ajaxRows = ref([]);
+const selectedRows = ref<RowData[]>([]);
+const allSelectedRows = ref<Record<string | number, RowData>>({});
+const preSelectedRowIds = ref<Array<string | number>>([]);
+const preSelectedRows = ref<PreSelectedRow[]>([]);
+const ajaxRows = ref<RowData[]>([]);
 const pageChanged = ref(false);
 
 const ajaxConfig = {
   columns: [
-    {headline: "Name"},
-    {headline: "Email", breakpoint: "sm"},
-    {headline: "Phone", breakpoint: "md"},
-    {headline: "Job Title", breakpoint: "md"},
-    {headline: "City", breakpoint: "md"},
-    {headline: "Address", breakpoint: "md"},
+    { headline: "Name" },
+    { headline: "Email", breakpoint: "sm" },
+    { headline: "Phone", breakpoint: "md" },
+    { headline: "Job Title", breakpoint: "md" },
+    { headline: "City", breakpoint: "md" },
+    { headline: "Address", breakpoint: "md" },
   ],
   pagination: 5,
   select: true,
@@ -113,7 +133,7 @@ const clearSelection = () => {
   preSelectedRowIds.value = [];
 };
 
-const rowsUpdated = (data) => {
+const rowsUpdated = (data: AjaxData) => {
   pageChanged.value = false;
   if (data && data.rows && data.rows.length) {
     nextTick(() => {

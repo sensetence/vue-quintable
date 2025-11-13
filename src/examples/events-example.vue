@@ -1,38 +1,40 @@
 <template>
   <div class="content">
-    <alert-info>Interact with the table to see when events get fired.</alert-info>
-    
+    <alert-info
+      >Interact with the table to see when events get fired.</alert-info
+    >
+
     <!-- event list -->
-    <div class="list-group mb-3" v-if="eventsLog.length">
+    <div v-if="eventsLog.length" class="list-group mb-3">
       <div
-          v-for="(event, index) in eventsLog"
-          :key="index"
-          class="list-group-item"
-          :class="{ 'bg-info text-white': index === eventsLog.length - 1 }"
+        v-for="(event, index) in eventsLog"
+        :key="index"
+        class="list-group-item"
+        :class="{ 'bg-info text-white': index === eventsLog.length - 1 }"
       >
         Event {{ event.event }} was fired with data:
         <div>{{ event.data }}</div>
-        <div class="mt-2" v-if="event.target">Target: {{ event.target }}</div>
+        <div v-if="event.target" class="mt-2">Target:{{ event.target }}</div>
       </div>
     </div>
 
     <!-- table -->
     <vue-quintable
-        @update:sort="eventListener"
-        @update:page="eventListener"
-        @update:search="eventListener"
-        @update:rows-per-page="eventListener"
-        @click:row="eventListener"
-        @click:cell="eventListener"
-        @auxclick:cell="eventListener"
-        @auxclick:row="eventListener"
-        @expand:row="eventListener"
-        @filtered:rows="eventListener"
-        @hover:row="eventListener"
-        @collapse:row="eventListener"
-        @change:breakpoints="eventListener"
-        :config="config"
-        :rows="rows"
+      :config="config"
+      :rows="rows"
+      @update:sort="eventListener"
+      @update:page="eventListener"
+      @update:search="eventListener"
+      @update:rows-per-page="eventListener"
+      @click:row="eventListener"
+      @click:cell="eventListener"
+      @auxclick:cell="eventListener"
+      @auxclick:row="eventListener"
+      @expand:row="eventListener"
+      @filtered:rows="eventListener"
+      @hover:row="eventListener"
+      @collapse:row="eventListener"
+      @change:breakpoints="eventListener"
     >
       <template #cell-content="{ cell }">
         <span v-if="cell.type === 'prevent-toggle'" class="prevent-toggle">
@@ -41,21 +43,20 @@
       </template>
     </vue-quintable>
 
-
     <!-- code -->
-    <show-hide-button v-model:showCode="showCode"/>
-    <code-block v-if="showCode" :code="code"/>
+    <show-hide-button v-model:show-code="showCode" />
+    <code-block v-if="showCode" :code="code" />
   </div>
 </template>
 
 <script setup lang="ts">
-import {ref, computed} from 'vue';
-import Chance from 'chance';
+import { ref, computed } from "vue";
+import Chance from "chance";
 
-import VueQuintable from '../components/table/vue-quintable.vue';
-import AlertInfo from '../components/alert/alert-info.vue';
-import CodeBlock from '../components/code-block/code-block.vue';
-import ShowHideButton from '../components/code-block/show-hide-button.vue';
+import VueQuintable from "../components/table/vue-quintable.vue";
+import AlertInfo from "../components/alert/alert-info.vue";
+import CodeBlock from "../components/code-block/code-block.vue";
+import ShowHideButton from "../components/code-block/show-hide-button.vue";
 
 const showCode = ref(false);
 
@@ -71,10 +72,10 @@ const eventsLog = ref<EventLogEntry[]>([]);
 
 const config = {
   columns: [
-    {headline: 'Name'},
-    {headline: 'Age', sort: true},
-    {headline: 'Birth Place'},
-    {headline: 'Job', breakpoint: 'all'},
+    { headline: "Name" },
+    { headline: "Age", sort: true },
+    { headline: "Birth Place" },
+    { headline: "Job", breakpoint: "all" },
   ],
   pagination: 5,
   rowsSelect: true,
@@ -86,10 +87,10 @@ const rows = computed(() => {
   const items = [];
   for (let i = 0; i < 20; i++) {
     items.push([
-      {text: chance.name({nationality: 'en'})},
-      {type: 'prevent-toggle', value: chance.age()},
-      {text: chance.city(), classes: 'prevent-toggle'},
-      {text: chance.profession()},
+      { text: chance.name({ nationality: "en" }) },
+      { type: "prevent-toggle", value: chance.age() },
+      { text: chance.city(), classes: "prevent-toggle" },
+      { text: chance.profession() },
     ]);
   }
   return items;
