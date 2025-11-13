@@ -1,83 +1,224 @@
 <template>
-  <label class="wrapper">
-    <button :class="buildClassName('pretty-checkbox', modelValue && 'checked')" @click="triggerChange">
-      <input
-          type="checkbox"
-          :checked="modelValue"
-          @change="handleChange"
-      />
-    </button>
-    <slot/>
-
-    <slot name="extra"/>
-  </label>
+  <div :class="classes">
+    <input
+        ref="input"
+        type="checkbox"
+        :name="name"
+        :checked="shouldBeChecked"
+        :value="value"
+        @change="updateInput"
+        :disabled="_disabled"
+        :required="_required"
+    />
+    <div :class="onClasses">
+      <slot name="extra"></slot>
+      <label>
+        <slot></slot>
+      </label>
+    </div>
+    <div v-if="_toggle" :class="offClasses">
+      <slot name="off-extra"></slot>
+      <slot name="off-label"></slot>
+    </div>
+    <div v-if="_hover" :class="hoverClasses">
+      <slot name="hover-extra"></slot>
+      <slot name="hover-label"></slot>
+    </div>
+    <div v-if="_indeterminate" :class="indeterminateClasses">
+      <slot name="indeterminate-extra"></slot>
+      <slot name="indeterminate-label"></slot>
+    </div>
+  </div>
 </template>
 
-<script setup lang="ts">
-import {defineProps, defineEmits} from 'vue';
-import {buildClassName} from "../../utils/build-class-name";
+<script>
+export default {
+  name: "PrettyCheckbox",
 
-// define props
-const props = defineProps({
-  modelValue: {
-    type: Boolean,
-    required: true
-  }
-});
+  props: {
+    type: String,
+    name: String,
+    value: {},
+    modelValue: {},
+    trueValue: {},
+    falseValue: {},
+    checked: {},
+    disabled: {},
+    required: {},
+    indeterminate: {},
+    color: {
+        type: String,
+        default: null,
+    },
+    offColor: String,
+    hoverColor: String,
+    indeterminateColor: String,
+    toggle: {},
+    hover: {},
+    focus: {},
+  },
 
-// define emits
-const emit = defineEmits(['update:modelValue', 'change']);
-const emitChange = (value: boolean) => {
-  emit('update:modelValue', value);
-  emit('change', value);
-};
+  emits: ['update:modelValue', 'change', 'update:indeterminate'],
 
-// handle checkbox change
-const handleChange = (event: Event<HTMLInputElement>) => {
-  emitChange(event.target.checked);
-};
+  data() {
+    return {
+      m_checked: undefined,
+      default_mode: false,
+    };
+  },
 
-const triggerChange = () => {
-  emitChange(!props.modelValue);
+  computed: {
+    shouldBeChecked() {
+      if (this.modelValue !== undefined) {
+        if (this.modelValue instanceof Array) {
+          return this.modelValue.includes(this.value);
+        }
+        if (this._trueValue) {
+          return this.modelValue === this.trueValue;
+        }
+        return typeof this.modelValue === "string" ? true : !!this.modelValue;
+      }
+
+      if (this.m_checked === undefined)
+        return (this.m_checked =
+            typeof this.checked === "string" ? true : !!this.checked);
+      else return this.m_checked;
+    },
+    _disabled() {
+      return typeof this.disabled === "string" ? true : !!this.disabled;
+    },
+    _required() {
+      return typeof this.required === "string" ? true : !!this.required;
+    },
+    _indeterminate() {
+      return typeof this.indeterminate === "string"
+          ? true
+          : !!this.indeterminate;
+    },
+    _trueValue() {
+      return typeof this.trueValue === "string"
+          ? this.trueValue
+          : !!this.trueValue;
+    },
+    _falseValue() {
+      return typeof this.falseValue === "string"
+          ? this.falseValue
+          : !!this.falseValue;
+    },
+    _toggle() {
+      return typeof this.toggle === "string" ? true : !!this.toggle;
+    },
+    _hover() {
+      return typeof this.hover === "string" ? true : !!this.hover;
+    },
+    _focus() {
+      return typeof this.focus === "string" ? true : !!this.focus;
+    },
+    classes() {
+      return {
+        pretty: true,
+        "p-default": this.default_mode,
+        "p-toggle": this._toggle,
+        "p-has-hover": this._hover,
+        "p-has-focus": this._focus,
+        "p-has-indeterminate": this._indeterminate,
+      };
+    },
+    onClasses() {
+      let classes = {
+        state: true,
+        "p-on": this._toggle,
+      };
+      if (this.color) classes[`p-${this.color}`] = true;
+
+      return classes;
+    },
+    offClasses() {
+      let classes = {
+        state: true,
+        "p-off": true,
+      };
+      if (this.offColor) classes[`p-${this.offColor}`] = true;
+
+      return classes;
+    },
+    hoverClasses() {
+      let classes = {
+        state: true,
+        "p-is-hover": true,
+      };
+      if (this.hoverColor) classes[`p-${this.hoverColor}`] = true;
+
+      return classes;
+    },
+    indeterminateClasses() {
+      let classes = {
+        state: true,
+        "p-is-indeterminate": true,
+      };
+      if (this.indeterminateColor)
+        classes[`p-${this.indeterminateColor}`] = true;
+
+      return classes;
+    },
+  },
+
+  watch: {
+    checked(v) {
+      this.m_checked = v;
+    },
+    indeterminate(v) {
+      if (this.$refs.input) {
+        this.$refs.input.indeterminate = v;
+      }
+    },
+  },
+
+  mounted() {
+    console.log(this.$el.className);
+    if (!this.$el.className || this.$el.className === 'pretty')
+      this.default_mode = true;
+    if (this._indeterminate && this.$refs.input)
+      this.$refs.input.indeterminate = true;
+    this.$el.setAttribute("p-checkbox", "");
+  },
+
+  methods: {
+    updateInput(event) {
+      this.$emit("update:indeterminate", false);
+
+      let isChecked = event.target.checked;
+
+      this.m_checked = isChecked;
+
+      if (this.modelValue instanceof Array) {
+        let newValue = [...this.modelValue];
+
+        if (isChecked) {
+          newValue.push(this.value);
+        } else {
+          newValue.splice(newValue.indexOf(this.value), 1);
+        }
+
+        this.$emit("update:modelValue", newValue);
+        this.$emit("change", newValue);
+      } else {
+        const emitValue = isChecked
+            ? this._trueValue
+                ? this.trueValue
+                : true
+            : this._falseValue
+                ? this.falseValue
+                : false;
+        this.$emit("update:modelValue", emitValue);
+        this.$emit("change", emitValue);
+      }
+    },
+  },
 };
 </script>
 
 <style scoped>
-.wrapper {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  cursor: pointer;
-}
-
-.pretty-checkbox {
-  background: #FFF;
-  border: #000 1px solid;
-  width: 1.25rem;
-  height: 1.25rem;
-  padding: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  input {
-    display: none;
-  }
-
-  &::before {
-    content: '';
-    width: 14px;
-    height: 8px;
-    border-left: 3px solid #4caf50;
-    border-bottom: 3px solid #4caf50;
-    transform: rotate(-45deg);
-    margin-top: -3px;
-    opacity: 0;
-  }
-
-  &.checked::before {
-    opacity: 1;
-  }
-}
+@import '../../assets/styles/pretty-checkbox.css';
 </style>
+

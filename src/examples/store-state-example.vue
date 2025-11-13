@@ -13,7 +13,7 @@
         :identifier="identifier"
     >
       <template #header>
-        <v-select
+        <v-quintable-select
             v-model="active"
             :options="activeOptions"
             :reduce="(x) => x.value"
@@ -130,7 +130,7 @@ const code = `&lt;template&gt;
       :identifier=&quot;identifier&quot;
   &gt;
     &lt;template #header&gt;
-      &lt;v-select
+      &lt;v-quintable-select
           v-model=&quot;active&quot;
           :options=&quot;activeOptions&quot;
           :reduce=&quot;(x) =&gt; x.value&quot;
@@ -180,7 +180,7 @@ const config = {
 onMounted(() =&gt; {
   let storedRows: any[] | null = null;
   try {
-    const stored = localStorage.getItem(\`${identifier}-stored-rows\`);
+    const stored = localStorage.getItem(\`$\{identifier}-stored-rows\`);
     storedRows = stored ? JSON.parse(stored) : null;
   } catch (e) {
   }
@@ -203,7 +203,7 @@ onMounted(() =&gt; {
     }
     rows.value = tempRows;
     try {
-      localStorage.setItem(\`${identifier}-stored-rows\`, JSON.stringify(tempRows));
+      localStorage.setItem(\`$\{identifier}-stored-rows\`, JSON.stringify(tempRows));
     } catch (e) {
     }
   } else {
@@ -227,4 +227,5 @@ watch(filters, () =&gt; {
   }
 });
 &lt;/script&gt;`
+
 </script>

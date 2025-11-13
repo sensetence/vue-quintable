@@ -131,5 +131,123 @@ const onPageChange = () => {
 };
 
 // example code
-const code = `todo`;
+const code = `&lt;template&gt;
+  &lt;vue-quintable
+      v-model:selected-rows=&quot;selectedRows&quot;
+      :pre-selected-rows=&quot;preSelectedRows&quot;
+      :axios=&quot;axios&quot;
+      :config=&quot;ajaxConfig&quot;
+      @update:page=&quot;onPageChange&quot;
+      @ajax:rows=&quot;rowsUpdated&quot;
+  /&gt;
+
+  &lt;!-- selection info --&gt;
+  &lt;div v-if=&quot;preSelectedRowIds.length &gt; 0&quot;&gt;
+    &lt;p&gt;
+      &lt;strong&gt;Selected Rows:&lt;/strong&gt;
+    &lt;/p&gt;
+    &lt;div class=&quot;list-group&quot;&gt;
+      &lt;div class=&quot;list-group-item&quot; v-for=&quot;id in preSelectedRowIds&quot; :key=&quot;id&quot;&gt;
+        {{ allSelectedRows[id].cells[0].html }}
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div
+        class=&quot;btn btn-danger mt-2&quot;
+        v-if=&quot;preSelectedRowIds.length&quot;
+        @click=&quot;clearSelection&quot;
+    &gt;
+      Clear
+    &lt;/div&gt;
+    &lt;div class=&quot;clearfix&quot;/&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+import {ref, watch, nextTick} from 'vue';
+import axios from 'axios';
+import VueQuintable from &quot;../components/table/vue-quintable.vue&quot;;
+
+// axios interceptor setup
+axios.interceptors.request.use(
+    (config) =&gt; {
+      console.warn(&quot;Custom axios&quot;, config);
+      return config;
+    },
+    (error) =&gt; {
+      console.log(&quot;ERROR AXIOS&quot;, error);
+    }
+);
+
+// table config
+const selectedRows = ref([]);
+const allSelectedRows = ref({});
+const preSelectedRowIds = ref([]);
+const preSelectedRows = ref([]);
+const ajaxRows = ref([]);
+const pageChanged = ref(false);
+
+const ajaxConfig = {
+  columns: [
+    {headline: &quot;Name&quot;},
+    {headline: &quot;Email&quot;, breakpoint: &quot;sm&quot;},
+    {headline: &quot;Phone&quot;, breakpoint: &quot;md&quot;},
+    {headline: &quot;Job Title&quot;, breakpoint: &quot;md&quot;},
+    {headline: &quot;City&quot;, breakpoint: &quot;md&quot;},
+    {headline: &quot;Address&quot;, breakpoint: &quot;md&quot;},
+  ],
+  pagination: 5,
+  select: true,
+  selectPosition: &quot;pre&quot;,
+  selectAll: true,
+  prettySelect: true,
+  ajaxUrl: &quot;https://sensetence.com/vue-quintable-demo/data.php&quot;,
+  pageChanged: false,
+};
+
+// Watcher for selectedRows
+watch(selectedRows, (rows) =&gt; {
+  if (!pageChanged.value &amp;&amp; ajaxRows.value) {
+    for (let i = 0; i &lt; rows.length; i++) {
+      if (!preSelectedRowIds.value.includes(rows[i].id)) {
+        preSelectedRowIds.value.push(rows[i].id);
+        allSelectedRows.value[rows[i].id] = rows[i];
+      }
+    }
+
+    for (let j = 0; j &lt; ajaxRows.value.length; j++) {
+      const id = ajaxRows.value[j].id;
+      const index = preSelectedRowIds.value.indexOf(id);
+
+      if (!rows.map((r) =&gt; r.id).includes(id) &amp;&amp; index !== -1) {
+        preSelectedRowIds.value.splice(index, 1);
+        delete allSelectedRows.value[id];
+      }
+    }
+  }
+});
+
+// methods
+const clearSelection = () =&gt; {
+  allSelectedRows.value = {};
+  preSelectedRows.value = [];
+  preSelectedRowIds.value = [];
+};
+
+const rowsUpdated = (data) =&gt; {
+  pageChanged.value = false;
+  if (data &amp;&amp; data.rows &amp;&amp; data.rows.length) {
+    nextTick(() =&gt; {
+      preSelectedRows.value = preSelectedRowIds.value.map((id) =&gt; ({
+        key: &quot;id&quot;,
+        value: id,
+      }));
+    });
+  }
+  ajaxRows.value = data.rows;
+};
+
+const onPageChange = () =&gt; {
+  pageChanged.value = true;
+};
+&lt;/script&gt;`;
 </script>

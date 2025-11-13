@@ -69,7 +69,7 @@
       <!-- after-search-container slot -->
       <template #after-search-container>
         <hr/>
-        <p-check class="p-switch" v-model="showRows">Toggle Rows</p-check>
+        <p-quintable-check class="p-switch" v-model="showRows">Toggle Rows</p-quintable-check>
         <hr/>
       </template>
 
@@ -208,7 +208,7 @@ const code = `&lt;template&gt;
     &lt;!-- after-search-container slot --&gt;
     &lt;template #after-search-container&gt;
       &lt;hr/&gt;
-      &lt;p-check class=&quot;p-switch&quot; v-model=&quot;showRows&quot;&gt;Toggle Rows&lt;/p-check&gt;
+      &lt;p-quintable-check class=&quot;p-switch&quot; v-model=&quot;showRows&quot;&gt;Toggle Rows&lt;/p-quintable-check&gt;
       &lt;hr/&gt;
     &lt;/template&gt;
 

@@ -1,12 +1,12 @@
 <template>
-  <div class="checkbox-wrapper">
-    <div>
-      <span class="me-2">{{ name }}</span>
-      <p-check v-model="checked" @change="toggleCheck">
-        <wbr/>
-      </p-check>
+    <div class="d-flex">
+      <div>
+        <span class="me-2">{{ name }}</span>
+      </div>
+      <div>
+        <p-quintable-check v-model="checked" @change="toggleCheck" />
+      </div>
     </div>
-  </div>
 </template>
 
 <script setup lang="ts">

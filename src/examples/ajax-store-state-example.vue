@@ -12,7 +12,7 @@
         :identifier="identifier"
     >
       <template #header>
-        <v-select
+        <v-quintable-select
             v-model="indexes"
             :options="indexesOptions"
             :reduce="(x) => x.value"
@@ -92,5 +92,81 @@ watch(filters, () => {
 });
 
 // example code
-const code = ``;
+const code = `&lt;template&gt;
+  &lt;vue-quintable
+      :config=&quot;config&quot;
+      :filters.sync=&quot;filters&quot;
+      :selected-rows.sync=&quot;selected&quot;
+      :identifier=&quot;identifier&quot;
+  &gt;
+    &lt;template #header&gt;
+      &lt;v-quintable-select
+          v-model=&quot;indexes&quot;
+          :options=&quot;indexesOptions&quot;
+          :reduce=&quot;(x) =&gt; x.value&quot;
+          :clearable=&quot;false&quot;
+          class=&quot;mb-3&quot;
+      /&gt;
+    &lt;/template&gt;
+  &lt;/vue-quintable&gt;
+&lt;/template&gt;
+
+&lt;script setup lang=&quot;ts&quot;&gt;
+import {ref, reactive, watch} from 'vue';
+import VueQuintable from '../components/table/vue-quintable.vue';
+
+// table data
+const identifier = 'stored-state-table-ajax';
+
+const indexesOptions = [
+  {label: 'All', value: 'all'},
+  {label: 'Bigger than 100', value: 'bigger'},
+  {label: 'Smaller than 100', value: 'smaller'},
+];
+
+const indexes = ref&lt;'all' | 'bigger' | 'smaller'&gt;('all');
+const filters = reactive&lt;Record&lt;string, any&gt;&gt;({});
+const selected = ref&lt;any[]&gt;([]);
+
+const config = {
+  columns: [
+    {headline: 'Name', sort: true},
+    {headline: 'Email', sort: true, breakpoint: 'sm'},
+    {headline: 'Phone', breakpoint: 'md'},
+    {headline: 'Job Title', sort: true, breakpoint: 'md'},
+    {headline: 'City', breakpoint: 'md'},
+    {headline: 'Address', breakpoint: 'md'},
+  ],
+  pagination: 5,
+  rowsSelect: true,
+  search: true,
+  select: true,
+  prettySelect: true,
+  storeState: true,
+  ajaxUrl: 'https://sensetence.com/vue-quintable-demo/data.php',
+};
+
+watch(indexes, (val) =&gt; {
+  if (val === 'all') {
+    delete filters.bigger;
+    delete filters.smaller;
+  } else if (val === 'bigger') {
+    filters.bigger = true;
+    delete filters.smaller;
+  } else if (val === 'smaller') {
+    filters.smaller = true;
+    delete filters.bigger;
+  }
+});
+
+watch(filters, () =&gt; {
+  if (typeof filters.smaller === 'undefined' &amp;&amp; typeof filters.bigger === 'undefined') {
+    indexes.value = 'all';
+  } else if (filters.smaller) {
+    indexes.value = 'smaller';
+  } else if (filters.bigger) {
+    indexes.value = 'bigger';
+  }
+});
+&lt;/script&gt;`;
 </script>

@@ -14,32 +14,41 @@
         <strong class="mb-2">Filters:</strong>
 
         <div class="clearfix py-2">
-          <p-check class="p-switch" v-model="activeFilter" :value="true">Active</p-check>
+          <p-quintable-check class="p-switch" v-model="activeFilter" :value="true">Active</p-quintable-check>
         </div>
 
         <div class="clearfix py-2">
-          <p-check class="p-switch" v-model="printableFilter" :value="true">Printable</p-check>
+          <p-quintable-check class="p-switch" v-model="printableFilter" :value="true">Printable</p-quintable-check>
         </div>
 
         <div class="clearfix py-2">
-          <p-check class="p-switch" v-model="dynamicFilter" :value="true">Regex for name (/Ma/)</p-check>
+          <p-quintable-check  class="p-switch" v-model="dynamicFilter" :value="true">Regex for name (/Ma/)</p-quintable-check>
         </div>
 
         <hr/>
         <strong class="mb-2">Settings:</strong>
-
         <div class="clearfix py-2">
-          <p-check class="p-switch" v-model="filterGroupsActive" :value="true">Toggle Filter Groups</p-check>
+          <p-quintable-check class="p-icon p-smooth"  v-model="filterGroupsActive" :value="true">
+
+              Toggle Filter Groups
+            <template #extra>
+              <span
+              ><font-awesome-icon
+                  v-if="filterGroupsActive"
+                  icon="check"
+                  class="text-success icon-check"
+              /></span>
+            </template>
+          </p-quintable-check>
         </div>
 
         <div class="card">
           <div class="card-body">
-            <p-radio value="AND" name="radio" color="info" v-model="config.filterRelation">AND filter relation</p-radio>
+            <p-quintable-radio value="AND" name="radio" color="info" v-model="config.filterRelation">AND filter relation</p-quintable-radio>
             <span class="mx-2"></span>
-            <p-radio value="OR" name="radio" color="info" v-model="config.filterRelation">OR filter relation</p-radio>
+            <p-quintable-radio value="OR" name="radio" color="info" v-model="config.filterRelation">OR filter relation</p-quintable-radio>
           </div>
         </div>
-
         <hr/>
       </template>
 
@@ -186,52 +195,61 @@ function visibleRows(rows: any[]) {
 
 // example code
 const code = `&lt;template&gt;
-    &lt;vue-quintable
-        :filter-groups=&quot;filterGroups&quot;
-        :filters=&quot;filters&quot;
-        :config=&quot;config&quot;
-        :rows=&quot;rows&quot;
-        @filtered:rows=&quot;visibleRows&quot;
-    &gt;
-      &lt;template #header&gt;
-        &lt;strong class=&quot;mb-2&quot;&gt;Filters:&lt;/strong&gt;
+  &lt;vue-quintable
+      :filter-groups=&quot;filterGroups&quot;
+      :filters=&quot;filters&quot;
+      :config=&quot;config&quot;
+      :rows=&quot;rows&quot;
+      @filtered:rows=&quot;visibleRows&quot;
+  &gt;
+    &lt;template #header&gt;
+      &lt;strong class=&quot;mb-2&quot;&gt;Filters:&lt;/strong&gt;
 
-        &lt;div class=&quot;clearfix py-2&quot;&gt;
-          &lt;p-check class=&quot;p-switch&quot; v-model=&quot;activeFilter&quot; :value=&quot;true&quot;&gt;Active&lt;/p-check&gt;
+      &lt;div class=&quot;clearfix py-2&quot;&gt;
+        &lt;p-quintable-check class=&quot;p-switch&quot; v-model=&quot;activeFilter&quot; :value=&quot;true&quot;&gt;Active&lt;/p-quintable-check&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;clearfix py-2&quot;&gt;
+        &lt;p-quintable-check class=&quot;p-switch&quot; v-model=&quot;printableFilter&quot; :value=&quot;true&quot;&gt;Printable&lt;/p-quintable-check&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;clearfix py-2&quot;&gt;
+        &lt;p-quintable-check class=&quot;p-switch&quot; v-model=&quot;dynamicFilter&quot; :value=&quot;true&quot;&gt;Regex for name (/Ma/)&lt;/p-quintable-check&gt;
+      &lt;/div&gt;
+
+      &lt;hr/&gt;
+      &lt;strong class=&quot;mb-2&quot;&gt;Settings:&lt;/strong&gt;
+
+      &lt;div class=&quot;clearfix py-2&quot;&gt;
+        &lt;p-quintable-check class=&quot;p-icon p-smooth&quot; v-model=&quot;filterGroupsActive&quot; :value=&quot;true&quot;&gt;
+          Toggle Filter Groups
+          &lt;template #extra&gt;
+            &lt;span&gt;&lt;font-awesome-icon
+                v-if=&quot;filterGroupsActive&quot;
+                icon=&quot;check&quot;
+                class=&quot;text-success icon-check&quot;
+            /&gt;&lt;/span&gt;
+          &lt;/template&gt;
+        &lt;/p-quintable-check&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;card&quot;&gt;
+        &lt;div class=&quot;card-body&quot;&gt;
+          &lt;p-quintable-radio value=&quot;AND&quot; name=&quot;radio&quot; color=&quot;info&quot; v-model=&quot;config.filterRelation&quot;&gt;AND filter relation&lt;/p-quintable-radio&gt;
+          &lt;span class=&quot;mx-2&quot;&gt;&lt;/span&gt;
+          &lt;p-quintable-radio value=&quot;OR&quot; name=&quot;radio&quot; color=&quot;info&quot; v-model=&quot;config.filterRelation&quot;&gt;OR filter relation&lt;/p-quintable-radio&gt;
         &lt;/div&gt;
+      &lt;/div&gt;
 
-        &lt;div class=&quot;clearfix py-2&quot;&gt;
-          &lt;p-check class=&quot;p-switch&quot; v-model=&quot;printableFilter&quot; :value=&quot;true&quot;&gt;Printable&lt;/p-check&gt;
-        &lt;/div&gt;
+      &lt;hr/&gt;
+    &lt;/template&gt;
 
-        &lt;div class=&quot;clearfix py-2&quot;&gt;
-          &lt;p-check class=&quot;p-switch&quot; v-model=&quot;dynamicFilter&quot; :value=&quot;true&quot;&gt;Regex for name (/Ma/)&lt;/p-check&gt;
-        &lt;/div&gt;
-
-        &lt;hr/&gt;
-        &lt;strong class=&quot;mb-2&quot;&gt;Settings:&lt;/strong&gt;
-
-        &lt;div class=&quot;clearfix py-2&quot;&gt;
-          &lt;p-check class=&quot;p-switch&quot; v-model=&quot;filterGroupsActive&quot; :value=&quot;true&quot;&gt;Toggle Filter Groups&lt;/p-check&gt;
-        &lt;/div&gt;
-
-        &lt;div class=&quot;card&quot;&gt;
-          &lt;div class=&quot;card-body&quot;&gt;
-            &lt;p-radio value=&quot;AND&quot; name=&quot;radio&quot; color=&quot;info&quot; v-model=&quot;config.filterRelation&quot;&gt;AND filter relation&lt;/p-radio&gt;
-            &lt;span class=&quot;mx-2&quot;&gt;&lt;/span&gt;
-            &lt;p-radio value=&quot;OR&quot; name=&quot;radio&quot; color=&quot;info&quot; v-model=&quot;config.filterRelation&quot;&gt;OR filter relation&lt;/p-radio&gt;
-          &lt;/div&gt;
-        &lt;/div&gt;
-
-        &lt;hr/&gt;
-      &lt;/template&gt;
-
-      &lt;template #footer&gt;
-        &lt;div class=&quot;mb-3 alert alert-info&quot;&gt;
-          &lt;em&gt;Number of Rows:&lt;/em&gt; &lt;strong&gt;{{ number }}&lt;/strong&gt;
-        &lt;/div&gt;
-      &lt;/template&gt;
-    &lt;/vue-quintable&gt;
+    &lt;template #footer&gt;
+      &lt;div class=&quot;mb-3 alert alert-info&quot;&gt;
+        &lt;em&gt;Number of Rows:&lt;/em&gt; &lt;strong&gt;{{ number }}&lt;/strong&gt;
+      &lt;/div&gt;
+    &lt;/template&gt;
+  &lt;/vue-quintable&gt;
 &lt;/template&gt;
 
 &lt;script setup lang=&quot;ts&quot;&gt;
@@ -355,5 +373,25 @@ watch(dynamicFilter, (val) =&gt; {
 function visibleRows(rows: any[]) {
   number.value = rows.length;
 }
-&lt;/script&gt;`;
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+.icon-check {
+  padding: 3px;
+  position: absolute;
+  top: 50%;
+  left: 9px;
+  transform: translateX(-50%) translateY(-50%);
+}
+&lt;/style&gt;`;
 </script>
+
+<style scoped>
+.icon-check {
+  padding: 3px;
+  position: absolute;
+  top: 50%;
+  left: 9px;
+  transform: translateX(-50%) translateY(-50%);
+}
+</style>

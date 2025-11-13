@@ -105,7 +105,7 @@ const code = `&lt;template&gt;
 &lt;/template&gt;
 
 &lt;script setup lang=&quot;ts&quot;&gt;
-import {computed, ref} from &quot;vue&quot;;
+import {computed} from &quot;vue&quot;;
 import Chance from &quot;chance&quot;;
 import VueQuintable from &quot;../components/table/vue-quintable.vue&quot;;
 

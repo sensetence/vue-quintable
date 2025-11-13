@@ -16,7 +16,7 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <v-select
+          <v-quintable-select
               class="mb-3"
               :clearable="false"
               v-model="example"
@@ -141,12 +141,12 @@ const examples: SelectItemWithComponent[] = [
   },
   {
     value: "filter-example",
-    label: "Filter Example (Todo)",
+    label: "Filter Example",
     component: shallowRef(FilterExample),
   },
   {
     value: "component-example",
-    label: "Component Example (Todo)",
+    label: "Component Example",
     component: shallowRef(ComponentExample),
   },
   {
@@ -156,7 +156,7 @@ const examples: SelectItemWithComponent[] = [
   },
   {
     value: "add-remove-example",
-    label: "Add/Remove/Move Example (Todo)",
+    label: "Add/Remove/Move Example",
     component: shallowRef(AddRemoveExample),
   },
   {

@@ -6,18 +6,18 @@
     <vue-quintable :dynamic-config="dynamicConfig" :config="config" :rows="rows">
       <template #header>
         <div class="mb-3">
-          <p-check class="p-switch" v-model="hideAge">Hide Age Column</p-check>
+          <p-quintable-check class="p-switch" v-model="hideAge">Hide Age Column</p-quintable-check>
         </div>
         <div class="mb-3">
-          <p-check class="p-switch" v-model="hideJob">Hide Job Column</p-check>
+          <p-quintable-check class="p-switch" v-model="hideJob">Hide Job Column</p-quintable-check>
         </div>
         <div class="mb-3">
-          <p-check class="p-switch" v-model="hideColumns">
+          <p-quintable-check class="p-switch" v-model="hideColumns">
             Hide empty columns automatically
-          </p-check>
+          </p-quintable-check>
         </div>
         <div class="mb-3">
-          <v-select
+          <v-quintable-select
               v-model="ignoreSortingColumns"
               :reduce="(option) => option.value"
               :options="ignoreOptions"
@@ -113,18 +113,18 @@ const code = `&lt;template&gt;
   &lt;vue-quintable :dynamic-config=&quot;dynamicConfig&quot; :config=&quot;config&quot; :rows=&quot;rows&quot;&gt;
     &lt;template #header&gt;
       &lt;div class=&quot;mb-3&quot;&gt;
-        &lt;p-check class=&quot;p-switch&quot; v-model=&quot;hideAge&quot;&gt;Hide Age Column&lt;/p-check&gt;
+        &lt;p-quintable-check class=&quot;p-switch&quot; v-model=&quot;hideAge&quot;&gt;Hide Age Column&lt;/p-quintable-check&gt;
       &lt;/div&gt;
       &lt;div class=&quot;mb-3&quot;&gt;
-        &lt;p-check class=&quot;p-switch&quot; v-model=&quot;hideJob&quot;&gt;Hide Job Column&lt;/p-check&gt;
+        &lt;p-quintable-check class=&quot;p-switch&quot; v-model=&quot;hideJob&quot;&gt;Hide Job Column&lt;/p-quintable-check&gt;
       &lt;/div&gt;
       &lt;div class=&quot;mb-3&quot;&gt;
-        &lt;p-check class=&quot;p-switch&quot; v-model=&quot;hideColumns&quot;&gt;
+        &lt;p-quintable-check class=&quot;p-switch&quot; v-model=&quot;hideColumns&quot;&gt;
           Hide empty columns automatically
-        &lt;/p-check&gt;
+        &lt;/p-quintable-check&gt;
       &lt;/div&gt;
       &lt;div class=&quot;mb-3&quot;&gt;
-        &lt;v-select
+        &lt;v-quintable-select
             v-model=&quot;ignoreSortingColumns&quot;
             :reduce=&quot;(option) =&gt; option.value&quot;
             :options=&quot;ignoreOptions&quot;
@@ -204,4 +204,5 @@ const rows = computed(() =&gt; {
 
 watch([hideColumns, hideAge, hideJob, ignoreSortingColumns], setConfigDynamicForNextTick);
 &lt;/script&gt;`;
+
 </script>

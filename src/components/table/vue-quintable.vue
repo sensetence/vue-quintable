@@ -76,28 +76,28 @@
               "
           >
             <template v-if="configFinal.selectAll && !noRows">
-              <p-check
+              <p-quintable-check
                   v-if="configFinal.prettySelect"
                   name="check"
                   class="p-icon p-smooth"
                   v-model="allSelectedProperty"
                   @change="checkAll()"
               >
-                <template slot="extra">
+                <template #extra>
                     <span
                     ><font-awesome-icon
                         v-if="allSelectedProperty"
                         icon="check"
                         class="text-success icon-check"
                     /></span>
-                  <span
+                  <span class="p-1"
                   ><font-awesome-icon
                       v-if="someSelected && !allSelectedProperty"
                       icon="square"
                       class="text-success icon-check"
                   /></span>
                 </template>
-              </p-check>
+              </p-quintable-check>
               <label v-else class="mb-0 mt-0">
                 <input
                     type="checkbox"
@@ -199,14 +199,14 @@
               "
           >
             <template v-if="configFinal.selectAll && !noRows">
-              <p-check
+              <p-quintable-check
                   v-if="configFinal.prettySelect"
                   name="check"
                   class="p-icon p-smooth"
                   v-model="allSelectedProperty"
                   @change="checkAll()"
               >
-                <template slot="extra">
+                <template #extra>
                     <span
                     ><font-awesome-icon
                         v-if="allSelectedProperty"
@@ -220,7 +220,7 @@
                       class="text-success icon-check"
                   /></span>
                 </template>
-              </p-check>
+              </p-quintable-check>
               <label v-else class="mb-0 mt-0">
                 <input
                     type="checkbox"
@@ -305,7 +305,7 @@
                     rowsFinal[rIndex].showDisabledSelect
                   "
               >
-                <p-check
+                <p-quintable-check
                     v-if="configFinal.prettySelect"
                     name="check"
                     class="p-icon"
@@ -313,7 +313,7 @@
                     v-model="selected[rIndex]"
                     @change="checkListener($event, rIndex)"
                 >
-                  <template slot="extra">
+                  <template #extra>
                       <span
                       ><font-awesome-icon
                           v-if="selected[rIndex]"
@@ -321,7 +321,7 @@
                           class="text-success icon-check"
                       /></span>
                   </template>
-                </p-check>
+                </p-quintable-check>
                 <label v-else class="mb-0 mt-0">
                   <input
                       type="checkbox"
@@ -439,7 +439,7 @@
                     rowsFinal[rIndex].showDisabledSelect
                   "
               >
-                <p-check
+                <p-quintable-check
                     v-if="configFinal.prettySelect"
                     name="check"
                     class="p-icon"
@@ -447,7 +447,7 @@
                     v-model="selected[rIndex]"
                     @change="checkListener($event, rIndex)"
                 >
-                  <template slot="extra">
+                  <template #extra>
                       <span
                       ><font-awesome-icon
                           v-if="selected[rIndex]"
@@ -455,7 +455,7 @@
                           class="text-success icon-check"
                       /></span>
                   </template>
-                </p-check>
+                </p-quintable-check>
                 <label v-else class="mb-0 mt-0">
                   <input
                       type="checkbox"
@@ -985,7 +985,7 @@
               :class="`pb-lg-0 pb-3 float-start quintable--table-footer-container--sort-container--sort-select flex-inline ${configFinal.pageSort ? 'me-3' : ''}`.trim()"
               v-if="configFinal.multiSortSelect || configFinal.pageSortSelect"
           >
-            <p-check
+            <p-quintable-check
                 v-if="configFinal.multiSortSelect"
                 class="
                   p-switch
@@ -994,8 +994,8 @@
                 v-model="multiSort"
                 value="true"
             >{{ configFinal.multiSortPlaceholder }}
-            </p-check>
-            <p-check
+            </p-quintable-check>
+            <p-quintable-check
                 v-if="configFinal.pageSortSelect"
                 class="
                 p-switch
@@ -1004,8 +1004,7 @@
                 v-model="pageSort"
                 value="true"
             >{{ configFinal.pageSortPlaceholder }}
-            </p-check
-            >
+            </p-quintable-check>
           </div>
         </div>
         <div
@@ -1039,7 +1038,7 @@
                 "
                   v-html="configFinal.rowsPlaceholder"
               ></span>
-              <v-select
+              <v-quintable-select
                   class="
                   d-inline-block
                   align-middle

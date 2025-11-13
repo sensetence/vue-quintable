@@ -9,7 +9,7 @@ import VueSelect from "vue-select";
 import 'vue-select/dist/vue-select.css';
 
 export function registerFormComponents(app: App) {
-    app.component("p-check", PrettyCheckbox);
-    app.component("p-radio", PrettyRadio);
-    app.component("v-select", VueSelect);
+    app.component("p-quintable-check", PrettyCheckbox);
+    app.component("p-quintable-radio", PrettyRadio);
+    app.component("v-quintable-select", VueSelect);
 }

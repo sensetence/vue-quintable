@@ -17,7 +17,7 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <v-select
+          <v-quintable-select
             class="mb-3"
             :clearable="false"
             v-model="example"

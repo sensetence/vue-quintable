@@ -4,9 +4,9 @@
 
     <!-- options -->
     <div class="mb-3">
-      <p-check class="p-switch" v-model="selectAllRows">
+      <p-quintable-check class="p-switch" v-model="selectAllRows">
         Select rows cross pages
-      </p-check>
+      </p-quintable-check>
     </div>
 
     <!-- table -->
@@ -123,9 +123,9 @@ watch(selectedRows, () => {
 // example code
 const code = `&lt;template&gt;
   &lt;div class=&quot;mb-3&quot;&gt;
-    &lt;p-check class=&quot;p-switch&quot; v-model=&quot;selectAllRows&quot;&gt;
+    &lt;p-quintable-check class=&quot;p-switch&quot; v-model=&quot;selectAllRows&quot;&gt;
       Select rows cross pages
-    &lt;/p-check&gt;
+    &lt;/p-quintable-check&gt;
   &lt;/div&gt;
 
   &lt;VueQuintable
@@ -228,4 +228,5 @@ watch(selectedRows, () =&gt; {
   );
 });
 &lt;/script&gt;`;
+
 </script>
