@@ -1,7 +1,7 @@
 {
   "name": "@sensetence/vue-quintable",
   "private": false,
-  "version": "3.0.0",
+  "version": "3.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,13 +14,9 @@
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/vue-fontawesome": "^3.0.8",
-    "axios": "^1.9.0",
-    "chance": "^1.1.13",
-    "floating-vue": "^5.2.2",
     "fuzzy.js": "^0.1.0",
     "uuid": "^11.1.0",
     "vue": "^3.5.13",
-    "vue-draggable-plus": "^0.6.0",
     "vue-select": "^4.0.0-beta.6"
   },
   "devDependencies": {
@@ -34,19 +30,31 @@
     "@typescript-eslint/parser": "^8.46.4",
     "@vitejs/plugin-vue": "5.2.4",
     "@vue/tsconfig": "^0.7.0",
-    "bootstrap": "^5.3.6",
+    "axios": "^1.9.0",
+    "bootstrap": "^5.3",
+    "chance": "^1.1.13",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-vue": "^10.5.1",
+    "floating-vue": "^5.2.2",
+    "lodash-es": "^4.17.21",
     "moment-timezone": "^0.6.0",
     "prettier": "^3.4.2",
     "prismjs": "^1.30.0",
+    "sanitize-filename": "^1.6.3",
     "sass-embedded": "^1.89.0",
     "typescript": "~5.8.3",
     "vite": "^7.2",
+    "vite-plugin-commonjs": "^0.10.4",
+    "vite-plugin-eslint": "^1.8.1",
+    "vue-draggable-plus": "^0.6.0",
     "vue-eslint-parser": "^10.2.0",
     "vue-tsc": "^2.2.8"
+  },
+  "peerDependencies": {
+    "axios": "^1.9.0",
+    "bootstrap": "^5.3"
   },
   "homepage": "https://sensetence.com/vue-quintable/",
   "keywords": [
@@ -70,5 +78,8 @@
   "engines": {
     "npm": "please-use-yarn",
     "yarn": ">= 1.19.1"
+  },
+  "config": {
+    "packageName": "vue-quintable"
   }
 }
