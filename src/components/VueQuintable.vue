@@ -3955,7 +3955,7 @@ export default {
             : cellsB[i].text;
 
         if (typeof cellsB[i].computeSortValue === "function") {
-          aValue = cellsB[i].computeSortValue(this.currentSortIndexes);
+          bValue = cellsB[i].computeSortValue(this.currentSortIndexes);
         }
 
         if (typeof aValue === "string") {
