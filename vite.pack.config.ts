@@ -59,7 +59,7 @@ export default defineConfig({
       name: "VueQuintable",
       // the proper extensions will be added
       fileName: (format) => `${name}.${format}.js`,
-      // formats: ["cjs", "es", "umd"],
+      formats: ["cjs", "es", "umd"],
     },
     rollupOptions: {
       external: externals.filter((dep) => !externalExcludes.includes(dep)),
@@ -70,6 +70,7 @@ export default defineConfig({
       //   "@fortawesome/vue-fontawesome",
       // ],
       output: {
+        exports: "named",
         name: camelCase(name),
         assetFileNames: `${name}.[ext]`,
         globals: {

@@ -175,7 +175,6 @@ export default {
 
   methods: {
     updateInput() {
-      console.log("radio changed", this.value);
       this.$emit("update:model-value", this.value);
       this.$emit("change", this.value);
     },
