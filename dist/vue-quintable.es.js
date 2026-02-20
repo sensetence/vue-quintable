@@ -51,12 +51,12 @@ var L = {}, Ve = {
         var u, f = n = n || {}, d = typeof n.default;
         d !== "object" && d !== "function" || (u = n, f = n.default);
         var g, m = typeof f == "function" ? f.options : f;
-        if (l && (m.render = l.render, m.staticRenderFns = l.staticRenderFns, m._compiled = !0), o && (m.functional = !0), r && (m._scopeId = r), c ? (g = function(b) {
-          (b = b || this.$vnode && this.$vnode.ssrContext || this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) || typeof __VUE_SSR_CONTEXT__ == "undefined" || (b = __VUE_SSR_CONTEXT__), a && a.call(this, b), b && b._registeredComponents && b._registeredComponents.add(c);
+        if (l && (m.render = l.render, m.staticRenderFns = l.staticRenderFns, m._compiled = !0), o && (m.functional = !0), r && (m._scopeId = r), c ? (g = function(y) {
+          (y = y || this.$vnode && this.$vnode.ssrContext || this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) || typeof __VUE_SSR_CONTEXT__ == "undefined" || (y = __VUE_SSR_CONTEXT__), a && a.call(this, y), y && y._registeredComponents && y._registeredComponents.add(c);
         }, m._ssrRegister = g) : a && (g = a), g) {
           var w = m.functional, v = w ? m.render : m.beforeCreate;
-          w ? (m._injectStyles = g, m.render = function(b, p) {
-            return g.call(p), v(b, p);
+          w ? (m._injectStyles = g, m.render = function(y, p) {
+            return g.call(p), v(y, p);
           }) : m.beforeCreate = v ? [].concat(v, g) : [g];
         }
         return { esModule: u, exports: f, options: m };
@@ -449,12 +449,12 @@ const Qe = {
       this.config.rowsSelect && (w = !0);
       let v = !1;
       this.config.keepSelect && (v = !0);
-      let b = !1;
-      this.config.disallowAllOption && (b = !0);
+      let y = !1;
+      this.config.disallowAllOption && (y = !0);
       let p = !1;
       this.config.hideEmptyColumns && (p = !0);
-      let y = "none";
-      ["none", "active", "all"].includes(this.config.ignoreSortEmptyColumns) && (y = this.config.ignoreSortEmptyColumns);
+      let b = "none";
+      ["none", "active", "all"].includes(this.config.ignoreSortEmptyColumns) && (b = this.config.ignoreSortEmptyColumns);
       let U = !1;
       this.config.search && (U = !0);
       let D = 1;
@@ -534,7 +534,7 @@ const Qe = {
         filterRelation: B,
         rowsSelect: w,
         keepSelect: v,
-        disallowAllOption: b,
+        disallowAllOption: y,
         defaultSelected: z,
         searchLength: D,
         search: U,
@@ -551,7 +551,7 @@ const Qe = {
         hiddenCols: j,
         ignoreEmpty: E,
         hideEmptyColumns: p,
-        ignoreSortEmptyColumns: y,
+        ignoreSortEmptyColumns: b,
         pagination: i,
         numberOfVisibleRowsFillerWord: e,
         select: t,
@@ -1687,10 +1687,10 @@ const Qe = {
       });
       let o = (u, f, d, g) => {
         g = g || 0;
-        let m = d[g], w = m.index, v = u.cells ? u.cells : u, b = f.cells ? f.cells : f, p = typeof v[w].sortValue != "undefined" && v[w].sortValue !== null ? v[w].sortValue : v[w].html ? v[w].html : v[w].text;
+        let m = d[g], w = m.index, v = u.cells ? u.cells : u, y = f.cells ? f.cells : f, p = typeof v[w].sortValue != "undefined" && v[w].sortValue !== null ? v[w].sortValue : v[w].html ? v[w].html : v[w].text;
         typeof v[w].computeSortValue == "function" && (p = v[w].computeSortValue(this.currentSortIndexes));
-        let y = typeof b[w].sortValue != "undefined" && b[w].sortValue !== null ? b[w].sortValue : b[w].html ? b[w].html : b[w].text;
-        return typeof b[w].computeSortValue == "function" && (p = b[w].computeSortValue(this.currentSortIndexes)), typeof p == "string" && (p = p.toLowerCase()), typeof y == "string" && (y = y.toLowerCase()), isNaN(p) ? (typeof p == "string" && p.match(/^-?\d+$/) || typeof p == "string" && p.match(/^\d+\.\d+$/)) && (p = parseFloat(p)) : p = parseFloat(p), isNaN(y) ? (typeof y == "string" && y.match(/^-?\d+$/) || typeof y == "string" && y.match(/^\d+\.\d+$/)) && (y = parseFloat(y)) : y = parseFloat(y), m.asc ? p > y ? 1 : p < y ? -1 : d[g + 1] ? o(u, f, d, g + 1) : 1 : p < y ? 1 : p > y ? -1 : d[g + 1] ? o(u, f, d, g + 1) : -1;
+        let b = typeof y[w].sortValue != "undefined" && y[w].sortValue !== null ? y[w].sortValue : y[w].html ? y[w].html : y[w].text;
+        return typeof y[w].computeSortValue == "function" && (b = y[w].computeSortValue(this.currentSortIndexes)), typeof p == "string" && (p = p.toLowerCase()), typeof b == "string" && (b = b.toLowerCase()), isNaN(p) ? (typeof p == "string" && p.match(/^-?\d+$/) || typeof p == "string" && p.match(/^\d+\.\d+$/)) && (p = parseFloat(p)) : p = parseFloat(p), isNaN(b) ? (typeof b == "string" && b.match(/^-?\d+$/) || typeof b == "string" && b.match(/^\d+\.\d+$/)) && (b = parseFloat(b)) : b = parseFloat(b), m.asc ? p > b ? 1 : p < b ? -1 : d[g + 1] ? o(u, f, d, g + 1) : 1 : p < b ? 1 : p > b ? -1 : d[g + 1] ? o(u, f, d, g + 1) : -1;
       };
       t.sort(function(u, f) {
         return o(u, f, l);
@@ -2103,7 +2103,7 @@ var Ke = function() {
   ze,
   !1,
   null,
-  "61ae31d6",
+  "4e9181cf",
   null,
   null
 );
