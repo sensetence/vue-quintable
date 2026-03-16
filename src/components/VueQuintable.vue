@@ -339,10 +339,44 @@ export default {
       return rows;
     },
 
+    // Pre-compute per-column whether it matches any hidden breakpoint
+    _colBreakpointMatch() {
+      const bpSet = new Set(this.hiddenBreakpoints);
+      return this.configFinal.columns.map((col) => {
+        if (!col || !col.breakpoint) return false;
+        const bp = col.breakpoint.toLocaleLowerCase();
+        return bp === "all" || bpSet.has(bp);
+      });
+    },
+
+    // Cache isColEmpty(j) results so it's computed once per column, not N times
+    _colEmptyCache() {
+      const cache = {};
+      for (let j = 0; j < this.configFinal.number; j++) {
+        cache[j] = this.isColEmpty(j);
+      }
+      return cache;
+    },
+
+    // Pre-compute per-column base visibility for TableRow template
+    cellVisible() {
+      return this.configFinal.columns.map((col, j) => {
+        if (this.configFinal.hiddenCols[j]) return false;
+        if (this.emptyColumns[j]) return false;
+        if (!col) return false;
+        if (this._colBreakpointMatch[j]) return false;
+        if (this.configFinal.stickyCols[j]) return false;
+        return true;
+      });
+    },
+
     generatedRows() {
       let generatedRows = {};
 
       if (this.generatedUpdatedKey) {
+        const colMatch = this._colBreakpointMatch;
+        const colEmptyCache = this._colEmptyCache;
+
         for (let x = 0; x < this.rowsFinal.length; x++) {
           let cells = this.rowsFinal[x].cells
             ? this.rowsFinal[x].cells
@@ -350,28 +384,19 @@ export default {
 
           let generatedCells = {};
 
-          for (let i = 0; i < this.hiddenBreakpoints.length; i++) {
-            let bp = this.hiddenBreakpoints[i];
-            for (let j = 0; j < this.configFinal.columns.length; j++) {
-              let col = this.configFinal.columns[j];
+          for (let j = 0; j < this.configFinal.columns.length; j++) {
+            if (!colMatch[j]) continue;
+            let col = this.configFinal.columns[j];
 
-              const hide =
-                this.configFinal.hiddenCols[j] ||
-                (!this.configFinal.ignoreEmpty[j] &&
-                  this.configFinal.hideEmptyColumns &&
-                  (this.isColEmpty(j) || this.isColEmpty(j, x))) ||
-                this.emptyColumns[j];
+            const hide =
+              this.configFinal.hiddenCols[j] ||
+              (!this.configFinal.ignoreEmpty[j] &&
+                this.configFinal.hideEmptyColumns &&
+                (colEmptyCache[j] || this.isColEmpty(j, x))) ||
+              this.emptyColumns[j];
 
-              if (
-                !hide &&
-                col.breakpoint &&
-                (col.breakpoint.toLocaleLowerCase() === "all" ||
-                  col.breakpoint.toLocaleLowerCase() === bp)
-              ) {
-                if (!col.sticky && !col.alwaysExpanded) {
-                  generatedCells[j] = cells[j];
-                }
-              }
+            if (!hide && !col.sticky && !col.alwaysExpanded) {
+              generatedCells[j] = cells[j];
             }
           }
           generatedRows[x] = generatedCells;
@@ -382,6 +407,8 @@ export default {
 
     stickyRows() {
       let stickyRows = {};
+      const colMatch = this._colBreakpointMatch;
+      const colEmptyCache = this._colEmptyCache;
 
       for (let x = 0; x < this.rowsFinal.length; x++) {
         let cells = this.rowsFinal[x].cells
@@ -390,29 +417,20 @@ export default {
 
         let stickyCells = {};
 
-        for (let i = 0; i < this.hiddenBreakpoints.length; i++) {
-          let bp = this.hiddenBreakpoints[i];
-          for (let j = 0; j < this.configFinal.columns.length; j++) {
-            let col = this.configFinal.columns[j];
+        for (let j = 0; j < this.configFinal.columns.length; j++) {
+          let col = this.configFinal.columns[j];
 
-            const hide =
-              this.configFinal.hiddenCols[j] ||
-              (!this.configFinal.ignoreEmpty[j] &&
-                this.configFinal.hideEmptyColumns &&
-                (this.isColEmpty(j) || this.isColEmpty(j, x))) ||
-              this.emptyColumns[j];
+          const hide =
+            this.configFinal.hiddenCols[j] ||
+            (!this.configFinal.ignoreEmpty[j] &&
+              this.configFinal.hideEmptyColumns &&
+              (colEmptyCache[j] || this.isColEmpty(j, x))) ||
+            this.emptyColumns[j];
 
-            if (!hide && col.sticky) {
-              stickyCells[j] = cells[j];
-            } else if (
-              !hide &&
-              col.breakpoint &&
-              (col.breakpoint.toLocaleLowerCase() === "all" ||
-                col.breakpoint.toLocaleLowerCase() === bp) &&
-              col.alwaysExpanded
-            ) {
-              stickyCells[j] = cells[j];
-            }
+          if (!hide && col.sticky) {
+            stickyCells[j] = cells[j];
+          } else if (!hide && col.alwaysExpanded && colMatch[j]) {
+            stickyCells[j] = cells[j];
           }
         }
         stickyRows[x] = stickyCells;
@@ -456,10 +474,18 @@ export default {
     },
 
     cellClassesParsed() {
-      let cellClasses = [];
+      let cellClasses = {};
 
-      for (let i = 0; i < this.rowsFinal.length; i++) {
-        cellClasses.push([]);
+      // Only compute for visible rows — these are the only ones accessed in templates
+      const indexes =
+        this.visibleRowIndexes.length > 0
+          ? this.visibleRowIndexes
+          : Object.keys(this.rowsFinal).map(Number);
+
+      for (let x = 0; x < indexes.length; x++) {
+        const i = indexes[x];
+        if (!this.rowsFinal[i]) continue;
+        cellClasses[i] = [];
 
         let rAlign = this.rowsFinal[i].align;
 
@@ -496,32 +522,26 @@ export default {
 
     hiddenColumns() {
       const rows = {};
+      const colMatch = this._colBreakpointMatch;
+      const colEmptyCache = this._colEmptyCache;
 
       for (let x = 0; x < this.visibleRowIndexes.length; x++) {
         let hidden = 0;
-
         const rowIndex = this.visibleRowIndexes[x];
 
-        for (let i = 0; i < this.hiddenBreakpoints.length; i++) {
-          let bp = this.hiddenBreakpoints[i];
-          for (let j = 0; j < this.configFinal.columns.length; j++) {
-            let col = this.configFinal.columns[j];
-            const hide =
-              this.configFinal.hiddenCols[j] ||
-              (!this.configFinal.ignoreEmpty[j] &&
-                this.configFinal.hideEmptyColumns &&
-                (this.isColEmpty(j) || this.isColEmpty(j, rowIndex))) ||
-              this.emptyColumns[j];
+        for (let j = 0; j < this.configFinal.columns.length; j++) {
+          if (!colMatch[j]) continue;
 
-            if (
-              !hide &&
-              col.breakpoint &&
-              (col.breakpoint.toLocaleLowerCase() === "all" ||
-                col.breakpoint.toLocaleLowerCase() === bp)
-            ) {
-              hidden++;
-              break;
-            }
+          const hide =
+            this.configFinal.hiddenCols[j] ||
+            (!this.configFinal.ignoreEmpty[j] &&
+              this.configFinal.hideEmptyColumns &&
+              (colEmptyCache[j] || this.isColEmpty(j, rowIndex))) ||
+            this.emptyColumns[j];
+
+          if (!hide) {
+            hidden++;
+            break;
           }
         }
 
@@ -596,7 +616,7 @@ export default {
 
     emptyColumns() {
       const cols = {};
-
+      const colEmptyCache = this._colEmptyCache;
       const ignore = this.configFinal.ignoreSortEmptyColumns;
 
       for (let i = 0; i < this.configFinal.number; i++) {
@@ -612,7 +632,7 @@ export default {
         ) {
           cols[i] = false;
         } else {
-          cols[i] = this.isColEmpty(i);
+          cols[i] = colEmptyCache[i];
         }
       }
 
@@ -647,6 +667,7 @@ export default {
   watch: {
     rowsFinal: {
       handler(val) {
+        if (!this.verbose) return;
         if (val && val.length) {
           for (let i = 0; i < val.length; i++) {
             let cells = val[i].cells ? val[i].cells : val[i];

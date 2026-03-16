@@ -112,16 +112,7 @@ export default {
   components: { SelectCheckbox, SortIndicator },
   methods: {
     isColumnVisible(hIndex) {
-      const col = this.quintable.configFinal.columns[hIndex];
-      return (
-        ((col && !col.breakpoint) ||
-          this.quintable.hiddenBreakpoints.findIndex(
-            (x) => col && x === col.breakpoint
-          ) === -1) &&
-        !col.sticky &&
-        !this.quintable.configFinal.hiddenCols[hIndex] &&
-        !this.quintable.emptyColumns[hIndex]
-      );
+      return this.quintable.cellVisible[hIndex];
     },
   },
 };

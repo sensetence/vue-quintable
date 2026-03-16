@@ -60,7 +60,8 @@ export default {
       breakpoints.push("all");
 
       if (
-        JSON.stringify(this.hiddenBreakpoints) !== JSON.stringify(breakpoints)
+        this.hiddenBreakpoints.length !== breakpoints.length ||
+        this.hiddenBreakpoints.some((bp, i) => bp !== breakpoints[i])
       ) {
         this.hiddenBreakpoints = breakpoints;
       }

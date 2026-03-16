@@ -1,10 +1,11 @@
 <template>
   <tr
+    v-if="row"
     class="vue-quintable-row quintable--table-container--table--tbody--row"
     v-tooltip="{
       placement: 'top',
-      content: quintable.rowsFinal[rIndex].tooltip,
-      trigger: quintable.rowsFinal[rIndex].tooltip ? 'hover' : 'manual',
+      content: row.tooltip,
+      trigger: row.tooltip ? 'hover' : 'manual',
       offset: 5,
     }"
     :style="quintable.hiddenColumns[rIndex] > 0 ? 'cursor:pointer;' : ''"
@@ -48,27 +49,20 @@
         quintable--table-container--table--tbody--row--select-td--pre
       "
       :class="{
-        'disabled-select': quintable.rowsFinal[rIndex].disableSelect,
+        'disabled-select': row.disableSelect,
       }"
     >
       <select-checkbox
-        v-if="
-          !quintable.rowsFinal[rIndex].disableSelect ||
-          quintable.rowsFinal[rIndex].showDisabledSelect
-        "
+        v-if="!row.disableSelect || row.showDisabledSelect"
         :value="quintable.selected[rIndex]"
         :pretty="quintable.configFinal.prettySelect"
-        :disabled="quintable.rowsFinal[rIndex].disableSelect"
+        :disabled="row.disableSelect"
         @input="$set(quintable.selected, rIndex, $event)"
         @change="quintable.checkListener($event, rIndex)"
       />
     </td>
 
-    <template
-      v-for="(cell, cIndex) in quintable.rowsFinal[rIndex].cells
-        ? quintable.rowsFinal[rIndex].cells
-        : quintable.rowsFinal[rIndex]"
-    >
+    <template v-for="(cell, cIndex) in cells">
       <td
         class="
           vue-quintable-cell
@@ -84,17 +78,7 @@
           ' ' +
           quintable.configFinal.columnClasses[cIndex]
         "
-        v-if="
-          !quintable.configFinal.hiddenCols[cIndex] &&
-          !quintable.emptyColumns[cIndex] &&
-          quintable.configFinal.columns[cIndex] &&
-          cell &&
-          quintable.hiddenBreakpoints.findIndex(
-            (x) => x === quintable.configFinal.columns[cIndex].breakpoint
-          ) === -1 &&
-          quintable.configFinal.columns[cIndex].breakpoint !== 'all' &&
-          !quintable.configFinal.stickyCols[cIndex]
-        "
+        v-if="quintable.cellVisible[cIndex] && cell"
         @click="quintable.onCellClick($event, cell)"
         @auxclick="quintable.onCellAuxClick($event, cell)"
         @mousedown="quintable.onCellMousedown($event)"
@@ -131,17 +115,14 @@
         quintable--table-container--table--tbody--row--select-td--post
       "
       :class="{
-        'disabled-select': quintable.rowsFinal[rIndex].disableSelect,
+        'disabled-select': row.disableSelect,
       }"
     >
       <select-checkbox
-        v-if="
-          !quintable.rowsFinal[rIndex].disableSelect ||
-          quintable.rowsFinal[rIndex].showDisabledSelect
-        "
+        v-if="!row.disableSelect || row.showDisabledSelect"
         :value="quintable.selected[rIndex]"
         :pretty="quintable.configFinal.prettySelect"
-        :disabled="quintable.rowsFinal[rIndex].disableSelect"
+        :disabled="row.disableSelect"
         @input="$set(quintable.selected, rIndex, $event)"
         @change="quintable.checkListener($event, rIndex)"
       />
@@ -162,6 +143,15 @@ export default {
     rIndex: {
       type: Number,
       required: true,
+    },
+  },
+  computed: {
+    row() {
+      return this.quintable.rowsFinal[this.rIndex];
+    },
+    cells() {
+      if (!this.row) return [];
+      return this.row.cells ? this.row.cells : this.row;
     },
   },
 };

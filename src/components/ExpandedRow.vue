@@ -41,9 +41,7 @@
                   '-generated-row-cell-' +
                   rIndex +
                   '-' +
-                  cIndex +
-                  '-' +
-                  quintable.generatedUpdatedKey
+                  cIndex
                 "
                 :id="
                   'vue-quintable-' +
@@ -83,7 +81,7 @@
                   <span v-else class="headline"><wbr /></span>
 
                   <sort-indicator
-                    v-if="quintable.hoveredRow === rIndex"
+                    v-show="quintable.hoveredRow === rIndex"
                     :sort-enabled="!!quintable.configFinal.sorts[cIndex]"
                     :sort-info="quintable.currentSortIndexes[cIndex] || null"
                     :number-of-sorts="quintable.numberOfSorts"
@@ -183,7 +181,7 @@
                 <span v-else class="headline"><wbr /></span>
 
                 <sort-indicator
-                  v-if="quintable.hoveredRow === rIndex"
+                  v-show="quintable.hoveredRow === rIndex"
                   :sort-enabled="!!quintable.configFinal.sorts[cIndex]"
                   :sort-info="quintable.currentSortIndexes[cIndex] || null"
                   :number-of-sorts="quintable.numberOfSorts"

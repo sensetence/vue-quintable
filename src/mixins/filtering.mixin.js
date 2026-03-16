@@ -281,7 +281,6 @@ export default {
 
         this.$emit("filtered:rows", rows, "filtered:rows");
       },
-      deep: true,
       immediate: true,
     },
   },
