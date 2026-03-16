@@ -390,12 +390,12 @@ describe("Methods", () => {
   describe("recomputeEssentials", () => {
     it("updates key timestamps", () => {
       const wrapper = createTable();
-      const oldKey = wrapper.vm.rowsUpdatedKey;
+      const oldKey = wrapper.vm.essentialsKey;
 
       // Ensure time difference
       wrapper.vm.recomputeEssentials();
       // Keys should be different (Date.now())
-      expect(wrapper.vm.rowsUpdatedKey).toBeGreaterThanOrEqual(oldKey);
+      expect(wrapper.vm.essentialsKey).toBeGreaterThanOrEqual(oldKey);
     });
   });
 
