@@ -80,105 +80,21 @@
               :clearable="false"
             />
           </div>
-          <nav
+          <pagination-nav
             v-if="
               quintable.configFinal &&
               quintable.configFinal.pagination &&
               quintable.pages > 1
             "
-            class="
-              d-inline-block
-              align-middle
-              mb-2
-              quintable--table-footer-container--pagination-wrapper--pagination-container--nav
-            "
-            :class="{
-              'me-3': quintable.numberOfVisibleRows,
-              disabled: quintable.ajaxLoading,
-            }"
-          >
-            <ul
-              class="
-                pagination
-                mb-0
-                quintable--table-footer-container--pagination-wrapper--pagination-container--nav--pagination
-              "
-            >
-              <li
-                class="page-item"
-                v-if="quintable.pages > quintable.pageRange"
-                :class="{ disabled: quintable.currentPage <= 1 }"
-                @click="quintable.gotoPage('first')"
-              >
-                <span class="page-link">
-                  <font-awesome-icon icon="angle-double-left" />
-                </span>
-              </li>
-              <li
-                class="page-item"
-                :class="{ disabled: quintable.currentPage <= 1 }"
-                @click="quintable.gotoPage('prev')"
-              >
-                <span class="page-link">
-                  <font-awesome-icon icon="angle-left" />
-                </span>
-              </li>
-              <li
-                class="page-item"
-                v-if="
-                  quintable.pageRange < quintable.pages &&
-                  quintable.visiblePages[0] > 1
-                "
-                @click="quintable.updatePageOffset(-1)"
-              >
-                <span class="page-link"> ... </span>
-              </li>
-
-              <li
-                :key="'pagination-item-' + page"
-                class="page-item"
-                :class="{ active: page === quintable.currentPage }"
-                v-for="page in quintable.visiblePages"
-                @click="quintable.gotoPage(page)"
-              >
-                <span class="page-link">
-                  {{ page }}
-                </span>
-              </li>
-
-              <li
-                class="page-item"
-                v-if="
-                  quintable.pageRange < quintable.pages &&
-                  quintable.visiblePages[quintable.visiblePages.length - 1] <
-                    quintable.pages
-                "
-                @click="quintable.updatePageOffset(1)"
-              >
-                <span class="page-link"> ... </span>
-              </li>
-
-              <li
-                class="page-item"
-                :class="{ disabled: quintable.pages === quintable.currentPage }"
-                @click="quintable.gotoPage('next')"
-              >
-                <span class="page-link">
-                  <font-awesome-icon icon="angle-right" />
-                </span>
-              </li>
-              <li
-                class="page-item"
-                v-if="quintable.pages > quintable.pageRange"
-                :class="{ disabled: quintable.pages === quintable.currentPage }"
-                @click="quintable.gotoPage('last')"
-              >
-                <span class="page-link">
-                  <font-awesome-icon icon="angle-double-right" />
-                </span>
-              </li>
-            </ul>
-          </nav>
+            :pages="quintable.pages"
+            :current-page="quintable.currentPage"
+            :page-range="quintable.pageRange"
+            :visible-pages="quintable.visiblePages"
+            :has-visible-rows="!!quintable.numberOfVisibleRows"
+            :disabled="quintable.ajaxLoading"
+            @goto="quintable.gotoPage($event)"
+            @offset="quintable.updatePageOffset($event)"
+          />
 
           <span
             class="
@@ -199,8 +115,11 @@
 </template>
 
 <script>
+import PaginationNav from "./PaginationNav.vue";
+
 export default {
   name: "PaginationFooter",
   inject: ["quintable"],
+  components: { PaginationNav },
 };
 </script>

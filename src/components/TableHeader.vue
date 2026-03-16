@@ -30,54 +30,20 @@
           quintable--table-container--table--header-row--select-th--pre
         "
       >
-        <template v-if="quintable.configFinal.selectAll && !quintable.noRows">
-          <p-check
-            v-if="quintable.configFinal.prettySelect"
-            name="check"
-            class="p-icon p-smooth"
-            v-model="quintable.allSelectedProperty"
-            @change="quintable.checkAll()"
-          >
-            <template slot="extra">
-              <span
-                ><font-awesome-icon
-                  v-if="quintable.allSelectedProperty"
-                  icon="check"
-                  class="text-success icon-check"
-              /></span>
-              <span
-                ><font-awesome-icon
-                  v-if="
-                    quintable.someSelected && !quintable.allSelectedProperty
-                  "
-                  icon="square"
-                  class="text-success icon-check"
-              /></span>
-            </template>
-          </p-check>
-          <label v-else class="mb-0 mt-0">
-            <input
-              type="checkbox"
-              v-model="quintable.allSelectedProperty"
-              @change="quintable.checkAll()"
-            />
-          </label>
-        </template>
+        <select-checkbox
+          v-if="quintable.configFinal.selectAll && !quintable.noRows"
+          :value="quintable.allSelectedProperty"
+          :pretty="quintable.configFinal.prettySelect"
+          :smooth="true"
+          :show-partial="true"
+          :partial="quintable.someSelected"
+          @input="quintable.allSelectedProperty = $event"
+          @change="quintable.checkAll()"
+        />
       </th>
       <template v-for="(headline, hIndex) in quintable.configFinal.headlines">
         <th
-          v-if="
-            ((quintable.configFinal.columns[hIndex] &&
-              !quintable.configFinal.columns[hIndex].breakpoint) ||
-              quintable.hiddenBreakpoints.findIndex(
-                (x) =>
-                  quintable.configFinal.columns[hIndex] &&
-                  x === quintable.configFinal.columns[hIndex].breakpoint
-              ) === -1) &&
-            !quintable.configFinal.columns[hIndex].sticky &&
-            !quintable.configFinal.hiddenCols[hIndex] &&
-            !quintable.emptyColumns[hIndex]
-          "
+          v-if="isColumnVisible(hIndex)"
           :class="quintable.headerClass[hIndex]"
           :title="quintable.configFinal.columns[hIndex].title"
           :key="'headline-' + hIndex"
@@ -99,51 +65,14 @@
             v-else
             ><wbr
           /></span>
-          <span
-            class="
-              sorting-icon
-              ms-2
-              quintable--table-container--table--header-row--th--sorting-icon
-            "
-            v-if="quintable.configFinal.sorts[hIndex]"
-          >
-            <font-awesome-icon
-              v-if="!quintable.currentSortIndexes[hIndex]"
-              icon="sort"
-              class="text-primary"
-            />
-            <font-awesome-icon
-              v-if="
-                quintable.currentSortIndexes[hIndex] &&
-                quintable.currentSortIndexes[hIndex].asc
-              "
-              icon="sort-amount-down-alt"
-              class="text-primary"
-            />
-            <font-awesome-icon
-              v-if="
-                quintable.currentSortIndexes[hIndex] &&
-                !quintable.currentSortIndexes[hIndex].asc
-              "
-              icon="sort-amount-down"
-              class="text-primary"
-            />
-            <span
-              v-if="quintable.currentSortIndexes[hIndex]"
-              @click.stop.prevent="quintable.removeSort(hIndex)"
-              class="ms-1 text-muted"
-            >
-              <span
-                class="badge bg-info text-white"
-                v-if="quintable.numberOfSorts > 1"
-              >
-                {{ quintable.currentSortIndexes[hIndex].order + 1 }}
-              </span>
-              <small v-else>
-                <font-awesome-icon icon="times" />
-              </small>
-            </span>
-          </span>
+          <sort-indicator
+            :sort-enabled="!!quintable.configFinal.sorts[hIndex]"
+            :sort-info="quintable.currentSortIndexes[hIndex] || null"
+            :number-of-sorts="quintable.numberOfSorts"
+            :column-index="hIndex"
+            wrapper-class="sorting-icon ms-2 quintable--table-container--table--header-row--th--sorting-icon"
+            @remove-sort="quintable.removeSort($event)"
+          />
         </th>
       </template>
       <th
@@ -158,47 +87,42 @@
           quintable--table-container--table--header-row--select-th--post
         "
       >
-        <template v-if="quintable.configFinal.selectAll && !quintable.noRows">
-          <p-check
-            v-if="quintable.configFinal.prettySelect"
-            name="check"
-            class="p-icon p-smooth"
-            v-model="quintable.allSelectedProperty"
-            @change="quintable.checkAll()"
-          >
-            <template slot="extra">
-              <span
-                ><font-awesome-icon
-                  v-if="quintable.allSelectedProperty"
-                  icon="check"
-                  class="text-success icon-check"
-              /></span>
-              <span
-                ><font-awesome-icon
-                  v-if="
-                    quintable.someSelected && !quintable.allSelectedProperty
-                  "
-                  icon="square"
-                  class="text-success icon-check"
-              /></span>
-            </template>
-          </p-check>
-          <label v-else class="mb-0 mt-0">
-            <input
-              type="checkbox"
-              v-model="quintable.allSelectedProperty"
-              @change="quintable.checkAll()"
-            />
-          </label>
-        </template>
+        <select-checkbox
+          v-if="quintable.configFinal.selectAll && !quintable.noRows"
+          :value="quintable.allSelectedProperty"
+          :pretty="quintable.configFinal.prettySelect"
+          :smooth="true"
+          :show-partial="true"
+          :partial="quintable.someSelected"
+          @input="quintable.allSelectedProperty = $event"
+          @change="quintable.checkAll()"
+        />
       </th>
     </tr>
   </thead>
 </template>
 
 <script>
+import SelectCheckbox from "./SelectCheckbox.vue";
+import SortIndicator from "./SortIndicator.vue";
+
 export default {
   name: "TableHeader",
   inject: ["quintable"],
+  components: { SelectCheckbox, SortIndicator },
+  methods: {
+    isColumnVisible(hIndex) {
+      const col = this.quintable.configFinal.columns[hIndex];
+      return (
+        ((col && !col.breakpoint) ||
+          this.quintable.hiddenBreakpoints.findIndex(
+            (x) => col && x === col.breakpoint
+          ) === -1) &&
+        !col.sticky &&
+        !this.quintable.configFinal.hiddenCols[hIndex] &&
+        !this.quintable.emptyColumns[hIndex]
+      );
+    },
+  },
 };
 </script>
