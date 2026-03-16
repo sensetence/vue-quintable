@@ -1,69 +1,73 @@
 import fuzzy from "fuzzy.js";
 
+const _operatorFunctions = Object.freeze({
+  equal: (a, b) => {
+    return b === a;
+  },
+  greater: (a, b) => {
+    return b > a;
+  },
+  less: (a, b) => {
+    return b < a;
+  },
+  greaterEqual: (a, b) => {
+    return b >= a;
+  },
+  lessEqual: (a, b) => {
+    return b <= a;
+  },
+  contains: (a, b) => {
+    if (!Array.isArray(b) && typeof b !== "string") {
+      return false;
+    }
+
+    return b.indexOf(a) !== -1;
+  },
+
+  notContains: (a, b) => {
+    if (!Array.isArray(b) && typeof b !== "string") {
+      return false;
+    }
+
+    return b.indexOf(a) === -1;
+  },
+
+  startsWith: (a, b) => {
+    if (typeof b !== "string") {
+      return false;
+    }
+
+    return b.indexOf(a) === 0;
+  },
+
+  endsWitch: (a, b) => {
+    if (typeof b !== "string") {
+      return false;
+    }
+
+    return b.indexOf(a, this.length - a.length) !== -1;
+  },
+
+  matches(regex, b) {
+    if (!(regex instanceof RegExp) || typeof b !== "string") {
+      return false;
+    }
+    return regex.test(b);
+  },
+});
+
+const _operatorKeys = Object.keys(_operatorFunctions);
+
 export default {
   data() {
     return {
       defaultOperator: "equal",
-      operatorFunctions: {
-        equal: (a, b) => {
-          return b === a;
-        },
-        greater: (a, b) => {
-          return b > a;
-        },
-        less: (a, b) => {
-          return b < a;
-        },
-        greaterEqual: (a, b) => {
-          return b >= a;
-        },
-        lessEqual: (a, b) => {
-          return b <= a;
-        },
-        contains: (a, b) => {
-          if (!Array.isArray(b) && typeof b !== "string") {
-            return false;
-          }
-
-          return b.indexOf(a) !== -1;
-        },
-
-        notContains: (a, b) => {
-          if (!Array.isArray(b) && typeof b !== "string") {
-            return false;
-          }
-
-          return b.indexOf(a) === -1;
-        },
-
-        startsWith: (a, b) => {
-          if (typeof b !== "string") {
-            return false;
-          }
-
-          return b.indexOf(a) === 0;
-        },
-
-        endsWitch: (a, b) => {
-          if (typeof b !== "string") {
-            return false;
-          }
-
-          return b.indexOf(a, this.length - a.length) !== -1;
-        },
-
-        matches(regex, b) {
-          if (!(regex instanceof RegExp) || typeof b !== "string") {
-            return false;
-          }
-          return regex.test(b);
-        },
-      },
+      operatorFunctions: _operatorFunctions,
     };
   },
   computed: {
     operators() {
-      return Object.keys(this.operatorFunctions);
+      return _operatorKeys;
     },
 
     filterActive() {

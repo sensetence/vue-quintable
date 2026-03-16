@@ -1,13 +1,5 @@
 <template>
   <div class="table-wrapper quintable">
-    <div class="breakpoints quintable--breakpoints">
-      <div ref="xs"></div>
-      <div ref="sm" class="d-none d-sm-block"></div>
-      <div ref="md" class="d-none d-md-block"></div>
-      <div ref="lg" class="d-none d-lg-block"></div>
-      <div ref="xl" class="d-none d-xl-block"></div>
-      <div ref="xxl" class="d-none d-xxl-block"></div>
-    </div>
     <div class="header slot slot-header quintable--header">
       <slot name="header"></slot>
     </div>
@@ -133,7 +125,10 @@
 </template>
 
 <script>
-import randomUUID from "uuid/v4";
+import { getSharedBreakpoints } from "../utils/shared-breakpoints.js";
+
+let _quintableIdCounter = 0;
+
 import TableHeader from "./TableHeader.vue";
 import TableBody from "./TableBody.vue";
 import PaginationFooter from "./PaginationFooter.vue";
@@ -266,7 +261,7 @@ export default {
       query: "",
       customMultiSort: null,
       customPageSort: null,
-      uuid: randomUUID(),
+      uuid: "qt-" + ++_quintableIdCounter + "-" + Date.now(),
       loaderHeight: 0,
       lastSearchQueryUpdated: null,
       storedState: {},
@@ -1055,14 +1050,14 @@ export default {
       this.checkAll(true);
     }
 
-    this.generateHiddenBreakpoints();
-
-    //bind listener to window resize
-    window.addEventListener("resize", this.breakpointListener);
+    // Subscribe to shared breakpoint detector
+    this._sharedBP = getSharedBreakpoints();
+    this._sharedBP.subscribe(this._onBreakpointChange);
   },
   beforeDestroy() {
-    //release listener from window resize
-    window.removeEventListener("resize", this.breakpointListener);
+    if (this._sharedBP) {
+      this._sharedBP.unsubscribe(this._onBreakpointChange);
+    }
     if (this.configFinal.enableRowTabIndex) {
       document.removeEventListener("keydown", this.checkKey);
     }

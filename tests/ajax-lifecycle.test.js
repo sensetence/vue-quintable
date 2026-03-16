@@ -297,14 +297,16 @@ describe("Lifecycle hooks", () => {
     w.destroy();
   });
 
-  it("beforeDestroy removes resize listener", () => {
-    const removeSpy = vi.spyOn(window, "removeEventListener");
+  it("beforeDestroy unsubscribes from shared breakpoints", () => {
     const w = createTable({
       config: { columns: [{ headline: "A" }, { headline: "B" }] },
     });
+    const bp = w.vm._sharedBP;
+    expect(bp).toBeTruthy();
+    const unsubSpy = vi.spyOn(bp, "unsubscribe");
     w.destroy();
-    expect(removeSpy).toHaveBeenCalledWith("resize", w.vm.breakpointListener);
-    removeSpy.mockRestore();
+    expect(unsubSpy).toHaveBeenCalledWith(w.vm._onBreakpointChange);
+    unsubSpy.mockRestore();
   });
 
   it("beforeDestroy removes keydown listener when enableRowTabIndex", () => {
@@ -321,13 +323,12 @@ describe("Lifecycle hooks", () => {
     removeSpy.mockRestore();
   });
 
-  it("mounted adds resize listener", () => {
-    const addSpy = vi.spyOn(window, "addEventListener");
+  it("mounted subscribes to shared breakpoints", () => {
     const w = createTable({
       config: { columns: [{ headline: "A" }, { headline: "B" }] },
     });
-    expect(addSpy).toHaveBeenCalledWith("resize", w.vm.breakpointListener);
-    addSpy.mockRestore();
+    expect(w.vm._sharedBP).toBeTruthy();
+    expect(w.vm._sharedBP._subscribers.has(w.vm._onBreakpointChange)).toBe(true);
     w.destroy();
   });
 

@@ -1,5 +1,23 @@
 import axios from "axios";
 
+let _localStorageAvailable = null;
+function isLocalStorageAvailable() {
+  if (_localStorageAvailable !== null) return _localStorageAvailable;
+  try {
+    const key = "test-local-storage";
+    localStorage.setItem(key, key);
+    localStorage.removeItem(key);
+    _localStorageAvailable = true;
+  } catch (e) {
+    _localStorageAvailable = false;
+  }
+  return _localStorageAvailable;
+}
+
+export function _resetLocalStorageCache() {
+  _localStorageAvailable = null;
+}
+
 export default {
   computed: {
     DEBUG() {
@@ -212,11 +230,7 @@ export default {
         storeState = false;
       }
 
-      const testLocalStorage = "test-local-storage";
-      try {
-        localStorage.setItem(testLocalStorage, testLocalStorage);
-        localStorage.removeItem(testLocalStorage);
-      } catch (e) {
+      if (!isLocalStorageAvailable()) {
         console.warn(
           "Option storeState was deactivated automatically because local storage is not available!"
         );

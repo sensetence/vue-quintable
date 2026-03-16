@@ -431,7 +431,10 @@ describe("Debug filter group logging (lines 3547-3562)", () => {
 });
 
 describe("localStorage exception handling (lines 1586-1589)", () => {
-  it("storeState disabled when localStorage throws", () => {
+  it("storeState disabled when localStorage throws", async () => {
+    const { _resetLocalStorageCache } =
+      await import("../src/mixins/config.mixin.js");
+    _resetLocalStorageCache();
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     const origSetItem = Storage.prototype.setItem;
     Storage.prototype.setItem = vi.fn(() => {
@@ -446,6 +449,7 @@ describe("localStorage exception handling (lines 1586-1589)", () => {
     });
     expect(w.vm.configFinal.storeState).toBe(false);
     Storage.prototype.setItem = origSetItem;
+    _resetLocalStorageCache();
     warn.mockRestore();
     w.destroy();
   });
