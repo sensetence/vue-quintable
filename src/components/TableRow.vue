@@ -13,7 +13,7 @@
     @click="quintable.onRowClick($event, rIndex)"
     @auxclick="quintable.onRowAuxClick($event, rIndex)"
     @mousedown="quintable.onRowMousedown($event)"
-    :class="quintable.rowClasses[rIndex]"
+    :class="[quintable.rowClasses[rIndex], dynamicClasses]"
     :id="'vue-quintable-' + quintable.uuid + '-row-' + rIndex"
     @mouseenter="quintable.onMouseenterRow(rIndex)"
   >
@@ -146,6 +146,16 @@ export default {
     cells() {
       if (!this.row) return [];
       return this.row.cells ? this.row.cells : this.row;
+    },
+    dynamicClasses() {
+      const cls = [];
+      if (this.quintable.hoveredRow === this.rIndex) {
+        cls.push(this.quintable.configFinal.hoverClass);
+      }
+      if (this.quintable.activeRow === this.rIndex) {
+        cls.push(this.quintable.configFinal.activeClass);
+      }
+      return cls;
     },
   },
 };

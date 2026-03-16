@@ -651,14 +651,6 @@ export default {
           rowClasses.push(this.rowsFinal[rIndex].classes);
         }
 
-        if (this.hoveredRow === rIndex) {
-          rowClasses.push(this.configFinal.hoverClass);
-        }
-
-        if (this.activeRow === rIndex) {
-          rowClasses.push(this.configFinal.activeClass);
-        }
-
         if (this.openRows[rIndex]) {
           rowClasses.push("row-expanded");
         }
