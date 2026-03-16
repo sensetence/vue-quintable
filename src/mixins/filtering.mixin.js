@@ -78,15 +78,11 @@ export default {
     },
 
     filteredRows() {
-      let visible = [];
-
       if (this.configFinal.ajaxUrl) {
         return this.rowsFinal;
       }
 
-      for (let i = 0; i < this.rowsFinal.length; i++) {
-        visible.push(true);
-      }
+      let visible = new Array(this.rowsFinal.length).fill(true);
 
       if (
         (!this.configFinal.search && !this.filterActive) ||
@@ -96,6 +92,8 @@ export default {
       ) {
         return visible;
       }
+
+      const queryLower = (this.query + "").toLowerCase();
 
       for (let i = 0; i < this.rowsFinal.length; i++) {
         let row = this.rowsFinal[i].cells
@@ -114,46 +112,38 @@ export default {
             let textVal = col.html ? col.html : col.text;
 
             if (textVal) {
+              const textLower = (textVal + "").toLowerCase();
+
               if (
                 this.configFinal.useFuzzySearch &&
-                fuzzy(
-                  (textVal + "").toLowerCase(),
-                  (this.query + "").toLowerCase()
-                ).score > 6
+                fuzzy(textLower, queryLower).score > 6
               ) {
                 match = true;
                 break;
               }
 
-              if (
-                (textVal + "")
-                  .toLowerCase()
-                  .indexOf((this.query + "").toLowerCase()) !== -1
-              ) {
+              if (textLower.indexOf(queryLower) !== -1) {
                 match = true;
                 break;
               }
             }
           }
 
-          if (this.rowsFinal[i].keywords) {
+          if (!match && this.rowsFinal[i].keywords) {
             for (let k = 0; k < this.rowsFinal[i].keywords.length; k++) {
+              const kwLower = (
+                this.rowsFinal[i].keywords[k] + ""
+              ).toLowerCase();
+
               if (
                 this.configFinal.useFuzzySearch &&
-                fuzzy(
-                  (this.rowsFinal[i].keywords[k] + "").toLowerCase(),
-                  (this.query + "").toLowerCase()
-                ).score > 6
+                fuzzy(kwLower, queryLower).score > 6
               ) {
                 match = true;
                 break;
               }
 
-              if (
-                (this.rowsFinal[i].keywords[k] + "")
-                  .toLowerCase()
-                  .indexOf((this.query + "").toLowerCase()) !== -1
-              ) {
+              if (kwLower.indexOf(queryLower) !== -1) {
                 match = true;
                 break;
               }
@@ -243,6 +233,8 @@ export default {
           return;
         }
 
+        if (val === old) return;
+
         if (old && val.length === old.length) {
           let same = true;
           for (let i = 0; i < val.length; i++) {
@@ -254,9 +246,11 @@ export default {
           if (same) return;
         }
 
-        const realCurrentIndex = this.visibleRowIndexes.findIndex(
-          (x) => x === this.activeRow
-        );
+        const realCurrentIndex =
+          this.activeRow !== null &&
+          this._visibleRowIndexMap[this.activeRow] !== undefined
+            ? this._visibleRowIndexMap[this.activeRow]
+            : -1;
         if (realCurrentIndex < 0) {
           this.activeRow = null;
         }

@@ -13,13 +13,7 @@
     @click="quintable.onRowClick($event, rIndex)"
     @auxclick="quintable.onRowAuxClick($event, rIndex)"
     @mousedown="quintable.onRowMousedown($event)"
-    :class="[
-      quintable.rowClasses[rIndex],
-      {
-        [quintable.configFinal.hoverClass]: quintable.hoveredRow === rIndex,
-        [quintable.configFinal.activeClass]: quintable.activeRow === rIndex,
-      },
-    ]"
+    :class="quintable.rowClasses[rIndex]"
     :id="'vue-quintable-' + quintable.uuid + '-row-' + rIndex"
     @mouseenter="quintable.onMouseenterRow(rIndex)"
   >

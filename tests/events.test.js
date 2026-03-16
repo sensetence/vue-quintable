@@ -219,6 +219,59 @@ describe("Events", () => {
 
       expect(wrapper.emitted("hover:row")).toBeTruthy();
     });
+
+    it("applies hoverClass to the hovered row DOM element", async () => {
+      const wrapper = createTable({ mountFn: "mount" });
+      await wrapper.vm.$nextTick();
+
+      const rows = wrapper.findAll("tbody tr.vue-quintable-row");
+      expect(rows.length).toBeGreaterThan(0);
+
+      // Trigger mouseenter on the first row
+      await rows.at(0).trigger("mouseenter");
+      await wrapper.vm.$nextTick();
+
+      // The hovered row should have the hover class
+      expect(rows.at(0).classes()).toContain("bg-muted");
+      // Other rows should not
+      if (rows.length > 1) {
+        expect(rows.at(1).classes()).not.toContain("bg-muted");
+      }
+    });
+
+    it("removes hoverClass on mouseleave from tbody", async () => {
+      const wrapper = createTable({ mountFn: "mount" });
+      await wrapper.vm.$nextTick();
+
+      const row = wrapper.find("tbody tr.vue-quintable-row");
+      await row.trigger("mouseenter");
+      await wrapper.vm.$nextTick();
+      expect(row.classes()).toContain("bg-muted");
+
+      // Mouseleave on tbody clears hoveredRow
+      const tbody = wrapper.find("tbody");
+      await tbody.trigger("mouseleave");
+      await wrapper.vm.$nextTick();
+      expect(row.classes()).not.toContain("bg-muted");
+    });
+
+    it("uses custom hoverClass when configured", async () => {
+      const wrapper = createTable({
+        config: {
+          columns: [{ headline: "Name" }, { headline: "Age" }],
+          hoverClass: "custom-hover",
+        },
+        mountFn: "mount",
+      });
+      await wrapper.vm.$nextTick();
+
+      const row = wrapper.find("tbody tr.vue-quintable-row");
+      await row.trigger("mouseenter");
+      await wrapper.vm.$nextTick();
+
+      expect(row.classes()).toContain("custom-hover");
+      expect(row.classes()).not.toContain("bg-muted");
+    });
   });
 
   describe("update:selected-rows", () => {

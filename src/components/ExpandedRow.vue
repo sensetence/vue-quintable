@@ -15,12 +15,7 @@
     v-if="shouldRender"
   >
     <td :colspan="quintable.configFinal.number + 1" class="ps-0 pe-0 pt-0">
-      <div
-        :class="{
-          [quintable.configFinal.hoverClass]: quintable.hoveredRow === rIndex,
-          [quintable.configFinal.activeClass]: quintable.activeRow === rIndex,
-        }"
-      >
+      <div :class="innerClasses">
         <table
           class="
             mb-2
@@ -252,16 +247,35 @@ export default {
       return (
         (this.quintable.generatedUpdatedKey &&
           this.quintable.openRows[this.rIndex] &&
-          Object.keys(this.quintable.generatedRows[this.rIndex]).length > 0) ||
-        Object.keys(this.quintable.stickyRows[this.rIndex]).length > 0
+          this._hasKeys(this.quintable.generatedRows[this.rIndex])) ||
+        this._hasKeys(this.quintable.stickyRows[this.rIndex])
       );
     },
     showToggleCell() {
       return (
         !this.quintable.configFinal.hideRowToggle &&
         this.quintable.generatedRows[this.rIndex] &&
-        Object.keys(this.quintable.generatedRows[this.rIndex]).length > 0
+        this._hasKeys(this.quintable.generatedRows[this.rIndex])
       );
+    },
+    innerClasses() {
+      const cls = [];
+      if (this.quintable.hoveredRow === this.rIndex) {
+        cls.push(this.quintable.configFinal.hoverClass);
+      }
+      if (this.quintable.activeRow === this.rIndex) {
+        cls.push(this.quintable.configFinal.activeClass);
+      }
+      return cls;
+    },
+  },
+  methods: {
+    _hasKeys(obj) {
+      if (!obj) return false;
+      for (let k in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, k)) return true;
+      }
+      return false;
     },
   },
 };

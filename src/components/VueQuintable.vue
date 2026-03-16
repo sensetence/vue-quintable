@@ -276,16 +276,8 @@ export default {
 
   computed: {
     visibleRows() {
-      if (
-        !!this.essentialsKey &&
-        !this.configFinal.ajaxUrl &&
-        this.currentRowsPerPage !== "All"
-      ) {
-        let visible = [];
-
-        for (let i = 0; i < this.rowsFinal.length; i++) {
-          visible.push(false);
-        }
+      if (!this.configFinal.ajaxUrl && this.currentRowsPerPage !== "All") {
+        let visible = new Array(this.rowsFinal.length).fill(false);
 
         let onlyVisibleSortedRows = {};
 
@@ -321,17 +313,15 @@ export default {
 
     visibleRowIndexes() {
       let rows = [];
-      if (this.essentialsKey) {
-        if (this.configFinal.ajaxUrl && !this.pageSort) {
-          for (let i = 0; i < this.rowsFinal.length; i++) {
-            rows.push(i);
-          }
-        } else {
-          for (let i in this.sortedIndexes) {
-            if (Object.prototype.hasOwnProperty.call(this.sortedIndexes, i)) {
-              if (this.visibleRows[this.sortedIndexes[i]]) {
-                rows.push(this.sortedIndexes[i]);
-              }
+      if (this.configFinal.ajaxUrl && !this.pageSort) {
+        for (let i = 0; i < this.rowsFinal.length; i++) {
+          rows.push(i);
+        }
+      } else {
+        for (let i in this.sortedIndexes) {
+          if (Object.prototype.hasOwnProperty.call(this.sortedIndexes, i)) {
+            if (this.visibleRows[this.sortedIndexes[i]]) {
+              rows.push(this.sortedIndexes[i]);
             }
           }
         }
@@ -342,11 +332,13 @@ export default {
     // Pre-compute per-column whether it matches any hidden breakpoint
     _colBreakpointMatch() {
       const bpSet = new Set(this.hiddenBreakpoints);
-      return this.configFinal.columns.map((col) => {
-        if (!col || !col.breakpoint) return false;
-        const bp = col.breakpoint.toLocaleLowerCase();
-        return bp === "all" || bpSet.has(bp);
-      });
+      return Object.freeze(
+        this.configFinal.columns.map((col) => {
+          if (!col || !col.breakpoint) return false;
+          const bp = col.breakpoint.toLocaleLowerCase();
+          return bp === "all" || bpSet.has(bp);
+        })
+      );
     },
 
     // Cache isColEmpty(j) results so it's computed once per column, not N times
@@ -355,19 +347,35 @@ export default {
       for (let j = 0; j < this.configFinal.number; j++) {
         cache[j] = this.isColEmpty(j);
       }
-      return cache;
+      return Object.freeze(cache);
+    },
+
+    // Pre-compute per-column hide status (shared by generatedRows, stickyRows, hiddenColumns)
+    _colHideCache() {
+      const cache = {};
+      for (let j = 0; j < this.configFinal.columns.length; j++) {
+        cache[j] =
+          this.configFinal.hiddenCols[j] ||
+          (!this.configFinal.ignoreEmpty[j] &&
+            this.configFinal.hideEmptyColumns &&
+            this._colEmptyCache[j]) ||
+          this.emptyColumns[j];
+      }
+      return Object.freeze(cache);
     },
 
     // Pre-compute per-column base visibility for TableRow template
     cellVisible() {
-      return this.configFinal.columns.map((col, j) => {
-        if (this.configFinal.hiddenCols[j]) return false;
-        if (this.emptyColumns[j]) return false;
-        if (!col) return false;
-        if (this._colBreakpointMatch[j]) return false;
-        if (this.configFinal.stickyCols[j]) return false;
-        return true;
-      });
+      return Object.freeze(
+        this.configFinal.columns.map((col, j) => {
+          if (this.configFinal.hiddenCols[j]) return false;
+          if (this.emptyColumns[j]) return false;
+          if (!col) return false;
+          if (this._colBreakpointMatch[j]) return false;
+          if (this.configFinal.stickyCols[j]) return false;
+          return true;
+        })
+      );
     },
 
     generatedRows() {
@@ -375,7 +383,7 @@ export default {
 
       if (this.generatedUpdatedKey) {
         const colMatch = this._colBreakpointMatch;
-        const colEmptyCache = this._colEmptyCache;
+        const colHide = this._colHideCache;
 
         for (let x = 0; x < this.rowsFinal.length; x++) {
           let cells = this.rowsFinal[x].cells
@@ -388,12 +396,12 @@ export default {
             if (!colMatch[j]) continue;
             let col = this.configFinal.columns[j];
 
+            // Column-level hide is cached; row-level empty check still needed
             const hide =
-              this.configFinal.hiddenCols[j] ||
+              colHide[j] ||
               (!this.configFinal.ignoreEmpty[j] &&
                 this.configFinal.hideEmptyColumns &&
-                (colEmptyCache[j] || this.isColEmpty(j, x))) ||
-              this.emptyColumns[j];
+                this.isColEmpty(j, x));
 
             if (!hide && !col.sticky && !col.alwaysExpanded) {
               generatedCells[j] = cells[j];
@@ -408,7 +416,7 @@ export default {
     stickyRows() {
       let stickyRows = {};
       const colMatch = this._colBreakpointMatch;
-      const colEmptyCache = this._colEmptyCache;
+      const colHide = this._colHideCache;
 
       for (let x = 0; x < this.rowsFinal.length; x++) {
         let cells = this.rowsFinal[x].cells
@@ -421,11 +429,10 @@ export default {
           let col = this.configFinal.columns[j];
 
           const hide =
-            this.configFinal.hiddenCols[j] ||
+            colHide[j] ||
             (!this.configFinal.ignoreEmpty[j] &&
               this.configFinal.hideEmptyColumns &&
-              (colEmptyCache[j] || this.isColEmpty(j, x))) ||
-            this.emptyColumns[j];
+              this.isColEmpty(j, x));
 
           if (!hide && col.sticky) {
             stickyCells[j] = cells[j];
@@ -463,10 +470,12 @@ export default {
     },
 
     hasGeneratedRows() {
-      for (let row in this.generatedRows) {
-        if (Object.prototype.hasOwnProperty.call(this.generatedRows, row)) {
-          if (Object.keys(this.generatedRows[row]).length) {
-            return true;
+      const rows = this.generatedRows;
+      for (let rIndex in rows) {
+        if (Object.prototype.hasOwnProperty.call(rows, rIndex)) {
+          for (let cIndex in rows[rIndex]) {
+            if (Object.prototype.hasOwnProperty.call(rows[rIndex], cIndex))
+              return true;
           }
         }
       }
@@ -523,7 +532,7 @@ export default {
     hiddenColumns() {
       const rows = {};
       const colMatch = this._colBreakpointMatch;
-      const colEmptyCache = this._colEmptyCache;
+      const colHide = this._colHideCache;
 
       for (let x = 0; x < this.visibleRowIndexes.length; x++) {
         let hidden = 0;
@@ -533,11 +542,10 @@ export default {
           if (!colMatch[j]) continue;
 
           const hide =
-            this.configFinal.hiddenCols[j] ||
+            colHide[j] ||
             (!this.configFinal.ignoreEmpty[j] &&
               this.configFinal.hideEmptyColumns &&
-              (colEmptyCache[j] || this.isColEmpty(j, rowIndex))) ||
-            this.emptyColumns[j];
+              this.isColEmpty(j, rowIndex));
 
           if (!hide) {
             hidden++;
@@ -582,36 +590,30 @@ export default {
             this.configFinal.columnClasses[i]
         );
       }
-      return classes;
+      return Object.freeze(classes);
     },
 
     showHeadlines() {
+      const bpSet = new Set(this.hiddenBreakpoints);
       let shows = [];
 
       for (let i = 0; i < this.configFinal.number; i++) {
+        const col = this.configFinal.columns[i];
         if (
           this.configFinal.headlines[i] &&
-          (!this.configFinal.columns[i].showHeadlineBreakpoint ||
-            (this.configFinal.columns[i].showHeadlineBreakpoint &&
-              this.hiddenBreakpoints.findIndex(
-                (x) =>
-                  this.configFinal.columns[i] &&
-                  x === this.configFinal.columns[i].showHeadlineBreakpoint
-              ) !== -1)) &&
-          (!this.configFinal.columns[i].hideHeadlineBreakpoint ||
-            (this.configFinal.columns[i].hideHeadlineBreakpoint &&
-              this.hiddenBreakpoints.findIndex(
-                (x) =>
-                  this.configFinal.columns[i] &&
-                  x === this.configFinal.columns[i].hideHeadlineBreakpoint
-              ) === -1))
+          (!col.showHeadlineBreakpoint ||
+            (col.showHeadlineBreakpoint &&
+              bpSet.has(col.showHeadlineBreakpoint))) &&
+          (!col.hideHeadlineBreakpoint ||
+            (col.hideHeadlineBreakpoint &&
+              !bpSet.has(col.hideHeadlineBreakpoint)))
         ) {
           shows.push(true);
         } else {
           shows.push(false);
         }
       }
-      return shows;
+      return Object.freeze(shows);
     },
 
     emptyColumns() {
@@ -649,6 +651,14 @@ export default {
           rowClasses.push(this.rowsFinal[rIndex].classes);
         }
 
+        if (this.hoveredRow === rIndex) {
+          rowClasses.push(this.configFinal.hoverClass);
+        }
+
+        if (this.activeRow === rIndex) {
+          rowClasses.push(this.configFinal.activeClass);
+        }
+
         if (this.openRows[rIndex]) {
           rowClasses.push("row-expanded");
         }
@@ -661,6 +671,15 @@ export default {
       }
 
       return allRowclasses;
+    },
+
+    // O(1) lookup map: rowIndex → position in visibleRowIndexes
+    _visibleRowIndexMap() {
+      const map = {};
+      for (let i = 0; i < this.visibleRowIndexes.length; i++) {
+        map[this.visibleRowIndexes[i]] = i;
+      }
+      return map;
     },
   },
 
@@ -770,7 +789,10 @@ export default {
     },
 
     activeRow(val) {
-      const realIndex = this.visibleRowIndexes.findIndex((x) => x === val);
+      const realIndex =
+        val !== null && this._visibleRowIndexMap[val] !== undefined
+          ? this._visibleRowIndexMap[val]
+          : -1;
       this.$emit("active:row", this.rowsFinal[val], "active:row", realIndex);
     },
   },
@@ -795,43 +817,25 @@ export default {
 
     isColEmpty(i, rowIndex = -1) {
       const rowIndexes = rowIndex > -1 ? [rowIndex] : this.visibleRowIndexes;
-      const visibleCells = rowIndexes
-        .map((index) => {
-          return this.rowsFinal[index];
-        })
-        .filter((row) => {
-          const cells = row.cells ? row.cells : row;
+      for (let k = 0; k < rowIndexes.length; k++) {
+        const row = this.rowsFinal[rowIndexes[k]];
+        if (!row) continue;
+        const cells = row.cells ? row.cells : row;
+        const cell = cells[i];
 
-          if (
-            typeof cells[i].isEmpty === "boolean" &&
-            cells[i].isEmpty === true
-          ) {
-            return false;
-          }
+        if (typeof cell.isEmpty === "boolean") {
+          if (!cell.isEmpty) return false; // cell explicitly not empty
+          continue; // cell explicitly empty, check next
+        }
 
-          if (
-            typeof cells[i].isEmpty === "boolean" &&
-            cells[i].isEmpty === false
-          ) {
-            return true;
-          }
-
-          if (
-            typeof cells[i].text !== "undefined" &&
-            this.valueToString(cells[i].text)
-          ) {
-            return true;
-          }
-
-          if (
-            typeof cells[i].html !== "undefined" &&
-            this.valueToString(cells[i].html)
-          ) {
-            return true;
-          }
-          return false;
-        });
-      return visibleCells.length <= 0;
+        if (
+          (typeof cell.text !== "undefined" && this.valueToString(cell.text)) ||
+          (typeof cell.html !== "undefined" && this.valueToString(cell.html))
+        ) {
+          return false; // found non-empty cell
+        }
+      }
+      return true; // all cells empty
     },
 
     cellFormatters(cIndex, cell) {
@@ -902,10 +906,11 @@ export default {
       }
       if (event.keyCode === 40) {
         event.preventDefault();
-        const realCurrentIndex = this.visibleRowIndexes.findIndex(
-          (x) => x === this.activeRow
-        );
-        if (realCurrentIndex === this.visibleRowIndexes.length - 1) {
+        const realCurrentIndex = this._visibleRowIndexMap[this.activeRow];
+        if (
+          realCurrentIndex === undefined ||
+          realCurrentIndex === this.visibleRowIndexes.length - 1
+        ) {
           this.activeRow = 0;
         } else {
           this.activeRow = this.visibleRowIndexes[realCurrentIndex + 1];
@@ -913,10 +918,8 @@ export default {
       }
       if (event.keyCode === 38) {
         event.preventDefault();
-        const realCurrentIndex = this.visibleRowIndexes.findIndex(
-          (x) => x === this.activeRow
-        );
-        if (realCurrentIndex === 0) {
+        const realCurrentIndex = this._visibleRowIndexMap[this.activeRow];
+        if (realCurrentIndex === undefined || realCurrentIndex === 0) {
           this.activeRow =
             this.visibleRowIndexes[this.visibleRowIndexes.length - 1];
         } else {
@@ -1000,22 +1003,27 @@ export default {
       }
     }
 
-    if (
-      !this.configFinal.selectAllRows &&
-      counter &&
-      counter ===
-        this.rowsFinal.filter(
-          (x, index) =>
-            !x.disableSelect && this.visibleRows[this.sortedIndexes[index]]
-        ).length
-    ) {
-      this.allSelectedCustom = true;
-    } else if (
-      this.configFinal.selectAllRows &&
-      counter &&
-      counter === this.rowsFinal.filter((x) => !x.disableSelect).length
-    ) {
-      this.allSelectedCustom = true;
+    if (!this.configFinal.selectAllRows && counter) {
+      let selectableCount = 0;
+      for (let j = 0; j < this.rowsFinal.length; j++) {
+        if (
+          !this.rowsFinal[j].disableSelect &&
+          this.visibleRows[this.sortedIndexes[j]]
+        ) {
+          selectableCount++;
+        }
+      }
+      if (counter === selectableCount) {
+        this.allSelectedCustom = true;
+      }
+    } else if (this.configFinal.selectAllRows && counter) {
+      let selectableCount = 0;
+      for (let j = 0; j < this.rowsFinal.length; j++) {
+        if (!this.rowsFinal[j].disableSelect) selectableCount++;
+      }
+      if (counter === selectableCount) {
+        this.allSelectedCustom = true;
+      }
     }
 
     if (this.initialSearchTerm) {
@@ -1071,29 +1079,30 @@ export default {
 </script>
 
 <style scoped>
-table.generated-table td {
+/* Rules targeting child component elements need ::v-deep to pierce scoped boundary */
+::v-deep table.generated-table td {
   vertical-align: top;
 }
 
-.generated-cell-element {
+::v-deep .generated-cell-element {
   padding: 0.5rem 0.5rem;
 }
 
-.toggle-cell {
+::v-deep .toggle-cell {
   width: 0;
   white-space: nowrap;
   padding: 0.5rem 0.5rem;
 }
 
-.toggle-cell.invisible > span {
+::v-deep .toggle-cell.invisible > span {
   pointer-events: none;
   opacity: 0;
 }
 
-.cursor-pointer {
+::v-deep .cursor-pointer {
   cursor: pointer;
 }
-.icon-check {
+::v-deep .icon-check {
   padding: 3px;
   position: absolute;
   top: 50%;
@@ -1113,12 +1122,14 @@ table.generated-table td {
   transform: translate3d(-50%, -50%, 0);
 }
 
-.table-wrapper .bg-muted {
+/* Hover/active background — scoped to row elements only, not arbitrary children */
+::v-deep .vue-quintable-row.bg-muted,
+::v-deep .generated-row > td > div.bg-muted {
   background: rgba(0, 0, 0, 0.1);
 }
 
-.table-wrapper .select-th .pretty,
-.table-wrapper .select-td .pretty {
+::v-deep .select-th .pretty,
+::v-deep .select-td .pretty {
   background: #fff;
   margin-right: 0 !important;
   width: 18px;
@@ -1129,32 +1140,32 @@ table.generated-table td {
   background-color: transparent;
 }
 
-.table th {
+::v-deep .table th {
   border-top: none;
 }
 
-.sort-header {
+::v-deep .sort-header {
   cursor: pointer;
   position: relative;
 }
 
-.sort-header:hover {
+::v-deep .sort-header:hover {
   padding-right: 20px !important;
 }
 
-.sort-header.active {
+::v-deep .sort-header.active {
   padding-right: 45px !important;
 }
 
-.sort-header .sorting-icon {
+::v-deep .sort-header .sorting-icon {
   position: absolute;
   right: 5px;
   opacity: 0;
   transition: opacity 0.25s ease-in-out;
 }
 
-.sort-header.active .sorting-icon,
-.sort-header:hover .sorting-icon {
+::v-deep .sort-header.active .sorting-icon,
+::v-deep .sort-header:hover .sorting-icon {
   opacity: 1;
 }
 
@@ -1162,7 +1173,7 @@ table.generated-table td {
   font-size: 3em;
 }
 
-.generated-cell-element-content {
+::v-deep .generated-cell-element-content {
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -1182,15 +1193,15 @@ table.generated-table td {
 /*	background:none;*/
 /*}*/
 
-.generated-row table tr:first-child td {
+::v-deep .generated-row table tr:first-child td {
   border-top: none;
 }
 
-.quintable-sub-table {
+::v-deep .quintable-sub-table {
   text-align: left;
 }
 
-nav.disabled {
+::v-deep nav.disabled {
   pointer-events: none;
   opacity: 0.75;
 }

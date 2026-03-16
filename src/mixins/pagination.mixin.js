@@ -60,9 +60,11 @@ export default {
         return this.ajaxAll;
       }
 
-      return this.filteredRows.filter((item) => {
-        return item;
-      }).length;
+      let count = 0;
+      for (let i = 0; i < this.filteredRows.length; i++) {
+        if (this.filteredRows[i]) count++;
+      }
+      return count;
     },
 
     visiblePages() {

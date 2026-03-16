@@ -19,7 +19,7 @@ export default {
     },
 
     someSelected() {
-      return Object.values(this.selected).filter((x) => x).length > 0;
+      return Object.values(this.selected).some((x) => x);
     },
   },
   watch: {
@@ -56,18 +56,22 @@ export default {
         }
 
         if (!this.configFinal.selectAllRows) {
-          this.allSelectedCustom =
-            counter &&
-            counter ===
-              this.rowsFinal.filter(
-                (x, index) =>
-                  !x.disableSelect &&
-                  this.visibleRows[this.sortedIndexes[index]]
-              ).length;
+          let selectableCount = 0;
+          for (let j = 0; j < this.rowsFinal.length; j++) {
+            if (
+              !this.rowsFinal[j].disableSelect &&
+              this.visibleRows[this.sortedIndexes[j]]
+            ) {
+              selectableCount++;
+            }
+          }
+          this.allSelectedCustom = counter && counter === selectableCount;
         } else {
-          this.allSelectedCustom =
-            counter &&
-            counter === this.rowsFinal.filter((x) => !x.disableSelect).length;
+          let selectableCount = 0;
+          for (let j = 0; j < this.rowsFinal.length; j++) {
+            if (!this.rowsFinal[j].disableSelect) selectableCount++;
+          }
+          this.allSelectedCustom = counter && counter === selectableCount;
         }
       } else {
         this.allSelectedCustom = false;
@@ -131,52 +135,61 @@ export default {
 
       if (value) {
         if (!this.configFinal.selectAllRows) {
-          this.allSelectedCustom =
-            counter &&
-            counter ===
-              this.rowsFinal.filter(
-                (x, index) =>
-                  !x.disableSelect &&
-                  this.visibleRows[this.sortedIndexes[index]]
-              ).length;
+          let selectableCount = 0;
+          for (let j = 0; j < this.rowsFinal.length; j++) {
+            if (
+              !this.rowsFinal[j].disableSelect &&
+              this.visibleRows[this.sortedIndexes[j]]
+            ) {
+              selectableCount++;
+            }
+          }
+          this.allSelectedCustom = counter && counter === selectableCount;
         } else {
-          this.allSelectedCustom =
-            counter &&
-            counter === this.rowsFinal.filter((x) => !x.disableSelect).length;
+          let selectableCount = 0;
+          for (let j = 0; j < this.rowsFinal.length; j++) {
+            if (!this.rowsFinal[j].disableSelect) selectableCount++;
+          }
+          this.allSelectedCustom = counter && counter === selectableCount;
         }
       }
     },
 
     checkListener(bool, index) {
-      let tmp = Object.keys(this.selected)
-        .slice()
-        .map((key) => {
-          return (
-            !!this.selected[key] ||
-            !!(
-              this.rowsFinal[parseInt(key)] &&
-              this.rowsFinal[parseInt(key)].disableSelect
-            )
-          );
-        });
-
-      tmp[index] = !!bool;
+      let allTrue = true;
 
       if (!this.configFinal.selectAllRows) {
-        tmp = tmp.filter((x, index) => this.visibleRowIndexes.includes(index));
-
-        if (tmp.indexOf(false) !== -1) {
-          this.allSelectedProperty = false;
-        } else if (tmp.indexOf(false) === -1) {
-          this.allSelectedProperty = true;
+        for (let j = 0; j < this.visibleRowIndexes.length; j++) {
+          const idx = this.visibleRowIndexes[j];
+          const val =
+            idx === index
+              ? !!bool
+              : !!(
+                  this.selected[idx] ||
+                  (this.rowsFinal[idx] && this.rowsFinal[idx].disableSelect)
+                );
+          if (!val) {
+            allTrue = false;
+            break;
+          }
         }
       } else {
-        if (tmp.indexOf(false) === -1) {
-          this.allSelectedProperty = true;
-        } else {
-          this.allSelectedProperty = false;
+        for (let k = 0; k < this.rowsFinal.length; k++) {
+          const val =
+            k === index
+              ? !!bool
+              : !!(
+                  this.selected[k] ||
+                  (this.rowsFinal[k] && this.rowsFinal[k].disableSelect)
+                );
+          if (!val) {
+            allTrue = false;
+            break;
+          }
         }
       }
+
+      this.allSelectedProperty = allTrue;
     },
 
     resetSelect(accessor) {
@@ -201,8 +214,11 @@ export default {
         );
         const counter = Object.values(this.selected).filter((x) => x).length;
         if (!this.configFinal.selectAllRows) {
-          this.allSelectedCustom =
-            counter && counter === this.visibleRows.filter((x) => x).length;
+          let visibleCount = 0;
+          for (let j = 0; j < this.visibleRows.length; j++) {
+            if (this.visibleRows[j]) visibleCount++;
+          }
+          this.allSelectedCustom = counter && counter === visibleCount;
         } else {
           this.allSelectedCustom = counter && counter === this.rowsFinal.length;
         }

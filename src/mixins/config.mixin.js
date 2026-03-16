@@ -367,7 +367,7 @@ export default {
         columns = this.config.columns;
       }
 
-      return {
+      return Object.freeze({
         headlines: headlines,
         columnClasses: columnClasses,
         sorts: sorts,
@@ -419,7 +419,7 @@ export default {
         requestMethod: requestMethod,
         storeState: storeState,
         ajaxRequestDelay: ajaxRequestDelay,
-      };
+      });
     },
   },
 };
