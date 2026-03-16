@@ -15,6 +15,7 @@ module.exports = {
   rules: {
     "vue/multi-word-component-names": 0,
     "vue/no-unused-components": 0,
+    "vue/no-v-for-template-key": 0,
     "no-console": 0,
     "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
     "no-mixed-spaces-and-tabs": 0, // disable rule

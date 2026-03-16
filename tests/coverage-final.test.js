@@ -246,8 +246,13 @@ describe("Config watcher (line 2915)", () => {
     // Direct watcher call since Vue prop validation prevents non-object
     expect(() => {
       const configWatcher = w.vm.$options.watch.config;
-      const handler = Array.isArray(configWatcher) ? configWatcher[configWatcher.length - 1] : configWatcher;
-      (typeof handler === 'function' ? handler : handler.handler).call(w.vm, "string");
+      const handler = Array.isArray(configWatcher)
+        ? configWatcher[configWatcher.length - 1]
+        : configWatcher;
+      (typeof handler === "function" ? handler : handler.handler).call(
+        w.vm,
+        "string"
+      );
     }).toThrow("config must be an object");
     w.destroy();
   });

@@ -9,7 +9,10 @@ const examples = [
   { value: "SelectExample", label: "Select Example" },
   { value: "CellFormattersExample", label: "Cell Formatters Example" },
   { value: "BreakpointsExample", label: "Breakpoints Example" },
-  { value: "BreakpointsAdvancedExample", label: "Breakpoints Advanced Example" },
+  {
+    value: "BreakpointsAdvancedExample",
+    label: "Breakpoints Advanced Example",
+  },
   { value: "TooltipsExample", label: "Tooltips" },
   { value: "EventsExample", label: "Events Example" },
   { value: "SlotsExample", label: "Slots Example" },
@@ -50,7 +53,7 @@ for (const example of examples) {
     // Chance's Mersenne Twister uses Math.random() when no seed is given.
     await page.addInitScript(() => {
       let state = 42;
-      Math.random = function() {
+      Math.random = function () {
         state = (state * 1103515245 + 12345) & 0x7fffffff;
         return state / 0x7fffffff;
       };
@@ -71,15 +74,12 @@ for (const example of examples) {
 
     // Screenshot the example content area (not the full page to avoid header noise)
     const content = page.locator(".example-content");
-    await expect(content).toHaveScreenshot(
-      `${example.value}.png`,
-      {
-        animations: "disabled",
-        mask: [
-          // Mask any loading spinners
-          page.locator(".ajax-loader"),
-        ],
-      }
-    );
+    await expect(content).toHaveScreenshot(`${example.value}.png`, {
+      animations: "disabled",
+      mask: [
+        // Mask any loading spinners
+        page.locator(".ajax-loader"),
+      ],
+    });
   });
 }

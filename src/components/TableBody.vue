@@ -3,18 +3,18 @@
     @mouseleave="quintable.onMouseleaveTable"
     class="quintable--table-container--table--tbody"
   >
-    <template v-for="rIndex in quintable.visibleRowIndexes">
-      <table-row
-        :r-index="rIndex"
-        :key="
-          'vue-quintable-' +
-          quintable.uuid +
-          '-row-' +
-          rIndex +
-          '-' +
-          quintable.essentialsKey
-        "
-      >
+    <template
+      v-for="rIndex in quintable.visibleRowIndexes"
+      :key="
+        'vue-quintable-' +
+        quintable.uuid +
+        '-row-' +
+        rIndex +
+        '-' +
+        quintable.essentialsKey
+      "
+    >
+      <table-row :r-index="rIndex">
         <template
           v-if="$scopedSlots['cell-complete']"
           v-slot:cell-complete="{ cell }"
@@ -34,14 +34,6 @@
           quintable.visibleRows[rIndex]
         "
         :r-index="rIndex"
-        :key="
-          'generated-row-' +
-          rIndex +
-          '-' +
-          quintable.essentialsKey +
-          '-' +
-          quintable.generatedUpdatedKey
-        "
       >
         <template
           v-if="$scopedSlots['generated-cell-complete']"
