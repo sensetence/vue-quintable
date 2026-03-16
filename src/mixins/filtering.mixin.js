@@ -168,12 +168,9 @@ export default {
               relation: this.configFinal.filterRelation,
             };
 
-            for (let filter in this.filtersFinal) {
-              if (
-                Object.prototype.hasOwnProperty.call(this.filtersFinal, filter)
-              ) {
-                group.items.push({ name: filter });
-              }
+            const filterKeys = Object.keys(this.filtersFinal);
+            for (let fk = 0; fk < filterKeys.length; fk++) {
+              group.items.push({ name: filterKeys[fk] });
             }
 
             match = this.doFilteringForGroup(

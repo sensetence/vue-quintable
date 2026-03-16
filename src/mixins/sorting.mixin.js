@@ -13,12 +13,9 @@ export default {
     sortingColumns() {
       let columns = {};
 
-      for (let index in this.currentSortIndexes) {
-        if (
-          Object.prototype.hasOwnProperty.call(this.currentSortIndexes, index)
-        ) {
-          columns[index] = this.configFinal.columns[index];
-        }
+      const keys = Object.keys(this.currentSortIndexes);
+      for (let k = 0; k < keys.length; k++) {
+        columns[keys[k]] = this.configFinal.columns[keys[k]];
       }
 
       return columns;
@@ -35,16 +32,11 @@ export default {
       if (!val && Object.keys(this.currentSortIndexes).length > 1) {
         let currentItem;
         let currentIndex;
-        for (let index in this.currentSortIndexes) {
-          if (
-            Object.prototype.hasOwnProperty.call(
-              this.currentSortIndexes,
-              index
-            ) &&
-            this.currentSortIndexes[index].order === 0
-          ) {
-            currentItem = this.currentSortIndexes[index];
-            currentIndex = index;
+        const keys = Object.keys(this.currentSortIndexes);
+        for (let k = 0; k < keys.length; k++) {
+          if (this.currentSortIndexes[keys[k]].order === 0) {
+            currentItem = this.currentSortIndexes[keys[k]];
+            currentIndex = keys[k];
             break;
           }
         }
@@ -72,14 +64,13 @@ export default {
   },
   methods: {
     removeSort(index) {
-      for (let i in this.currentSortIndexes) {
-        if (Object.prototype.hasOwnProperty.call(this.currentSortIndexes, i)) {
-          let item = this.currentSortIndexes[i];
-          if (item.order > this.currentSortIndexes[index].order) {
-            item.order--;
-          }
-          this.$set(this.currentSortIndexes, i, item);
+      const keys = Object.keys(this.currentSortIndexes);
+      for (let k = 0; k < keys.length; k++) {
+        let item = this.currentSortIndexes[keys[k]];
+        if (item.order > this.currentSortIndexes[index].order) {
+          item.order--;
         }
+        this.$set(this.currentSortIndexes, keys[k], item);
       }
       this.$delete(this.currentSortIndexes, index);
 
@@ -202,14 +193,11 @@ export default {
       }
 
       let sortableIndexes = [];
-      for (let index in this.currentSortIndexes) {
-        if (
-          Object.prototype.hasOwnProperty.call(this.currentSortIndexes, index)
-        ) {
-          let data = this.currentSortIndexes[index];
-          data.index = index;
-          sortableIndexes.push(data);
-        }
+      const csKeys = Object.keys(this.currentSortIndexes);
+      for (let k = 0; k < csKeys.length; k++) {
+        let data = this.currentSortIndexes[csKeys[k]];
+        data.index = csKeys[k];
+        sortableIndexes.push(data);
       }
 
       sortableIndexes.sort(function (a, b) {

@@ -432,8 +432,9 @@ describe("Debug filter group logging (lines 3547-3562)", () => {
 
 describe("localStorage exception handling (lines 1586-1589)", () => {
   it("storeState disabled when localStorage throws", async () => {
-    const { _resetLocalStorageCache } =
-      await import("../src/mixins/config.mixin.js");
+    const { _resetLocalStorageCache } = await import(
+      "../src/mixins/config.mixin.js"
+    );
     _resetLocalStorageCache();
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     const origSetItem = Storage.prototype.setItem;

@@ -328,7 +328,9 @@ describe("Lifecycle hooks", () => {
       config: { columns: [{ headline: "A" }, { headline: "B" }] },
     });
     expect(w.vm._sharedBP).toBeTruthy();
-    expect(w.vm._sharedBP._subscribers.has(w.vm._onBreakpointChange)).toBe(true);
+    expect(w.vm._sharedBP._subscribers.has(w.vm._onBreakpointChange)).toBe(
+      true
+    );
     w.destroy();
   });
 

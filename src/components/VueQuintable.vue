@@ -274,29 +274,24 @@ export default {
       if (!this.configFinal.ajaxUrl && this.currentRowsPerPage !== "All") {
         let visible = new Array(this.rowsFinal.length).fill(false);
 
-        let onlyVisibleSortedRows = {};
+        let onlyVisibleKeys = [];
+        let onlyVisibleValues = [];
 
-        for (let index in this.sortedIndexes) {
-          if (Object.prototype.hasOwnProperty.call(this.sortedIndexes, index)) {
-            if (this.filteredRows[this.sortedIndexes[index]]) {
-              onlyVisibleSortedRows[index] = this.sortedIndexes[index];
-            }
+        const sortedKeys = Object.keys(this.sortedIndexes);
+        for (let k = 0; k < sortedKeys.length; k++) {
+          const val = this.sortedIndexes[sortedKeys[k]];
+          if (this.filteredRows[val]) {
+            onlyVisibleKeys.push(sortedKeys[k]);
+            onlyVisibleValues.push(val);
           }
         }
 
         let borderHigh = this.currentPage * this.currentRowsPerPage;
         let borderLow = borderHigh - this.currentRowsPerPage;
 
-        let counter = 0;
-        for (let index in onlyVisibleSortedRows) {
-          if (
-            Object.prototype.hasOwnProperty.call(onlyVisibleSortedRows, index)
-          ) {
-            index = parseInt(index);
-            if (counter < borderHigh && counter >= borderLow) {
-              visible[onlyVisibleSortedRows[index]] = true;
-            }
-            counter++;
+        for (let k = 0; k < onlyVisibleValues.length; k++) {
+          if (k < borderHigh && k >= borderLow) {
+            visible[onlyVisibleValues[k]] = true;
           }
         }
 
@@ -313,11 +308,11 @@ export default {
           rows.push(i);
         }
       } else {
-        for (let i in this.sortedIndexes) {
-          if (Object.prototype.hasOwnProperty.call(this.sortedIndexes, i)) {
-            if (this.visibleRows[this.sortedIndexes[i]]) {
-              rows.push(this.sortedIndexes[i]);
-            }
+        const keys = Object.keys(this.sortedIndexes);
+        for (let k = 0; k < keys.length; k++) {
+          const val = this.sortedIndexes[keys[k]];
+          if (this.visibleRows[val]) {
+            rows.push(val);
           }
         }
       }
@@ -325,8 +320,12 @@ export default {
     },
 
     // Pre-compute per-column whether it matches any hidden breakpoint
+    _hiddenBreakpointSet() {
+      return Object.freeze(new Set(this.hiddenBreakpoints));
+    },
+
     _colBreakpointMatch() {
-      const bpSet = new Set(this.hiddenBreakpoints);
+      const bpSet = this._hiddenBreakpointSet;
       return Object.freeze(
         this.configFinal.columns.map((col) => {
           if (!col || !col.breakpoint) return false;
@@ -589,7 +588,7 @@ export default {
     },
 
     showHeadlines() {
-      const bpSet = new Set(this.hiddenBreakpoints);
+      const bpSet = this._hiddenBreakpointSet;
       let shows = [];
 
       for (let i = 0; i < this.configFinal.number; i++) {
@@ -625,7 +624,7 @@ export default {
           ignoredCol ||
           (ignore === "none" && sort) ||
           (ignore === "active" &&
-            Object.keys(this.currentSortIndexes).includes(i + ""))
+            Object.prototype.hasOwnProperty.call(this.currentSortIndexes, i))
         ) {
           cols[i] = false;
         } else {
