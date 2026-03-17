@@ -105,4 +105,9 @@ typings/
 .tern-port
 
 #Demo HTML
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
 dist/demo.html

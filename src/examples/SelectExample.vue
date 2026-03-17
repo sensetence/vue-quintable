@@ -186,7 +186,6 @@ export default {
         pagination: 8,
         selectAllRows: this.selectAllRows,
         enableRowTabIndex: true,
-        search: true,
       };
     },
     rows() {

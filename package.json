@@ -1,13 +1,17 @@
 {
   "name": "@sensetence/vue-quintable",
-  "version": "2.3.31",
+  "version": "2.4.0",
   "private": false,
   "scripts": {
     "dev": "vite --config vite.build.config.js",
     "build": "vite build --config vite.build.config.js",
     "prod-local": "vite build --config vite.pack.config.js",
     "prod": "node ./pack.js",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "npx playwright test",
+    "test:e2e:update": "npx playwright test --update-snapshots"
   },
   "main": "./dist/vue-quintable.umd.js",
   "module": "./dist/vue-quintable.es.js",
@@ -37,9 +41,12 @@
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
+    "@playwright/test": "^1.58.2",
     "@popperjs/core": "^2.9.3",
     "@vitejs/plugin-basic-ssl": "^1.0.1",
     "@vitejs/plugin-vue2": "^2.2.0",
+    "@vitest/coverage-v8": "^4.1.0",
+    "@vue/test-utils": "1",
     "autoprefixer": "^10.4.13",
     "bootstrap": "^5.1.0",
     "chance": "^1.1.7",
@@ -48,6 +55,8 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^9.4.0",
+    "flush-promises": "^1.0.2",
+    "jsdom": "^28.1.0",
     "moment-timezone": "^0.5.35",
     "node-gyp": "^6.1.0",
     "prettier": "2.3.1",
@@ -59,6 +68,7 @@
     "vite-plugin-commonjs": "^0.6.1",
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-rewrite-all": "^1.0.1",
+    "vitest": "^4.1.0",
     "vue-template-compiler": "^2.7.14"
   },
   "homepage": "https://sensetence.com/vue-quintable/",

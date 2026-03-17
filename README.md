@@ -118,8 +118,9 @@ You can define some slots to customize the table as you want to.
 
 - header | used for content above the table
 - before-search | used for content before the search bar
+- search | custom search input, receives scoped props: `value`, `loading`, `setSearchQuery`, `placeholder`, `search-class`
 - after-search | used for content after the search bar
-- after-search-container | used for content before the search bar container
+- after-search-container | used for content after the search bar container
 - footer | used for content below the table
 - no-results | used for placeholder if there are no table entries due to filtering etc.
 - loading | custom loader
@@ -171,23 +172,33 @@ Add listeners for the following events to handle them as you want to.
 
 - click:cell | passes cell as first parameter, triggered when cell is clicked
 
-- expand:row | passes row as first parameter, triggered when row is expanded
+- auxclick:row | passes row as first parameter, triggered when row is middle-clicked
 
-- collapse:row | passes row as first  parameter, triggered when row is collapsed
+- auxclick:cell | passes cell as first parameter, triggered when cell is middle-clicked
+
+- expand:row | passes row as first parameter, triggered when row is expanded or collapsed. The second parameter indicates the action: `"expand:row"` or `"collapse:row"`. The third parameter is the row index.
 
 - filtered:rows | passes filtered rows as first parameter, triggered when filter or search query affect rows
 
 - ajax:rows | passes an object with ajax rows and total count as first parameter, triggered when rows are updated from server
 
-- ajax:error | passes an error as first parameter, triggered when an server error occurs while loading rows via ajax 
+- ajax:error | passes an error as first parameter, triggered when a server error occurs while loading rows via ajax
 
-- update:perPage | passes integer as first parameter, triggered when per page parameter changes
+- update:rows-per-page | passes integer as first parameter, triggered when per page parameter changes
 
 - update:page | passes integer as first parameter, triggered when page is changed
 
 - update:search | passes string as first parameter, triggered when search query is entered
 
 - update:sort | passes object of sort group as first parameter, triggered when sort order is active/changes
+
+- update:filters | passes filters object as first parameter, triggered when filters change
+
+- update:selected-rows | passes array of selected rows, triggered when row selection changes
+
+- change:breakpoints | passes hidden breakpoints, triggered when responsive breakpoints change
+
+- hover:row | passes row as first parameter, triggered when row is hovered
 
 - component:event | generic event for passing data from child component
 
@@ -217,6 +228,10 @@ The following will give you an overview how to configure the VueQuintable for yo
 | identifier        | String   | no                          | Default is null, for nested tables default is a random string. Use for slots of nested tables                                                                                                                                                                                                                                                               |
 | initialSearchTerm | String   | no                          | Default is null, initial search term if search is enabled                                                                                                                                                                                                                                                                                                   |
 | nested            | Boolean  | no                          | Default is false, use it if a quintable is nested inside a slot                                                                                                                                                                                                                                                                                             |
+| loading           | Boolean  | no                          | Default is false. Set to true to display a loading state for the table.                                                                                                                                                                                                                                                                                     |
+| selectedRows      | Array    | no                          | Array of selected rows. Can be used with `.sync` modifier for two-way binding.                                                                                                                                                                                                                                                                              |
+| value             | Array    | no                          | Array of selected rows for `v-model` binding. Alternative to `selectedRows`.                                                                                                                                                                                                                                                                                |
+| tableClasses      | String   | no                          | Additional CSS classes to apply to the table element.                                                                                                                                                                                                                                                                                                       |
 
 #### Property *config* properties
 
@@ -249,7 +264,7 @@ The following will give you an overview how to configure the VueQuintable for yo
 | searchPlaceholder             | String                          | no       | *search* is enabled                                                         | Placeholder if no search query is entered                                                                                                                                                                                                                         | "Search..."      | "Search rows..."                      |
 | searchContainerClass          | String                          | no       | *search* is enabled                                                         | CSS class for search container                                                                                                                                                                                                                                    | "row"            | "container-class"                            |
 | searchClass                   | String                          | no       | *search* is enabled                                                         | CSS class for search input wrapper                                                                                                                                                                                                                                | "col-12"         | "col-md-8"                            |
-| emptyPlaceholder              | String                          | no       | *search* is enabled or *filters* are set                                    | Placeholder if filtering rows has no results.                                                                                                                                                                                                                     | "No rows"        | "No results"                          |
+| emptyPlaceholder              | String                          | no       | *search* is enabled or *filters* are set                                    | Placeholder if filtering rows has no results.                                                                                                                                                                                                                     | "No rows..."     | "No results"                          |
 | filterRelation                | String{"OR"\|"AND"}             | no       | *filters* are set                                                           | Filter relation, if no filter group affected                                                                                                                                                                                                                      | "AND"            | "OR"                                  |
 | filterGroupRelation           | String{"OR"\|"AND"}             | no       | *filters* are set                                                           | Default relation filter groups to each other                                                                                                                                                                                                                      | "AND"            | "OR"                                  |
 | multiSort                     | Boolean                         | no       | *sort* is enabled on at least one column                                    | If set to true multi-key sorting is enabled                                                                                                                                                                                                                       | false            | true                                  |
@@ -262,6 +277,8 @@ The following will give you an overview how to configure the VueQuintable for yo
 | requestMethod                 | String{"GET"\|"POST"}             | no       | *ajaxUrl* is set                                                            | Request method for ajax request                                                                                                                                                                                                                                   | "GET"            | "POST" |
 | storeState                    | Boolean | no | *identifier* is set                                                         | Store table state in local storage to have persistent table when reload page                                                                                                                                                                                      | false | true |
 | ajaxRequestDelay              | Integer | no | *ajaxUrl* is set                                                            | Delay for ajax search requests in milliseconds                                                                                                                                                                                                                    | 250 | 100 |
+| useFuzzySearch                | Boolean | no | *search* is enabled                                                         | If set to true, fuzzy search matching will be used instead of exact matching                                                                                                                                                                                      | false | true |
+| keepSelect                    | Boolean | no | *select* is enabled                                                         | If set to true, row selection state is preserved when rows are filtered or searched                                                                                                                                                                               | false | true |
 
 ##### Property *columns* for property *config* properties
 
@@ -668,8 +685,8 @@ The response has to be the following structure:
 ### Good to know
 
 - Links won't trigger expanded rows to collapse. Also you can prevent collapse parent row by define an element with the class "prevent-toggle"
-- VueQuintable uses v-model for selected rows, its also possible to use selected.sync (best practice)
-- If you use the storeState property, filters have to be updated vie filters.sync
+- VueQuintable uses v-model for selected rows, it's also possible to use `selected-rows.sync` (best practice)
+- If you use the storeState property, filters have to be updated via `filters.sync`
 
 ## License
 
