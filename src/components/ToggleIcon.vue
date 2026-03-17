@@ -1,17 +1,24 @@
-<template>
-  <span v-if="hasHidden">
-    <span v-if="!expanded"
-      ><font-awesome-icon fixed-width :icon="collapsedIcon"></font-awesome-icon
-    ></span>
-    <span v-else
-      ><font-awesome-icon fixed-width :icon="expandedIcon"></font-awesome-icon
-    ></span>
+<template functional>
+  <span v-if="props.hasHidden">
+    <span v-if="!props.expanded">
+      <font-awesome-icon
+        fixed-width
+        :icon="props.collapsedIcon"
+      ></font-awesome-icon>
+    </span>
+    <span v-else>
+      <font-awesome-icon
+        fixed-width
+        :icon="props.expandedIcon"
+      ></font-awesome-icon>
+    </span>
   </span>
 </template>
 
 <script>
 export default {
   name: "ToggleIcon",
+  functional: true,
   props: {
     hasHidden: { type: Boolean, default: false },
     expanded: { type: Boolean, default: false },

@@ -125,6 +125,11 @@ export default {
     },
 
     onMouseleaveTable() {
+      const hoverClass = this.configFinal.hoverClass;
+      if (hoverClass && this._lastHoveredEl) {
+        this._lastHoveredEl.classList.remove(hoverClass);
+        this._lastHoveredEl = null;
+      }
       this.hoveredRow = null;
     },
   },

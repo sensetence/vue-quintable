@@ -81,13 +81,13 @@ export default {
     selected: {
       handler(val) {
         let selected = [];
-        const keys = Object.keys(this.sortedIndexes);
-        for (let k = 0; k < keys.length; k++) {
-          const si = this.sortedIndexes[keys[k]];
-          if (val[si]) {
-            const row = this.rowsFinal[si];
-            if (row && !row.disableSelect) {
-              selected.push(row);
+        for (let index in this.sortedIndexes) {
+          if (Object.prototype.hasOwnProperty.call(this.sortedIndexes, index)) {
+            if (val[this.sortedIndexes[index]]) {
+              const row = this.rowsFinal[this.sortedIndexes[index]];
+              if (row && !row.disableSelect) {
+                selected.push(row);
+              }
             }
           }
         }
@@ -115,18 +115,21 @@ export default {
 
       let counter = 0;
 
-      const keys = Object.keys(this.sortedIndexes);
-      for (let k = 0; k < keys.length; k++) {
-        const si = this.sortedIndexes[keys[k]];
-        if (
-          !this.rowsFinal[si].disableSelect &&
-          ((!this.configFinal.selectAllRows && this.visibleRows[si]) ||
-            (this.configFinal.selectAllRows && this.filteredRows[si]))
-        ) {
-          this.$set(this.selected, si, value);
-          counter++;
-        } else {
-          this.$set(this.selected, si, false);
+      for (let index in this.sortedIndexes) {
+        if (Object.prototype.hasOwnProperty.call(this.sortedIndexes, index)) {
+          index = parseInt(index);
+          if (
+            !this.rowsFinal[this.sortedIndexes[index]].disableSelect &&
+            ((!this.configFinal.selectAllRows &&
+              this.visibleRows[this.sortedIndexes[index]]) ||
+              (this.configFinal.selectAllRows &&
+                this.filteredRows[this.sortedIndexes[index]]))
+          ) {
+            this.$set(this.selected, this.sortedIndexes[index], value);
+            counter++;
+          } else {
+            this.$set(this.selected, this.sortedIndexes[index], false);
+          }
         }
       }
 

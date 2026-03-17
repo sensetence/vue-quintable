@@ -65,14 +65,51 @@
             v-else
             ><wbr
           /></span>
-          <sort-indicator
-            :sort-enabled="!!quintable.configFinal.sorts[hIndex]"
-            :sort-info="quintable.currentSortIndexes[hIndex] || null"
-            :number-of-sorts="quintable.numberOfSorts"
-            :column-index="hIndex"
-            wrapper-class="sorting-icon ms-2 quintable--table-container--table--header-row--th--sorting-icon"
-            @remove-sort="quintable.removeSort($event)"
-          />
+          <span
+            class="
+              sorting-icon
+              ms-2
+              quintable--table-container--table--header-row--th--sorting-icon
+            "
+            v-if="!!quintable.configFinal.sorts[hIndex]"
+          >
+            <font-awesome-icon
+              v-if="!quintable.currentSortIndexes[hIndex]"
+              icon="sort"
+              class="text-primary"
+            />
+            <font-awesome-icon
+              v-if="
+                quintable.currentSortIndexes[hIndex] &&
+                quintable.currentSortIndexes[hIndex].asc
+              "
+              icon="sort-amount-down-alt"
+              class="text-primary"
+            />
+            <font-awesome-icon
+              v-if="
+                quintable.currentSortIndexes[hIndex] &&
+                !quintable.currentSortIndexes[hIndex].asc
+              "
+              icon="sort-amount-down"
+              class="text-primary"
+            />
+            <span
+              v-if="quintable.currentSortIndexes[hIndex]"
+              @click.stop.prevent="quintable.removeSort(hIndex)"
+              class="ms-1 text-muted"
+            >
+              <span
+                class="badge bg-info text-white"
+                v-if="quintable.numberOfSorts > 1"
+              >
+                {{ quintable.currentSortIndexes[hIndex].order + 1 }}
+              </span>
+              <small v-else>
+                <font-awesome-icon icon="times" />
+              </small>
+            </span>
+          </span>
         </th>
       </template>
       <th
@@ -104,12 +141,11 @@
 
 <script>
 import SelectCheckbox from "./SelectCheckbox.vue";
-import SortIndicator from "./SortIndicator.vue";
 
 export default {
   name: "TableHeader",
   inject: ["quintable"],
-  components: { SelectCheckbox, SortIndicator },
+  components: { SelectCheckbox },
   methods: {
     isColumnVisible(hIndex) {
       return this.quintable.cellVisible[hIndex];

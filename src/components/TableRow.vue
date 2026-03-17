@@ -24,12 +24,20 @@
       "
       v-if="quintable.hasGeneratedRows && !quintable.configFinal.hideRowToggle"
     >
-      <toggle-icon
-        :has-hidden="quintable.hiddenColumns[rIndex] > 0"
-        :expanded="!!quintable.openRows[rIndex]"
-        :collapsed-icon="quintable.configFinal.collapsedRowIcon"
-        :expanded-icon="quintable.configFinal.expandedRowIcon"
-      />
+      <span v-if="quintable.hiddenColumns[rIndex] > 0">
+        <span v-if="!quintable.openRows[rIndex]">
+          <font-awesome-icon
+            fixed-width
+            :icon="quintable.configFinal.collapsedRowIcon"
+          ></font-awesome-icon>
+        </span>
+        <span v-else>
+          <font-awesome-icon
+            fixed-width
+            :icon="quintable.configFinal.expandedRowIcon"
+          ></font-awesome-icon>
+        </span>
+      </span>
     </td>
     <td
       v-if="
@@ -67,33 +75,67 @@
           content: cell.tooltip,
           trigger: cell.tooltip ? 'hover' : 'manual',
         }"
-        :class="
-          quintable.cellClassesParsed[rIndex][cIndex] +
-          ' ' +
-          quintable.configFinal.columnClasses[cIndex]
-        "
-        v-if="quintable.cellVisible[cIndex] && cell"
+        :class="cellClasses[cIndex] + ' ' + columnClasses[cIndex]"
+        v-if="cellVisibility[cIndex] && cell"
         @click="quintable.onCellClick($event, cell)"
         @auxclick="quintable.onCellAuxClick($event, cell)"
         @mousedown="quintable.onCellMousedown($event)"
-        :key="
-          'vue-quintable-' + quintable.uuid + '-cell-' + rIndex + '-' + cIndex
-        "
-        :id="
-          'vue-quintable-' + quintable.uuid + '-cell-' + rIndex + '-' + cIndex
-        "
+        :key="cellKeyPrefix + cIndex"
+        :id="cellKeyPrefix + cIndex"
       >
-        <cell-content
-          :cell="cell"
-          :c-index="cIndex"
-          class-prefix="quintable--table-container--table--tbody--row--cell--inner-cell"
-        >
-          <template v-slot:default="{ cell: slotCell }">
-            <slot name="cell-complete" :cell="slotCell">
-              <slot name="cell-content" :cell="slotCell" />
-            </slot>
-          </template>
-        </cell-content>
+        <slot name="cell-complete" :cell="cell">
+          <slot name="cell-content" :cell="cell">
+            <div
+              class="
+                cell-inner
+                quintable--table-container--table--tbody--row--cell--inner-cell--formatted-html
+              "
+              v-if="
+                formattedCells[cIndex] && formattedCells[cIndex].type === 'html'
+              "
+              v-html="formattedCells[cIndex].value"
+            ></div>
+            <div
+              class="
+                cell-inner
+                quintable--table-container--table--tbody--row--cell--inner-cell--formatted-value
+              "
+              v-else-if="formattedCells[cIndex]"
+            >
+              {{ formattedCells[cIndex].value }}
+            </div>
+            <div
+              class="
+                cell-inner
+                quintable--table-container--table--tbody--row--cell--inner-cell--html
+              "
+              v-else-if="cell.html != null && String(cell.html) !== ''"
+              v-html="cell.html"
+            ></div>
+            <div
+              class="
+                cell-inner
+                quintable--table-container--table--tbody--row--cell--inner-cell--component
+              "
+              v-else-if="cell.component"
+            >
+              <component
+                :is="cell.component.name"
+                v-bind="cell.component.props"
+                @action="quintable.handleComponentEvent"
+              ></component>
+            </div>
+            <div
+              class="
+                cell-inner
+                quintable--table-container--table--tbody--row--cell--inner-cell--text
+              "
+              v-else-if="cell.text != null && String(cell.text) !== ''"
+            >
+              {{ cell.text }}
+            </div>
+          </slot>
+        </slot>
       </td>
     </template>
 
@@ -125,14 +167,12 @@
 </template>
 
 <script>
-import CellContent from "./CellContent.vue";
 import SelectCheckbox from "./SelectCheckbox.vue";
-import ToggleIcon from "./ToggleIcon.vue";
 
 export default {
   name: "TableRow",
   inject: ["quintable"],
-  components: { CellContent, SelectCheckbox, ToggleIcon },
+  components: { SelectCheckbox },
   props: {
     rIndex: {
       type: Number,
@@ -146,6 +186,31 @@ export default {
     cells() {
       if (!this.row) return [];
       return this.row.cells ? this.row.cells : this.row;
+    },
+    cellClasses() {
+      return this.quintable.cellClassesParsed[this.rIndex] || [];
+    },
+    columnClasses() {
+      return this.quintable.configFinal.columnClasses;
+    },
+    cellVisibility() {
+      return this.quintable.cellVisible;
+    },
+    cellKeyPrefix() {
+      return (
+        "vue-quintable-" + this.quintable.uuid + "-cell-" + this.rIndex + "-"
+      );
+    },
+    formattedCells() {
+      const result = {};
+      const cols = this.quintable.configFinal.columns;
+      const cells = this.cells;
+      for (let i = 0; i < cells.length; i++) {
+        if (cols[i] && cols[i].cellFormatter) {
+          result[i] = this.quintable.cellFormatters(i, cells[i]);
+        }
+      }
+      return result;
     },
     dynamicClasses() {
       const cls = [];

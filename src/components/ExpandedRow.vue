@@ -49,12 +49,20 @@
                 v-if="quintable.openRows[rIndex]"
               >
                 <td v-if="showToggleCell" class="toggle-cell invisible">
-                  <toggle-icon
-                    :has-hidden="quintable.hiddenColumns[rIndex] > 0"
-                    :expanded="!!quintable.openRows[rIndex]"
-                    :collapsed-icon="quintable.configFinal.collapsedRowIcon"
-                    :expanded-icon="quintable.configFinal.expandedRowIcon"
-                  />
+                  <span v-if="quintable.hiddenColumns[rIndex] > 0">
+                    <span v-if="!quintable.openRows[rIndex]">
+                      <font-awesome-icon
+                        fixed-width
+                        :icon="quintable.configFinal.collapsedRowIcon"
+                      ></font-awesome-icon>
+                    </span>
+                    <span v-else>
+                      <font-awesome-icon
+                        fixed-width
+                        :icon="quintable.configFinal.expandedRowIcon"
+                      ></font-awesome-icon>
+                    </span>
+                  </span>
                 </td>
                 <td
                   class="
@@ -75,15 +83,53 @@
                   </strong>
                   <span v-else class="headline"><wbr /></span>
 
-                  <sort-indicator
+                  <span
+                    class="
+                      sorting-icon
+                      ms-2
+                      cursor-pointer
+                      quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon
+                    "
+                    v-if="!!quintable.configFinal.sorts[cIndex]"
                     v-show="quintable.hoveredRow === rIndex"
-                    :sort-enabled="!!quintable.configFinal.sorts[cIndex]"
-                    :sort-info="quintable.currentSortIndexes[cIndex] || null"
-                    :number-of-sorts="quintable.numberOfSorts"
-                    :column-index="cIndex"
-                    wrapper-class="sorting-icon ms-2 cursor-pointer quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon"
-                    @remove-sort="quintable.removeSort($event)"
-                  />
+                  >
+                    <font-awesome-icon
+                      v-if="!quintable.currentSortIndexes[cIndex]"
+                      icon="sort"
+                      class="text-primary"
+                    />
+                    <font-awesome-icon
+                      v-if="
+                        quintable.currentSortIndexes[cIndex] &&
+                        quintable.currentSortIndexes[cIndex].asc
+                      "
+                      icon="sort-amount-down-alt"
+                      class="text-primary"
+                    />
+                    <font-awesome-icon
+                      v-if="
+                        quintable.currentSortIndexes[cIndex] &&
+                        !quintable.currentSortIndexes[cIndex].asc
+                      "
+                      icon="sort-amount-down"
+                      class="text-primary"
+                    />
+                    <span
+                      v-if="quintable.currentSortIndexes[cIndex]"
+                      @click.stop.prevent="quintable.removeSort(cIndex)"
+                      class="ms-1 text-muted"
+                    >
+                      <span
+                        class="badge bg-info text-white"
+                        v-if="quintable.numberOfSorts > 1"
+                      >
+                        {{ quintable.currentSortIndexes[cIndex].order + 1 }}
+                      </span>
+                      <small v-else>
+                        <font-awesome-icon icon="times" />
+                      </small>
+                    </span>
+                  </span>
                 </td>
                 <td
                   :colspan="
@@ -110,17 +156,64 @@
                     trigger: cell.tooltip ? 'hover' : 'manual',
                   }"
                 >
-                  <cell-content
-                    :cell="cell"
-                    :c-index="cIndex"
-                    class-prefix="quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner"
-                  >
-                    <template v-slot:default="{ cell: slotCell }">
-                      <slot name="generated-cell-complete" :cell="slotCell">
-                        <slot name="generated-cell-content" :cell="slotCell" />
-                      </slot>
-                    </template>
-                  </cell-content>
+                  <slot name="generated-cell-complete" :cell="cell">
+                    <slot name="generated-cell-content" :cell="cell">
+                      <div
+                        class="
+                          cell-inner
+                          quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-html
+                        "
+                        v-if="
+                          formattedGenerated[cIndex] &&
+                          formattedGenerated[cIndex].type === 'html'
+                        "
+                        v-html="formattedGenerated[cIndex].value"
+                      ></div>
+                      <div
+                        class="
+                          cell-inner
+                          quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-value
+                        "
+                        v-else-if="formattedGenerated[cIndex]"
+                      >
+                        {{ formattedGenerated[cIndex].value }}
+                      </div>
+                      <div
+                        class="
+                          cell-inner
+                          quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--html
+                        "
+                        v-else-if="
+                          cell.html != null && String(cell.html) !== ''
+                        "
+                        v-html="cell.html"
+                      ></div>
+                      <div
+                        class="
+                          cell-inner
+                          quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--component
+                        "
+                        v-else-if="cell.component"
+                      >
+                        <component
+                          :is="cell.component.name"
+                          v-bind="cell.component.props"
+                          @action="quintable.handleComponentEvent"
+                        ></component>
+                      </div>
+                      <div
+                        class="
+                          cell-inner
+                          quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--text
+                        "
+                        v-else-if="
+                          cell.text != null && String(cell.text) !== ''
+                        "
+                      >
+                        {{ cell.text }}
+                      </div>
+                    </slot>
+                  </slot>
                 </td>
               </tr>
             </template>
@@ -148,12 +241,20 @@
               "
             >
               <td v-if="showToggleCell" class="toggle-cell invisible">
-                <toggle-icon
-                  :has-hidden="quintable.hiddenColumns[rIndex] > 0"
-                  :expanded="!!quintable.openRows[rIndex]"
-                  :collapsed-icon="quintable.configFinal.collapsedRowIcon"
-                  :expanded-icon="quintable.configFinal.expandedRowIcon"
-                />
+                <span v-if="quintable.hiddenColumns[rIndex] > 0">
+                  <span v-if="!quintable.openRows[rIndex]">
+                    <font-awesome-icon
+                      fixed-width
+                      :icon="quintable.configFinal.collapsedRowIcon"
+                    ></font-awesome-icon>
+                  </span>
+                  <span v-else>
+                    <font-awesome-icon
+                      fixed-width
+                      :icon="quintable.configFinal.expandedRowIcon"
+                    ></font-awesome-icon>
+                  </span>
+                </span>
               </td>
               <td
                 class="
@@ -175,15 +276,53 @@
                 </strong>
                 <span v-else class="headline"><wbr /></span>
 
-                <sort-indicator
+                <span
+                  class="
+                    sorting-icon
+                    ms-2
+                    cursor-pointer
+                    quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon
+                  "
+                  v-if="!!quintable.configFinal.sorts[cIndex]"
                   v-show="quintable.hoveredRow === rIndex"
-                  :sort-enabled="!!quintable.configFinal.sorts[cIndex]"
-                  :sort-info="quintable.currentSortIndexes[cIndex] || null"
-                  :number-of-sorts="quintable.numberOfSorts"
-                  :column-index="cIndex"
-                  wrapper-class="sorting-icon ms-2 cursor-pointer quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon"
-                  @remove-sort="quintable.removeSort($event)"
-                />
+                >
+                  <font-awesome-icon
+                    v-if="!quintable.currentSortIndexes[cIndex]"
+                    icon="sort"
+                    class="text-primary"
+                  />
+                  <font-awesome-icon
+                    v-if="
+                      quintable.currentSortIndexes[cIndex] &&
+                      quintable.currentSortIndexes[cIndex].asc
+                    "
+                    icon="sort-amount-down-alt"
+                    class="text-primary"
+                  />
+                  <font-awesome-icon
+                    v-if="
+                      quintable.currentSortIndexes[cIndex] &&
+                      !quintable.currentSortIndexes[cIndex].asc
+                    "
+                    icon="sort-amount-down"
+                    class="text-primary"
+                  />
+                  <span
+                    v-if="quintable.currentSortIndexes[cIndex]"
+                    @click.stop.prevent="quintable.removeSort(cIndex)"
+                    class="ms-1 text-muted"
+                  >
+                    <span
+                      class="badge bg-info text-white"
+                      v-if="quintable.numberOfSorts > 1"
+                    >
+                      {{ quintable.currentSortIndexes[cIndex].order + 1 }}
+                    </span>
+                    <small v-else>
+                      <font-awesome-icon icon="times" />
+                    </small>
+                  </span>
+                </span>
               </td>
 
               <td
@@ -210,17 +349,60 @@
                   trigger: cell.tooltip ? 'hover' : 'manual',
                 }"
               >
-                <cell-content
-                  :cell="cell"
-                  :c-index="cIndex"
-                  class-prefix="quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner"
-                >
-                  <template v-slot:default="{ cell: slotCell }">
-                    <slot name="sticky-cell-complete" :cell="slotCell">
-                      <slot name="sticky-cell-content" :cell="slotCell" />
-                    </slot>
-                  </template>
-                </cell-content>
+                <slot name="sticky-cell-complete" :cell="cell">
+                  <slot name="sticky-cell-content" :cell="cell">
+                    <div
+                      class="
+                        cell-inner
+                        quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--formatted-html
+                      "
+                      v-if="
+                        formattedSticky[cIndex] &&
+                        formattedSticky[cIndex].type === 'html'
+                      "
+                      v-html="formattedSticky[cIndex].value"
+                    ></div>
+                    <div
+                      class="
+                        cell-inner
+                        quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--formatted-value
+                      "
+                      v-else-if="formattedSticky[cIndex]"
+                    >
+                      {{ formattedSticky[cIndex].value }}
+                    </div>
+                    <div
+                      class="
+                        cell-inner
+                        quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--html
+                      "
+                      v-else-if="cell.html != null && String(cell.html) !== ''"
+                      v-html="cell.html"
+                    ></div>
+                    <div
+                      class="
+                        cell-inner
+                        quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--component
+                      "
+                      v-else-if="cell.component"
+                    >
+                      <component
+                        :is="cell.component.name"
+                        v-bind="cell.component.props"
+                        @action="quintable.handleComponentEvent"
+                      ></component>
+                    </div>
+                    <div
+                      class="
+                        cell-inner
+                        quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--text
+                      "
+                      v-else-if="cell.text != null && String(cell.text) !== ''"
+                    >
+                      {{ cell.text }}
+                    </div>
+                  </slot>
+                </slot>
               </td>
             </tr>
           </tbody>
@@ -231,14 +413,10 @@
 </template>
 
 <script>
-import CellContent from "./CellContent.vue";
-import SortIndicator from "./SortIndicator.vue";
-import ToggleIcon from "./ToggleIcon.vue";
-
 export default {
   name: "ExpandedRow",
   inject: ["quintable"],
-  components: { CellContent, SortIndicator, ToggleIcon },
+  components: {},
   props: {
     rIndex: { type: [Number, String], required: true },
   },
@@ -267,6 +445,38 @@ export default {
         cls.push(this.quintable.configFinal.activeClass);
       }
       return cls;
+    },
+    formattedGenerated() {
+      const rows = this.quintable.generatedRows[this.rIndex];
+      if (!rows) return {};
+      const result = {};
+      const cols = this.quintable.configFinal.columns;
+      for (let k in rows) {
+        if (
+          Object.prototype.hasOwnProperty.call(rows, k) &&
+          cols[k] &&
+          cols[k].cellFormatter
+        ) {
+          result[k] = this.quintable.cellFormatters(k, rows[k]);
+        }
+      }
+      return result;
+    },
+    formattedSticky() {
+      const rows = this.quintable.stickyRows[this.rIndex];
+      if (!rows) return {};
+      const result = {};
+      const cols = this.quintable.configFinal.columns;
+      for (let k in rows) {
+        if (
+          Object.prototype.hasOwnProperty.call(rows, k) &&
+          cols[k] &&
+          cols[k].cellFormatter
+        ) {
+          result[k] = this.quintable.cellFormatters(k, rows[k]);
+        }
+      }
+      return result;
     },
   },
   methods: {

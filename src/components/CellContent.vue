@@ -1,42 +1,42 @@
-<template>
+<template functional>
   <div style="display: contents">
-    <slot :cell="cell">
+    <slot :cell="props.cell">
       <div
         class="cell-inner"
-        :class="classPrefix + '--formatted-html'"
-        v-if="hasFormatter && formattedCell.type === 'html'"
-        v-html="formattedCell.value"
+        :class="props.classPrefix + '--formatted-html'"
+        v-if="props.formatted && props.formatted.type === 'html'"
+        v-html="props.formatted.value"
       ></div>
       <div
         class="cell-inner"
-        :class="classPrefix + '--formatted-value'"
-        v-else-if="hasFormatter"
+        :class="props.classPrefix + '--formatted-value'"
+        v-else-if="props.formatted"
       >
-        {{ formattedCell.value }}
+        {{ props.formatted.value }}
       </div>
       <div
         class="cell-inner"
-        :class="classPrefix + '--html'"
-        v-else-if="quintable.valueToString(cell.html)"
-        v-html="cell.html"
+        :class="props.classPrefix + '--html'"
+        v-else-if="props.cell.html != null && String(props.cell.html) !== ''"
+        v-html="props.cell.html"
       ></div>
       <div
         class="cell-inner"
-        :class="classPrefix + '--component'"
-        v-else-if="cell.component"
+        :class="props.classPrefix + '--component'"
+        v-else-if="props.cell.component"
       >
         <component
-          :is="cell.component.name"
-          v-bind="cell.component.props"
-          @action="quintable.handleComponentEvent"
+          :is="props.cell.component.name"
+          v-bind="props.cell.component.props"
+          @action="props.onComponentEvent"
         ></component>
       </div>
       <div
         class="cell-inner"
-        :class="classPrefix + '--text'"
-        v-else-if="quintable.valueToString(cell.text)"
+        :class="props.classPrefix + '--text'"
+        v-else-if="props.cell.text != null && String(props.cell.text) !== ''"
       >
-        {{ cell.text }}
+        {{ props.cell.text }}
       </div>
     </slot>
   </div>
@@ -45,23 +45,13 @@
 <script>
 export default {
   name: "CellContent",
-  inject: ["quintable"],
+  functional: true,
   props: {
     cell: { type: Object, required: true },
     cIndex: { type: [Number, String], required: true },
     classPrefix: { type: String, default: "" },
-  },
-  computed: {
-    hasFormatter() {
-      return !!(
-        this.quintable.configFinal.columns[this.cIndex] &&
-        this.quintable.configFinal.columns[this.cIndex].cellFormatter
-      );
-    },
-    formattedCell() {
-      if (!this.hasFormatter) return {};
-      return this.quintable.cellFormatters(this.cIndex, this.cell);
-    },
+    formatted: { type: [Object, null], default: null },
+    onComponentEvent: { type: Function, default: () => {} },
   },
 };
 </script>

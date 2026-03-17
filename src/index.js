@@ -72,7 +72,7 @@ let install = function (Vue, options) {
     defaultClass: "",
   });
 
-  if (options.axios) {
+  if (options && options.axios) {
     Vue.prototype.$globalVueQuintableaxios = options.axios;
   }
 };

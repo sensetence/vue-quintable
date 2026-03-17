@@ -1,23 +1,27 @@
-<template>
-  <span :class="wrapperClass" v-if="sortEnabled">
-    <font-awesome-icon v-if="!sortInfo" icon="sort" class="text-primary" />
+<template functional>
+  <span :class="props.wrapperClass" v-if="props.sortEnabled">
     <font-awesome-icon
-      v-if="sortInfo && sortInfo.asc"
+      v-if="!props.sortInfo"
+      icon="sort"
+      class="text-primary"
+    />
+    <font-awesome-icon
+      v-if="props.sortInfo && props.sortInfo.asc"
       icon="sort-amount-down-alt"
       class="text-primary"
     />
     <font-awesome-icon
-      v-if="sortInfo && !sortInfo.asc"
+      v-if="props.sortInfo && !props.sortInfo.asc"
       icon="sort-amount-down"
       class="text-primary"
     />
     <span
-      v-if="sortInfo"
-      @click.stop.prevent="$emit('remove-sort', columnIndex)"
+      v-if="props.sortInfo"
+      @click.stop.prevent="listeners['remove-sort'](props.columnIndex)"
       class="ms-1 text-muted"
     >
-      <span class="badge bg-info text-white" v-if="numberOfSorts > 1">
-        {{ sortInfo.order + 1 }}
+      <span class="badge bg-info text-white" v-if="props.numberOfSorts > 1">
+        {{ props.sortInfo.order + 1 }}
       </span>
       <small v-else>
         <font-awesome-icon icon="times" />
@@ -29,6 +33,7 @@
 <script>
 export default {
   name: "SortIndicator",
+  functional: true,
   props: {
     sortEnabled: { type: Boolean, default: false },
     sortInfo: { type: Object, default: null },
