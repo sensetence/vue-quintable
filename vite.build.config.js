@@ -23,6 +23,14 @@ export default defineConfig({
     vue(),
     commonjs(),
   ],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: "modern",
+        silenceDeprecations: ["import", "global-builtin", "color-functions", "legacy-js-api"],
+      },
+    },
+  },
   server: {
     https: true,
     host: "localhost",

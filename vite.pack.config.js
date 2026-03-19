@@ -46,6 +46,14 @@ export default defineConfig({
       "@": resolve(__dirname),
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: "modern",
+        silenceDeprecations: ["import", "global-builtin", "color-functions", "legacy-js-api"],
+      },
+    },
+  },
   publicDir: false,
   build: {
     outDir: normalize(outDir),

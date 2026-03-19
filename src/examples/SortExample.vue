@@ -112,7 +112,7 @@
 </template>
 <script>
 import VueQuintable from "../components/VueQuintable.vue";
-import Chance from "chance";
+import { createChance } from "../utils/create-chance";
 
 export default {
   components: {
@@ -159,7 +159,7 @@ export default {
       let count = 30;
       const rows = [];
 
-      const chance = new Chance();
+      const chance = createChance();
 
       for (let i = 0; i < count; i++) {
         const randSortValue = Math.ceil(Math.random() * 10);
