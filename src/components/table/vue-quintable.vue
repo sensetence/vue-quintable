@@ -1,14 +1,6 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
   <div class="table-wrapper quintable">
-    <div class="breakpoints quintable--breakpoints">
-      <div ref="xs"></div>
-      <div ref="sm" class="d-none d-sm-block"></div>
-      <div ref="md" class="d-none d-md-block"></div>
-      <div ref="lg" class="d-none d-lg-block"></div>
-      <div ref="xl" class="d-none d-xl-block"></div>
-      <div ref="xxl" class="d-none d-xxl-block"></div>
-    </div>
     <div class="header slot slot-header quintable--header">
       <slot name="header"></slot>
     </div>
@@ -99,18 +91,7 @@
             </th>
             <template v-for="(headline, hIndex) in configFinal.headlines">
               <th
-                v-if="
-                  ((configFinal.columns[hIndex] &&
-                    !configFinal.columns[hIndex].breakpoint) ||
-                    hiddenBreakpoints.findIndex(
-                      (x) =>
-                        configFinal.columns[hIndex] &&
-                        x === configFinal.columns[hIndex].breakpoint,
-                    ) === -1) &&
-                  !configFinal.columns[hIndex].sticky &&
-                  !configFinal.hiddenCols[hIndex] &&
-                  !emptyColumns[hIndex]
-                "
+                v-if="cellVisible[hIndex]"
                 :key="'headline-' + hIndex"
                 :class="headerClass[hIndex]"
                 :title="configFinal.columns[hIndex].title"
@@ -220,7 +201,7 @@
               '-row-' +
               rIndex +
               '-' +
-              indexesUpdatedKey
+              essentialsKey
             "
           >
             <tr
@@ -238,7 +219,7 @@
               @click="onRowClick($event, rIndex)"
               @auxclick="onRowAuxClick($event, rIndex)"
               @mousedown="onRowMousedown($event)"
-              @mouseenter="onMouseenterRow(rIndex)"
+              @mouseenter="_hoverRow(rIndex, $event)"
             >
               <td
                 v-if="hasGeneratedRows && !configFinal.hideRowToggle"
@@ -300,85 +281,60 @@
                 </template>
               </td>
 
-              <template
-                v-for="(cell, cIndex) in rowsFinal[rIndex].cells
-                  ? rowsFinal[rIndex].cells
-                  : rowsFinal[rIndex]"
-              >
+              <template v-for="rc in _renderRows[rIndex]">
                 <td
-                  v-if="
-                    !configFinal.hiddenCols[cIndex] &&
-                    !emptyColumns[cIndex] &&
-                    configFinal.columns[cIndex] &&
-                    cell &&
-                    hiddenBreakpoints.findIndex(
-                      (x) => x === configFinal.columns[cIndex].breakpoint,
-                    ) === -1 &&
-                    configFinal.columns[cIndex].breakpoint !== 'all' &&
-                    !configFinal.stickyCols[cIndex]
-                  "
-                  :id="
-                    'vue-quintable-' + uuid + '-cell-' + rIndex + '-' + cIndex
-                  "
-                  :key="
-                    'vue-quintable-' + uuid + '-cell-' + rIndex + '-' + cIndex
-                  "
+                  v-if="rc.vis"
+                  :id="rc.key"
+                  :key="rc.key"
                   v-tooltip="{
                     placement: 'left',
-                    content: cell.tooltip,
-                    trigger: cell.tooltip ? 'hover' : 'manual',
+                    content: rc.cell.tooltip,
+                    trigger: rc.cell.tooltip ? 'hover' : 'manual',
                   }"
                   class="vue-quintable-cell quintable--table-container--table--tbody--row--cell"
-                  :class="
-                    cellClassesParsed[rIndex][cIndex] +
-                    ' ' +
-                    configFinal.columnClasses[cIndex]
-                  "
-                  @click="onCellClick($event, cell)"
-                  @auxclick="onCellAuxClick($event, cell)"
+                  :class="rc.cls"
+                  @click="onCellClick($event, rc.cell)"
+                  @auxclick="onCellAuxClick($event, rc.cell)"
                   @mousedown="onCellMousedown($event)"
                 >
-                  <slot :cell="cell" :name="'cell-complete'">
-                    <slot :cell="cell" :name="'cell-content'">
+                  <slot :cell="rc.cell" :name="'cell-complete'">
+                    <slot :cell="rc.cell" :name="'cell-content'">
                       <div
-                        v-if="
-                          configFinal.columns[cIndex].cellFormatter &&
-                          cellFormatters(cIndex, cell).type === 'html'
-                        "
+                        v-if="rc.fmt && rc.fmt.type === 'html'"
                         class="cell-inner"
                         :class="'quintable--table-container--table--tbody--row--cell--inner-cell--formatted-html'"
-                        v-html="cellFormatters(cIndex, cell).value"
+                        v-html="rc.fmt.value"
                       ></div>
                       <div
-                        v-else-if="configFinal.columns[cIndex].cellFormatter"
+                        v-else-if="rc.fmt"
                         class="cell-inner"
                         :class="'quintable--table-container--table--tbody--row--cell--inner-cell--formatted-value'"
                       >
-                        {{ cellFormatters(cIndex, cell).value }}
+                        {{ rc.fmt.value }}
                       </div>
                       <div
-                        v-else-if="valueToString(cell.html)"
+                        v-else-if="valueToString(rc.cell.html)"
                         class="cell-inner"
                         :class="'quintable--table-container--table--tbody--row--cell--inner-cell--html'"
-                        v-html="cell.html"
+                        v-html="rc.cell.html"
                       ></div>
                       <div
-                        v-else-if="cell.component"
+                        v-else-if="rc.cell.component"
                         class="cell-inner"
                         :class="'quintable--table-container--table--tbody--row--cell--inner-cell--component'"
                       >
                         <component
-                          :is="cell.component.name"
-                          v-bind="cell.component.props"
+                          :is="rc.cell.component.name"
+                          v-bind="rc.cell.component.props"
                           @action="handleComponentEvent"
                         ></component>
                       </div>
                       <div
-                        v-else-if="valueToString(cell.text)"
+                        v-else-if="valueToString(rc.cell.text)"
                         class="cell-inner"
                         :class="'quintable--table-container--table--tbody--row--cell--inner-cell--text'"
                       >
-                        {{ cell.text }}
+                        {{ rc.cell.text }}
                       </div>
                     </slot>
                   </slot>
@@ -443,7 +399,7 @@
                   'generated-row-' +
                   rIndex +
                   '-' +
-                  rowsUpdatedKey +
+                  essentialsKey +
                   '-' +
                   generatedUpdatedKey
                 "
@@ -454,7 +410,7 @@
                   'parent-row-collapsed':
                     hiddenColumns[rIndex] > 0 && !openRows[rIndex],
                 }"
-                @mouseenter="onMouseenterRow(rIndex)"
+                @mouseenter="_hoverRow(rIndex, $event)"
                 @click="onRowClick($event, rIndex)"
               >
                 <td :colspan="configFinal.number + 1" class="ps-0 pe-0 pt-0">
@@ -1015,7 +971,54 @@
 <script>
 import fuzzy from "fuzzy.js";
 import axios from "axios";
-import { v4 as randomUUID } from "uuid";
+import { getSharedBreakpoints } from "../../utils/shared-breakpoints";
+
+let _quintableIdCounter = 0;
+
+// Cache localStorage availability once at module scope
+let _localStorageAvailable = null;
+function isLocalStorageAvailable() {
+  if (_localStorageAvailable === null) {
+    try {
+      const t = "test-local-storage";
+      localStorage.setItem(t, t);
+      localStorage.removeItem(t);
+      _localStorageAvailable = true;
+    } catch {
+      _localStorageAvailable = false;
+    }
+  }
+  return _localStorageAvailable;
+}
+
+// Freeze operatorFunctions at module scope — they never change
+const operatorFunctions = Object.freeze({
+  equal: (a, b) => b === a,
+  greater: (a, b) => b > a,
+  less: (a, b) => b < a,
+  greaterEqual: (a, b) => b >= a,
+  lessEqual: (a, b) => b <= a,
+  contains: (a, b) => {
+    if (!Array.isArray(b) && typeof b !== "string") return false;
+    return b.indexOf(a) !== -1;
+  },
+  notContains: (a, b) => {
+    if (!Array.isArray(b) && typeof b !== "string") return false;
+    return b.indexOf(a) === -1;
+  },
+  startsWith: (a, b) => {
+    if (typeof b !== "string") return false;
+    return b.indexOf(a) === 0;
+  },
+  endsWitch: (a, b) => {
+    if (typeof b !== "string") return false;
+    return b.indexOf(a, b.length - a.length) !== -1;
+  },
+  matches(regex, b) {
+    if (!(regex instanceof RegExp) || typeof b !== "string") return false;
+    return regex.test(b);
+  },
+});
 
 export default {
   name: "VueQuintable",
@@ -1131,8 +1134,7 @@ export default {
   ],
   data() {
     return {
-      rowsUpdatedKey: Date.now(),
-      indexesUpdatedKey: Date.now(),
+      essentialsKey: Date.now(),
       generatedUpdatedKey: Date.now(),
       hoveredRow: null,
       allSelectedCustom: null,
@@ -1154,70 +1156,15 @@ export default {
       customPageSort: null,
       hiddenBreakpoints: [],
       initBreakpoints: true,
-      breakpointTimeout: null,
       cancelSource: null,
       lastQuery: "",
       pageOffset: 0,
-      uuid: randomUUID(),
+      uuid: "qt-" + ++_quintableIdCounter + "-" + Date.now(),
       loaderHeight: 0,
       defaultOperator: "equal",
       queryAjaxTimeout: null,
       lastSearchQueryUpdated: null,
-      operatorFunctions: {
-        equal: (a, b) => {
-          return b === a;
-        },
-        greater: (a, b) => {
-          return b > a;
-        },
-        less: (a, b) => {
-          return b < a;
-        },
-        greaterEqual: (a, b) => {
-          return b >= a;
-        },
-        lessEqual: (a, b) => {
-          return b <= a;
-        },
-        contains: (a, b) => {
-          if (!Array.isArray(b) && typeof b !== "string") {
-            return false;
-          }
-
-          return b.indexOf(a) !== -1;
-        },
-
-        notContains: (a, b) => {
-          if (!Array.isArray(b) && typeof b !== "string") {
-            return false;
-          }
-
-          return b.indexOf(a) === -1;
-        },
-
-        startsWith: (a, b) => {
-          if (typeof b !== "string") {
-            return false;
-          }
-
-          return b.indexOf(a) === 0;
-        },
-
-        endsWitch: (a, b) => {
-          if (typeof b !== "string") {
-            return false;
-          }
-
-          return b.indexOf(a, this.length - a.length) !== -1;
-        },
-
-        matches(regex, b) {
-          if (!(regex instanceof RegExp) || typeof b !== "string") {
-            return false;
-          }
-          return regex.test(b);
-        },
-      },
+      operatorFunctions: operatorFunctions,
       storedState: {},
       activeRow: null,
     };
@@ -1446,14 +1393,9 @@ export default {
         storeState = false;
       }
 
-      const testLocalStorage = "test-local-storage";
-      try {
-        localStorage.setItem(testLocalStorage, testLocalStorage);
-        localStorage.removeItem(testLocalStorage);
-      } catch (e) {
+      if (storeState && !isLocalStorageAvailable()) {
         console.warn(
           "Option storeState was deactivated automatically because local storage is not available!",
-          e,
         );
         storeState = false;
       }
@@ -1602,7 +1544,7 @@ export default {
         columns = this.config.columns;
       }
 
-      return {
+      return Object.freeze({
         headlines: headlines,
         columnClasses: columnClasses,
         sorts: sorts,
@@ -1654,7 +1596,60 @@ export default {
         requestMethod: requestMethod,
         storeState: storeState,
         ajaxRequestDelay: ajaxRequestDelay,
-      };
+      });
+    },
+
+    // Pre-compute per-column whether it matches any hidden breakpoint
+    _hiddenBreakpointSet() {
+      return Object.freeze(new Set(this.hiddenBreakpoints));
+    },
+
+    _colBreakpointMatch() {
+      const bpSet = this._hiddenBreakpointSet;
+      return Object.freeze(
+        this.configFinal.columns.map((col) => {
+          if (!col || !col.breakpoint) return false;
+          const bp = col.breakpoint.toLocaleLowerCase();
+          return bp === "all" || bpSet.has(bp);
+        }),
+      );
+    },
+
+    // Cache isColEmpty(j) results so it's computed once per column, not N times
+    _colEmptyCache() {
+      const cache = {};
+      for (let j = 0; j < this.configFinal.number; j++) {
+        cache[j] = this.isColEmpty(j);
+      }
+      return Object.freeze(cache);
+    },
+
+    // Pre-compute per-column hide status (shared by generatedRows, stickyRows, hiddenColumns)
+    _colHideCache() {
+      const cache = {};
+      for (let j = 0; j < this.configFinal.columns.length; j++) {
+        cache[j] =
+          this.configFinal.hiddenCols[j] ||
+          (!this.configFinal.ignoreEmpty[j] &&
+            this.configFinal.hideEmptyColumns &&
+            this._colEmptyCache[j]) ||
+          this.emptyColumns[j];
+      }
+      return Object.freeze(cache);
+    },
+
+    // Pre-compute per-column base visibility for cell rendering
+    cellVisible() {
+      return Object.freeze(
+        this.configFinal.columns.map((col, j) => {
+          if (this.configFinal.hiddenCols[j]) return false;
+          if (this.emptyColumns[j]) return false;
+          if (!col) return false;
+          if (this._colBreakpointMatch[j]) return false;
+          if (this.configFinal.stickyCols[j]) return false;
+          return true;
+        }),
+      );
     },
 
     /**
@@ -1663,17 +1658,11 @@ export default {
      * @returns {Array} a boolean array which represents all indexes of the rows
      */
     visibleRows() {
-      //just for updating the computed property
       if (
-        !!this.rowsUpdatedKey &&
         !this.configFinal.ajaxUrl &&
         this.currentRowsPerPage !== "All"
       ) {
-        let visible = [];
-
-        for (let i = 0; i < this.rowsFinal.length; i++) {
-          visible.push(false);
-        }
+        let visible = new Array(this.rowsFinal.length).fill(false);
 
         let onlyVisibleSortedRows = {};
 
@@ -1714,8 +1703,7 @@ export default {
      */
     visibleRowIndexes() {
       let rows = [];
-      //just for updating the computed property
-      if (this.indexesUpdatedKey) {
+      if (this.essentialsKey) {
         if (this.configFinal.ajaxUrl && !this.pageSort) {
           for (let i = 0; i < this.rowsFinal.length; i++) {
             rows.push(i);
@@ -1741,37 +1729,32 @@ export default {
     generatedRows() {
       let generatedRows = {};
 
-      //just for updating the computed value
       if (this.generatedUpdatedKey) {
-        for (let x = 0; x < this.rowsFinal.length; x++) {
+        const colMatch = this._colBreakpointMatch;
+        const colHide = this._colHideCache;
+        const checkEmpty = this.configFinal.hideEmptyColumns;
+        const indexes = this.visibleRowIndexes;
+
+        for (let vi = 0; vi < indexes.length; vi++) {
+          const x = indexes[vi];
           let cells = this.rowsFinal[x].cells
             ? this.rowsFinal[x].cells
             : this.rowsFinal[x];
 
           let generatedCells = {};
 
-          for (let i = 0; i < this.hiddenBreakpoints.length; i++) {
-            let bp = this.hiddenBreakpoints[i];
-            for (let j = 0; j < this.configFinal.columns.length; j++) {
-              let col = this.configFinal.columns[j];
+          for (let j = 0; j < this.configFinal.columns.length; j++) {
+            if (!colMatch[j]) continue;
+            let col = this.configFinal.columns[j];
 
-              const hide =
-                this.configFinal.hiddenCols[j] ||
-                (!this.configFinal.ignoreEmpty[j] &&
-                  this.configFinal.hideEmptyColumns &&
-                  (this.isColEmpty(j) || this.isColEmpty(j, x))) ||
-                this.emptyColumns[j];
+            const hide =
+              colHide[j] ||
+              (checkEmpty &&
+                !this.configFinal.ignoreEmpty[j] &&
+                this.isColEmpty(j, x));
 
-              if (
-                !hide &&
-                col.breakpoint &&
-                (col.breakpoint.toLocaleLowerCase() === "all" ||
-                  col.breakpoint.toLocaleLowerCase() === bp)
-              ) {
-                if (!col.sticky && !col.alwaysExpanded) {
-                  generatedCells[j] = cells[j];
-                }
-              }
+            if (!hide && !col.sticky && !col.alwaysExpanded) {
+              generatedCells[j] = cells[j];
             }
           }
           generatedRows[x] = generatedCells;
@@ -1782,37 +1765,32 @@ export default {
 
     stickyRows() {
       let stickyRows = {};
+      const colMatch = this._colBreakpointMatch;
+      const colHide = this._colHideCache;
+      const checkEmpty = this.configFinal.hideEmptyColumns;
+      const indexes = this.visibleRowIndexes;
 
-      for (let x = 0; x < this.rowsFinal.length; x++) {
+      for (let vi = 0; vi < indexes.length; vi++) {
+        const x = indexes[vi];
         let cells = this.rowsFinal[x].cells
           ? this.rowsFinal[x].cells
           : this.rowsFinal[x];
 
         let stickyCells = {};
 
-        for (let i = 0; i < this.hiddenBreakpoints.length; i++) {
-          let bp = this.hiddenBreakpoints[i];
-          for (let j = 0; j < this.configFinal.columns.length; j++) {
-            let col = this.configFinal.columns[j];
+        for (let j = 0; j < this.configFinal.columns.length; j++) {
+          let col = this.configFinal.columns[j];
 
-            const hide =
-              this.configFinal.hiddenCols[j] ||
-              (!this.configFinal.ignoreEmpty[j] &&
-                this.configFinal.hideEmptyColumns &&
-                (this.isColEmpty(j) || this.isColEmpty(j, x))) ||
-              this.emptyColumns[j];
+          const hide =
+            colHide[j] ||
+            (checkEmpty &&
+              !this.configFinal.ignoreEmpty[j] &&
+              this.isColEmpty(j, x));
 
-            if (!hide && col.sticky) {
-              stickyCells[j] = cells[j];
-            } else if (
-              !hide &&
-              col.breakpoint &&
-              (col.breakpoint.toLocaleLowerCase() === "all" ||
-                col.breakpoint.toLocaleLowerCase() === bp) &&
-              col.alwaysExpanded
-            ) {
-              stickyCells[j] = cells[j];
-            }
+          if (!hide && col.sticky) {
+            stickyCells[j] = cells[j];
+          } else if (!hide && col.alwaysExpanded && colMatch[j]) {
+            stickyCells[j] = cells[j];
           }
         }
         stickyRows[x] = stickyCells;
@@ -1902,9 +1880,12 @@ export default {
      *
      */
     hasGeneratedRows() {
-      for (let row in this.generatedRows) {
-        if (Object.prototype.hasOwnProperty.call(this.generatedRows, row)) {
-          if (Object.keys(this.generatedRows[row]).length) {
+      const colMatch = this._colBreakpointMatch;
+      const colHide = this._colHideCache;
+      for (let j = 0; j < this.configFinal.columns.length; j++) {
+        if (colMatch[j] && !colHide[j]) {
+          const col = this.configFinal.columns[j];
+          if (!col.sticky && !col.alwaysExpanded) {
             return true;
           }
         }
@@ -1917,10 +1898,17 @@ export default {
      *
      */
     cellClassesParsed() {
-      let cellClasses = [];
+      let cellClasses = {};
 
-      for (let i = 0; i < this.rowsFinal.length; i++) {
-        cellClasses.push([]);
+      const indexes =
+        this.visibleRowIndexes.length > 0
+          ? this.visibleRowIndexes
+          : Object.keys(this.rowsFinal).map(Number);
+
+      for (let x = 0; x < indexes.length; x++) {
+        const i = indexes[x];
+        if (!this.rowsFinal[i]) continue;
+        cellClasses[i] = [];
 
         let rAlign = this.rowsFinal[i].align;
 
@@ -1960,37 +1948,47 @@ export default {
      *
      */
     hiddenColumns() {
+      const colMatch = this._colBreakpointMatch;
+      const colHide = this._colHideCache;
+      let anyVisible = false;
+
+      for (let j = 0; j < this.configFinal.columns.length; j++) {
+        if (colMatch[j] && !colHide[j]) {
+          anyVisible = true;
+          break;
+        }
+      }
+
       const rows = {};
+      if (anyVisible) {
+        for (let x = 0; x < this.visibleRowIndexes.length; x++) {
+          rows[this.visibleRowIndexes[x]] = 1;
+        }
+      } else if (this.configFinal.hideEmptyColumns) {
+        for (let x = 0; x < this.visibleRowIndexes.length; x++) {
+          let hidden = 0;
+          const rowIndex = this.visibleRowIndexes[x];
 
-      for (let x = 0; x < this.visibleRowIndexes.length; x++) {
-        let hidden = 0;
-
-        const rowIndex = this.visibleRowIndexes[x];
-
-        for (let i = 0; i < this.hiddenBreakpoints.length; i++) {
-          let bp = this.hiddenBreakpoints[i];
           for (let j = 0; j < this.configFinal.columns.length; j++) {
-            let col = this.configFinal.columns[j];
-            const hide =
-              this.configFinal.hiddenCols[j] ||
-              (!this.configFinal.ignoreEmpty[j] &&
-                this.configFinal.hideEmptyColumns &&
-                (this.isColEmpty(j) || this.isColEmpty(j, rowIndex))) ||
-              this.emptyColumns[j];
+            if (!colMatch[j]) continue;
 
-            if (
-              !hide &&
-              col.breakpoint &&
-              (col.breakpoint.toLocaleLowerCase() === "all" ||
-                col.breakpoint.toLocaleLowerCase() === bp)
-            ) {
+            const hide =
+              colHide[j] ||
+              (!this.configFinal.ignoreEmpty[j] &&
+                this.isColEmpty(j, rowIndex));
+
+            if (!hide) {
               hidden++;
               break;
             }
           }
-        }
 
-        rows[rowIndex] = hidden;
+          rows[rowIndex] = hidden;
+        }
+      } else {
+        for (let x = 0; x < this.visibleRowIndexes.length; x++) {
+          rows[this.visibleRowIndexes[x]] = 0;
+        }
       }
 
       return rows;
@@ -2013,7 +2011,7 @@ export default {
      *
      */
     someSelected() {
-      return Object.values(this.selected).filter((x) => x).length > 0;
+      return Object.values(this.selected).some((x) => x);
     },
 
     /**
@@ -2090,7 +2088,7 @@ export default {
             this.configFinal.columnClasses[i],
         );
       }
-      return classes;
+      return Object.freeze(classes);
     },
 
     /**
@@ -2129,9 +2127,11 @@ export default {
         return this.ajaxAll;
       }
 
-      return this.filteredRows.filter((item) => {
-        return item;
-      }).length;
+      let count = 0;
+      for (let i = 0; i < this.filteredRows.length; i++) {
+        if (this.filteredRows[i]) count++;
+      }
+      return count;
     },
 
     /**
@@ -2373,39 +2373,26 @@ export default {
      */
 
     showHeadlines() {
+      const bpSet = this._hiddenBreakpointSet;
       let shows = [];
 
       for (let i = 0; i < this.configFinal.number; i++) {
+        const col = this.configFinal.columns[i];
         if (
-          //headline is not empty
           this.configFinal.headlines[i] &&
-          //show breakpoints match with set settings
-          //no show breakpoint is set
-          (!this.configFinal.columns[i].showHeadlineBreakpoint ||
-            //show breakpoint is set and the hidden breakpoints contain this breakpoint
-            (this.configFinal.columns[i].showHeadlineBreakpoint &&
-              this.hiddenBreakpoints.findIndex(
-                (x) =>
-                  this.configFinal.columns[i] &&
-                  x === this.configFinal.columns[i].showHeadlineBreakpoint,
-              ) !== -1)) &&
-          //hide breakpoints match with set settings
-          //no hide breakpoint is set
-          (!this.configFinal.columns[i].hideHeadlineBreakpoint ||
-            //hide breakpoint is set and the hidden breakpoints contain this breakpoint
-            (this.configFinal.columns[i].hideHeadlineBreakpoint &&
-              this.hiddenBreakpoints.findIndex(
-                (x) =>
-                  this.configFinal.columns[i] &&
-                  x === this.configFinal.columns[i].hideHeadlineBreakpoint,
-              ) === -1))
+          (!col.showHeadlineBreakpoint ||
+            (col.showHeadlineBreakpoint &&
+              bpSet.has(col.showHeadlineBreakpoint))) &&
+          (!col.hideHeadlineBreakpoint ||
+            (col.hideHeadlineBreakpoint &&
+              !bpSet.has(col.hideHeadlineBreakpoint)))
         ) {
           shows.push(true);
         } else {
           shows.push(false);
         }
       }
-      return shows;
+      return Object.freeze(shows);
     },
     /**
      * Key of filter operator fuctions
@@ -2416,7 +2403,7 @@ export default {
     },
     emptyColumns() {
       const cols = {};
-
+      const colEmptyCache = this._colEmptyCache;
       const ignore = this.configFinal.ignoreSortEmptyColumns;
 
       for (let i = 0; i < this.configFinal.number; i++) {
@@ -2428,11 +2415,11 @@ export default {
           ignoredCol ||
           (ignore === "none" && sort) ||
           (ignore === "active" &&
-            Object.keys(this.currentSortIndexes).includes(i + ""))
+            Object.prototype.hasOwnProperty.call(this.currentSortIndexes, i))
         ) {
           cols[i] = false;
         } else {
-          cols[i] = this.isColEmpty(i);
+          cols[i] = colEmptyCache[i];
         }
       }
 
@@ -2453,13 +2440,6 @@ export default {
         if (this.rowsFinal[rIndex].classes) {
           rowClasses.push(this.rowsFinal[rIndex].classes);
         }
-        if (this.hoveredRow === rIndex) {
-          rowClasses.push(this.configFinal.hoverClass);
-        }
-
-        if (this.activeRow === rIndex) {
-          rowClasses.push(this.configFinal.activeClass);
-        }
 
         if (this.openRows[rIndex]) {
           rowClasses.push("row-expanded");
@@ -2474,11 +2454,76 @@ export default {
 
       return allRowclasses;
     },
+
+    _fmtCells() {
+      const map = {};
+      const cols = this.configFinal.columns;
+      for (let x = 0; x < this.visibleRowIndexes.length; x++) {
+        const rIndex = this.visibleRowIndexes[x];
+        const row = this.rowsFinal[rIndex];
+        if (!row) continue;
+        const cells = row.cells ? row.cells : row;
+        let hasAny = false;
+        const rowMap = {};
+        for (let i = 0; i < cells.length; i++) {
+          if (cols[i] && cols[i].cellFormatter) {
+            rowMap[i] = this.cellFormatters(i, cells[i]);
+            hasAny = true;
+          }
+        }
+        if (hasAny) map[rIndex] = rowMap;
+      }
+      return map;
+    },
+
+    _renderRows() {
+      const map = {};
+      const colClasses = this.configFinal.columnClasses;
+      const cellVis = this.cellVisible;
+      const cellCls = this.cellClassesParsed;
+      const fmtCells = this._fmtCells;
+      const uid = this.uuid;
+      for (let x = 0; x < this.visibleRowIndexes.length; x++) {
+        const rIndex = this.visibleRowIndexes[x];
+        const row = this.rowsFinal[rIndex];
+        if (!row) continue;
+        const cells = row.cells ? row.cells : row;
+        const prefix = "vue-quintable-" + uid + "-cell-" + rIndex + "-";
+        const rowCls = cellCls[rIndex];
+        const rowFmt = fmtCells[rIndex];
+        const arr = [];
+        for (let i = 0; i < cells.length; i++) {
+          const cell = cells[i];
+          arr.push(
+            Object.freeze({
+              cell: cell,
+              cls:
+                (rowCls ? rowCls[i] || "" : "") + " " + (colClasses[i] || ""),
+              vis: !!(cellVis[i] && cell),
+              fmt: rowFmt ? rowFmt[i] || null : null,
+              key: prefix + i,
+            }),
+          );
+        }
+        map[rIndex] = Object.freeze(arr);
+      }
+      return map;
+    },
+
+    // O(1) lookup map: rowIndex → position in visibleRowIndexes
+    _visibleRowIndexMap() {
+      const map = {};
+      for (let i = 0; i < this.visibleRowIndexes.length; i++) {
+        map[this.visibleRowIndexes[i]] = i;
+      }
+      return map;
+    },
   },
 
   watch: {
     rowsFinal: {
       handler(val) {
+        if (!this.verbose) return;
         if (val && val.length) {
           for (let i = 0; i < val.length; i++) {
             let cells = val[i].cells ? val[i].cells : val[i];
@@ -2618,11 +2663,20 @@ export default {
      */
     filteredRows: {
       handler(val, old) {
-        if (
-          JSON.stringify(val) === JSON.stringify(old) ||
-          this.configFinal.ajaxUrl
-        ) {
+        if (this.configFinal.ajaxUrl) {
           return;
+        }
+
+        // Element-by-element comparison instead of JSON.stringify
+        if (old && val.length === old.length) {
+          let same = true;
+          for (let i = 0; i < val.length; i++) {
+            if (val[i] !== old[i]) {
+              same = false;
+              break;
+            }
+          }
+          if (same) return;
         }
 
         const realCurrentIndex = this.visibleRowIndexes.findIndex(
@@ -2762,7 +2816,6 @@ export default {
 
       this.$nextTick(() => {
         this.recomputeEssentials();
-        this.$forceUpdate();
 
         if (this.configFinal.defaultSelected) {
           this.allSelectedCustom = null;
@@ -2786,11 +2839,8 @@ export default {
         }
 
         this.initLists();
-        this.$forceUpdate();
 
         this.activeRow = null;
-
-        console.log(this.configFinal);
 
         if (this.configFinal.ajaxUrl) {
           this.loadViaAjax(false, true, "CONFIG");
@@ -3067,14 +3117,14 @@ export default {
       this.checkAll(true);
     }
 
-    this.generateHiddenBreakpoints();
-
-    //bind listener to window resize
-    window.addEventListener("resize", this.breakpointListener);
+    // Subscribe to shared breakpoint detector
+    this._sharedBP = getSharedBreakpoints();
+    this._sharedBP.subscribe(this._onBreakpointChange);
   },
   beforeUnmount() {
-    //release listener from window resize
-    window.removeEventListener("resize", this.breakpointListener);
+    if (this._sharedBP) {
+      this._sharedBP.unsubscribe(this._onBreakpointChange);
+    }
     if (this.configFinal.enableRowTabIndex) {
       document.removeEventListener("keydown", this.checkKey);
     }
@@ -3118,31 +3168,33 @@ export default {
         })
         .filter((row) => {
           const cells = row.cells ? row.cells : row;
+          const cell = cells[i];
+          if (!cell) return false;
 
           if (
-            typeof cells[i].isEmpty === "boolean" &&
-            cells[i].isEmpty === true
+            typeof cell.isEmpty === "boolean" &&
+            cell.isEmpty === true
           ) {
             return false;
           }
 
           if (
-            typeof cells[i].isEmpty === "boolean" &&
-            cells[i].isEmpty === false
+            typeof cell.isEmpty === "boolean" &&
+            cell.isEmpty === false
           ) {
             return true;
           }
 
           if (
-            typeof cells[i].text !== "undefined" &&
-            this.valueToString(cells[i].text)
+            typeof cell.text !== "undefined" &&
+            this.valueToString(cell.text)
           ) {
             return true;
           }
 
           if (
-            typeof cells[i].html !== "undefined" &&
-            this.valueToString(cells[i].html)
+            typeof cell.html !== "undefined" &&
+            this.valueToString(cell.html)
           ) {
             return true;
           }
@@ -3389,13 +3441,19 @@ export default {
     },
 
     /**
-     * Event listener for hovered row. Sets the hoveredRow data entry
-     *
-     * @param index Index of hovered row
+     * DOM-based hover management — avoids full re-render on mouse movement
      */
-    onMouseenterRow(index) {
-      if (this.hoveredRow !== index) {
-        this.hoveredRow = index;
+    _hoverRow(rIndex, event) {
+      if (this.hoveredRow !== rIndex) {
+        const hoverClass = this.configFinal.hoverClass;
+        if (hoverClass && this._lastHoveredEl) {
+          this._lastHoveredEl.classList.remove(hoverClass);
+        }
+        this.hoveredRow = rIndex;
+        if (hoverClass && event && event.currentTarget) {
+          event.currentTarget.classList.add(hoverClass);
+          this._lastHoveredEl = event.currentTarget;
+        }
       }
     },
 
@@ -3404,6 +3462,11 @@ export default {
      *
      */
     onMouseleaveTable() {
+      const hoverClass = this.configFinal.hoverClass;
+      if (hoverClass && this._lastHoveredEl) {
+        this._lastHoveredEl.classList.remove(hoverClass);
+        this._lastHoveredEl = null;
+      }
       this.hoveredRow = null;
     },
 
@@ -4071,9 +4134,9 @@ export default {
      */
     recomputeEssentials() {
       this.$nextTick(() => {
-        this.rowsUpdatedKey = Date.now();
-        this.indexesUpdatedKey = Date.now();
-        this.generatedUpdatedKey = Date.now();
+        const now = Date.now();
+        this.essentialsKey = now;
+        this.generatedUpdatedKey = now;
       });
     },
 
@@ -4265,69 +4328,23 @@ export default {
     },
 
     /**
-     * Check if DOM element is visible
-     *
-     * @param el DOMElement
-     * @returns {boolean}
+     * Callback from shared breakpoint detector
      */
-    elementVisible(el) {
-      if (el) {
-        let computedStyle = window.getComputedStyle(el);
-        return computedStyle.display !== "none";
-      }
-      return false;
-    },
-
-    /**
-     * Event Listener for window resize event.
-     *
-     */
-    breakpointListener() {
-      clearTimeout(this.breakpointTimeout);
-
-      this.breakpointTimeout = setTimeout(() => {
-        this.generateHiddenBreakpoints(false);
-      }, 250);
-    },
-
-    /**
-     * Generate the list of hidden breakpoints
-     *
-     * @param regenerate
-     */
-    generateHiddenBreakpoints(regenerate = false) {
-      if (regenerate) {
-        this.hiddenBreakpoints = [];
-      }
-
-      let breakpoints = [];
-      if (!this.elementVisible(this.$refs.xxl)) {
-        breakpoints.push("xxl");
-      }
-
-      if (!this.elementVisible(this.$refs.xl)) {
-        breakpoints.push("xl");
-      }
-
-      if (!this.elementVisible(this.$refs.lg)) {
-        breakpoints.push("lg");
-      }
-
-      if (!this.elementVisible(this.$refs.md)) {
-        breakpoints.push("md");
-      }
-
-      if (!this.elementVisible(this.$refs.sm)) {
-        breakpoints.push("sm");
-      }
-
-      breakpoints.push("all");
-
+    _onBreakpointChange(hidden) {
       if (
-        JSON.stringify(this.hiddenBreakpoints) !== JSON.stringify(breakpoints)
+        this.hiddenBreakpoints.length !== hidden.length ||
+        this.hiddenBreakpoints.some((bp, i) => bp !== hidden[i])
       ) {
-        this.hiddenBreakpoints = breakpoints;
+        this.hiddenBreakpoints = hidden;
       }
+    },
+
+    /**
+     * Keep for backwards compatibility — now delegates to shared detector
+     */
+    generateHiddenBreakpoints() {
+      const shared = getSharedBreakpoints();
+      this._onBreakpointChange(shared.hiddenBreakpoints);
     },
 
     checkStoredSelectedRows(deleteStore = false) {
@@ -4357,21 +4374,20 @@ export default {
       }
       if (event.keyCode === 40) {
         event.preventDefault();
-        const realCurrentIndex = this.visibleRowIndexes.findIndex(
-          (x) => x === this.activeRow,
-        );
-        if (realCurrentIndex === this.visibleRowIndexes.length - 1) {
-          this.activeRow = 0;
+        const realCurrentIndex = this._visibleRowIndexMap[this.activeRow];
+        if (
+          realCurrentIndex === undefined ||
+          realCurrentIndex === this.visibleRowIndexes.length - 1
+        ) {
+          this.activeRow = this.visibleRowIndexes[0];
         } else {
           this.activeRow = this.visibleRowIndexes[realCurrentIndex + 1];
         }
       }
       if (event.keyCode === 38) {
         event.preventDefault();
-        const realCurrentIndex = this.visibleRowIndexes.findIndex(
-          (x) => x === this.activeRow,
-        );
-        if (realCurrentIndex === 0) {
+        const realCurrentIndex = this._visibleRowIndexMap[this.activeRow];
+        if (realCurrentIndex === undefined || realCurrentIndex === 0) {
           this.activeRow =
             this.visibleRowIndexes[this.visibleRowIndexes.length - 1];
         } else {
@@ -4428,6 +4444,12 @@ table.generated-table td {
 }
 
 .table-wrapper .bg-muted td {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Hover/active background — scoped to row elements only */
+.table-wrapper :deep(.vue-quintable-row.bg-muted),
+.table-wrapper :deep(.generated-row > td > div.bg-muted) {
   background: rgba(0, 0, 0, 0.1);
 }
 

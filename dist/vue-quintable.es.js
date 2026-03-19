@@ -1,102 +1,102 @@
-var is = Object.defineProperty, ns = Object.defineProperties;
-var rs = Object.getOwnPropertyDescriptors;
-var ht = Object.getOwnPropertySymbols;
-var ls = Object.prototype.hasOwnProperty, os = Object.prototype.propertyIsEnumerable;
-var X = (e, t) => (t = Symbol[e]) ? t : Symbol.for("Symbol." + e), as = (e) => {
+var as = Object.defineProperty, cs = Object.defineProperties;
+var us = Object.getOwnPropertyDescriptors;
+var pt = Object.getOwnPropertySymbols;
+var hs = Object.prototype.hasOwnProperty, fs = Object.prototype.propertyIsEnumerable;
+var X = (e, t) => (t = Symbol[e]) ? t : Symbol.for("Symbol." + e), ds = (e) => {
   throw TypeError(e);
 };
-var dt = (e, t, i) => t in e ? is(e, t, { enumerable: !0, configurable: !0, writable: !0, value: i }) : e[t] = i, ne = (e, t) => {
-  for (var i in t || (t = {}))
-    ls.call(t, i) && dt(e, i, t[i]);
-  if (ht)
-    for (var i of ht(t))
-      os.call(t, i) && dt(e, i, t[i]);
+var Le = (e, t, s) => t in e ? as(e, t, { enumerable: !0, configurable: !0, writable: !0, value: s }) : e[t] = s, re = (e, t) => {
+  for (var s in t || (t = {}))
+    hs.call(t, s) && Le(e, s, t[s]);
+  if (pt)
+    for (var s of pt(t))
+      fs.call(t, s) && Le(e, s, t[s]);
   return e;
-}, ft = (e, t) => ns(e, rs(t));
-var z = (e, t, i) => new Promise((n, r) => {
-  var s = (g) => {
+}, mt = (e, t) => cs(e, us(t));
+var fe = (e, t, s) => Le(e, typeof t != "symbol" ? t + "" : t, s);
+var G = (e, t, s) => new Promise((i, r) => {
+  var n = (f) => {
     try {
-      c(i.next(g));
+      c(s.next(f));
     } catch (u) {
       r(u);
     }
-  }, l = (g) => {
+  }, l = (f) => {
     try {
-      c(i.throw(g));
+      c(s.throw(f));
     } catch (u) {
       r(u);
     }
-  }, c = (g) => g.done ? n(g.value) : Promise.resolve(g.value).then(s, l);
-  c((i = i.apply(e, t)).next());
+  }, c = (f) => f.done ? i(f.value) : Promise.resolve(f.value).then(n, l);
+  c((s = s.apply(e, t)).next());
 }), J = function(e, t) {
   this[0] = e, this[1] = t;
-}, Te = (e, t, i) => {
-  var n = (l, c, g, u) => {
+}, Ue = (e, t, s) => {
+  var i = (l, c, f, u) => {
     try {
-      var o = i[l](c), a = (c = o.value) instanceof J, f = o.done;
-      Promise.resolve(a ? c[0] : c).then((b) => a ? n(l === "return" ? l : "next", c[1] ? { done: b.done, value: b.value } : b, g, u) : g({ value: b, done: f })).catch((b) => n("throw", b, g, u));
-    } catch (b) {
-      u(b);
+      var o = s[l](c), a = (c = o.value) instanceof J, g = o.done;
+      Promise.resolve(a ? c[0] : c).then((S) => a ? i(l === "return" ? l : "next", c[1] ? { done: S.done, value: S.value } : S, f, u) : f({ value: S, done: g })).catch((S) => i("throw", S, f, u));
+    } catch (S) {
+      u(S);
     }
-  }, r = (l) => s[l] = (c) => new Promise((g, u) => n(l, c, g, u)), s = {};
-  return i = i.apply(e, t), s[X("asyncIterator")] = () => s, r("next"), r("throw"), r("return"), s;
-}, qe = (e) => {
-  var t = e[X("asyncIterator")], i = !1, n, r = {};
-  return t == null ? (t = e[X("iterator")](), n = (s) => r[s] = (l) => t[s](l)) : (t = t.call(e), n = (s) => r[s] = (l) => {
-    if (i) {
-      if (i = !1, s === "throw") throw l;
+  }, r = (l) => n[l] = (c) => new Promise((f, u) => i(l, c, f, u)), n = {};
+  return s = s.apply(e, t), n[X("asyncIterator")] = () => n, r("next"), r("throw"), r("return"), n;
+}, Be = (e) => {
+  var t = e[X("asyncIterator")], s = !1, i, r = {};
+  return t == null ? (t = e[X("iterator")](), i = (n) => r[n] = (l) => t[n](l)) : (t = t.call(e), i = (n) => r[n] = (l) => {
+    if (s) {
+      if (s = !1, n === "throw") throw l;
       return l;
     }
-    return i = !0, {
+    return s = !0, {
       done: !1,
       value: new J(new Promise((c) => {
-        var g = t[s](l);
-        g instanceof Object || as("Object expected"), c(g);
+        var f = t[n](l);
+        f instanceof Object || ds("Object expected"), c(f);
       }), 1)
     };
-  }), r[X("iterator")] = () => r, n("next"), "throw" in t ? n("throw") : r.throw = (s) => {
-    throw s;
-  }, "return" in t && n("return"), r;
-}, gt = (e, t, i) => (t = e[X("asyncIterator")]) ? t.call(e) : (e = e[X("iterator")](), t = {}, i = (n, r) => (r = e[n]) && (t[n] = (s) => new Promise((l, c, g) => (s = r.call(e, s), g = s.done, Promise.resolve(s.value).then((u) => l({ value: u, done: g }), c)))), i("next"), i("return"), t);
-import At from "floating-vue";
-import { library as cs } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon as us } from "@fortawesome/vue-fontawesome";
-import { faChevronUp as hs, faChevronDown as ds, faInfoCircle as fs, faAngleDoubleLeft as gs, faAngleDoubleRight as ps, faAngleLeft as ms, faAngleRight as ws, faArrowsAlt as bs, faExpand as ys, faSort as Ss, faSortAmountDown as ks, faSortAmountDownAlt as Fs, faSortAmountUp as Rs, faSortAmountUpAlt as Cs, faTimes as xs, faCheck as Ps, faSquare as vs, faCircleNotch as Os, faPlus as _s, faCaretUp as Es } from "@fortawesome/free-solid-svg-icons";
-import { createElementBlock as p, openBlock as d, normalizeClass as P, createElementVNode as k, createCommentVNode as m, renderSlot as O, resolveComponent as je, resolveDirective as As, withDirectives as I, vModelText as Ts, Fragment as j, createBlock as _, withCtx as Z, vModelCheckbox as de, renderList as Y, withModifiers as $, toDisplayString as T, createVNode as L, normalizeStyle as pt, resolveDynamicComponent as Le, mergeProps as Ue, createTextVNode as mt } from "vue";
-import qs from "vue-select";
-import wt from "fuzzy.js";
-import { v4 as js } from "uuid";
-cs.add(
-  hs,
-  ds,
-  fs,
-  gs,
-  ps,
+  }), r[X("iterator")] = () => r, i("next"), "throw" in t ? i("throw") : r.throw = (n) => {
+    throw n;
+  }, "return" in t && i("return"), r;
+}, bt = (e, t, s) => (t = e[X("asyncIterator")]) ? t.call(e) : (e = e[X("iterator")](), t = {}, s = (i, r) => (r = e[i]) && (t[i] = (n) => new Promise((l, c, f) => (n = r.call(e, n), f = n.done, Promise.resolve(n.value).then((u) => l({ value: u, done: f }), c)))), s("next"), s("return"), t);
+import Ut from "floating-vue";
+import { library as gs } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon as ps } from "@fortawesome/vue-fontawesome";
+import { faChevronUp as ms, faChevronDown as bs, faInfoCircle as ws, faAngleDoubleLeft as ys, faAngleDoubleRight as Ss, faAngleLeft as Rs, faAngleRight as ks, faArrowsAlt as Fs, faExpand as Cs, faSort as xs, faSortAmountDown as _s, faSortAmountDownAlt as vs, faSortAmountUp as Ps, faSortAmountUpAlt as Os, faTimes as Es, faCheck as As, faSquare as Ts, faCircleNotch as qs, faPlus as js, faCaretUp as Ls } from "@fortawesome/free-solid-svg-icons";
+import { createElementBlock as p, openBlock as d, normalizeClass as _, createElementVNode as R, createCommentVNode as b, renderSlot as P, resolveComponent as Ne, resolveDirective as Us, withDirectives as H, vModelText as Bs, Fragment as j, createBlock as O, withCtx as Z, vModelCheckbox as de, renderList as Y, withModifiers as $, toDisplayString as T, createVNode as L, normalizeStyle as wt, resolveDynamicComponent as Ve, mergeProps as Me, createTextVNode as yt } from "vue";
+import Ns from "vue-select";
+import St from "fuzzy.js";
+gs.add(
   ms,
-  ws,
   bs,
+  ws,
   ys,
   Ss,
+  Rs,
   ks,
   Fs,
-  Rs,
   Cs,
   xs,
-  Ps,
-  vs,
-  Os,
   _s,
-  Es
+  vs,
+  Ps,
+  Os,
+  Es,
+  As,
+  Ts,
+  qs,
+  js,
+  Ls
 );
-function Ls(e) {
-  e.component("QuintableFontAwesomeIcon", us);
+function Vs(e) {
+  e.component("QuintableFontAwesomeIcon", ps);
 }
-const Je = (e, t) => {
-  const i = e.__vccOpts || e;
-  for (const [n, r] of t)
-    i[n] = r;
-  return i;
-}, Us = {
+const Xe = (e, t) => {
+  const s = e.__vccOpts || e;
+  for (const [i, r] of t)
+    s[i] = r;
+  return s;
+}, Ms = {
   name: "PrettyCheckbox",
   props: {
     type: {
@@ -261,61 +261,61 @@ const Je = (e, t) => {
       this.$emit("update:indeterminate", !1);
       let t = e.target.checked;
       if (this.m_checked = t, this.modelValue instanceof Array) {
-        let i = [...this.modelValue];
-        t ? i.push(this.value) : i.splice(i.indexOf(this.value), 1), this.$emit("update:modelValue", i), this.$emit("change", i);
+        let s = [...this.modelValue];
+        t ? s.push(this.value) : s.splice(s.indexOf(this.value), 1), this.$emit("update:modelValue", s), this.$emit("change", s);
       } else {
-        const i = t ? this._trueValue ? this.trueValue : !0 : this._falseValue ? this.falseValue : !1;
-        this.$emit("update:modelValue", i), this.$emit("change", i);
+        const s = t ? this._trueValue ? this.trueValue : !0 : this._falseValue ? this.falseValue : !1;
+        this.$emit("update:modelValue", s), this.$emit("change", s);
       }
     }
   }
-}, Ns = ["name", "value", "checked", "disabled", "required"];
-function Vs(e, t, i, n, r, s) {
+}, Ds = ["name", "value", "checked", "disabled", "required"];
+function Is(e, t, s, i, r, n) {
   return d(), p("div", {
-    class: P(s.classes)
+    class: _(n.classes)
   }, [
-    k("input", {
+    R("input", {
       ref: "input",
       type: "checkbox",
-      name: i.name,
-      value: i.value,
-      checked: s.shouldBeChecked,
-      disabled: s._disabled,
-      required: s._required,
-      onChange: t[0] || (t[0] = (...l) => s.updateInput && s.updateInput(...l))
-    }, null, 40, Ns),
-    k("div", {
-      class: P(s.onClasses)
+      name: s.name,
+      value: s.value,
+      checked: n.shouldBeChecked,
+      disabled: n._disabled,
+      required: n._required,
+      onChange: t[0] || (t[0] = (...l) => n.updateInput && n.updateInput(...l))
+    }, null, 40, Ds),
+    R("div", {
+      class: _(n.onClasses)
     }, [
-      O(e.$slots, "extra", {}, void 0, !0),
-      k("label", null, [
-        O(e.$slots, "default", {}, void 0, !0)
+      P(e.$slots, "extra", {}, void 0, !0),
+      R("label", null, [
+        P(e.$slots, "default", {}, void 0, !0)
       ])
     ], 2),
-    s._toggle ? (d(), p("div", {
+    n._toggle ? (d(), p("div", {
       key: 0,
-      class: P(s.offClasses)
+      class: _(n.offClasses)
     }, [
-      O(e.$slots, "off-extra", {}, void 0, !0),
-      O(e.$slots, "off-label", {}, void 0, !0)
-    ], 2)) : m("", !0),
-    s._hover ? (d(), p("div", {
+      P(e.$slots, "off-extra", {}, void 0, !0),
+      P(e.$slots, "off-label", {}, void 0, !0)
+    ], 2)) : b("", !0),
+    n._hover ? (d(), p("div", {
       key: 1,
-      class: P(s.hoverClasses)
+      class: _(n.hoverClasses)
     }, [
-      O(e.$slots, "hover-extra", {}, void 0, !0),
-      O(e.$slots, "hover-label", {}, void 0, !0)
-    ], 2)) : m("", !0),
-    s._indeterminate ? (d(), p("div", {
+      P(e.$slots, "hover-extra", {}, void 0, !0),
+      P(e.$slots, "hover-label", {}, void 0, !0)
+    ], 2)) : b("", !0),
+    n._indeterminate ? (d(), p("div", {
       key: 2,
-      class: P(s.indeterminateClasses)
+      class: _(n.indeterminateClasses)
     }, [
-      O(e.$slots, "indeterminate-extra", {}, void 0, !0),
-      O(e.$slots, "indeterminate-label", {}, void 0, !0)
-    ], 2)) : m("", !0)
+      P(e.$slots, "indeterminate-extra", {}, void 0, !0),
+      P(e.$slots, "indeterminate-label", {}, void 0, !0)
+    ], 2)) : b("", !0)
   ], 2);
 }
-const Bs = /* @__PURE__ */ Je(Us, [["render", Vs], ["__scopeId", "data-v-bc7c5ce1"]]), Ds = {
+const Hs = /* @__PURE__ */ Xe(Ms, [["render", Is], ["__scopeId", "data-v-bc7c5ce1"]]), zs = {
   name: "PrettyRadio",
   props: {
     name: {
@@ -435,54 +435,54 @@ const Bs = /* @__PURE__ */ Je(Us, [["render", Vs], ["__scopeId", "data-v-bc7c5ce
   },
   methods: {
     updateInput() {
-      console.log("radio changed", this.value), this.$emit("update:model-value", this.value), this.$emit("change", this.value);
+      this.$emit("update:model-value", this.value), this.$emit("change", this.value);
     }
   }
-}, Ms = ["name", "value", "checked", "disabled", "required"];
-function Hs(e, t, i, n, r, s) {
+}, Gs = ["name", "value", "checked", "disabled", "required"];
+function Js(e, t, s, i, r, n) {
   return d(), p("div", {
-    class: P(s.classes)
+    class: _(n.classes)
   }, [
-    k("input", {
+    R("input", {
       ref: "input",
       type: "radio",
-      name: i.name,
-      value: i.value,
-      checked: s.shouldBeChecked,
-      disabled: s._disabled,
-      required: s._required,
-      onChange: t[0] || (t[0] = (...l) => s.updateInput && s.updateInput(...l))
-    }, null, 40, Ms),
-    k("div", {
-      class: P(s.onClasses)
+      name: s.name,
+      value: s.value,
+      checked: n.shouldBeChecked,
+      disabled: n._disabled,
+      required: n._required,
+      onChange: t[0] || (t[0] = (...l) => n.updateInput && n.updateInput(...l))
+    }, null, 40, Gs),
+    R("div", {
+      class: _(n.onClasses)
     }, [
-      O(e.$slots, "extra"),
-      k("label", null, [
-        O(e.$slots, "default")
+      P(e.$slots, "extra"),
+      R("label", null, [
+        P(e.$slots, "default")
       ])
     ], 2),
-    s._toggle ? (d(), p("div", {
+    n._toggle ? (d(), p("div", {
       key: 0,
-      class: P(s.offClasses)
+      class: _(n.offClasses)
     }, [
-      O(e.$slots, "off-extra"),
-      O(e.$slots, "off-label")
-    ], 2)) : m("", !0),
-    s._hover ? (d(), p("div", {
+      P(e.$slots, "off-extra"),
+      P(e.$slots, "off-label")
+    ], 2)) : b("", !0),
+    n._hover ? (d(), p("div", {
       key: 1,
-      class: P(s.hoverClasses)
+      class: _(n.hoverClasses)
     }, [
-      O(e.$slots, "hover-extra"),
-      O(e.$slots, "hover-label")
-    ], 2)) : m("", !0)
+      P(e.$slots, "hover-extra"),
+      P(e.$slots, "hover-label")
+    ], 2)) : b("", !0)
   ], 2);
 }
-const Is = /* @__PURE__ */ Je(Ds, [["render", Hs]]);
-function Gs(e) {
-  e.component("QuintablePCheck", Bs), e.component("QuintablePRadio", Is), e.component("QuintableVSelect", qs);
+const Ks = /* @__PURE__ */ Xe(zs, [["render", Js]]);
+function Qs(e) {
+  e.component("QuintablePCheck", Hs), e.component("QuintablePRadio", Ks), e.component("QuintableVSelect", Ns);
 }
-function zs(e) {
-  e.use(At, {
+function Ws(e) {
+  e.use(Ut, {
     themes: {
       tooltip: {
         $extend: "dropdown",
@@ -507,231 +507,231 @@ function zs(e) {
     }
   });
 }
-function Tt(e, t) {
+function Bt(e, t) {
   return function() {
     return e.apply(t, arguments);
   };
 }
-const { toString: Js } = Object.prototype, { getPrototypeOf: Ke } = Object, { iterator: be, toStringTag: qt } = Symbol, ye = /* @__PURE__ */ ((e) => (t) => {
-  const i = Js.call(t);
-  return e[i] || (e[i] = i.slice(8, -1).toLowerCase());
-})(/* @__PURE__ */ Object.create(null)), D = (e) => (e = e.toLowerCase(), (t) => ye(t) === e), Se = (e) => (t) => typeof t === e, { isArray: ee } = Array, le = Se("undefined");
-function Ks(e) {
-  return e !== null && !le(e) && e.constructor !== null && !le(e.constructor) && U(e.constructor.isBuffer) && e.constructor.isBuffer(e);
+const { toString: Xs } = Object.prototype, { getPrototypeOf: Ze } = Object, { iterator: ke, toStringTag: Nt } = Symbol, Fe = /* @__PURE__ */ ((e) => (t) => {
+  const s = Xs.call(t);
+  return e[s] || (e[s] = s.slice(8, -1).toLowerCase());
+})(/* @__PURE__ */ Object.create(null)), M = (e) => (e = e.toLowerCase(), (t) => Fe(t) === e), Ce = (e) => (t) => typeof t === e, { isArray: ee } = Array, oe = Ce("undefined");
+function Zs(e) {
+  return e !== null && !oe(e) && e.constructor !== null && !oe(e.constructor) && U(e.constructor.isBuffer) && e.constructor.isBuffer(e);
 }
-const jt = D("ArrayBuffer");
-function Ws(e) {
+const Vt = M("ArrayBuffer");
+function Ys(e) {
   let t;
-  return typeof ArrayBuffer != "undefined" && ArrayBuffer.isView ? t = ArrayBuffer.isView(e) : t = e && e.buffer && jt(e.buffer), t;
+  return typeof ArrayBuffer != "undefined" && ArrayBuffer.isView ? t = ArrayBuffer.isView(e) : t = e && e.buffer && Vt(e.buffer), t;
 }
-const Qs = Se("string"), U = Se("function"), Lt = Se("number"), ke = (e) => e !== null && typeof e == "object", Xs = (e) => e === !0 || e === !1, fe = (e) => {
-  if (ye(e) !== "object")
+const $s = Ce("string"), U = Ce("function"), Mt = Ce("number"), xe = (e) => e !== null && typeof e == "object", en = (e) => e === !0 || e === !1, me = (e) => {
+  if (Fe(e) !== "object")
     return !1;
-  const t = Ke(e);
-  return (t === null || t === Object.prototype || Object.getPrototypeOf(t) === null) && !(qt in e) && !(be in e);
-}, Zs = D("Date"), Ys = D("File"), $s = D("Blob"), ei = D("FileList"), ti = (e) => ke(e) && U(e.pipe), si = (e) => {
+  const t = Ze(e);
+  return (t === null || t === Object.prototype || Object.getPrototypeOf(t) === null) && !(Nt in e) && !(ke in e);
+}, tn = M("Date"), sn = M("File"), nn = M("Blob"), rn = M("FileList"), ln = (e) => xe(e) && U(e.pipe), on = (e) => {
   let t;
-  return e && (typeof FormData == "function" && e instanceof FormData || U(e.append) && ((t = ye(e)) === "formdata" || // detect form-data instance
+  return e && (typeof FormData == "function" && e instanceof FormData || U(e.append) && ((t = Fe(e)) === "formdata" || // detect form-data instance
   t === "object" && U(e.toString) && e.toString() === "[object FormData]"));
-}, ii = D("URLSearchParams"), [ni, ri, li, oi] = ["ReadableStream", "Request", "Response", "Headers"].map(D), ai = (e) => e.trim ? e.trim() : e.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, "");
-function oe(e, t, { allOwnKeys: i = !1 } = {}) {
+}, an = M("URLSearchParams"), [cn, un, hn, fn] = ["ReadableStream", "Request", "Response", "Headers"].map(M), dn = (e) => e.trim ? e.trim() : e.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, "");
+function ae(e, t, { allOwnKeys: s = !1 } = {}) {
   if (e === null || typeof e == "undefined")
     return;
-  let n, r;
+  let i, r;
   if (typeof e != "object" && (e = [e]), ee(e))
-    for (n = 0, r = e.length; n < r; n++)
-      t.call(null, e[n], n, e);
+    for (i = 0, r = e.length; i < r; i++)
+      t.call(null, e[i], i, e);
   else {
-    const s = i ? Object.getOwnPropertyNames(e) : Object.keys(e), l = s.length;
+    const n = s ? Object.getOwnPropertyNames(e) : Object.keys(e), l = n.length;
     let c;
-    for (n = 0; n < l; n++)
-      c = s[n], t.call(null, e[c], c, e);
+    for (i = 0; i < l; i++)
+      c = n[i], t.call(null, e[c], c, e);
   }
 }
-function Ut(e, t) {
+function Dt(e, t) {
   t = t.toLowerCase();
-  const i = Object.keys(e);
-  let n = i.length, r;
-  for (; n-- > 0; )
-    if (r = i[n], t === r.toLowerCase())
+  const s = Object.keys(e);
+  let i = s.length, r;
+  for (; i-- > 0; )
+    if (r = s[i], t === r.toLowerCase())
       return r;
   return null;
 }
-const K = typeof globalThis != "undefined" ? globalThis : typeof self != "undefined" ? self : typeof window != "undefined" ? window : global, Nt = (e) => !le(e) && e !== K;
-function De() {
-  const { caseless: e } = Nt(this) && this || {}, t = {}, i = (n, r) => {
-    const s = e && Ut(t, r) || r;
-    fe(t[s]) && fe(n) ? t[s] = De(t[s], n) : fe(n) ? t[s] = De({}, n) : ee(n) ? t[s] = n.slice() : t[s] = n;
+const K = typeof globalThis != "undefined" ? globalThis : typeof self != "undefined" ? self : typeof window != "undefined" ? window : global, It = (e) => !oe(e) && e !== K;
+function ze() {
+  const { caseless: e } = It(this) && this || {}, t = {}, s = (i, r) => {
+    const n = e && Dt(t, r) || r;
+    me(t[n]) && me(i) ? t[n] = ze(t[n], i) : me(i) ? t[n] = ze({}, i) : ee(i) ? t[n] = i.slice() : t[n] = i;
   };
-  for (let n = 0, r = arguments.length; n < r; n++)
-    arguments[n] && oe(arguments[n], i);
+  for (let i = 0, r = arguments.length; i < r; i++)
+    arguments[i] && ae(arguments[i], s);
   return t;
 }
-const ci = (e, t, i, { allOwnKeys: n } = {}) => (oe(t, (r, s) => {
-  i && U(r) ? e[s] = Tt(r, i) : e[s] = r;
-}, { allOwnKeys: n }), e), ui = (e) => (e.charCodeAt(0) === 65279 && (e = e.slice(1)), e), hi = (e, t, i, n) => {
-  e.prototype = Object.create(t.prototype, n), e.prototype.constructor = e, Object.defineProperty(e, "super", {
+const gn = (e, t, s, { allOwnKeys: i } = {}) => (ae(t, (r, n) => {
+  s && U(r) ? e[n] = Bt(r, s) : e[n] = r;
+}, { allOwnKeys: i }), e), pn = (e) => (e.charCodeAt(0) === 65279 && (e = e.slice(1)), e), mn = (e, t, s, i) => {
+  e.prototype = Object.create(t.prototype, i), e.prototype.constructor = e, Object.defineProperty(e, "super", {
     value: t.prototype
-  }), i && Object.assign(e.prototype, i);
-}, di = (e, t, i, n) => {
-  let r, s, l;
+  }), s && Object.assign(e.prototype, s);
+}, bn = (e, t, s, i) => {
+  let r, n, l;
   const c = {};
   if (t = t || {}, e == null) return t;
   do {
-    for (r = Object.getOwnPropertyNames(e), s = r.length; s-- > 0; )
-      l = r[s], (!n || n(l, e, t)) && !c[l] && (t[l] = e[l], c[l] = !0);
-    e = i !== !1 && Ke(e);
-  } while (e && (!i || i(e, t)) && e !== Object.prototype);
+    for (r = Object.getOwnPropertyNames(e), n = r.length; n-- > 0; )
+      l = r[n], (!i || i(l, e, t)) && !c[l] && (t[l] = e[l], c[l] = !0);
+    e = s !== !1 && Ze(e);
+  } while (e && (!s || s(e, t)) && e !== Object.prototype);
   return t;
-}, fi = (e, t, i) => {
-  e = String(e), (i === void 0 || i > e.length) && (i = e.length), i -= t.length;
-  const n = e.indexOf(t, i);
-  return n !== -1 && n === i;
-}, gi = (e) => {
+}, wn = (e, t, s) => {
+  e = String(e), (s === void 0 || s > e.length) && (s = e.length), s -= t.length;
+  const i = e.indexOf(t, s);
+  return i !== -1 && i === s;
+}, yn = (e) => {
   if (!e) return null;
   if (ee(e)) return e;
   let t = e.length;
-  if (!Lt(t)) return null;
-  const i = new Array(t);
+  if (!Mt(t)) return null;
+  const s = new Array(t);
   for (; t-- > 0; )
-    i[t] = e[t];
-  return i;
-}, pi = /* @__PURE__ */ ((e) => (t) => e && t instanceof e)(typeof Uint8Array != "undefined" && Ke(Uint8Array)), mi = (e, t) => {
-  const n = (e && e[be]).call(e);
+    s[t] = e[t];
+  return s;
+}, Sn = /* @__PURE__ */ ((e) => (t) => e && t instanceof e)(typeof Uint8Array != "undefined" && Ze(Uint8Array)), Rn = (e, t) => {
+  const i = (e && e[ke]).call(e);
   let r;
-  for (; (r = n.next()) && !r.done; ) {
-    const s = r.value;
-    t.call(e, s[0], s[1]);
+  for (; (r = i.next()) && !r.done; ) {
+    const n = r.value;
+    t.call(e, n[0], n[1]);
   }
-}, wi = (e, t) => {
-  let i;
-  const n = [];
-  for (; (i = e.exec(t)) !== null; )
-    n.push(i);
-  return n;
-}, bi = D("HTMLFormElement"), yi = (e) => e.toLowerCase().replace(
+}, kn = (e, t) => {
+  let s;
+  const i = [];
+  for (; (s = e.exec(t)) !== null; )
+    i.push(s);
+  return i;
+}, Fn = M("HTMLFormElement"), Cn = (e) => e.toLowerCase().replace(
   /[-_\s]([a-z\d])(\w*)/g,
-  function(i, n, r) {
-    return n.toUpperCase() + r;
+  function(s, i, r) {
+    return i.toUpperCase() + r;
   }
-), bt = (({ hasOwnProperty: e }) => (t, i) => e.call(t, i))(Object.prototype), Si = D("RegExp"), Vt = (e, t) => {
-  const i = Object.getOwnPropertyDescriptors(e), n = {};
-  oe(i, (r, s) => {
+), Rt = (({ hasOwnProperty: e }) => (t, s) => e.call(t, s))(Object.prototype), xn = M("RegExp"), Ht = (e, t) => {
+  const s = Object.getOwnPropertyDescriptors(e), i = {};
+  ae(s, (r, n) => {
     let l;
-    (l = t(r, s, e)) !== !1 && (n[s] = l || r);
-  }), Object.defineProperties(e, n);
-}, ki = (e) => {
-  Vt(e, (t, i) => {
-    if (U(e) && ["arguments", "caller", "callee"].indexOf(i) !== -1)
+    (l = t(r, n, e)) !== !1 && (i[n] = l || r);
+  }), Object.defineProperties(e, i);
+}, _n = (e) => {
+  Ht(e, (t, s) => {
+    if (U(e) && ["arguments", "caller", "callee"].indexOf(s) !== -1)
       return !1;
-    const n = e[i];
-    if (U(n)) {
+    const i = e[s];
+    if (U(i)) {
       if (t.enumerable = !1, "writable" in t) {
         t.writable = !1;
         return;
       }
       t.set || (t.set = () => {
-        throw Error("Can not rewrite read-only method '" + i + "'");
+        throw Error("Can not rewrite read-only method '" + s + "'");
       });
     }
   });
-}, Fi = (e, t) => {
-  const i = {}, n = (r) => {
-    r.forEach((s) => {
-      i[s] = !0;
+}, vn = (e, t) => {
+  const s = {}, i = (r) => {
+    r.forEach((n) => {
+      s[n] = !0;
     });
   };
-  return ee(e) ? n(e) : n(String(e).split(t)), i;
-}, Ri = () => {
-}, Ci = (e, t) => e != null && Number.isFinite(e = +e) ? e : t;
-function xi(e) {
-  return !!(e && U(e.append) && e[qt] === "FormData" && e[be]);
+  return ee(e) ? i(e) : i(String(e).split(t)), s;
+}, Pn = () => {
+}, On = (e, t) => e != null && Number.isFinite(e = +e) ? e : t;
+function En(e) {
+  return !!(e && U(e.append) && e[Nt] === "FormData" && e[ke]);
 }
-const Pi = (e) => {
-  const t = new Array(10), i = (n, r) => {
-    if (ke(n)) {
-      if (t.indexOf(n) >= 0)
+const An = (e) => {
+  const t = new Array(10), s = (i, r) => {
+    if (xe(i)) {
+      if (t.indexOf(i) >= 0)
         return;
-      if (!("toJSON" in n)) {
-        t[r] = n;
-        const s = ee(n) ? [] : {};
-        return oe(n, (l, c) => {
-          const g = i(l, r + 1);
-          !le(g) && (s[c] = g);
-        }), t[r] = void 0, s;
+      if (!("toJSON" in i)) {
+        t[r] = i;
+        const n = ee(i) ? [] : {};
+        return ae(i, (l, c) => {
+          const f = s(l, r + 1);
+          !oe(f) && (n[c] = f);
+        }), t[r] = void 0, n;
       }
     }
-    return n;
+    return i;
   };
-  return i(e, 0);
-}, vi = D("AsyncFunction"), Oi = (e) => e && (ke(e) || U(e)) && U(e.then) && U(e.catch), Bt = ((e, t) => e ? setImmediate : t ? ((i, n) => (K.addEventListener("message", ({ source: r, data: s }) => {
-  r === K && s === i && n.length && n.shift()();
+  return s(e, 0);
+}, Tn = M("AsyncFunction"), qn = (e) => e && (xe(e) || U(e)) && U(e.then) && U(e.catch), zt = ((e, t) => e ? setImmediate : t ? ((s, i) => (K.addEventListener("message", ({ source: r, data: n }) => {
+  r === K && n === s && i.length && i.shift()();
 }, !1), (r) => {
-  n.push(r), K.postMessage(i, "*");
-}))(`axios@${Math.random()}`, []) : (i) => setTimeout(i))(
+  i.push(r), K.postMessage(s, "*");
+}))(`axios@${Math.random()}`, []) : (s) => setTimeout(s))(
   typeof setImmediate == "function",
   U(K.postMessage)
-), _i = typeof queueMicrotask != "undefined" ? queueMicrotask.bind(K) : typeof process != "undefined" && process.nextTick || Bt, Ei = (e) => e != null && U(e[be]), h = {
+), jn = typeof queueMicrotask != "undefined" ? queueMicrotask.bind(K) : typeof process != "undefined" && process.nextTick || zt, Ln = (e) => e != null && U(e[ke]), h = {
   isArray: ee,
-  isArrayBuffer: jt,
-  isBuffer: Ks,
-  isFormData: si,
-  isArrayBufferView: Ws,
-  isString: Qs,
-  isNumber: Lt,
-  isBoolean: Xs,
-  isObject: ke,
-  isPlainObject: fe,
-  isReadableStream: ni,
-  isRequest: ri,
-  isResponse: li,
-  isHeaders: oi,
-  isUndefined: le,
-  isDate: Zs,
-  isFile: Ys,
-  isBlob: $s,
-  isRegExp: Si,
+  isArrayBuffer: Vt,
+  isBuffer: Zs,
+  isFormData: on,
+  isArrayBufferView: Ys,
+  isString: $s,
+  isNumber: Mt,
+  isBoolean: en,
+  isObject: xe,
+  isPlainObject: me,
+  isReadableStream: cn,
+  isRequest: un,
+  isResponse: hn,
+  isHeaders: fn,
+  isUndefined: oe,
+  isDate: tn,
+  isFile: sn,
+  isBlob: nn,
+  isRegExp: xn,
   isFunction: U,
-  isStream: ti,
-  isURLSearchParams: ii,
-  isTypedArray: pi,
-  isFileList: ei,
-  forEach: oe,
-  merge: De,
-  extend: ci,
-  trim: ai,
-  stripBOM: ui,
-  inherits: hi,
-  toFlatObject: di,
-  kindOf: ye,
-  kindOfTest: D,
-  endsWith: fi,
-  toArray: gi,
-  forEachEntry: mi,
-  matchAll: wi,
-  isHTMLForm: bi,
-  hasOwnProperty: bt,
-  hasOwnProp: bt,
+  isStream: ln,
+  isURLSearchParams: an,
+  isTypedArray: Sn,
+  isFileList: rn,
+  forEach: ae,
+  merge: ze,
+  extend: gn,
+  trim: dn,
+  stripBOM: pn,
+  inherits: mn,
+  toFlatObject: bn,
+  kindOf: Fe,
+  kindOfTest: M,
+  endsWith: wn,
+  toArray: yn,
+  forEachEntry: Rn,
+  matchAll: kn,
+  isHTMLForm: Fn,
+  hasOwnProperty: Rt,
+  hasOwnProp: Rt,
   // an alias to avoid ESLint no-prototype-builtins detection
-  reduceDescriptors: Vt,
-  freezeMethods: ki,
-  toObjectSet: Fi,
-  toCamelCase: yi,
-  noop: Ri,
-  toFiniteNumber: Ci,
-  findKey: Ut,
+  reduceDescriptors: Ht,
+  freezeMethods: _n,
+  toObjectSet: vn,
+  toCamelCase: Cn,
+  noop: Pn,
+  toFiniteNumber: On,
+  findKey: Dt,
   global: K,
-  isContextDefined: Nt,
-  isSpecCompliantForm: xi,
-  toJSONObject: Pi,
-  isAsyncFn: vi,
-  isThenable: Oi,
-  setImmediate: Bt,
-  asap: _i,
-  isIterable: Ei
+  isContextDefined: It,
+  isSpecCompliantForm: En,
+  toJSONObject: An,
+  isAsyncFn: Tn,
+  isThenable: qn,
+  setImmediate: zt,
+  asap: jn,
+  isIterable: Ln
 };
-function C(e, t, i, n, r) {
-  Error.call(this), Error.captureStackTrace ? Error.captureStackTrace(this, this.constructor) : this.stack = new Error().stack, this.message = e, this.name = "AxiosError", t && (this.code = t), i && (this.config = i), n && (this.request = n), r && (this.response = r, this.status = r.status ? r.status : null);
+function C(e, t, s, i, r) {
+  Error.call(this), Error.captureStackTrace ? Error.captureStackTrace(this, this.constructor) : this.stack = new Error().stack, this.message = e, this.name = "AxiosError", t && (this.code = t), s && (this.config = s), i && (this.request = i), r && (this.response = r, this.status = r.status ? r.status : null);
 }
 h.inherits(C, Error, {
   toJSON: function() {
@@ -754,7 +754,7 @@ h.inherits(C, Error, {
     };
   }
 });
-const Dt = C.prototype, Mt = {};
+const Gt = C.prototype, Jt = {};
 [
   "ERR_BAD_OPTION_VALUE",
   "ERR_BAD_OPTION",
@@ -770,96 +770,96 @@ const Dt = C.prototype, Mt = {};
   "ERR_INVALID_URL"
   // eslint-disable-next-line func-names
 ].forEach((e) => {
-  Mt[e] = { value: e };
+  Jt[e] = { value: e };
 });
-Object.defineProperties(C, Mt);
-Object.defineProperty(Dt, "isAxiosError", { value: !0 });
-C.from = (e, t, i, n, r, s) => {
-  const l = Object.create(Dt);
-  return h.toFlatObject(e, l, function(g) {
-    return g !== Error.prototype;
-  }, (c) => c !== "isAxiosError"), C.call(l, e.message, t, i, n, r), l.cause = e, l.name = e.name, s && Object.assign(l, s), l;
+Object.defineProperties(C, Jt);
+Object.defineProperty(Gt, "isAxiosError", { value: !0 });
+C.from = (e, t, s, i, r, n) => {
+  const l = Object.create(Gt);
+  return h.toFlatObject(e, l, function(f) {
+    return f !== Error.prototype;
+  }, (c) => c !== "isAxiosError"), C.call(l, e.message, t, s, i, r), l.cause = e, l.name = e.name, n && Object.assign(l, n), l;
 };
-const Ai = null;
-function Me(e) {
+const Un = null;
+function Ge(e) {
   return h.isPlainObject(e) || h.isArray(e);
 }
-function Ht(e) {
+function Kt(e) {
   return h.endsWith(e, "[]") ? e.slice(0, -2) : e;
 }
-function yt(e, t, i) {
-  return e ? e.concat(t).map(function(r, s) {
-    return r = Ht(r), !i && s ? "[" + r + "]" : r;
-  }).join(i ? "." : "") : t;
+function kt(e, t, s) {
+  return e ? e.concat(t).map(function(r, n) {
+    return r = Kt(r), !s && n ? "[" + r + "]" : r;
+  }).join(s ? "." : "") : t;
 }
-function Ti(e) {
-  return h.isArray(e) && !e.some(Me);
+function Bn(e) {
+  return h.isArray(e) && !e.some(Ge);
 }
-const qi = h.toFlatObject(h, {}, null, function(t) {
+const Nn = h.toFlatObject(h, {}, null, function(t) {
   return /^is[A-Z]/.test(t);
 });
-function Fe(e, t, i) {
+function _e(e, t, s) {
   if (!h.isObject(e))
     throw new TypeError("target must be an object");
-  t = t || new FormData(), i = h.toFlatObject(i, {
+  t = t || new FormData(), s = h.toFlatObject(s, {
     metaTokens: !0,
     dots: !1,
     indexes: !1
-  }, !1, function(S, w) {
-    return !h.isUndefined(w[S]);
+  }, !1, function(y, w) {
+    return !h.isUndefined(w[y]);
   });
-  const n = i.metaTokens, r = i.visitor || o, s = i.dots, l = i.indexes, g = (i.Blob || typeof Blob != "undefined" && Blob) && h.isSpecCompliantForm(t);
+  const i = s.metaTokens, r = s.visitor || o, n = s.dots, l = s.indexes, f = (s.Blob || typeof Blob != "undefined" && Blob) && h.isSpecCompliantForm(t);
   if (!h.isFunction(r))
     throw new TypeError("visitor must be a function");
-  function u(y) {
-    if (y === null) return "";
-    if (h.isDate(y))
-      return y.toISOString();
-    if (!g && h.isBlob(y))
+  function u(m) {
+    if (m === null) return "";
+    if (h.isDate(m))
+      return m.toISOString();
+    if (!f && h.isBlob(m))
       throw new C("Blob is not supported. Use a Buffer instead.");
-    return h.isArrayBuffer(y) || h.isTypedArray(y) ? g && typeof Blob == "function" ? new Blob([y]) : Buffer.from(y) : y;
+    return h.isArrayBuffer(m) || h.isTypedArray(m) ? f && typeof Blob == "function" ? new Blob([m]) : Buffer.from(m) : m;
   }
-  function o(y, S, w) {
-    let v = y;
-    if (y && !w && typeof y == "object") {
-      if (h.endsWith(S, "{}"))
-        S = n ? S : S.slice(0, -2), y = JSON.stringify(y);
-      else if (h.isArray(y) && Ti(y) || (h.isFileList(y) || h.endsWith(S, "[]")) && (v = h.toArray(y)))
-        return S = Ht(S), v.forEach(function(x, V) {
+  function o(m, y, w) {
+    let v = m;
+    if (m && !w && typeof m == "object") {
+      if (h.endsWith(y, "{}"))
+        y = i ? y : y.slice(0, -2), m = JSON.stringify(m);
+      else if (h.isArray(m) && Bn(m) || (h.isFileList(m) || h.endsWith(y, "[]")) && (v = h.toArray(m)))
+        return y = Kt(y), v.forEach(function(x, N) {
           !(h.isUndefined(x) || x === null) && t.append(
             // eslint-disable-next-line no-nested-ternary
-            l === !0 ? yt([S], V, s) : l === null ? S : S + "[]",
+            l === !0 ? kt([y], N, n) : l === null ? y : y + "[]",
             u(x)
           );
         }), !1;
     }
-    return Me(y) ? !0 : (t.append(yt(w, S, s), u(y)), !1);
+    return Ge(m) ? !0 : (t.append(kt(w, y, n), u(m)), !1);
   }
-  const a = [], f = Object.assign(qi, {
+  const a = [], g = Object.assign(Nn, {
     defaultVisitor: o,
     convertValue: u,
-    isVisitable: Me
+    isVisitable: Ge
   });
-  function b(y, S) {
-    if (!h.isUndefined(y)) {
-      if (a.indexOf(y) !== -1)
-        throw Error("Circular reference detected in " + S.join("."));
-      a.push(y), h.forEach(y, function(v, R) {
+  function S(m, y) {
+    if (!h.isUndefined(m)) {
+      if (a.indexOf(m) !== -1)
+        throw Error("Circular reference detected in " + y.join("."));
+      a.push(m), h.forEach(m, function(v, F) {
         (!(h.isUndefined(v) || v === null) && r.call(
           t,
           v,
-          h.isString(R) ? R.trim() : R,
-          S,
-          f
-        )) === !0 && b(v, S ? S.concat(R) : [R]);
+          h.isString(F) ? F.trim() : F,
+          y,
+          g
+        )) === !0 && S(v, y ? y.concat(F) : [F]);
       }), a.pop();
     }
   }
   if (!h.isObject(e))
     throw new TypeError("data must be an object");
-  return b(e), t;
+  return S(e), t;
 }
-function St(e) {
+function Ft(e) {
   const t = {
     "!": "%21",
     "'": "%27",
@@ -869,44 +869,44 @@ function St(e) {
     "%20": "+",
     "%00": "\0"
   };
-  return encodeURIComponent(e).replace(/[!'()~]|%20|%00/g, function(n) {
-    return t[n];
+  return encodeURIComponent(e).replace(/[!'()~]|%20|%00/g, function(i) {
+    return t[i];
   });
 }
-function We(e, t) {
-  this._pairs = [], e && Fe(e, this, t);
+function Ye(e, t) {
+  this._pairs = [], e && _e(e, this, t);
 }
-const It = We.prototype;
-It.append = function(t, i) {
-  this._pairs.push([t, i]);
+const Qt = Ye.prototype;
+Qt.append = function(t, s) {
+  this._pairs.push([t, s]);
 };
-It.toString = function(t) {
-  const i = t ? function(n) {
-    return t.call(this, n, St);
-  } : St;
+Qt.toString = function(t) {
+  const s = t ? function(i) {
+    return t.call(this, i, Ft);
+  } : Ft;
   return this._pairs.map(function(r) {
-    return i(r[0]) + "=" + i(r[1]);
+    return s(r[0]) + "=" + s(r[1]);
   }, "").join("&");
 };
-function ji(e) {
+function Vn(e) {
   return encodeURIComponent(e).replace(/%3A/gi, ":").replace(/%24/g, "$").replace(/%2C/gi, ",").replace(/%20/g, "+").replace(/%5B/gi, "[").replace(/%5D/gi, "]");
 }
-function Gt(e, t, i) {
+function Wt(e, t, s) {
   if (!t)
     return e;
-  const n = i && i.encode || ji;
-  h.isFunction(i) && (i = {
-    serialize: i
+  const i = s && s.encode || Vn;
+  h.isFunction(s) && (s = {
+    serialize: s
   });
-  const r = i && i.serialize;
-  let s;
-  if (r ? s = r(t, i) : s = h.isURLSearchParams(t) ? t.toString() : new We(t, i).toString(n), s) {
+  const r = s && s.serialize;
+  let n;
+  if (r ? n = r(t, s) : n = h.isURLSearchParams(t) ? t.toString() : new Ye(t, s).toString(i), n) {
     const l = e.indexOf("#");
-    l !== -1 && (e = e.slice(0, l)), e += (e.indexOf("?") === -1 ? "?" : "&") + s;
+    l !== -1 && (e = e.slice(0, l)), e += (e.indexOf("?") === -1 ? "?" : "&") + n;
   }
   return e;
 }
-class kt {
+class Ct {
   constructor() {
     this.handlers = [];
   }
@@ -918,12 +918,12 @@ class kt {
    *
    * @return {Number} An ID used to remove interceptor later
    */
-  use(t, i, n) {
+  use(t, s, i) {
     return this.handlers.push({
       fulfilled: t,
-      rejected: i,
-      synchronous: n ? n.synchronous : !1,
-      runWhen: n ? n.runWhen : null
+      rejected: s,
+      synchronous: i ? i.synchronous : !1,
+      runWhen: i ? i.runWhen : null
     }), this.handlers.length - 1;
   }
   /**
@@ -955,110 +955,110 @@ class kt {
    * @returns {void}
    */
   forEach(t) {
-    h.forEach(this.handlers, function(n) {
-      n !== null && t(n);
+    h.forEach(this.handlers, function(i) {
+      i !== null && t(i);
     });
   }
 }
-const zt = {
+const Xt = {
   silentJSONParsing: !0,
   forcedJSONParsing: !0,
   clarifyTimeoutError: !1
-}, Li = typeof URLSearchParams != "undefined" ? URLSearchParams : We, Ui = typeof FormData != "undefined" ? FormData : null, Ni = typeof Blob != "undefined" ? Blob : null, Vi = {
+}, Mn = typeof URLSearchParams != "undefined" ? URLSearchParams : Ye, Dn = typeof FormData != "undefined" ? FormData : null, In = typeof Blob != "undefined" ? Blob : null, Hn = {
   isBrowser: !0,
   classes: {
-    URLSearchParams: Li,
-    FormData: Ui,
-    Blob: Ni
+    URLSearchParams: Mn,
+    FormData: Dn,
+    Blob: In
   },
   protocols: ["http", "https", "file", "blob", "url", "data"]
-}, Qe = typeof window != "undefined" && typeof document != "undefined", He = typeof navigator == "object" && navigator || void 0, Bi = Qe && (!He || ["ReactNative", "NativeScript", "NS"].indexOf(He.product) < 0), Di = typeof WorkerGlobalScope != "undefined" && // eslint-disable-next-line no-undef
-self instanceof WorkerGlobalScope && typeof self.importScripts == "function", Mi = Qe && window.location.href || "http://localhost", Hi = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+}, $e = typeof window != "undefined" && typeof document != "undefined", Je = typeof navigator == "object" && navigator || void 0, zn = $e && (!Je || ["ReactNative", "NativeScript", "NS"].indexOf(Je.product) < 0), Gn = typeof WorkerGlobalScope != "undefined" && // eslint-disable-next-line no-undef
+self instanceof WorkerGlobalScope && typeof self.importScripts == "function", Jn = $e && window.location.href || "http://localhost", Kn = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  hasBrowserEnv: Qe,
-  hasStandardBrowserEnv: Bi,
-  hasStandardBrowserWebWorkerEnv: Di,
-  navigator: He,
-  origin: Mi
-}, Symbol.toStringTag, { value: "Module" })), q = ne(ne({}, Hi), Vi);
-function Ii(e, t) {
-  return Fe(e, new q.classes.URLSearchParams(), Object.assign({
-    visitor: function(i, n, r, s) {
-      return q.isNode && h.isBuffer(i) ? (this.append(n, i.toString("base64")), !1) : s.defaultVisitor.apply(this, arguments);
+  hasBrowserEnv: $e,
+  hasStandardBrowserEnv: zn,
+  hasStandardBrowserWebWorkerEnv: Gn,
+  navigator: Je,
+  origin: Jn
+}, Symbol.toStringTag, { value: "Module" })), q = re(re({}, Kn), Hn);
+function Qn(e, t) {
+  return _e(e, new q.classes.URLSearchParams(), Object.assign({
+    visitor: function(s, i, r, n) {
+      return q.isNode && h.isBuffer(s) ? (this.append(i, s.toString("base64")), !1) : n.defaultVisitor.apply(this, arguments);
     }
   }, t));
 }
-function Gi(e) {
+function Wn(e) {
   return h.matchAll(/\w+|\[(\w*)]/g, e).map((t) => t[0] === "[]" ? "" : t[1] || t[0]);
 }
-function zi(e) {
-  const t = {}, i = Object.keys(e);
+function Xn(e) {
+  const t = {}, s = Object.keys(e);
+  let i;
+  const r = s.length;
   let n;
-  const r = i.length;
-  let s;
-  for (n = 0; n < r; n++)
-    s = i[n], t[s] = e[s];
+  for (i = 0; i < r; i++)
+    n = s[i], t[n] = e[n];
   return t;
 }
-function Jt(e) {
-  function t(i, n, r, s) {
-    let l = i[s++];
+function Zt(e) {
+  function t(s, i, r, n) {
+    let l = s[n++];
     if (l === "__proto__") return !0;
-    const c = Number.isFinite(+l), g = s >= i.length;
-    return l = !l && h.isArray(r) ? r.length : l, g ? (h.hasOwnProp(r, l) ? r[l] = [r[l], n] : r[l] = n, !c) : ((!r[l] || !h.isObject(r[l])) && (r[l] = []), t(i, n, r[l], s) && h.isArray(r[l]) && (r[l] = zi(r[l])), !c);
+    const c = Number.isFinite(+l), f = n >= s.length;
+    return l = !l && h.isArray(r) ? r.length : l, f ? (h.hasOwnProp(r, l) ? r[l] = [r[l], i] : r[l] = i, !c) : ((!r[l] || !h.isObject(r[l])) && (r[l] = []), t(s, i, r[l], n) && h.isArray(r[l]) && (r[l] = Xn(r[l])), !c);
   }
   if (h.isFormData(e) && h.isFunction(e.entries)) {
-    const i = {};
-    return h.forEachEntry(e, (n, r) => {
-      t(Gi(n), r, i, 0);
-    }), i;
+    const s = {};
+    return h.forEachEntry(e, (i, r) => {
+      t(Wn(i), r, s, 0);
+    }), s;
   }
   return null;
 }
-function Ji(e, t, i) {
+function Zn(e, t, s) {
   if (h.isString(e))
     try {
       return (t || JSON.parse)(e), h.trim(e);
-    } catch (n) {
-      if (n.name !== "SyntaxError")
-        throw n;
+    } catch (i) {
+      if (i.name !== "SyntaxError")
+        throw i;
     }
-  return (i || JSON.stringify)(e);
+  return (s || JSON.stringify)(e);
 }
-const ae = {
-  transitional: zt,
+const ce = {
+  transitional: Xt,
   adapter: ["xhr", "http", "fetch"],
-  transformRequest: [function(t, i) {
-    const n = i.getContentType() || "", r = n.indexOf("application/json") > -1, s = h.isObject(t);
-    if (s && h.isHTMLForm(t) && (t = new FormData(t)), h.isFormData(t))
-      return r ? JSON.stringify(Jt(t)) : t;
+  transformRequest: [function(t, s) {
+    const i = s.getContentType() || "", r = i.indexOf("application/json") > -1, n = h.isObject(t);
+    if (n && h.isHTMLForm(t) && (t = new FormData(t)), h.isFormData(t))
+      return r ? JSON.stringify(Zt(t)) : t;
     if (h.isArrayBuffer(t) || h.isBuffer(t) || h.isStream(t) || h.isFile(t) || h.isBlob(t) || h.isReadableStream(t))
       return t;
     if (h.isArrayBufferView(t))
       return t.buffer;
     if (h.isURLSearchParams(t))
-      return i.setContentType("application/x-www-form-urlencoded;charset=utf-8", !1), t.toString();
+      return s.setContentType("application/x-www-form-urlencoded;charset=utf-8", !1), t.toString();
     let c;
-    if (s) {
-      if (n.indexOf("application/x-www-form-urlencoded") > -1)
-        return Ii(t, this.formSerializer).toString();
-      if ((c = h.isFileList(t)) || n.indexOf("multipart/form-data") > -1) {
-        const g = this.env && this.env.FormData;
-        return Fe(
+    if (n) {
+      if (i.indexOf("application/x-www-form-urlencoded") > -1)
+        return Qn(t, this.formSerializer).toString();
+      if ((c = h.isFileList(t)) || i.indexOf("multipart/form-data") > -1) {
+        const f = this.env && this.env.FormData;
+        return _e(
           c ? { "files[]": t } : t,
-          g && new g(),
+          f && new f(),
           this.formSerializer
         );
       }
     }
-    return s || r ? (i.setContentType("application/json", !1), Ji(t)) : t;
+    return n || r ? (s.setContentType("application/json", !1), Zn(t)) : t;
   }],
   transformResponse: [function(t) {
-    const i = this.transitional || ae.transitional, n = i && i.forcedJSONParsing, r = this.responseType === "json";
+    const s = this.transitional || ce.transitional, i = s && s.forcedJSONParsing, r = this.responseType === "json";
     if (h.isResponse(t) || h.isReadableStream(t))
       return t;
-    if (t && h.isString(t) && (n && !this.responseType || r)) {
-      const l = !(i && i.silentJSONParsing) && r;
+    if (t && h.isString(t) && (i && !this.responseType || r)) {
+      const l = !(s && s.silentJSONParsing) && r;
       try {
         return JSON.parse(t);
       } catch (c) {
@@ -1092,9 +1092,9 @@ const ae = {
   }
 };
 h.forEach(["delete", "get", "head", "post", "put", "patch"], (e) => {
-  ae.headers[e] = {};
+  ce.headers[e] = {};
 });
-const Ki = h.toObjectSet([
+const Yn = h.toObjectSet([
   "age",
   "authorization",
   "content-length",
@@ -1112,152 +1112,152 @@ const Ki = h.toObjectSet([
   "referer",
   "retry-after",
   "user-agent"
-]), Wi = (e) => {
+]), $n = (e) => {
   const t = {};
-  let i, n, r;
+  let s, i, r;
   return e && e.split(`
 `).forEach(function(l) {
-    r = l.indexOf(":"), i = l.substring(0, r).trim().toLowerCase(), n = l.substring(r + 1).trim(), !(!i || t[i] && Ki[i]) && (i === "set-cookie" ? t[i] ? t[i].push(n) : t[i] = [n] : t[i] = t[i] ? t[i] + ", " + n : n);
+    r = l.indexOf(":"), s = l.substring(0, r).trim().toLowerCase(), i = l.substring(r + 1).trim(), !(!s || t[s] && Yn[s]) && (s === "set-cookie" ? t[s] ? t[s].push(i) : t[s] = [i] : t[s] = t[s] ? t[s] + ", " + i : i);
   }), t;
-}, Ft = Symbol("internals");
-function re(e) {
+}, xt = Symbol("internals");
+function le(e) {
   return e && String(e).trim().toLowerCase();
 }
-function ge(e) {
-  return e === !1 || e == null ? e : h.isArray(e) ? e.map(ge) : String(e);
+function be(e) {
+  return e === !1 || e == null ? e : h.isArray(e) ? e.map(be) : String(e);
 }
-function Qi(e) {
-  const t = /* @__PURE__ */ Object.create(null), i = /([^\s,;=]+)\s*(?:=\s*([^,;]+))?/g;
-  let n;
-  for (; n = i.exec(e); )
-    t[n[1]] = n[2];
+function ei(e) {
+  const t = /* @__PURE__ */ Object.create(null), s = /([^\s,;=]+)\s*(?:=\s*([^,;]+))?/g;
+  let i;
+  for (; i = s.exec(e); )
+    t[i[1]] = i[2];
   return t;
 }
-const Xi = (e) => /^[-_a-zA-Z0-9^`|~,!#$%&'*+.]+$/.test(e.trim());
-function Ne(e, t, i, n, r) {
-  if (h.isFunction(n))
-    return n.call(this, t, i);
-  if (r && (t = i), !!h.isString(t)) {
-    if (h.isString(n))
-      return t.indexOf(n) !== -1;
-    if (h.isRegExp(n))
-      return n.test(t);
+const ti = (e) => /^[-_a-zA-Z0-9^`|~,!#$%&'*+.]+$/.test(e.trim());
+function De(e, t, s, i, r) {
+  if (h.isFunction(i))
+    return i.call(this, t, s);
+  if (r && (t = s), !!h.isString(t)) {
+    if (h.isString(i))
+      return t.indexOf(i) !== -1;
+    if (h.isRegExp(i))
+      return i.test(t);
   }
 }
-function Zi(e) {
-  return e.trim().toLowerCase().replace(/([a-z\d])(\w*)/g, (t, i, n) => i.toUpperCase() + n);
+function si(e) {
+  return e.trim().toLowerCase().replace(/([a-z\d])(\w*)/g, (t, s, i) => s.toUpperCase() + i);
 }
-function Yi(e, t) {
-  const i = h.toCamelCase(" " + t);
-  ["get", "set", "has"].forEach((n) => {
-    Object.defineProperty(e, n + i, {
-      value: function(r, s, l) {
-        return this[n].call(this, t, r, s, l);
+function ni(e, t) {
+  const s = h.toCamelCase(" " + t);
+  ["get", "set", "has"].forEach((i) => {
+    Object.defineProperty(e, i + s, {
+      value: function(r, n, l) {
+        return this[i].call(this, t, r, n, l);
       },
       configurable: !0
     });
   });
 }
-let N = class {
+let B = class {
   constructor(t) {
     t && this.set(t);
   }
-  set(t, i, n) {
+  set(t, s, i) {
     const r = this;
-    function s(c, g, u) {
-      const o = re(g);
+    function n(c, f, u) {
+      const o = le(f);
       if (!o)
         throw new Error("header name must be a non-empty string");
       const a = h.findKey(r, o);
-      (!a || r[a] === void 0 || u === !0 || u === void 0 && r[a] !== !1) && (r[a || g] = ge(c));
+      (!a || r[a] === void 0 || u === !0 || u === void 0 && r[a] !== !1) && (r[a || f] = be(c));
     }
-    const l = (c, g) => h.forEach(c, (u, o) => s(u, o, g));
+    const l = (c, f) => h.forEach(c, (u, o) => n(u, o, f));
     if (h.isPlainObject(t) || t instanceof this.constructor)
-      l(t, i);
-    else if (h.isString(t) && (t = t.trim()) && !Xi(t))
-      l(Wi(t), i);
+      l(t, s);
+    else if (h.isString(t) && (t = t.trim()) && !ti(t))
+      l($n(t), s);
     else if (h.isObject(t) && h.isIterable(t)) {
-      let c = {}, g, u;
+      let c = {}, f, u;
       for (const o of t) {
         if (!h.isArray(o))
           throw TypeError("Object iterator must return a key-value pair");
-        c[u = o[0]] = (g = c[u]) ? h.isArray(g) ? [...g, o[1]] : [g, o[1]] : o[1];
+        c[u = o[0]] = (f = c[u]) ? h.isArray(f) ? [...f, o[1]] : [f, o[1]] : o[1];
       }
-      l(c, i);
+      l(c, s);
     } else
-      t != null && s(i, t, n);
+      t != null && n(s, t, i);
     return this;
   }
-  get(t, i) {
-    if (t = re(t), t) {
-      const n = h.findKey(this, t);
-      if (n) {
-        const r = this[n];
-        if (!i)
+  get(t, s) {
+    if (t = le(t), t) {
+      const i = h.findKey(this, t);
+      if (i) {
+        const r = this[i];
+        if (!s)
           return r;
-        if (i === !0)
-          return Qi(r);
-        if (h.isFunction(i))
-          return i.call(this, r, n);
-        if (h.isRegExp(i))
-          return i.exec(r);
+        if (s === !0)
+          return ei(r);
+        if (h.isFunction(s))
+          return s.call(this, r, i);
+        if (h.isRegExp(s))
+          return s.exec(r);
         throw new TypeError("parser must be boolean|regexp|function");
       }
     }
   }
-  has(t, i) {
-    if (t = re(t), t) {
-      const n = h.findKey(this, t);
-      return !!(n && this[n] !== void 0 && (!i || Ne(this, this[n], n, i)));
+  has(t, s) {
+    if (t = le(t), t) {
+      const i = h.findKey(this, t);
+      return !!(i && this[i] !== void 0 && (!s || De(this, this[i], i, s)));
     }
     return !1;
   }
-  delete(t, i) {
-    const n = this;
+  delete(t, s) {
+    const i = this;
     let r = !1;
-    function s(l) {
-      if (l = re(l), l) {
-        const c = h.findKey(n, l);
-        c && (!i || Ne(n, n[c], c, i)) && (delete n[c], r = !0);
+    function n(l) {
+      if (l = le(l), l) {
+        const c = h.findKey(i, l);
+        c && (!s || De(i, i[c], c, s)) && (delete i[c], r = !0);
       }
     }
-    return h.isArray(t) ? t.forEach(s) : s(t), r;
+    return h.isArray(t) ? t.forEach(n) : n(t), r;
   }
   clear(t) {
-    const i = Object.keys(this);
-    let n = i.length, r = !1;
-    for (; n--; ) {
-      const s = i[n];
-      (!t || Ne(this, this[s], s, t, !0)) && (delete this[s], r = !0);
+    const s = Object.keys(this);
+    let i = s.length, r = !1;
+    for (; i--; ) {
+      const n = s[i];
+      (!t || De(this, this[n], n, t, !0)) && (delete this[n], r = !0);
     }
     return r;
   }
   normalize(t) {
-    const i = this, n = {};
-    return h.forEach(this, (r, s) => {
-      const l = h.findKey(n, s);
+    const s = this, i = {};
+    return h.forEach(this, (r, n) => {
+      const l = h.findKey(i, n);
       if (l) {
-        i[l] = ge(r), delete i[s];
+        s[l] = be(r), delete s[n];
         return;
       }
-      const c = t ? Zi(s) : String(s).trim();
-      c !== s && delete i[s], i[c] = ge(r), n[c] = !0;
+      const c = t ? si(n) : String(n).trim();
+      c !== n && delete s[n], s[c] = be(r), i[c] = !0;
     }), this;
   }
   concat(...t) {
     return this.constructor.concat(this, ...t);
   }
   toJSON(t) {
-    const i = /* @__PURE__ */ Object.create(null);
-    return h.forEach(this, (n, r) => {
-      n != null && n !== !1 && (i[r] = t && h.isArray(n) ? n.join(", ") : n);
-    }), i;
+    const s = /* @__PURE__ */ Object.create(null);
+    return h.forEach(this, (i, r) => {
+      i != null && i !== !1 && (s[r] = t && h.isArray(i) ? i.join(", ") : i);
+    }), s;
   }
   [Symbol.iterator]() {
     return Object.entries(this.toJSON())[Symbol.iterator]();
   }
   toString() {
-    return Object.entries(this.toJSON()).map(([t, i]) => t + ": " + i).join(`
+    return Object.entries(this.toJSON()).map(([t, s]) => t + ": " + s).join(`
 `);
   }
   getSetCookie() {
@@ -1269,125 +1269,125 @@ let N = class {
   static from(t) {
     return t instanceof this ? t : new this(t);
   }
-  static concat(t, ...i) {
-    const n = new this(t);
-    return i.forEach((r) => n.set(r)), n;
+  static concat(t, ...s) {
+    const i = new this(t);
+    return s.forEach((r) => i.set(r)), i;
   }
   static accessor(t) {
-    const n = (this[Ft] = this[Ft] = {
+    const i = (this[xt] = this[xt] = {
       accessors: {}
     }).accessors, r = this.prototype;
-    function s(l) {
-      const c = re(l);
-      n[c] || (Yi(r, l), n[c] = !0);
+    function n(l) {
+      const c = le(l);
+      i[c] || (ni(r, l), i[c] = !0);
     }
-    return h.isArray(t) ? t.forEach(s) : s(t), this;
+    return h.isArray(t) ? t.forEach(n) : n(t), this;
   }
 };
-N.accessor(["Content-Type", "Content-Length", "Accept", "Accept-Encoding", "User-Agent", "Authorization"]);
-h.reduceDescriptors(N.prototype, ({ value: e }, t) => {
-  let i = t[0].toUpperCase() + t.slice(1);
+B.accessor(["Content-Type", "Content-Length", "Accept", "Accept-Encoding", "User-Agent", "Authorization"]);
+h.reduceDescriptors(B.prototype, ({ value: e }, t) => {
+  let s = t[0].toUpperCase() + t.slice(1);
   return {
     get: () => e,
-    set(n) {
-      this[i] = n;
+    set(i) {
+      this[s] = i;
     }
   };
 });
-h.freezeMethods(N);
-function Ve(e, t) {
-  const i = this || ae, n = t || i, r = N.from(n.headers);
-  let s = n.data;
+h.freezeMethods(B);
+function Ie(e, t) {
+  const s = this || ce, i = t || s, r = B.from(i.headers);
+  let n = i.data;
   return h.forEach(e, function(c) {
-    s = c.call(i, s, r.normalize(), t ? t.status : void 0);
-  }), r.normalize(), s;
+    n = c.call(s, n, r.normalize(), t ? t.status : void 0);
+  }), r.normalize(), n;
 }
-function Kt(e) {
+function Yt(e) {
   return !!(e && e.__CANCEL__);
 }
-function te(e, t, i) {
-  C.call(this, e == null ? "canceled" : e, C.ERR_CANCELED, t, i), this.name = "CanceledError";
+function te(e, t, s) {
+  C.call(this, e == null ? "canceled" : e, C.ERR_CANCELED, t, s), this.name = "CanceledError";
 }
 h.inherits(te, C, {
   __CANCEL__: !0
 });
-function Wt(e, t, i) {
-  const n = i.config.validateStatus;
-  !i.status || !n || n(i.status) ? e(i) : t(new C(
-    "Request failed with status code " + i.status,
-    [C.ERR_BAD_REQUEST, C.ERR_BAD_RESPONSE][Math.floor(i.status / 100) - 4],
-    i.config,
-    i.request,
-    i
+function $t(e, t, s) {
+  const i = s.config.validateStatus;
+  !s.status || !i || i(s.status) ? e(s) : t(new C(
+    "Request failed with status code " + s.status,
+    [C.ERR_BAD_REQUEST, C.ERR_BAD_RESPONSE][Math.floor(s.status / 100) - 4],
+    s.config,
+    s.request,
+    s
   ));
 }
-function $i(e) {
+function ii(e) {
   const t = /^([-+\w]{1,25})(:?\/\/|:)/.exec(e);
   return t && t[1] || "";
 }
-function en(e, t) {
+function ri(e, t) {
   e = e || 10;
-  const i = new Array(e), n = new Array(e);
-  let r = 0, s = 0, l;
-  return t = t !== void 0 ? t : 1e3, function(g) {
-    const u = Date.now(), o = n[s];
-    l || (l = u), i[r] = g, n[r] = u;
-    let a = s, f = 0;
+  const s = new Array(e), i = new Array(e);
+  let r = 0, n = 0, l;
+  return t = t !== void 0 ? t : 1e3, function(f) {
+    const u = Date.now(), o = i[n];
+    l || (l = u), s[r] = f, i[r] = u;
+    let a = n, g = 0;
     for (; a !== r; )
-      f += i[a++], a = a % e;
-    if (r = (r + 1) % e, r === s && (s = (s + 1) % e), u - l < t)
+      g += s[a++], a = a % e;
+    if (r = (r + 1) % e, r === n && (n = (n + 1) % e), u - l < t)
       return;
-    const b = o && u - o;
-    return b ? Math.round(f * 1e3 / b) : void 0;
+    const S = o && u - o;
+    return S ? Math.round(g * 1e3 / S) : void 0;
   };
 }
-function tn(e, t) {
-  let i = 0, n = 1e3 / t, r, s;
+function li(e, t) {
+  let s = 0, i = 1e3 / t, r, n;
   const l = (u, o = Date.now()) => {
-    i = o, r = null, s && (clearTimeout(s), s = null), e.apply(null, u);
+    s = o, r = null, n && (clearTimeout(n), n = null), e.apply(null, u);
   };
   return [(...u) => {
-    const o = Date.now(), a = o - i;
-    a >= n ? l(u, o) : (r = u, s || (s = setTimeout(() => {
-      s = null, l(r);
-    }, n - a)));
+    const o = Date.now(), a = o - s;
+    a >= i ? l(u, o) : (r = u, n || (n = setTimeout(() => {
+      n = null, l(r);
+    }, i - a)));
   }, () => r && l(r)];
 }
-const me = (e, t, i = 3) => {
-  let n = 0;
-  const r = en(50, 250);
-  return tn((s) => {
-    const l = s.loaded, c = s.lengthComputable ? s.total : void 0, g = l - n, u = r(g), o = l <= c;
-    n = l;
+const Se = (e, t, s = 3) => {
+  let i = 0;
+  const r = ri(50, 250);
+  return li((n) => {
+    const l = n.loaded, c = n.lengthComputable ? n.total : void 0, f = l - i, u = r(f), o = l <= c;
+    i = l;
     const a = {
       loaded: l,
       total: c,
       progress: c ? l / c : void 0,
-      bytes: g,
+      bytes: f,
       rate: u || void 0,
       estimated: u && c && o ? (c - l) / u : void 0,
-      event: s,
+      event: n,
       lengthComputable: c != null,
       [t ? "download" : "upload"]: !0
     };
     e(a);
-  }, i);
-}, Rt = (e, t) => {
-  const i = e != null;
-  return [(n) => t[0]({
-    lengthComputable: i,
+  }, s);
+}, _t = (e, t) => {
+  const s = e != null;
+  return [(i) => t[0]({
+    lengthComputable: s,
     total: e,
-    loaded: n
+    loaded: i
   }), t[1]];
-}, Ct = (e) => (...t) => h.asap(() => e(...t)), sn = q.hasStandardBrowserEnv ? /* @__PURE__ */ ((e, t) => (i) => (i = new URL(i, q.origin), e.protocol === i.protocol && e.host === i.host && (t || e.port === i.port)))(
+}, vt = (e) => (...t) => h.asap(() => e(...t)), oi = q.hasStandardBrowserEnv ? /* @__PURE__ */ ((e, t) => (s) => (s = new URL(s, q.origin), e.protocol === s.protocol && e.host === s.host && (t || e.port === s.port)))(
   new URL(q.origin),
   q.navigator && /(msie|trident)/i.test(q.navigator.userAgent)
-) : () => !0, nn = q.hasStandardBrowserEnv ? (
+) : () => !0, ai = q.hasStandardBrowserEnv ? (
   // Standard browser envs support document.cookie
   {
-    write(e, t, i, n, r, s) {
+    write(e, t, s, i, r, n) {
       const l = [e + "=" + encodeURIComponent(t)];
-      h.isNumber(i) && l.push("expires=" + new Date(i).toGMTString()), h.isString(n) && l.push("path=" + n), h.isString(r) && l.push("domain=" + r), s === !0 && l.push("secure"), document.cookie = l.join("; ");
+      h.isNumber(s) && l.push("expires=" + new Date(s).toGMTString()), h.isString(i) && l.push("path=" + i), h.isString(r) && l.push("domain=" + r), n === !0 && l.push("secure"), document.cookie = l.join("; ");
     },
     read(e) {
       const t = document.cookie.match(new RegExp("(^|;\\s*)(" + e + ")=([^;]*)"));
@@ -1409,49 +1409,49 @@ const me = (e, t, i = 3) => {
     }
   }
 );
-function rn(e) {
+function ci(e) {
   return /^([a-z][a-z\d+\-.]*:)?\/\//i.test(e);
 }
-function ln(e, t) {
+function ui(e, t) {
   return t ? e.replace(/\/?\/$/, "") + "/" + t.replace(/^\/+/, "") : e;
 }
-function Qt(e, t, i) {
-  let n = !rn(t);
-  return e && (n || i == !1) ? ln(e, t) : t;
+function es(e, t, s) {
+  let i = !ci(t);
+  return e && (i || s == !1) ? ui(e, t) : t;
 }
-const xt = (e) => e instanceof N ? ne({}, e) : e;
-function Q(e, t) {
+const Pt = (e) => e instanceof B ? re({}, e) : e;
+function W(e, t) {
   t = t || {};
-  const i = {};
-  function n(u, o, a, f) {
-    return h.isPlainObject(u) && h.isPlainObject(o) ? h.merge.call({ caseless: f }, u, o) : h.isPlainObject(o) ? h.merge({}, o) : h.isArray(o) ? o.slice() : o;
+  const s = {};
+  function i(u, o, a, g) {
+    return h.isPlainObject(u) && h.isPlainObject(o) ? h.merge.call({ caseless: g }, u, o) : h.isPlainObject(o) ? h.merge({}, o) : h.isArray(o) ? o.slice() : o;
   }
-  function r(u, o, a, f) {
+  function r(u, o, a, g) {
     if (h.isUndefined(o)) {
       if (!h.isUndefined(u))
-        return n(void 0, u, a, f);
-    } else return n(u, o, a, f);
+        return i(void 0, u, a, g);
+    } else return i(u, o, a, g);
   }
-  function s(u, o) {
+  function n(u, o) {
     if (!h.isUndefined(o))
-      return n(void 0, o);
+      return i(void 0, o);
   }
   function l(u, o) {
     if (h.isUndefined(o)) {
       if (!h.isUndefined(u))
-        return n(void 0, u);
-    } else return n(void 0, o);
+        return i(void 0, u);
+    } else return i(void 0, o);
   }
   function c(u, o, a) {
     if (a in t)
-      return n(u, o);
+      return i(u, o);
     if (a in e)
-      return n(void 0, u);
+      return i(void 0, u);
   }
-  const g = {
-    url: s,
-    method: s,
-    data: s,
+  const f = {
+    url: n,
+    method: n,
+    data: n,
     baseURL: l,
     transformRequest: l,
     transformResponse: l,
@@ -1477,49 +1477,49 @@ function Q(e, t) {
     socketPath: l,
     responseEncoding: l,
     validateStatus: c,
-    headers: (u, o, a) => r(xt(u), xt(o), a, !0)
+    headers: (u, o, a) => r(Pt(u), Pt(o), a, !0)
   };
   return h.forEach(Object.keys(Object.assign({}, e, t)), function(o) {
-    const a = g[o] || r, f = a(e[o], t[o], o);
-    h.isUndefined(f) && a !== c || (i[o] = f);
-  }), i;
+    const a = f[o] || r, g = a(e[o], t[o], o);
+    h.isUndefined(g) && a !== c || (s[o] = g);
+  }), s;
 }
-const Xt = (e) => {
-  const t = Q({}, e);
-  let { data: i, withXSRFToken: n, xsrfHeaderName: r, xsrfCookieName: s, headers: l, auth: c } = t;
-  t.headers = l = N.from(l), t.url = Gt(Qt(t.baseURL, t.url, t.allowAbsoluteUrls), e.params, e.paramsSerializer), c && l.set(
+const ts = (e) => {
+  const t = W({}, e);
+  let { data: s, withXSRFToken: i, xsrfHeaderName: r, xsrfCookieName: n, headers: l, auth: c } = t;
+  t.headers = l = B.from(l), t.url = Wt(es(t.baseURL, t.url, t.allowAbsoluteUrls), e.params, e.paramsSerializer), c && l.set(
     "Authorization",
     "Basic " + btoa((c.username || "") + ":" + (c.password ? unescape(encodeURIComponent(c.password)) : ""))
   );
-  let g;
-  if (h.isFormData(i)) {
+  let f;
+  if (h.isFormData(s)) {
     if (q.hasStandardBrowserEnv || q.hasStandardBrowserWebWorkerEnv)
       l.setContentType(void 0);
-    else if ((g = l.getContentType()) !== !1) {
-      const [u, ...o] = g ? g.split(";").map((a) => a.trim()).filter(Boolean) : [];
+    else if ((f = l.getContentType()) !== !1) {
+      const [u, ...o] = f ? f.split(";").map((a) => a.trim()).filter(Boolean) : [];
       l.setContentType([u || "multipart/form-data", ...o].join("; "));
     }
   }
-  if (q.hasStandardBrowserEnv && (n && h.isFunction(n) && (n = n(t)), n || n !== !1 && sn(t.url))) {
-    const u = r && s && nn.read(s);
+  if (q.hasStandardBrowserEnv && (i && h.isFunction(i) && (i = i(t)), i || i !== !1 && oi(t.url))) {
+    const u = r && n && ai.read(n);
     u && l.set(r, u);
   }
   return t;
-}, on = typeof XMLHttpRequest != "undefined", an = on && function(e) {
-  return new Promise(function(i, n) {
-    const r = Xt(e);
-    let s = r.data;
-    const l = N.from(r.headers).normalize();
-    let { responseType: c, onUploadProgress: g, onDownloadProgress: u } = r, o, a, f, b, y;
-    function S() {
-      b && b(), y && y(), r.cancelToken && r.cancelToken.unsubscribe(o), r.signal && r.signal.removeEventListener("abort", o);
+}, hi = typeof XMLHttpRequest != "undefined", fi = hi && function(e) {
+  return new Promise(function(s, i) {
+    const r = ts(e);
+    let n = r.data;
+    const l = B.from(r.headers).normalize();
+    let { responseType: c, onUploadProgress: f, onDownloadProgress: u } = r, o, a, g, S, m;
+    function y() {
+      S && S(), m && m(), r.cancelToken && r.cancelToken.unsubscribe(o), r.signal && r.signal.removeEventListener("abort", o);
     }
     let w = new XMLHttpRequest();
     w.open(r.method.toUpperCase(), r.url, !0), w.timeout = r.timeout;
     function v() {
       if (!w)
         return;
-      const x = N.from(
+      const x = B.from(
         "getAllResponseHeaders" in w && w.getAllResponseHeaders()
       ), A = {
         data: !c || c === "text" || c === "json" ? w.responseText : w.response,
@@ -1529,125 +1529,125 @@ const Xt = (e) => {
         config: e,
         request: w
       };
-      Wt(function(M) {
-        i(M), S();
-      }, function(M) {
-        n(M), S();
+      $t(function(D) {
+        s(D), y();
+      }, function(D) {
+        i(D), y();
       }, A), w = null;
     }
     "onloadend" in w ? w.onloadend = v : w.onreadystatechange = function() {
       !w || w.readyState !== 4 || w.status === 0 && !(w.responseURL && w.responseURL.indexOf("file:") === 0) || setTimeout(v);
     }, w.onabort = function() {
-      w && (n(new C("Request aborted", C.ECONNABORTED, e, w)), w = null);
+      w && (i(new C("Request aborted", C.ECONNABORTED, e, w)), w = null);
     }, w.onerror = function() {
-      n(new C("Network Error", C.ERR_NETWORK, e, w)), w = null;
+      i(new C("Network Error", C.ERR_NETWORK, e, w)), w = null;
     }, w.ontimeout = function() {
-      let V = r.timeout ? "timeout of " + r.timeout + "ms exceeded" : "timeout exceeded";
-      const A = r.transitional || zt;
-      r.timeoutErrorMessage && (V = r.timeoutErrorMessage), n(new C(
-        V,
+      let N = r.timeout ? "timeout of " + r.timeout + "ms exceeded" : "timeout exceeded";
+      const A = r.transitional || Xt;
+      r.timeoutErrorMessage && (N = r.timeoutErrorMessage), i(new C(
+        N,
         A.clarifyTimeoutError ? C.ETIMEDOUT : C.ECONNABORTED,
         e,
         w
       )), w = null;
-    }, s === void 0 && l.setContentType(null), "setRequestHeader" in w && h.forEach(l.toJSON(), function(V, A) {
-      w.setRequestHeader(A, V);
-    }), h.isUndefined(r.withCredentials) || (w.withCredentials = !!r.withCredentials), c && c !== "json" && (w.responseType = r.responseType), u && ([f, y] = me(u, !0), w.addEventListener("progress", f)), g && w.upload && ([a, b] = me(g), w.upload.addEventListener("progress", a), w.upload.addEventListener("loadend", b)), (r.cancelToken || r.signal) && (o = (x) => {
-      w && (n(!x || x.type ? new te(null, e, w) : x), w.abort(), w = null);
+    }, n === void 0 && l.setContentType(null), "setRequestHeader" in w && h.forEach(l.toJSON(), function(N, A) {
+      w.setRequestHeader(A, N);
+    }), h.isUndefined(r.withCredentials) || (w.withCredentials = !!r.withCredentials), c && c !== "json" && (w.responseType = r.responseType), u && ([g, m] = Se(u, !0), w.addEventListener("progress", g)), f && w.upload && ([a, S] = Se(f), w.upload.addEventListener("progress", a), w.upload.addEventListener("loadend", S)), (r.cancelToken || r.signal) && (o = (x) => {
+      w && (i(!x || x.type ? new te(null, e, w) : x), w.abort(), w = null);
     }, r.cancelToken && r.cancelToken.subscribe(o), r.signal && (r.signal.aborted ? o() : r.signal.addEventListener("abort", o)));
-    const R = $i(r.url);
-    if (R && q.protocols.indexOf(R) === -1) {
-      n(new C("Unsupported protocol " + R + ":", C.ERR_BAD_REQUEST, e));
+    const F = ii(r.url);
+    if (F && q.protocols.indexOf(F) === -1) {
+      i(new C("Unsupported protocol " + F + ":", C.ERR_BAD_REQUEST, e));
       return;
     }
-    w.send(s || null);
+    w.send(n || null);
   });
-}, cn = (e, t) => {
-  const { length: i } = e = e ? e.filter(Boolean) : [];
-  if (t || i) {
-    let n = new AbortController(), r;
-    const s = function(u) {
+}, di = (e, t) => {
+  const { length: s } = e = e ? e.filter(Boolean) : [];
+  if (t || s) {
+    let i = new AbortController(), r;
+    const n = function(u) {
       if (!r) {
         r = !0, c();
         const o = u instanceof Error ? u : this.reason;
-        n.abort(o instanceof C ? o : new te(o instanceof Error ? o.message : o));
+        i.abort(o instanceof C ? o : new te(o instanceof Error ? o.message : o));
       }
     };
     let l = t && setTimeout(() => {
-      l = null, s(new C(`timeout ${t} of ms exceeded`, C.ETIMEDOUT));
+      l = null, n(new C(`timeout ${t} of ms exceeded`, C.ETIMEDOUT));
     }, t);
     const c = () => {
       e && (l && clearTimeout(l), l = null, e.forEach((u) => {
-        u.unsubscribe ? u.unsubscribe(s) : u.removeEventListener("abort", s);
+        u.unsubscribe ? u.unsubscribe(n) : u.removeEventListener("abort", n);
       }), e = null);
     };
-    e.forEach((u) => u.addEventListener("abort", s));
-    const { signal: g } = n;
-    return g.unsubscribe = () => h.asap(c), g;
+    e.forEach((u) => u.addEventListener("abort", n));
+    const { signal: f } = i;
+    return f.unsubscribe = () => h.asap(c), f;
   }
-}, un = function* (e, t) {
-  let i = e.byteLength;
-  if (i < t) {
+}, gi = function* (e, t) {
+  let s = e.byteLength;
+  if (s < t) {
     yield e;
     return;
   }
-  let n = 0, r;
-  for (; n < i; )
-    r = n + t, yield e.slice(n, r), n = r;
-}, hn = function(e, t) {
-  return Te(this, null, function* () {
+  let i = 0, r;
+  for (; i < s; )
+    r = i + t, yield e.slice(i, r), i = r;
+}, pi = function(e, t) {
+  return Ue(this, null, function* () {
     try {
-      for (var i = gt(dn(e)), n, r, s; n = !(r = yield new J(i.next())).done; n = !1) {
+      for (var s = bt(mi(e)), i, r, n; i = !(r = yield new J(s.next())).done; i = !1) {
         const l = r.value;
-        yield* qe(un(l, t));
+        yield* Be(gi(l, t));
       }
     } catch (r) {
-      s = [r];
+      n = [r];
     } finally {
       try {
-        n && (r = i.return) && (yield new J(r.call(i)));
+        i && (r = s.return) && (yield new J(r.call(s)));
       } finally {
-        if (s)
-          throw s[0];
+        if (n)
+          throw n[0];
       }
     }
   });
-}, dn = function(e) {
-  return Te(this, null, function* () {
+}, mi = function(e) {
+  return Ue(this, null, function* () {
     if (e[Symbol.asyncIterator]) {
-      yield* qe(e);
+      yield* Be(e);
       return;
     }
     const t = e.getReader();
     try {
       for (; ; ) {
-        const { done: i, value: n } = yield new J(t.read());
-        if (i)
+        const { done: s, value: i } = yield new J(t.read());
+        if (s)
           break;
-        yield n;
+        yield i;
       }
     } finally {
       yield new J(t.cancel());
     }
   });
-}, Pt = (e, t, i, n) => {
-  const r = hn(e, t);
-  let s = 0, l, c = (u) => {
-    l || (l = !0, n && n(u));
+}, Ot = (e, t, s, i) => {
+  const r = pi(e, t);
+  let n = 0, l, c = (u) => {
+    l || (l = !0, i && i(u));
   };
   return new ReadableStream({
     pull(u) {
-      return z(this, null, function* () {
+      return G(this, null, function* () {
         try {
           const { done: o, value: a } = yield r.next();
           if (o) {
             c(), u.close();
             return;
           }
-          let f = a.byteLength;
-          if (i) {
-            let b = s += f;
-            i(b);
+          let g = a.byteLength;
+          if (s) {
+            let S = n += g;
+            s(S);
           }
           u.enqueue(new Uint8Array(a));
         } catch (o) {
@@ -1661,15 +1661,15 @@ const Xt = (e) => {
   }, {
     highWaterMark: 2
   });
-}, Re = typeof fetch == "function" && typeof Request == "function" && typeof Response == "function", Zt = Re && typeof ReadableStream == "function", fn = Re && (typeof TextEncoder == "function" ? /* @__PURE__ */ ((e) => (t) => e.encode(t))(new TextEncoder()) : (e) => z(null, null, function* () {
+}, ve = typeof fetch == "function" && typeof Request == "function" && typeof Response == "function", ss = ve && typeof ReadableStream == "function", bi = ve && (typeof TextEncoder == "function" ? /* @__PURE__ */ ((e) => (t) => e.encode(t))(new TextEncoder()) : (e) => G(null, null, function* () {
   return new Uint8Array(yield new Response(e).arrayBuffer());
-})), Yt = (e, ...t) => {
+})), ns = (e, ...t) => {
   try {
     return !!e(...t);
-  } catch (i) {
+  } catch (s) {
     return !1;
   }
-}, gn = Zt && Yt(() => {
+}, wi = ss && ns(() => {
   let e = !1;
   const t = new Request(q.origin, {
     body: new ReadableStream(),
@@ -1679,17 +1679,17 @@ const Xt = (e) => {
     }
   }).headers.has("Content-Type");
   return e && !t;
-}), vt = 64 * 1024, Ie = Zt && Yt(() => h.isReadableStream(new Response("").body)), we = {
-  stream: Ie && ((e) => e.body)
+}), Et = 64 * 1024, Ke = ss && ns(() => h.isReadableStream(new Response("").body)), Re = {
+  stream: Ke && ((e) => e.body)
 };
-Re && ((e) => {
+ve && ((e) => {
   ["text", "arrayBuffer", "blob", "formData", "stream"].forEach((t) => {
-    !we[t] && (we[t] = h.isFunction(e[t]) ? (i) => i[t]() : (i, n) => {
-      throw new C(`Response type '${t}' is not supported`, C.ERR_NOT_SUPPORT, n);
+    !Re[t] && (Re[t] = h.isFunction(e[t]) ? (s) => s[t]() : (s, i) => {
+      throw new C(`Response type '${t}' is not supported`, C.ERR_NOT_SUPPORT, i);
     });
   });
 })(new Response());
-const pn = (e) => z(null, null, function* () {
+const yi = (e) => G(null, null, function* () {
   if (e == null)
     return 0;
   if (h.isBlob(e))
@@ -1702,215 +1702,215 @@ const pn = (e) => z(null, null, function* () {
   if (h.isArrayBufferView(e) || h.isArrayBuffer(e))
     return e.byteLength;
   if (h.isURLSearchParams(e) && (e = e + ""), h.isString(e))
-    return (yield fn(e)).byteLength;
-}), mn = (e, t) => z(null, null, function* () {
-  const i = h.toFiniteNumber(e.getContentLength());
-  return i == null ? pn(t) : i;
-}), wn = Re && ((e) => z(null, null, function* () {
+    return (yield bi(e)).byteLength;
+}), Si = (e, t) => G(null, null, function* () {
+  const s = h.toFiniteNumber(e.getContentLength());
+  return s == null ? yi(t) : s;
+}), Ri = ve && ((e) => G(null, null, function* () {
   let {
     url: t,
-    method: i,
-    data: n,
+    method: s,
+    data: i,
     signal: r,
-    cancelToken: s,
+    cancelToken: n,
     timeout: l,
     onDownloadProgress: c,
-    onUploadProgress: g,
+    onUploadProgress: f,
     responseType: u,
     headers: o,
     withCredentials: a = "same-origin",
-    fetchOptions: f
-  } = Xt(e);
+    fetchOptions: g
+  } = ts(e);
   u = u ? (u + "").toLowerCase() : "text";
-  let b = cn([r, s && s.toAbortSignal()], l), y;
-  const S = b && b.unsubscribe && (() => {
-    b.unsubscribe();
+  let S = di([r, n && n.toAbortSignal()], l), m;
+  const y = S && S.unsubscribe && (() => {
+    S.unsubscribe();
   });
   let w;
   try {
-    if (g && gn && i !== "get" && i !== "head" && (w = yield mn(o, n)) !== 0) {
+    if (f && wi && s !== "get" && s !== "head" && (w = yield Si(o, i)) !== 0) {
       let A = new Request(t, {
         method: "POST",
-        body: n,
+        body: i,
         duplex: "half"
-      }), B;
-      if (h.isFormData(n) && (B = A.headers.get("content-type")) && o.setContentType(B), A.body) {
-        const [M, G] = Rt(
+      }), V;
+      if (h.isFormData(i) && (V = A.headers.get("content-type")) && o.setContentType(V), A.body) {
+        const [D, z] = _t(
           w,
-          me(Ct(g))
+          Se(vt(f))
         );
-        n = Pt(A.body, vt, M, G);
+        i = Ot(A.body, Et, D, z);
       }
     }
     h.isString(a) || (a = a ? "include" : "omit");
     const v = "credentials" in Request.prototype;
-    y = new Request(t, ft(ne({}, f), {
-      signal: b,
-      method: i.toUpperCase(),
+    m = new Request(t, mt(re({}, g), {
+      signal: S,
+      method: s.toUpperCase(),
       headers: o.normalize().toJSON(),
-      body: n,
+      body: i,
       duplex: "half",
       credentials: v ? a : void 0
     }));
-    let R = yield fetch(y);
-    const x = Ie && (u === "stream" || u === "response");
-    if (Ie && (c || x && S)) {
+    let F = yield fetch(m);
+    const x = Ke && (u === "stream" || u === "response");
+    if (Ke && (c || x && y)) {
       const A = {};
       ["status", "statusText", "headers"].forEach((se) => {
-        A[se] = R[se];
+        A[se] = F[se];
       });
-      const B = h.toFiniteNumber(R.headers.get("content-length")), [M, G] = c && Rt(
-        B,
-        me(Ct(c), !0)
+      const V = h.toFiniteNumber(F.headers.get("content-length")), [D, z] = c && _t(
+        V,
+        Se(vt(c), !0)
       ) || [];
-      R = new Response(
-        Pt(R.body, vt, M, () => {
-          G && G(), S && S();
+      F = new Response(
+        Ot(F.body, Et, D, () => {
+          z && z(), y && y();
         }),
         A
       );
     }
     u = u || "text";
-    let V = yield we[h.findKey(we, u) || "text"](R, e);
-    return !x && S && S(), yield new Promise((A, B) => {
-      Wt(A, B, {
-        data: V,
-        headers: N.from(R.headers),
-        status: R.status,
-        statusText: R.statusText,
+    let N = yield Re[h.findKey(Re, u) || "text"](F, e);
+    return !x && y && y(), yield new Promise((A, V) => {
+      $t(A, V, {
+        data: N,
+        headers: B.from(F.headers),
+        status: F.status,
+        statusText: F.statusText,
         config: e,
-        request: y
+        request: m
       });
     });
   } catch (v) {
-    throw S && S(), v && v.name === "TypeError" && /Load failed|fetch/i.test(v.message) ? Object.assign(
-      new C("Network Error", C.ERR_NETWORK, e, y),
+    throw y && y(), v && v.name === "TypeError" && /Load failed|fetch/i.test(v.message) ? Object.assign(
+      new C("Network Error", C.ERR_NETWORK, e, m),
       {
         cause: v.cause || v
       }
-    ) : C.from(v, v && v.code, e, y);
+    ) : C.from(v, v && v.code, e, m);
   }
-})), Ge = {
-  http: Ai,
-  xhr: an,
-  fetch: wn
+})), Qe = {
+  http: Un,
+  xhr: fi,
+  fetch: Ri
 };
-h.forEach(Ge, (e, t) => {
+h.forEach(Qe, (e, t) => {
   if (e) {
     try {
       Object.defineProperty(e, "name", { value: t });
-    } catch (i) {
+    } catch (s) {
     }
     Object.defineProperty(e, "adapterName", { value: t });
   }
 });
-const Ot = (e) => `- ${e}`, bn = (e) => h.isFunction(e) || e === null || e === !1, $t = {
+const At = (e) => `- ${e}`, ki = (e) => h.isFunction(e) || e === null || e === !1, is = {
   getAdapter: (e) => {
     e = h.isArray(e) ? e : [e];
     const { length: t } = e;
-    let i, n;
+    let s, i;
     const r = {};
-    for (let s = 0; s < t; s++) {
-      i = e[s];
+    for (let n = 0; n < t; n++) {
+      s = e[n];
       let l;
-      if (n = i, !bn(i) && (n = Ge[(l = String(i)).toLowerCase()], n === void 0))
+      if (i = s, !ki(s) && (i = Qe[(l = String(s)).toLowerCase()], i === void 0))
         throw new C(`Unknown adapter '${l}'`);
-      if (n)
+      if (i)
         break;
-      r[l || "#" + s] = n;
+      r[l || "#" + n] = i;
     }
-    if (!n) {
-      const s = Object.entries(r).map(
-        ([c, g]) => `adapter ${c} ` + (g === !1 ? "is not supported by the environment" : "is not available in the build")
+    if (!i) {
+      const n = Object.entries(r).map(
+        ([c, f]) => `adapter ${c} ` + (f === !1 ? "is not supported by the environment" : "is not available in the build")
       );
-      let l = t ? s.length > 1 ? `since :
-` + s.map(Ot).join(`
-`) : " " + Ot(s[0]) : "as no adapter specified";
+      let l = t ? n.length > 1 ? `since :
+` + n.map(At).join(`
+`) : " " + At(n[0]) : "as no adapter specified";
       throw new C(
         "There is no suitable adapter to dispatch the request " + l,
         "ERR_NOT_SUPPORT"
       );
     }
-    return n;
+    return i;
   },
-  adapters: Ge
+  adapters: Qe
 };
-function Be(e) {
+function He(e) {
   if (e.cancelToken && e.cancelToken.throwIfRequested(), e.signal && e.signal.aborted)
     throw new te(null, e);
 }
-function _t(e) {
-  return Be(e), e.headers = N.from(e.headers), e.data = Ve.call(
+function Tt(e) {
+  return He(e), e.headers = B.from(e.headers), e.data = Ie.call(
     e,
     e.transformRequest
-  ), ["post", "put", "patch"].indexOf(e.method) !== -1 && e.headers.setContentType("application/x-www-form-urlencoded", !1), $t.getAdapter(e.adapter || ae.adapter)(e).then(function(n) {
-    return Be(e), n.data = Ve.call(
+  ), ["post", "put", "patch"].indexOf(e.method) !== -1 && e.headers.setContentType("application/x-www-form-urlencoded", !1), is.getAdapter(e.adapter || ce.adapter)(e).then(function(i) {
+    return He(e), i.data = Ie.call(
       e,
       e.transformResponse,
-      n
-    ), n.headers = N.from(n.headers), n;
-  }, function(n) {
-    return Kt(n) || (Be(e), n && n.response && (n.response.data = Ve.call(
+      i
+    ), i.headers = B.from(i.headers), i;
+  }, function(i) {
+    return Yt(i) || (He(e), i && i.response && (i.response.data = Ie.call(
       e,
       e.transformResponse,
-      n.response
-    ), n.response.headers = N.from(n.response.headers))), Promise.reject(n);
+      i.response
+    ), i.response.headers = B.from(i.response.headers))), Promise.reject(i);
   });
 }
-const es = "1.9.0", Ce = {};
+const rs = "1.9.0", Pe = {};
 ["object", "boolean", "number", "function", "string", "symbol"].forEach((e, t) => {
-  Ce[e] = function(n) {
-    return typeof n === e || "a" + (t < 1 ? "n " : " ") + e;
+  Pe[e] = function(i) {
+    return typeof i === e || "a" + (t < 1 ? "n " : " ") + e;
   };
 });
-const Et = {};
-Ce.transitional = function(t, i, n) {
-  function r(s, l) {
-    return "[Axios v" + es + "] Transitional option '" + s + "'" + l + (n ? ". " + n : "");
+const qt = {};
+Pe.transitional = function(t, s, i) {
+  function r(n, l) {
+    return "[Axios v" + rs + "] Transitional option '" + n + "'" + l + (i ? ". " + i : "");
   }
-  return (s, l, c) => {
+  return (n, l, c) => {
     if (t === !1)
       throw new C(
-        r(l, " has been removed" + (i ? " in " + i : "")),
+        r(l, " has been removed" + (s ? " in " + s : "")),
         C.ERR_DEPRECATED
       );
-    return i && !Et[l] && (Et[l] = !0, console.warn(
+    return s && !qt[l] && (qt[l] = !0, console.warn(
       r(
         l,
-        " has been deprecated since v" + i + " and will be removed in the near future"
+        " has been deprecated since v" + s + " and will be removed in the near future"
       )
-    )), t ? t(s, l, c) : !0;
+    )), t ? t(n, l, c) : !0;
   };
 };
-Ce.spelling = function(t) {
-  return (i, n) => (console.warn(`${n} is likely a misspelling of ${t}`), !0);
+Pe.spelling = function(t) {
+  return (s, i) => (console.warn(`${i} is likely a misspelling of ${t}`), !0);
 };
-function yn(e, t, i) {
+function Fi(e, t, s) {
   if (typeof e != "object")
     throw new C("options must be an object", C.ERR_BAD_OPTION_VALUE);
-  const n = Object.keys(e);
-  let r = n.length;
+  const i = Object.keys(e);
+  let r = i.length;
   for (; r-- > 0; ) {
-    const s = n[r], l = t[s];
+    const n = i[r], l = t[n];
     if (l) {
-      const c = e[s], g = c === void 0 || l(c, s, e);
-      if (g !== !0)
-        throw new C("option " + s + " must be " + g, C.ERR_BAD_OPTION_VALUE);
+      const c = e[n], f = c === void 0 || l(c, n, e);
+      if (f !== !0)
+        throw new C("option " + n + " must be " + f, C.ERR_BAD_OPTION_VALUE);
       continue;
     }
-    if (i !== !0)
-      throw new C("Unknown option " + s, C.ERR_BAD_OPTION);
+    if (s !== !0)
+      throw new C("Unknown option " + n, C.ERR_BAD_OPTION);
   }
 }
-const pe = {
-  assertOptions: yn,
-  validators: Ce
-}, H = pe.validators;
-let W = class {
+const we = {
+  assertOptions: Fi,
+  validators: Pe
+}, I = we.validators;
+let Q = class {
   constructor(t) {
     this.defaults = t || {}, this.interceptors = {
-      request: new kt(),
-      response: new kt()
+      request: new Ct(),
+      response: new Ct()
     };
   }
   /**
@@ -1921,142 +1921,142 @@ let W = class {
    *
    * @returns {Promise} The Promise to be fulfilled
    */
-  request(t, i) {
-    return z(this, null, function* () {
+  request(t, s) {
+    return G(this, null, function* () {
       try {
-        return yield this._request(t, i);
-      } catch (n) {
-        if (n instanceof Error) {
+        return yield this._request(t, s);
+      } catch (i) {
+        if (i instanceof Error) {
           let r = {};
           Error.captureStackTrace ? Error.captureStackTrace(r) : r = new Error();
-          const s = r.stack ? r.stack.replace(/^.+\n/, "") : "";
+          const n = r.stack ? r.stack.replace(/^.+\n/, "") : "";
           try {
-            n.stack ? s && !String(n.stack).endsWith(s.replace(/^.+\n.+\n/, "")) && (n.stack += `
-` + s) : n.stack = s;
+            i.stack ? n && !String(i.stack).endsWith(n.replace(/^.+\n.+\n/, "")) && (i.stack += `
+` + n) : i.stack = n;
           } catch (l) {
           }
         }
-        throw n;
+        throw i;
       }
     });
   }
-  _request(t, i) {
-    typeof t == "string" ? (i = i || {}, i.url = t) : i = t || {}, i = Q(this.defaults, i);
-    const { transitional: n, paramsSerializer: r, headers: s } = i;
-    n !== void 0 && pe.assertOptions(n, {
-      silentJSONParsing: H.transitional(H.boolean),
-      forcedJSONParsing: H.transitional(H.boolean),
-      clarifyTimeoutError: H.transitional(H.boolean)
-    }, !1), r != null && (h.isFunction(r) ? i.paramsSerializer = {
+  _request(t, s) {
+    typeof t == "string" ? (s = s || {}, s.url = t) : s = t || {}, s = W(this.defaults, s);
+    const { transitional: i, paramsSerializer: r, headers: n } = s;
+    i !== void 0 && we.assertOptions(i, {
+      silentJSONParsing: I.transitional(I.boolean),
+      forcedJSONParsing: I.transitional(I.boolean),
+      clarifyTimeoutError: I.transitional(I.boolean)
+    }, !1), r != null && (h.isFunction(r) ? s.paramsSerializer = {
       serialize: r
-    } : pe.assertOptions(r, {
-      encode: H.function,
-      serialize: H.function
-    }, !0)), i.allowAbsoluteUrls !== void 0 || (this.defaults.allowAbsoluteUrls !== void 0 ? i.allowAbsoluteUrls = this.defaults.allowAbsoluteUrls : i.allowAbsoluteUrls = !0), pe.assertOptions(i, {
-      baseUrl: H.spelling("baseURL"),
-      withXsrfToken: H.spelling("withXSRFToken")
-    }, !0), i.method = (i.method || this.defaults.method || "get").toLowerCase();
-    let l = s && h.merge(
-      s.common,
-      s[i.method]
+    } : we.assertOptions(r, {
+      encode: I.function,
+      serialize: I.function
+    }, !0)), s.allowAbsoluteUrls !== void 0 || (this.defaults.allowAbsoluteUrls !== void 0 ? s.allowAbsoluteUrls = this.defaults.allowAbsoluteUrls : s.allowAbsoluteUrls = !0), we.assertOptions(s, {
+      baseUrl: I.spelling("baseURL"),
+      withXsrfToken: I.spelling("withXSRFToken")
+    }, !0), s.method = (s.method || this.defaults.method || "get").toLowerCase();
+    let l = n && h.merge(
+      n.common,
+      n[s.method]
     );
-    s && h.forEach(
+    n && h.forEach(
       ["delete", "get", "head", "post", "put", "patch", "common"],
-      (y) => {
-        delete s[y];
+      (m) => {
+        delete n[m];
       }
-    ), i.headers = N.concat(l, s);
+    ), s.headers = B.concat(l, n);
     const c = [];
-    let g = !0;
-    this.interceptors.request.forEach(function(S) {
-      typeof S.runWhen == "function" && S.runWhen(i) === !1 || (g = g && S.synchronous, c.unshift(S.fulfilled, S.rejected));
+    let f = !0;
+    this.interceptors.request.forEach(function(y) {
+      typeof y.runWhen == "function" && y.runWhen(s) === !1 || (f = f && y.synchronous, c.unshift(y.fulfilled, y.rejected));
     });
     const u = [];
-    this.interceptors.response.forEach(function(S) {
-      u.push(S.fulfilled, S.rejected);
+    this.interceptors.response.forEach(function(y) {
+      u.push(y.fulfilled, y.rejected);
     });
-    let o, a = 0, f;
-    if (!g) {
-      const y = [_t.bind(this), void 0];
-      for (y.unshift.apply(y, c), y.push.apply(y, u), f = y.length, o = Promise.resolve(i); a < f; )
-        o = o.then(y[a++], y[a++]);
+    let o, a = 0, g;
+    if (!f) {
+      const m = [Tt.bind(this), void 0];
+      for (m.unshift.apply(m, c), m.push.apply(m, u), g = m.length, o = Promise.resolve(s); a < g; )
+        o = o.then(m[a++], m[a++]);
       return o;
     }
-    f = c.length;
-    let b = i;
-    for (a = 0; a < f; ) {
-      const y = c[a++], S = c[a++];
+    g = c.length;
+    let S = s;
+    for (a = 0; a < g; ) {
+      const m = c[a++], y = c[a++];
       try {
-        b = y(b);
+        S = m(S);
       } catch (w) {
-        S.call(this, w);
+        y.call(this, w);
         break;
       }
     }
     try {
-      o = _t.call(this, b);
-    } catch (y) {
-      return Promise.reject(y);
+      o = Tt.call(this, S);
+    } catch (m) {
+      return Promise.reject(m);
     }
-    for (a = 0, f = u.length; a < f; )
+    for (a = 0, g = u.length; a < g; )
       o = o.then(u[a++], u[a++]);
     return o;
   }
   getUri(t) {
-    t = Q(this.defaults, t);
-    const i = Qt(t.baseURL, t.url, t.allowAbsoluteUrls);
-    return Gt(i, t.params, t.paramsSerializer);
+    t = W(this.defaults, t);
+    const s = es(t.baseURL, t.url, t.allowAbsoluteUrls);
+    return Wt(s, t.params, t.paramsSerializer);
   }
 };
 h.forEach(["delete", "get", "head", "options"], function(t) {
-  W.prototype[t] = function(i, n) {
-    return this.request(Q(n || {}, {
+  Q.prototype[t] = function(s, i) {
+    return this.request(W(i || {}, {
       method: t,
-      url: i,
-      data: (n || {}).data
+      url: s,
+      data: (i || {}).data
     }));
   };
 });
 h.forEach(["post", "put", "patch"], function(t) {
-  function i(n) {
-    return function(s, l, c) {
-      return this.request(Q(c || {}, {
+  function s(i) {
+    return function(n, l, c) {
+      return this.request(W(c || {}, {
         method: t,
-        headers: n ? {
+        headers: i ? {
           "Content-Type": "multipart/form-data"
         } : {},
-        url: s,
+        url: n,
         data: l
       }));
     };
   }
-  W.prototype[t] = i(), W.prototype[t + "Form"] = i(!0);
+  Q.prototype[t] = s(), Q.prototype[t + "Form"] = s(!0);
 });
-let Sn = class ts {
+let Ci = class ls {
   constructor(t) {
     if (typeof t != "function")
       throw new TypeError("executor must be a function.");
-    let i;
-    this.promise = new Promise(function(s) {
-      i = s;
+    let s;
+    this.promise = new Promise(function(n) {
+      s = n;
     });
-    const n = this;
+    const i = this;
     this.promise.then((r) => {
-      if (!n._listeners) return;
-      let s = n._listeners.length;
-      for (; s-- > 0; )
-        n._listeners[s](r);
-      n._listeners = null;
+      if (!i._listeners) return;
+      let n = i._listeners.length;
+      for (; n-- > 0; )
+        i._listeners[n](r);
+      i._listeners = null;
     }), this.promise.then = (r) => {
-      let s;
+      let n;
       const l = new Promise((c) => {
-        n.subscribe(c), s = c;
+        i.subscribe(c), n = c;
       }).then(r);
       return l.cancel = function() {
-        n.unsubscribe(s);
+        i.unsubscribe(n);
       }, l;
-    }, t(function(s, l, c) {
-      n.reason || (n.reason = new te(s, l, c), i(n.reason));
+    }, t(function(n, l, c) {
+      i.reason || (i.reason = new te(n, l, c), s(i.reason));
     });
   }
   /**
@@ -2082,14 +2082,14 @@ let Sn = class ts {
   unsubscribe(t) {
     if (!this._listeners)
       return;
-    const i = this._listeners.indexOf(t);
-    i !== -1 && this._listeners.splice(i, 1);
+    const s = this._listeners.indexOf(t);
+    s !== -1 && this._listeners.splice(s, 1);
   }
   toAbortSignal() {
-    const t = new AbortController(), i = (n) => {
-      t.abort(n);
+    const t = new AbortController(), s = (i) => {
+      t.abort(i);
     };
-    return this.subscribe(i), t.signal.unsubscribe = () => this.unsubscribe(i), t.signal;
+    return this.subscribe(s), t.signal.unsubscribe = () => this.unsubscribe(s), t.signal;
   }
   /**
    * Returns an object that contains a new `CancelToken` and a function that, when called,
@@ -2098,22 +2098,22 @@ let Sn = class ts {
   static source() {
     let t;
     return {
-      token: new ts(function(r) {
+      token: new ls(function(r) {
         t = r;
       }),
       cancel: t
     };
   }
 };
-function kn(e) {
-  return function(i) {
-    return e.apply(null, i);
+function xi(e) {
+  return function(s) {
+    return e.apply(null, s);
   };
 }
-function Fn(e) {
+function _i(e) {
   return h.isObject(e) && e.isAxiosError === !0;
 }
-const ze = {
+const We = {
   Continue: 100,
   SwitchingProtocols: 101,
   Processing: 102,
@@ -2178,41 +2178,41 @@ const ze = {
   NotExtended: 510,
   NetworkAuthenticationRequired: 511
 };
-Object.entries(ze).forEach(([e, t]) => {
-  ze[t] = e;
+Object.entries(We).forEach(([e, t]) => {
+  We[t] = e;
 });
-function ss(e) {
-  const t = new W(e), i = Tt(W.prototype.request, t);
-  return h.extend(i, W.prototype, t, { allOwnKeys: !0 }), h.extend(i, t, null, { allOwnKeys: !0 }), i.create = function(r) {
-    return ss(Q(e, r));
-  }, i;
+function os(e) {
+  const t = new Q(e), s = Bt(Q.prototype.request, t);
+  return h.extend(s, Q.prototype, t, { allOwnKeys: !0 }), h.extend(s, t, null, { allOwnKeys: !0 }), s.create = function(r) {
+    return os(W(e, r));
+  }, s;
 }
-const E = ss(ae);
-E.Axios = W;
+const E = os(ce);
+E.Axios = Q;
 E.CanceledError = te;
-E.CancelToken = Sn;
-E.isCancel = Kt;
-E.VERSION = es;
-E.toFormData = Fe;
+E.CancelToken = Ci;
+E.isCancel = Yt;
+E.VERSION = rs;
+E.toFormData = _e;
 E.AxiosError = C;
 E.Cancel = E.CanceledError;
 E.all = function(t) {
   return Promise.all(t);
 };
-E.spread = kn;
-E.isAxiosError = Fn;
-E.mergeConfig = Q;
-E.AxiosHeaders = N;
-E.formToJSON = (e) => Jt(h.isHTMLForm(e) ? new FormData(e) : e);
-E.getAdapter = $t.getAdapter;
-E.HttpStatusCode = ze;
+E.spread = xi;
+E.isAxiosError = _i;
+E.mergeConfig = W;
+E.AxiosHeaders = B;
+E.formToJSON = (e) => Zt(h.isHTMLForm(e) ? new FormData(e) : e);
+E.getAdapter = is.getAdapter;
+E.HttpStatusCode = We;
 E.default = E;
 const {
   Axios: xl,
-  AxiosError: Pl,
+  AxiosError: _l,
   CanceledError: vl,
-  isCancel: Ol,
-  CancelToken: _l,
+  isCancel: Pl,
+  CancelToken: Ol,
   VERSION: El,
   all: Al,
   Cancel: Tl,
@@ -2220,11 +2220,81 @@ const {
   spread: jl,
   toFormData: Ll,
   AxiosHeaders: Ul,
-  HttpStatusCode: Nl,
-  formToJSON: Vl,
-  getAdapter: Bl,
-  mergeConfig: Dl
-} = E, Rn = {
+  HttpStatusCode: Bl,
+  formToJSON: Nl,
+  getAdapter: Vl,
+  mergeConfig: Ml
+} = E, ge = {
+  sm: "(min-width: 576px)",
+  md: "(min-width: 768px)",
+  lg: "(min-width: 992px)",
+  xl: "(min-width: 1200px)",
+  xxl: "(min-width: 1400px)"
+}, jt = typeof window != "undefined" && typeof window.matchMedia == "function";
+let ye = null;
+class vi {
+  constructor() {
+    fe(this, "_subscribers");
+    fe(this, "_mqls");
+    fe(this, "hiddenBreakpoints");
+    if (this._subscribers = /* @__PURE__ */ new Set(), this._mqls = {}, this.hiddenBreakpoints = [], this._onChange = this._onChange.bind(this), this._compute(), jt)
+      for (const t in ge) {
+        const s = window.matchMedia(ge[t]);
+        this._mqls[t] = s, s.addEventListener ? s.addEventListener("change", this._onChange) : s.addListener(this._onChange);
+      }
+  }
+  _onChange() {
+    this._compute();
+  }
+  _compute() {
+    const t = [];
+    if (jt)
+      for (const s in ge)
+        window.matchMedia(ge[s]).matches || t.push(s);
+    t.push("all"), this.hiddenBreakpoints = t, this._subscribers.forEach((s) => s(t));
+  }
+  subscribe(t) {
+    this._subscribers.add(t), t(this.hiddenBreakpoints);
+  }
+  unsubscribe(t) {
+    this._subscribers.delete(t), this._subscribers.size === 0 && (this._destroy(), ye = null);
+  }
+  _destroy() {
+    for (const t in this._mqls) {
+      const s = this._mqls[t];
+      s.removeEventListener ? s.removeEventListener("change", this._onChange) : s.removeListener(this._onChange);
+    }
+    this._mqls = {}, this._subscribers.clear();
+  }
+}
+function Lt() {
+  return ye || (ye = new vi()), ye;
+}
+let Pi = 0, pe = null;
+function Oi() {
+  if (pe === null)
+    try {
+      const e = "test-local-storage";
+      localStorage.setItem(e, e), localStorage.removeItem(e), pe = !0;
+    } catch (e) {
+      pe = !1;
+    }
+  return pe;
+}
+const Ei = Object.freeze({
+  equal: (e, t) => t === e,
+  greater: (e, t) => t > e,
+  less: (e, t) => t < e,
+  greaterEqual: (e, t) => t >= e,
+  lessEqual: (e, t) => t <= e,
+  contains: (e, t) => !Array.isArray(t) && typeof t != "string" ? !1 : t.indexOf(e) !== -1,
+  notContains: (e, t) => !Array.isArray(t) && typeof t != "string" ? !1 : t.indexOf(e) === -1,
+  startsWith: (e, t) => typeof t != "string" ? !1 : t.indexOf(e) === 0,
+  endsWitch: (e, t) => typeof t != "string" ? !1 : t.indexOf(e, t.length - e.length) !== -1,
+  matches(e, t) {
+    return !(e instanceof RegExp) || typeof t != "string" ? !1 : e.test(t);
+  }
+}), Ai = {
   name: "VueQuintable",
   props: {
     rows: {
@@ -2336,8 +2406,7 @@ const {
   ],
   data() {
     return {
-      rowsUpdatedKey: Date.now(),
-      indexesUpdatedKey: Date.now(),
+      essentialsKey: Date.now(),
       generatedUpdatedKey: Date.now(),
       hoveredRow: null,
       allSelectedCustom: null,
@@ -2374,29 +2443,15 @@ const {
       customPageSort: null,
       hiddenBreakpoints: [],
       initBreakpoints: !0,
-      breakpointTimeout: null,
       cancelSource: null,
       lastQuery: "",
       pageOffset: 0,
-      uuid: js(),
+      uuid: "qt-" + ++Pi + "-" + Date.now(),
       loaderHeight: 0,
       defaultOperator: "equal",
       queryAjaxTimeout: null,
       lastSearchQueryUpdated: null,
-      operatorFunctions: {
-        equal: (e, t) => t === e,
-        greater: (e, t) => t > e,
-        less: (e, t) => t < e,
-        greaterEqual: (e, t) => t >= e,
-        lessEqual: (e, t) => t <= e,
-        contains: (e, t) => !Array.isArray(t) && typeof t != "string" ? !1 : t.indexOf(e) !== -1,
-        notContains: (e, t) => !Array.isArray(t) && typeof t != "string" ? !1 : t.indexOf(e) === -1,
-        startsWith: (e, t) => typeof t != "string" ? !1 : t.indexOf(e) === 0,
-        endsWitch: (e, t) => typeof t != "string" ? !1 : t.indexOf(e, this.length - e.length) !== -1,
-        matches(e, t) {
-          return !(e instanceof RegExp) || typeof t != "string" ? !1 : e.test(t);
-        }
-      },
+      operatorFunctions: Ei,
       storedState: {},
       activeRow: null
     };
@@ -2427,170 +2482,197 @@ const {
       if (this.config.pagination === !0)
         e = 25;
       else if (this.config.pagination) {
-        let F = 0;
-        for (; this.paginationOptions[F] <= this.config.pagination && F < this.paginationOptions.length; )
-          F++;
-        e = this.paginationOptions[Math.min(F - 1, this.paginationOptions.length - 1)];
+        let k = 0;
+        for (; this.paginationOptions[k] <= this.config.pagination && k < this.paginationOptions.length; )
+          k++;
+        e = this.paginationOptions[Math.min(k - 1, this.paginationOptions.length - 1)];
       }
       let t = "of";
       this.config.numberOfVisibleRowsFillerWord && (t = this.config.numberOfVisibleRowsFillerWord);
-      let i = !1;
-      this.config.select && (i = !0);
-      let n = 250;
-      this.config.ajaxRequestDelay && (n = this.config.ajaxRequestDelay);
+      let s = !1;
+      this.config.select && (s = !0);
+      let i = 250;
+      this.config.ajaxRequestDelay && (i = this.config.ajaxRequestDelay);
       let r = "bg-muted";
       this.config.hoverClass === !1 ? r = "" : this.config.hoverClass && this.config.hoverClass !== !0 && (r = this.config.hoverClass);
-      let s = "bg-muted";
-      this.config.activeClass === !1 ? s = "" : this.config.activeClass && this.config.activeClass !== !0 && (s = this.config.activeClass);
+      let n = "bg-muted";
+      this.config.activeClass === !1 ? n = "" : this.config.activeClass && this.config.activeClass !== !0 && (n = this.config.activeClass);
       let l = !1;
       this.config.multiSort && (l = !0);
       let c = !1;
       this.config.pageSort && (c = !0);
-      let g = !1;
-      this.config.multiSortSelect && (g = !0);
+      let f = !1;
+      this.config.multiSortSelect && (f = !0);
       let u = !1;
       this.config.pageSortSelect && (u = !0);
       let o = !1;
       this.config.ajaxUrl && (o = this.config.ajaxUrl);
       let a = "post";
       ["pre", "post"].includes(this.config.selectPosition) && (a = this.config.selectPosition);
-      let f = !1;
-      this.config.expandedAll && (f = !0);
-      let b = !1;
-      this.config.useFuzzySearch && (b = !0);
-      let y = !1;
-      this.config.prettySelect && (y = !0);
+      let g = !1;
+      this.config.expandedAll && (g = !0);
       let S = !1;
-      this.config.rowsSelect && (S = !0);
+      this.config.useFuzzySearch && (S = !0);
+      let m = !1;
+      this.config.prettySelect && (m = !0);
+      let y = !1;
+      this.config.rowsSelect && (y = !0);
       let w = !1;
       this.config.keepSelect && (w = !0);
       let v = !1;
       this.config.disallowAllOption && (v = !0);
-      let R = !1;
-      this.config.hideEmptyColumns && (R = !0);
+      let F = !1;
+      this.config.hideEmptyColumns && (F = !0);
       let x = "none";
       ["none", "active", "all"].includes(this.config.ignoreSortEmptyColumns) && (x = this.config.ignoreSortEmptyColumns);
-      let V = !1;
-      this.config.search && (V = !0);
+      let N = !1;
+      this.config.search && (N = !0);
       let A = 1;
       this.config.searchLength && (A = this.config.searchLength);
-      let B = "Search...";
-      this.config.searchPlaceholder && (B = this.config.searchPlaceholder);
-      let M = "Multiple sort";
-      this.config.multiSortPlaceholder && (M = this.config.multiSortPlaceholder);
-      let G = "Page sort";
-      this.config.pageSortPlaceholder && (G = this.config.pageSortPlaceholder);
+      let V = "Search...";
+      this.config.searchPlaceholder && (V = this.config.searchPlaceholder);
+      let D = "Multiple sort";
+      this.config.multiSortPlaceholder && (D = this.config.multiSortPlaceholder);
+      let z = "Page sort";
+      this.config.pageSortPlaceholder && (z = this.config.pageSortPlaceholder);
       let se = "AND";
       ["AND", "OR"].includes(this.config.filterRelation) && (se = this.config.filterRelation);
-      let Xe = "AND";
-      ["AND", "OR"].includes(this.config.filterGroupRelation) && (Xe = this.config.filterGroupRelation);
-      let Ze = "Rows per page:";
-      this.config.rowsPlaceholder && (Ze = this.config.rowsPlaceholder);
-      let Ye = "No rows...";
-      this.config.emptyPlaceholder && (Ye = this.config.emptyPlaceholder);
-      let $e = !1;
-      this.config.selectAll && ($e = !0);
-      let ce = !1;
-      this.config.selectAllRows && (ce = !0), o && ce && (console.warn(
-        "Option selectAllRows was deactivated automatically because ajaxUrl is set!"
-      ), ce = !1);
+      let et = "AND";
+      ["AND", "OR"].includes(this.config.filterGroupRelation) && (et = this.config.filterGroupRelation);
+      let tt = "Rows per page:";
+      this.config.rowsPlaceholder && (tt = this.config.rowsPlaceholder);
+      let st = "No rows...";
+      this.config.emptyPlaceholder && (st = this.config.emptyPlaceholder);
+      let nt = !1;
+      this.config.selectAll && (nt = !0);
       let ue = !1;
-      this.config.storeState && (ue = !0), !this.identifier && this.config.storeState && (console.warn(
-        "Option storeState was deactivated automatically because table identifier is not set!"
+      this.config.selectAllRows && (ue = !0), o && ue && (console.warn(
+        "Option selectAllRows was deactivated automatically because ajaxUrl is set!"
       ), ue = !1);
-      const xe = "test-local-storage";
-      try {
-        localStorage.setItem(xe, xe), localStorage.removeItem(xe);
-      } catch (F) {
-        console.warn(
-          "Option storeState was deactivated automatically because local storage is not available!",
-          F
-        ), ue = !1;
-      }
-      let et = !1;
-      this.config.defaultSelected && (et = !0);
-      let tt = !1;
-      this.config.hideRowToggle && (tt = !0);
-      let st = !1;
-      this.config.enableRowTabIndex && (st = !0);
-      let it = "chevron-up";
+      let ne = !1;
+      this.config.storeState && (ne = !0), !this.identifier && this.config.storeState && (console.warn(
+        "Option storeState was deactivated automatically because table identifier is not set!"
+      ), ne = !1), ne && !Oi() && (console.warn(
+        "Option storeState was deactivated automatically because local storage is not available!"
+      ), ne = !1);
+      let it = !1;
+      this.config.defaultSelected && (it = !0);
+      let rt = !1;
+      this.config.hideRowToggle && (rt = !0);
+      let lt = !1;
+      this.config.enableRowTabIndex && (lt = !0);
+      let ot = "chevron-up";
       this.config.expandedRowIcon && typeof this.config.expandedRowIcon == "string" && ["chevron-up", "minus", "caret-up", "eye-slash"].includes(
         this.config.expandedRowIcon.toLowerCase()
-      ) && (it = this.config.expandedRowIcon.toLowerCase());
-      let nt = "chevron-down";
+      ) && (ot = this.config.expandedRowIcon.toLowerCase());
+      let at = "chevron-down";
       this.config.collapsedRowIcon && typeof this.config.collapsedRowIcon == "string" && ["chevron-down", "plus", "caret-down", "eye"].includes(
         this.config.collapsedRowIcon.toLowerCase()
-      ) && (nt = this.config.collapsedRowIcon.toLowerCase());
-      let rt = 5;
-      this.config.pageRange && (rt = this.config.pageRange);
-      let lt = "col-12";
-      this.config.searchClass && (lt = this.config.searchClass);
-      let ot = "row";
-      this.config.searchContainerClass && (ot = this.config.searchContainerClass);
-      let at = "GET";
-      this.config.requestMethod && typeof this.config.requestMethod == "string" && ["POST", "GET"].includes(this.config.requestMethod.toUpperCase()) && (at = this.config.requestMethod.toUpperCase());
-      let ct = 0, Pe = [], ve = [], Oe = [], he = [], _e = [], Ee = [], ie = [], Ae = [], ut = null;
+      ) && (at = this.config.collapsedRowIcon.toLowerCase());
+      let ct = 5;
+      this.config.pageRange && (ct = this.config.pageRange);
+      let ut = "col-12";
+      this.config.searchClass && (ut = this.config.searchClass);
+      let ht = "row";
+      this.config.searchContainerClass && (ht = this.config.searchContainerClass);
+      let ft = "GET";
+      this.config.requestMethod && typeof this.config.requestMethod == "string" && ["POST", "GET"].includes(this.config.requestMethod.toUpperCase()) && (ft = this.config.requestMethod.toUpperCase());
+      let dt = 0, Oe = [], Ee = [], Ae = [], he = [], Te = [], qe = [], ie = [], je = [], gt = null;
       if (this.config.columns) {
-        ct = this.config.columns.length;
-        for (let F = 0; F < this.config.columns.length; F++)
-          ie[F] = "", this.config.columns[F] && this.config.columns[F].headline ? (Pe[F] = this.config.columns[F].headline, ie[F] += this.config.columns[F].headline.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/\s+/g, "-").toLowerCase()) : Pe[F] = "", ie[F] += " column-" + (F + 1), this.config.columns[F].classes && (ie[F] += " " + this.config.columns[F].classes), this.config.columns[F] && this.config.columns[F].breakpoint ? ve[F] = this.config.columns[F].breakpoint : ve[F] = "", this.config.columns[F] && this.config.columns[F].sort ? this.config.columns[F].firstSortDirection && typeof this.config.columns[F].firstSortDirection == "string" && ["DESC", "ASC"].includes(
-            this.config.columns[F].firstSortDirection.toUpperCase()
-          ) ? he[F] = this.config.columns[F].firstSortDirection.toUpperCase() : he[F] = !0 : he[F] = !1, this.config.columns[F] && this.config.columns[F].ignoreEmpty ? Ae[F] = !0 : Ae[F] = !1, this.config.columns[F] && this.config.columns[F].sticky ? _e[F] = !0 : _e[F] = !1, this.config.columns[F] && this.config.columns[F].hidden ? Oe[F] = !0 : Oe[F] = !1, this.config.columns[F] && this.config.columns[F].align ? Ee[F] = this.config.columns[F].align : Ee[F] = !1;
-        ut = this.config.columns;
+        dt = this.config.columns.length;
+        for (let k = 0; k < this.config.columns.length; k++)
+          ie[k] = "", this.config.columns[k] && this.config.columns[k].headline ? (Oe[k] = this.config.columns[k].headline, ie[k] += this.config.columns[k].headline.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/\s+/g, "-").toLowerCase()) : Oe[k] = "", ie[k] += " column-" + (k + 1), this.config.columns[k].classes && (ie[k] += " " + this.config.columns[k].classes), this.config.columns[k] && this.config.columns[k].breakpoint ? Ee[k] = this.config.columns[k].breakpoint : Ee[k] = "", this.config.columns[k] && this.config.columns[k].sort ? this.config.columns[k].firstSortDirection && typeof this.config.columns[k].firstSortDirection == "string" && ["DESC", "ASC"].includes(
+            this.config.columns[k].firstSortDirection.toUpperCase()
+          ) ? he[k] = this.config.columns[k].firstSortDirection.toUpperCase() : he[k] = !0 : he[k] = !1, this.config.columns[k] && this.config.columns[k].ignoreEmpty ? je[k] = !0 : je[k] = !1, this.config.columns[k] && this.config.columns[k].sticky ? Te[k] = !0 : Te[k] = !1, this.config.columns[k] && this.config.columns[k].hidden ? Ae[k] = !0 : Ae[k] = !1, this.config.columns[k] && this.config.columns[k].align ? qe[k] = this.config.columns[k].align : qe[k] = !1;
+        gt = this.config.columns;
       }
-      return {
-        headlines: Pe,
+      return Object.freeze({
+        headlines: Oe,
         columnClasses: ie,
         sorts: he,
         pageSort: c,
         multiSort: l,
         pageSortSelect: u,
-        multiSortSelect: g,
-        filterGroupRelation: Xe,
+        multiSortSelect: f,
+        filterGroupRelation: et,
         filterRelation: se,
-        rowsSelect: S,
+        rowsSelect: y,
         keepSelect: w,
         disallowAllOption: v,
-        defaultSelected: et,
+        defaultSelected: it,
         searchLength: A,
-        search: V,
-        searchPlaceholder: B,
-        useFuzzySearch: b,
+        search: N,
+        searchPlaceholder: V,
+        useFuzzySearch: S,
         ajaxUrl: o,
-        pageSortPlaceholder: G,
-        multiSortPlaceholder: M,
-        rowsPlaceholder: Ze,
-        emptyPlaceholder: Ye,
-        stickyCols: _e,
-        alignments: Ee,
-        breakpoints: ve,
-        hiddenCols: Oe,
-        ignoreEmpty: Ae,
-        hideEmptyColumns: R,
+        pageSortPlaceholder: z,
+        multiSortPlaceholder: D,
+        rowsPlaceholder: tt,
+        emptyPlaceholder: st,
+        stickyCols: Te,
+        alignments: qe,
+        breakpoints: Ee,
+        hiddenCols: Ae,
+        ignoreEmpty: je,
+        hideEmptyColumns: F,
         ignoreSortEmptyColumns: x,
         pagination: e,
         numberOfVisibleRowsFillerWord: t,
-        select: i,
-        selectAll: $e,
-        selectAllRows: ce,
+        select: s,
+        selectAll: nt,
+        selectAllRows: ue,
         hoverClass: r,
-        activeClass: s,
-        expandedAll: f,
-        pageRange: rt,
-        prettySelect: y,
-        number: ct,
-        columns: ut,
-        hideRowToggle: tt,
-        enableRowTabIndex: st,
-        expandedRowIcon: it,
-        collapsedRowIcon: nt,
+        activeClass: n,
+        expandedAll: g,
+        pageRange: ct,
+        prettySelect: m,
+        number: dt,
+        columns: gt,
+        hideRowToggle: rt,
+        enableRowTabIndex: lt,
+        expandedRowIcon: ot,
+        collapsedRowIcon: at,
         selectPosition: a,
-        searchClass: lt,
-        searchContainerClass: ot,
-        requestMethod: at,
-        storeState: ue,
-        ajaxRequestDelay: n
-      };
+        searchClass: ut,
+        searchContainerClass: ht,
+        requestMethod: ft,
+        storeState: ne,
+        ajaxRequestDelay: i
+      });
+    },
+    // Pre-compute per-column whether it matches any hidden breakpoint
+    _hiddenBreakpointSet() {
+      return Object.freeze(new Set(this.hiddenBreakpoints));
+    },
+    _colBreakpointMatch() {
+      const e = this._hiddenBreakpointSet;
+      return Object.freeze(
+        this.configFinal.columns.map((t) => {
+          if (!t || !t.breakpoint) return !1;
+          const s = t.breakpoint.toLocaleLowerCase();
+          return s === "all" || e.has(s);
+        })
+      );
+    },
+    // Cache isColEmpty(j) results so it's computed once per column, not N times
+    _colEmptyCache() {
+      const e = {};
+      for (let t = 0; t < this.configFinal.number; t++)
+        e[t] = this.isColEmpty(t);
+      return Object.freeze(e);
+    },
+    // Pre-compute per-column hide status (shared by generatedRows, stickyRows, hiddenColumns)
+    _colHideCache() {
+      const e = {};
+      for (let t = 0; t < this.configFinal.columns.length; t++)
+        e[t] = this.configFinal.hiddenCols[t] || !this.configFinal.ignoreEmpty[t] && this.configFinal.hideEmptyColumns && this._colEmptyCache[t] || this.emptyColumns[t];
+      return Object.freeze(e);
+    },
+    // Pre-compute per-column base visibility for cell rendering
+    cellVisible() {
+      return Object.freeze(
+        this.configFinal.columns.map((e, t) => !(this.configFinal.hiddenCols[t] || this.emptyColumns[t] || !e || this._colBreakpointMatch[t] || this.configFinal.stickyCols[t]))
+      );
     },
     /**
      * Checks which rows shall be shown
@@ -2598,16 +2680,13 @@ const {
      * @returns {Array} a boolean array which represents all indexes of the rows
      */
     visibleRows() {
-      if (this.rowsUpdatedKey && !this.configFinal.ajaxUrl && this.currentRowsPerPage !== "All") {
-        let e = [];
-        for (let s = 0; s < this.rowsFinal.length; s++)
-          e.push(!1);
-        let t = {};
-        for (let s in this.sortedIndexes)
-          Object.prototype.hasOwnProperty.call(this.sortedIndexes, s) && this.filteredRows[this.sortedIndexes[s]] && (t[s] = this.sortedIndexes[s]);
-        let i = this.currentPage * this.currentRowsPerPage, n = i - this.currentRowsPerPage, r = 0;
-        for (let s in t)
-          Object.prototype.hasOwnProperty.call(t, s) && (s = parseInt(s), r < i && r >= n && (e[t[s]] = !0), r++);
+      if (!this.configFinal.ajaxUrl && this.currentRowsPerPage !== "All") {
+        let e = new Array(this.rowsFinal.length).fill(!1), t = {};
+        for (let n in this.sortedIndexes)
+          Object.prototype.hasOwnProperty.call(this.sortedIndexes, n) && this.filteredRows[this.sortedIndexes[n]] && (t[n] = this.sortedIndexes[n]);
+        let s = this.currentPage * this.currentRowsPerPage, i = s - this.currentRowsPerPage, r = 0;
+        for (let n in t)
+          Object.prototype.hasOwnProperty.call(t, n) && (n = parseInt(n), r < s && r >= i && (e[t[n]] = !0), r++);
         return e;
       } else
         return this.filteredRows;
@@ -2619,7 +2698,7 @@ const {
      */
     visibleRowIndexes() {
       let e = [];
-      if (this.indexesUpdatedKey)
+      if (this.essentialsKey)
         if (this.configFinal.ajaxUrl && !this.pageSort)
           for (let t = 0; t < this.rowsFinal.length; t++)
             e.push(t);
@@ -2635,33 +2714,33 @@ const {
      */
     generatedRows() {
       let e = {};
-      if (this.generatedUpdatedKey)
-        for (let t = 0; t < this.rowsFinal.length; t++) {
-          let i = this.rowsFinal[t].cells ? this.rowsFinal[t].cells : this.rowsFinal[t], n = {};
-          for (let r = 0; r < this.hiddenBreakpoints.length; r++) {
-            let s = this.hiddenBreakpoints[r];
-            for (let l = 0; l < this.configFinal.columns.length; l++) {
-              let c = this.configFinal.columns[l];
-              !(this.configFinal.hiddenCols[l] || !this.configFinal.ignoreEmpty[l] && this.configFinal.hideEmptyColumns && (this.isColEmpty(l) || this.isColEmpty(l, t)) || this.emptyColumns[l]) && c.breakpoint && (c.breakpoint.toLocaleLowerCase() === "all" || c.breakpoint.toLocaleLowerCase() === s) && !c.sticky && !c.alwaysExpanded && (n[l] = i[l]);
-            }
+      if (this.generatedUpdatedKey) {
+        const t = this._colBreakpointMatch, s = this._colHideCache, i = this.configFinal.hideEmptyColumns, r = this.visibleRowIndexes;
+        for (let n = 0; n < r.length; n++) {
+          const l = r[n];
+          let c = this.rowsFinal[l].cells ? this.rowsFinal[l].cells : this.rowsFinal[l], f = {};
+          for (let u = 0; u < this.configFinal.columns.length; u++) {
+            if (!t[u]) continue;
+            let o = this.configFinal.columns[u];
+            !(s[u] || i && !this.configFinal.ignoreEmpty[u] && this.isColEmpty(u, l)) && !o.sticky && !o.alwaysExpanded && (f[u] = c[u]);
           }
-          e[t] = n;
+          e[l] = f;
         }
+      }
       return e;
     },
     stickyRows() {
       let e = {};
-      for (let t = 0; t < this.rowsFinal.length; t++) {
-        let i = this.rowsFinal[t].cells ? this.rowsFinal[t].cells : this.rowsFinal[t], n = {};
-        for (let r = 0; r < this.hiddenBreakpoints.length; r++) {
-          let s = this.hiddenBreakpoints[r];
-          for (let l = 0; l < this.configFinal.columns.length; l++) {
-            let c = this.configFinal.columns[l];
-            const g = this.configFinal.hiddenCols[l] || !this.configFinal.ignoreEmpty[l] && this.configFinal.hideEmptyColumns && (this.isColEmpty(l) || this.isColEmpty(l, t)) || this.emptyColumns[l];
-            (!g && c.sticky || !g && c.breakpoint && (c.breakpoint.toLocaleLowerCase() === "all" || c.breakpoint.toLocaleLowerCase() === s) && c.alwaysExpanded) && (n[l] = i[l]);
-          }
+      const t = this._colBreakpointMatch, s = this._colHideCache, i = this.configFinal.hideEmptyColumns, r = this.visibleRowIndexes;
+      for (let n = 0; n < r.length; n++) {
+        const l = r[n];
+        let c = this.rowsFinal[l].cells ? this.rowsFinal[l].cells : this.rowsFinal[l], f = {};
+        for (let u = 0; u < this.configFinal.columns.length; u++) {
+          let o = this.configFinal.columns[u];
+          const a = s[u] || i && !this.configFinal.ignoreEmpty[u] && this.isColEmpty(u, l);
+          (!a && o.sticky || !a && o.alwaysExpanded && t[u]) && (f[u] = c[u]);
         }
-        e[t] = n;
+        e[l] = f;
       }
       return e;
     },
@@ -2725,9 +2804,13 @@ const {
      *
      */
     hasGeneratedRows() {
-      for (let e in this.generatedRows)
-        if (Object.prototype.hasOwnProperty.call(this.generatedRows, e) && Object.keys(this.generatedRows[e]).length)
-          return !0;
+      const e = this._colBreakpointMatch, t = this._colHideCache;
+      for (let s = 0; s < this.configFinal.columns.length; s++)
+        if (e[s] && !t[s]) {
+          const i = this.configFinal.columns[s];
+          if (!i.sticky && !i.alwaysExpanded)
+            return !0;
+        }
       return !1;
     },
     /**
@@ -2735,17 +2818,20 @@ const {
      *
      */
     cellClassesParsed() {
-      let e = [];
-      for (let t = 0; t < this.rowsFinal.length; t++) {
-        e.push([]);
-        let i = this.rowsFinal[t].align, n = this.rowsFinal[t].cells ? this.rowsFinal[t].cells : this.rowsFinal[t];
-        for (let r = 0; r < n.length; r++) {
-          let s = [], l = this.configFinal.alignments[r];
-          if ((n[r].align || i || l) && (n[r].align ? s.push("text-" + n[r].align) : i ? s.push("text-" + i) : s.push("text-" + l)), n[r].classes) {
-            let c = n[r].classes.split(" ");
-            Array.prototype.push.apply(s, c);
+      let e = {};
+      const t = this.visibleRowIndexes.length > 0 ? this.visibleRowIndexes : Object.keys(this.rowsFinal).map(Number);
+      for (let s = 0; s < t.length; s++) {
+        const i = t[s];
+        if (!this.rowsFinal[i]) continue;
+        e[i] = [];
+        let r = this.rowsFinal[i].align, n = this.rowsFinal[i].cells ? this.rowsFinal[i].cells : this.rowsFinal[i];
+        for (let l = 0; l < n.length; l++) {
+          let c = [], f = this.configFinal.alignments[l];
+          if ((n[l].align || r || f) && (n[l].align ? c.push("text-" + n[l].align) : r ? c.push("text-" + r) : c.push("text-" + f)), n[l].classes) {
+            let u = n[l].classes.split(" ");
+            Array.prototype.push.apply(c, u);
           }
-          e[t].push(s.join(" "));
+          e[i].push(c.join(" "));
         }
       }
       return e;
@@ -2755,23 +2841,34 @@ const {
      *
      */
     hiddenColumns() {
-      const e = {};
-      for (let t = 0; t < this.visibleRowIndexes.length; t++) {
-        let i = 0;
-        const n = this.visibleRowIndexes[t];
-        for (let r = 0; r < this.hiddenBreakpoints.length; r++) {
-          let s = this.hiddenBreakpoints[r];
-          for (let l = 0; l < this.configFinal.columns.length; l++) {
-            let c = this.configFinal.columns[l];
-            if (!(this.configFinal.hiddenCols[l] || !this.configFinal.ignoreEmpty[l] && this.configFinal.hideEmptyColumns && (this.isColEmpty(l) || this.isColEmpty(l, n)) || this.emptyColumns[l]) && c.breakpoint && (c.breakpoint.toLocaleLowerCase() === "all" || c.breakpoint.toLocaleLowerCase() === s)) {
-              i++;
+      const e = this._colBreakpointMatch, t = this._colHideCache;
+      let s = !1;
+      for (let r = 0; r < this.configFinal.columns.length; r++)
+        if (e[r] && !t[r]) {
+          s = !0;
+          break;
+        }
+      const i = {};
+      if (s)
+        for (let r = 0; r < this.visibleRowIndexes.length; r++)
+          i[this.visibleRowIndexes[r]] = 1;
+      else if (this.configFinal.hideEmptyColumns)
+        for (let r = 0; r < this.visibleRowIndexes.length; r++) {
+          let n = 0;
+          const l = this.visibleRowIndexes[r];
+          for (let c = 0; c < this.configFinal.columns.length; c++) {
+            if (!e[c]) continue;
+            if (!(t[c] || !this.configFinal.ignoreEmpty[c] && this.isColEmpty(c, l))) {
+              n++;
               break;
             }
           }
+          i[l] = n;
         }
-        e[n] = i;
-      }
-      return e;
+      else
+        for (let r = 0; r < this.visibleRowIndexes.length; r++)
+          i[this.visibleRowIndexes[r]] = 0;
+      return i;
     },
     /**
      * Calculates the actual rows which shall be used.
@@ -2785,7 +2882,7 @@ const {
      *
      */
     someSelected() {
-      return Object.values(this.selected).filter((e) => e).length > 0;
+      return Object.values(this.selected).some((e) => e);
     },
     /**
      * Calculates the number of active sorts
@@ -2818,12 +2915,12 @@ const {
     headerClass() {
       let e = [];
       for (let t = 0; t < this.configFinal.number; t++) {
-        let i = [];
-        this.configFinal.alignments[t] && i.push("text-" + this.configFinal.alignments[t]), this.configFinal.sorts[t] && (i.push("sort-header"), this.currentSortIndexes[t] && i.push("active")), e.push(
-          i.join(" ") + "  quintable--table-container--table--header-row--th " + this.configFinal.columnClasses[t]
+        let s = [];
+        this.configFinal.alignments[t] && s.push("text-" + this.configFinal.alignments[t]), this.configFinal.sorts[t] && (s.push("sort-header"), this.currentSortIndexes[t] && s.push("active")), e.push(
+          s.join(" ") + "  quintable--table-container--table--header-row--th " + this.configFinal.columnClasses[t]
         );
       }
-      return e;
+      return Object.freeze(e);
     },
     /**
      * Calculates the actual displayed page range (number of shown page buttons in pagination) to prevent showing pages out of row range
@@ -2847,7 +2944,12 @@ const {
      *
      */
     numberOfVisibleRows() {
-      return this.configFinal.ajaxUrl ? this.ajaxAll : this.filteredRows.filter((e) => e).length;
+      if (this.configFinal.ajaxUrl)
+        return this.ajaxAll;
+      let e = 0;
+      for (let t = 0; t < this.filteredRows.length; t++)
+        this.filteredRows[t] && e++;
+      return e;
     },
     /**
      * Calculates all accessible pages regarding to page range and current page
@@ -2860,12 +2962,12 @@ const {
       else if (this.currentPage === this.pages)
         t = this.currentPage - (this.pageRange - 1);
       else {
-        let i;
-        this.pageRange % 2 === 0 ? i = this.pageRange / 2 : (i = (this.pageRange - 1) / 2, this.currentPage + i > this.pages && i++), t = this.currentPage - i;
+        let s;
+        this.pageRange % 2 === 0 ? s = this.pageRange / 2 : (s = (this.pageRange - 1) / 2, this.currentPage + s > this.pages && s++), t = this.currentPage - s;
       }
       t = Math.max(t + this.pageOffset, 1);
-      for (let i = 0; i < this.pageRange && !(i + t > this.pages); i++)
-        e.push(i + t);
+      for (let s = 0; s < this.pageRange && !(s + t > this.pages); s++)
+        e.push(s + t);
       return e;
     },
     /**
@@ -2888,63 +2990,63 @@ const {
       if (!this.configFinal.search && !this.filterActive || !this.filterActive && this.configFinal.search && this.query.length < this.configFinal.searchLength)
         return e;
       for (let t = 0; t < this.rowsFinal.length; t++) {
-        let i = this.rowsFinal[t].cells ? this.rowsFinal[t].cells : this.rowsFinal[t], n = !1, r = !1;
+        let s = this.rowsFinal[t].cells ? this.rowsFinal[t].cells : this.rowsFinal[t], i = !1, r = !1;
         if (this.configFinal.search && this.query.length >= this.configFinal.searchLength) {
-          for (let s = 0; s < i.length; s++) {
-            let l = i[s], c = l.html ? l.html : l.text;
+          for (let n = 0; n < s.length; n++) {
+            let l = s[n], c = l.html ? l.html : l.text;
             if (c) {
-              if (this.configFinal.useFuzzySearch && wt(
+              if (this.configFinal.useFuzzySearch && St(
                 (c + "").toLowerCase(),
                 (this.query + "").toLowerCase()
               ).score > 6) {
-                n = !0;
+                i = !0;
                 break;
               }
               if ((c + "").toLowerCase().indexOf((this.query + "").toLowerCase()) !== -1) {
-                n = !0;
+                i = !0;
                 break;
               }
             }
           }
           if (this.rowsFinal[t].keywords)
-            for (let s = 0; s < this.rowsFinal[t].keywords.length; s++) {
-              if (this.configFinal.useFuzzySearch && wt(
-                (this.rowsFinal[t].keywords[s] + "").toLowerCase(),
+            for (let n = 0; n < this.rowsFinal[t].keywords.length; n++) {
+              if (this.configFinal.useFuzzySearch && St(
+                (this.rowsFinal[t].keywords[n] + "").toLowerCase(),
                 (this.query + "").toLowerCase()
               ).score > 6) {
-                n = !0;
+                i = !0;
                 break;
               }
-              if ((this.rowsFinal[t].keywords[s] + "").toLowerCase().indexOf((this.query + "").toLowerCase()) !== -1) {
-                n = !0;
+              if ((this.rowsFinal[t].keywords[n] + "").toLowerCase().indexOf((this.query + "").toLowerCase()) !== -1) {
+                i = !0;
                 break;
               }
             }
           r = !0;
         }
         if (this.filterActive && !this.rowsFinal[t].filters)
-          n = !1;
-        else if ((r && n || !r) && this.filterActive) {
+          i = !1;
+        else if ((r && i || !r) && this.filterActive) {
           if (this.filterGroups.length)
-            n = this.doFiltering(this.rowsFinal[t].filters);
+            i = this.doFiltering(this.rowsFinal[t].filters);
           else {
-            let s = {
+            let n = {
               items: [],
               relation: this.configFinal.filterRelation
             };
             for (let l in this.filtersFinal)
-              Object.prototype.hasOwnProperty.call(this.filtersFinal, l) && s.items.push({ name: l });
-            n = this.doFilteringForGroup(
+              Object.prototype.hasOwnProperty.call(this.filtersFinal, l) && n.items.push({ name: l });
+            i = this.doFilteringForGroup(
               this.filtersFinal,
               this.rowsFinal[t].filters,
-              s
+              n
             ), this.DEBUG && console.log("FILTER GROUPS CALCULATED", this.filterGroups);
           }
           this.DEBUG && (console.log(`
-`), console.log("ROW " + t, n, this.rowsFinal[t].filters), console.log(`
+`), console.log("ROW " + t, i, this.rowsFinal[t].filters), console.log(`
 `));
         }
-        e[t] = n;
+        e[t] = i;
       }
       return e;
     },
@@ -2984,21 +3086,13 @@ const {
      *
      */
     showHeadlines() {
-      let e = [];
-      for (let t = 0; t < this.configFinal.number; t++)
-        //headline is not empty
-        this.configFinal.headlines[t] && //show breakpoints match with set settings
-        //no show breakpoint is set
-        (!this.configFinal.columns[t].showHeadlineBreakpoint || //show breakpoint is set and the hidden breakpoints contain this breakpoint
-        this.configFinal.columns[t].showHeadlineBreakpoint && this.hiddenBreakpoints.findIndex(
-          (i) => this.configFinal.columns[t] && i === this.configFinal.columns[t].showHeadlineBreakpoint
-        ) !== -1) && //hide breakpoints match with set settings
-        //no hide breakpoint is set
-        (!this.configFinal.columns[t].hideHeadlineBreakpoint || //hide breakpoint is set and the hidden breakpoints contain this breakpoint
-        this.configFinal.columns[t].hideHeadlineBreakpoint && this.hiddenBreakpoints.findIndex(
-          (i) => this.configFinal.columns[t] && i === this.configFinal.columns[t].hideHeadlineBreakpoint
-        ) === -1) ? e.push(!0) : e.push(!1);
-      return e;
+      const e = this._hiddenBreakpointSet;
+      let t = [];
+      for (let s = 0; s < this.configFinal.number; s++) {
+        const i = this.configFinal.columns[s];
+        this.configFinal.headlines[s] && (!i.showHeadlineBreakpoint || i.showHeadlineBreakpoint && e.has(i.showHeadlineBreakpoint)) && (!i.hideHeadlineBreakpoint || i.hideHeadlineBreakpoint && !e.has(i.hideHeadlineBreakpoint)) ? t.push(!0) : t.push(!1);
+      }
+      return Object.freeze(t);
     },
     /**
      * Key of filter operator fuctions
@@ -3008,10 +3102,10 @@ const {
       return Object.keys(this.operatorFunctions);
     },
     emptyColumns() {
-      const e = {}, t = this.configFinal.ignoreSortEmptyColumns;
+      const e = {}, t = this._colEmptyCache, s = this.configFinal.ignoreSortEmptyColumns;
       for (let i = 0; i < this.configFinal.number; i++) {
-        const n = this.configFinal.ignoreEmpty[i], r = this.configFinal.sorts[i];
-        !this.configFinal.hideEmptyColumns || n || t === "none" && r || t === "active" && Object.keys(this.currentSortIndexes).includes(i + "") ? e[i] = !1 : e[i] = this.isColEmpty(i);
+        const r = this.configFinal.ignoreEmpty[i], n = this.configFinal.sorts[i];
+        !this.configFinal.hideEmptyColumns || r || s === "none" && n || s === "active" && Object.prototype.hasOwnProperty.call(this.currentSortIndexes, i) ? e[i] = !1 : e[i] = t[i];
       }
       return e;
     },
@@ -3021,20 +3115,63 @@ const {
     rowClasses() {
       const e = {};
       for (let t = 0; t < this.visibleRowIndexes.length; t++) {
-        const i = this.visibleRowIndexes[t], n = [];
-        this.rowsFinal[i].classes && n.push(this.rowsFinal[i].classes), this.hoveredRow === i && n.push(this.configFinal.hoverClass), this.activeRow === i && n.push(this.configFinal.activeClass), this.openRows[i] && n.push("row-expanded"), this.hiddenColumns[i] > 0 && !this.openRows[i] && n.push("row-collapsed"), e[i] = n.join(" ");
+        const s = this.visibleRowIndexes[t], i = [];
+        this.rowsFinal[s].classes && i.push(this.rowsFinal[s].classes), this.openRows[s] && i.push("row-expanded"), this.hiddenColumns[s] > 0 && !this.openRows[s] && i.push("row-collapsed"), e[s] = i.join(" ");
       }
+      return e;
+    },
+    _fmtCells() {
+      const e = {}, t = this.configFinal.columns;
+      for (let s = 0; s < this.visibleRowIndexes.length; s++) {
+        const i = this.visibleRowIndexes[s], r = this.rowsFinal[i];
+        if (!r) continue;
+        const n = r.cells ? r.cells : r;
+        let l = !1;
+        const c = {};
+        for (let f = 0; f < n.length; f++)
+          t[f] && t[f].cellFormatter && (c[f] = this.cellFormatters(f, n[f]), l = !0);
+        l && (e[i] = c);
+      }
+      return e;
+    },
+    _renderRows() {
+      const e = {}, t = this.configFinal.columnClasses, s = this.cellVisible, i = this.cellClassesParsed, r = this._fmtCells, n = this.uuid;
+      for (let l = 0; l < this.visibleRowIndexes.length; l++) {
+        const c = this.visibleRowIndexes[l], f = this.rowsFinal[c];
+        if (!f) continue;
+        const u = f.cells ? f.cells : f, o = "vue-quintable-" + n + "-cell-" + c + "-", a = i[c], g = r[c], S = [];
+        for (let m = 0; m < u.length; m++) {
+          const y = u[m];
+          S.push(
+            Object.freeze({
+              cell: y,
+              cls: (a && a[m] || "") + " " + (t[m] || ""),
+              vis: !!(s[m] && y),
+              fmt: g && g[m] || null,
+              key: o + m
+            })
+          );
+        }
+        e[c] = Object.freeze(S);
+      }
+      return e;
+    },
+    // O(1) lookup map: rowIndex → position in visibleRowIndexes
+    _visibleRowIndexMap() {
+      const e = {};
+      for (let t = 0; t < this.visibleRowIndexes.length; t++)
+        e[this.visibleRowIndexes[t]] = t;
       return e;
     }
   },
   watch: {
     rowsFinal: {
       handler(e) {
-        if (e && e.length)
+        if (this.verbose && e && e.length)
           for (let t = 0; t < e.length; t++) {
-            let i = e[t].cells ? e[t].cells : e[t];
-            i.length !== this.config.columns.length && console.error(
-              `Column count on row index ${t} doesn't fit for column config! expected: ${this.config.columns.length}, got: ${i.length}` + (this.configFinal.ajaxUrl ? ` | URL: ${this.configFinal.ajaxUrl}` : "") + (this.identifier ? ` | IDENTIFIER: ${this.identifier}` : ""),
+            let s = e[t].cells ? e[t].cells : e[t];
+            s.length !== this.config.columns.length && console.error(
+              `Column count on row index ${t} doesn't fit for column config! expected: ${this.config.columns.length}, got: ${s.length}` + (this.configFinal.ajaxUrl ? ` | URL: ${this.configFinal.ajaxUrl}` : "") + (this.identifier ? ` | IDENTIFIER: ${this.identifier}` : ""),
               e[t]
             );
           }
@@ -3051,16 +3188,16 @@ const {
           this.selected[t] = !1;
         if (e && e.length) {
           let t = 0;
-          const i = this.configFinal.selectAllRows ? this.rowsFinal.map((n, r) => r) : this.visibleRowIndexes;
-          for (let n = 0; n < e.length; n++) {
-            const r = e[n].key, s = e[n].value;
-            for (let l = 0; l < i.length; l++) {
-              const c = i[l];
-              !this.rowsFinal[c].disableSelect && this.rowsFinal[c][r] === s && (this.selected[c] = !0, t++);
+          const s = this.configFinal.selectAllRows ? this.rowsFinal.map((i, r) => r) : this.visibleRowIndexes;
+          for (let i = 0; i < e.length; i++) {
+            const r = e[i].key, n = e[i].value;
+            for (let l = 0; l < s.length; l++) {
+              const c = s[l];
+              !this.rowsFinal[c].disableSelect && this.rowsFinal[c][r] === n && (this.selected[c] = !0, t++);
             }
           }
-          this.configFinal.selectAllRows ? this.allSelectedCustom = t && t === this.rowsFinal.filter((n) => !n.disableSelect).length : this.allSelectedCustom = t && t === this.rowsFinal.filter(
-            (n, r) => !n.disableSelect && this.visibleRows[this.sortedIndexes[r]]
+          this.configFinal.selectAllRows ? this.allSelectedCustom = t && t === this.rowsFinal.filter((i) => !i.disableSelect).length : this.allSelectedCustom = t && t === this.rowsFinal.filter(
+            (i, r) => !i.disableSelect && this.visibleRows[this.sortedIndexes[r]]
           ).length;
         } else
           this.allSelectedCustom = !1;
@@ -3106,19 +3243,28 @@ const {
      */
     filteredRows: {
       handler(e, t) {
-        if (JSON.stringify(e) === JSON.stringify(t) || this.configFinal.ajaxUrl)
+        if (this.configFinal.ajaxUrl)
           return;
+        if (t && e.length === t.length) {
+          let r = !0;
+          for (let n = 0; n < e.length; n++)
+            if (e[n] !== t[n]) {
+              r = !1;
+              break;
+            }
+          if (r) return;
+        }
         this.visibleRowIndexes.findIndex(
           (r) => r === this.activeRow
         ) < 0 && (this.activeRow = null), this.currentPage !== 1 ? this.currentPage = 1 : this.configFinal.keepSelect || this.resetSelect("filteredRows watcher");
-        const n = [];
+        const i = [];
         for (let r = 0; r < e.length; r++) {
-          const s = r.toString();
-          e[r] && n.push(
-            this.rowsFinal[this.sortedIndexes[s] ? this.sortedIndexes[s] : r]
+          const n = r.toString();
+          e[r] && i.push(
+            this.rowsFinal[this.sortedIndexes[n] ? this.sortedIndexes[n] : r]
           );
         }
-        this.$emit("filtered:rows", n, "filtered:rows");
+        this.$emit("filtered:rows", i, "filtered:rows");
       },
       deep: !0,
       immediate: !0
@@ -3144,9 +3290,9 @@ const {
     query(e, t) {
       if (this.lastQuery = t, this.configFinal.ajaxUrl) {
         this.pageSort = !1;
-        const i = !(this.configFinal.storeState && this.storedState.query);
+        const s = !(this.configFinal.storeState && this.storedState.query);
         clearTimeout(this.queryAjaxTimeout), this.queryAjaxTimeout = setTimeout(() => {
-          this.loadViaAjax(i, i, "QUERY");
+          this.loadViaAjax(s, s, "QUERY");
         }, this.configFinal.ajaxRequestDelay);
       }
       e.length >= this.configFinal.searchLength && this.lastSearchQueryUpdated !== e ? (this.$emit("update:search", e, "update:search"), this.lastSearchQueryUpdated = e) : this.lastSearchQueryUpdated !== null && (this.lastSearchQueryUpdated = null, this.$emit("update:search", null, "update:search")), this.pageSort && (this.currentSortIndexes = {}, this.resetSorts(), this.recomputeEssentials()), this.configFinal.storeState && (delete this.storedState.query, localStorage.setItem(
@@ -3176,7 +3322,7 @@ const {
      */
     rows() {
       this.clearLists(), this.initLists(), this.activeRow = null, this.$nextTick(() => {
-        this.recomputeEssentials(), this.$forceUpdate(), this.configFinal.defaultSelected && (this.allSelectedCustom = null, this.checkAll(!0));
+        this.recomputeEssentials(), this.configFinal.defaultSelected && (this.allSelectedCustom = null, this.checkAll(!0));
       });
     },
     /**
@@ -3187,7 +3333,7 @@ const {
       handler(e) {
         if (typeof e != "object")
           throw "config must be an object";
-        this.dynamicConfig || (this.initLists(), this.$forceUpdate(), this.activeRow = null, console.log(this.configFinal), this.configFinal.ajaxUrl && this.loadViaAjax(!1, !0, "CONFIG"), this.configFinal.defaultSelected && this.checkAll(!0));
+        this.dynamicConfig || (this.initLists(), this.activeRow = null, this.configFinal.ajaxUrl && this.loadViaAjax(!1, !0, "CONFIG"), this.configFinal.defaultSelected && this.checkAll(!0));
       },
       deep: !0
     },
@@ -3198,10 +3344,10 @@ const {
     selected: {
       handler(e) {
         let t = [];
-        for (let i in this.sortedIndexes)
-          if (Object.prototype.hasOwnProperty.call(this.sortedIndexes, i) && e[this.sortedIndexes[i]]) {
-            const n = this.rowsFinal[this.sortedIndexes[i]];
-            n.disableSelect || t.push(n);
+        for (let s in this.sortedIndexes)
+          if (Object.prototype.hasOwnProperty.call(this.sortedIndexes, s) && e[this.sortedIndexes[s]]) {
+            const i = this.rowsFinal[this.sortedIndexes[s]];
+            i.disableSelect || t.push(i);
           }
         this.configFinal.storeState && localStorage.setItem(
           `vue-quintable-${this.identifier}-selected-rows`,
@@ -3232,17 +3378,17 @@ const {
      */
     customMultiSort(e) {
       if (!e && Object.keys(this.currentSortIndexes).length > 1) {
-        let t, i;
-        for (let n in this.currentSortIndexes)
+        let t, s;
+        for (let i in this.currentSortIndexes)
           if (Object.prototype.hasOwnProperty.call(
             this.currentSortIndexes,
-            n
-          ) && this.currentSortIndexes[n].order === 0) {
-            t = this.currentSortIndexes[n], i = n;
+            i
+          ) && this.currentSortIndexes[i].order === 0) {
+            t = this.currentSortIndexes[i], s = i;
             break;
           }
         this.currentSortIndexes = {
-          [i]: t
+          [s]: t
         }, this.sort();
       }
     },
@@ -3266,33 +3412,33 @@ const {
       }
     },
     activeRow(e) {
-      const t = this.visibleRowIndexes.findIndex((i) => i === e);
+      const t = this.visibleRowIndexes.findIndex((s) => s === e);
       this.$emit("active:row", this.rowsFinal[e], "active:row", t);
     }
   },
   created() {
     if (this.configFinal.storeState) {
-      const i = localStorage.getItem(
+      const s = localStorage.getItem(
         `vue-quintable-${this.identifier}-filters`
       );
-      if (i) {
-        const g = JSON.parse(i);
+      if (s) {
+        const f = JSON.parse(s);
         for (let u in this.filters)
-          Object.prototype.hasOwnProperty.call(this.filters, u) && !Object.prototype.hasOwnProperty.call(g, u) && (g[u] = this.filters[u]);
-        this.storedState.filters = g;
+          Object.prototype.hasOwnProperty.call(this.filters, u) && !Object.prototype.hasOwnProperty.call(f, u) && (f[u] = this.filters[u]);
+        this.storedState.filters = f;
       }
-      const n = localStorage.getItem(
+      const i = localStorage.getItem(
         `vue-quintable-${this.identifier}-query`
       );
-      n && (this.storedState.query = n);
+      i && (this.storedState.query = i);
       const r = localStorage.getItem(
         `vue-quintable-${this.identifier}-rows-per-page`
       );
       r && (this.storedState["rows-per-page"] = parseInt(r));
-      const s = localStorage.getItem(
+      const n = localStorage.getItem(
         `vue-quintable-${this.identifier}-selected-rows`
       );
-      s && (this.storedState["selected-rows"] = JSON.parse(s));
+      n && (this.storedState["selected-rows"] = JSON.parse(n));
       const l = localStorage.getItem(
         `vue-quintable-${this.identifier}-current-page`
       );
@@ -3304,22 +3450,22 @@ const {
     }
     this.initLists();
     let e = 0;
-    const t = this.configFinal.selectAllRows ? this.rowsFinal.map((i, n) => n) : this.visibleRowIndexes;
-    for (let i = 0; i < t.length; i++) {
-      let n = this.rowsFinal[i];
-      n.selected && (this.selected[i] = !0), n.selected && e++;
+    const t = this.configFinal.selectAllRows ? this.rowsFinal.map((s, i) => i) : this.visibleRowIndexes;
+    for (let s = 0; s < t.length; s++) {
+      let i = this.rowsFinal[s];
+      i.selected && (this.selected[s] = !0), i.selected && e++;
     }
     !this.configFinal.selectAllRows && e && e === this.rowsFinal.filter(
-      (i, n) => !i.disableSelect && this.visibleRows[this.sortedIndexes[n]]
-    ).length ? this.allSelectedCustom = !0 : this.configFinal.selectAllRows && e && e === this.rowsFinal.filter((i) => !i.disableSelect).length && (this.allSelectedCustom = !0), this.initialSearchTerm && (this.query = this.initialSearchTerm), this.storedState.query && (this.query = this.storedState.query), this.storedState["rows-per-page"] && (this.customRowsPerPage = this.storedState["rows-per-page"]), this.storedState["sort-indexes"] && (this.currentSortIndexes = this.storedState["sort-indexes"], this.sort(!0)), this.storedState["current-page"] && this.$nextTick(() => {
+      (s, i) => !s.disableSelect && this.visibleRows[this.sortedIndexes[i]]
+    ).length ? this.allSelectedCustom = !0 : this.configFinal.selectAllRows && e && e === this.rowsFinal.filter((s) => !s.disableSelect).length && (this.allSelectedCustom = !0), this.initialSearchTerm && (this.query = this.initialSearchTerm), this.storedState.query && (this.query = this.storedState.query), this.storedState["rows-per-page"] && (this.customRowsPerPage = this.storedState["rows-per-page"]), this.storedState["sort-indexes"] && (this.currentSortIndexes = this.storedState["sort-indexes"], this.sort(!0)), this.storedState["current-page"] && this.$nextTick(() => {
       this.currentPage = this.storedState["current-page"];
     }), this.$nextTick(this.checkStoredSelectedRows), this.configFinal.enableRowTabIndex && document.addEventListener("keydown", this.checkKey);
   },
   mounted() {
-    this.configFinal.ajaxUrl && this.loadViaAjax(!1, !0, "MOUNTED"), this.configFinal.defaultSelected && this.checkAll(!0), this.generateHiddenBreakpoints(), window.addEventListener("resize", this.breakpointListener);
+    this.configFinal.ajaxUrl && this.loadViaAjax(!1, !0, "MOUNTED"), this.configFinal.defaultSelected && this.checkAll(!0), this._sharedBP = Lt(), this._sharedBP.subscribe(this._onBreakpointChange);
   },
   beforeUnmount() {
-    window.removeEventListener("resize", this.breakpointListener), this.configFinal.enableRowTabIndex && document.removeEventListener("keydown", this.checkKey);
+    this._sharedBP && this._sharedBP.unsubscribe(this._onBreakpointChange), this.configFinal.enableRowTabIndex && document.removeEventListener("keydown", this.checkKey);
   },
   methods: {
     /**
@@ -3352,8 +3498,8 @@ const {
      */
     isColEmpty(e, t = -1) {
       return (t > -1 ? [t] : this.visibleRowIndexes).map((r) => this.rowsFinal[r]).filter((r) => {
-        const s = r.cells ? r.cells : r;
-        return typeof s[e].isEmpty == "boolean" && s[e].isEmpty === !0 ? !1 : !!(typeof s[e].isEmpty == "boolean" && s[e].isEmpty === !1 || typeof s[e].text != "undefined" && this.valueToString(s[e].text) || typeof s[e].html != "undefined" && this.valueToString(s[e].html));
+        const l = (r.cells ? r.cells : r)[e];
+        return !l || typeof l.isEmpty == "boolean" && l.isEmpty === !0 ? !1 : !!(typeof l.isEmpty == "boolean" && l.isEmpty === !1 || typeof l.text != "undefined" && this.valueToString(l.text) || typeof l.html != "undefined" && this.valueToString(l.html));
       }).length <= 0;
     },
     /**
@@ -3370,16 +3516,16 @@ const {
     updatePageOffset(e) {
       let t = this.pageOffset + this.pageRange * e;
       if (e > 0) {
-        let i = Math.min(t, this.pages - this.pageRange);
-        this.pageOffset = Math.min(i, this.pages - this.currentPage);
+        let s = Math.min(t, this.pages - this.pageRange);
+        this.pageOffset = Math.min(s, this.pages - this.currentPage);
       } else e < 0 ? this.pageOffset = Math.max(t, -(this.pages - this.pageRange)) : this.pageOffset = 0;
     },
     cellFormatters(e, t) {
       if (typeof this.configFinal.columns[e].cellFormatter == "function") {
-        let i = this.configFinal.columns[e].cellFormatter(t);
-        return typeof i != "object" && (i = {
-          value: i
-        }), i;
+        let s = this.configFinal.columns[e].cellFormatter(t);
+        return typeof s != "object" && (s = {
+          value: s
+        }), s;
       }
       return this.valueToString(t.html) ? t.html : this.valueToString(t.text) ? t.text : "";
     },
@@ -3390,8 +3536,8 @@ const {
      * @param index index of selected row
      */
     checkListener(e, t) {
-      let i = Object.keys(this.selected).slice().map((n) => !!this.selected[n] || !!(this.rowsFinal[parseInt(n)] && this.rowsFinal[parseInt(n)].disableSelect));
-      i[t] = !!e, this.configFinal.selectAllRows ? i.indexOf(!1) === -1 ? this.allSelectedProperty = !0 : this.allSelectedProperty = !1 : (i = i.filter((n, r) => this.visibleRowIndexes.includes(r)), i.indexOf(!1) !== -1 ? this.allSelectedProperty = !1 : i.indexOf(!1) === -1 && (this.allSelectedProperty = !0));
+      let s = Object.keys(this.selected).slice().map((i) => !!this.selected[i] || !!(this.rowsFinal[parseInt(i)] && this.rowsFinal[parseInt(i)].disableSelect));
+      s[t] = !!e, this.configFinal.selectAllRows ? s.indexOf(!1) === -1 ? this.allSelectedProperty = !0 : this.allSelectedProperty = !1 : (s = s.filter((i, r) => this.visibleRowIndexes.includes(r)), s.indexOf(!1) !== -1 ? this.allSelectedProperty = !1 : s.indexOf(!1) === -1 && (this.allSelectedProperty = !0));
     },
     /**
      * Check if a parent with certain class exists
@@ -3415,14 +3561,14 @@ const {
      */
     onRowAuxClick(e, t) {
       if (e.button === 1) {
-        const i = parseInt(t);
+        const s = parseInt(t);
         this.$emit(
           "auxclick:row",
-          this.rowsFinal[i],
+          this.rowsFinal[s],
           "auxclick:row",
           e.target,
           e,
-          i
+          s
         );
       }
     },
@@ -3445,12 +3591,12 @@ const {
         return;
       if (this.hasSomeParentTheClass(e.target, "generated-table") && !this.nested)
         return;
-      let i = this.hasSomeParentTagName(e.target, "a"), n = this.hasSomeParentTheClass(
+      let s = this.hasSomeParentTagName(e.target, "a"), i = this.hasSomeParentTheClass(
         e.target,
         "prevent-toggle"
       );
-      const r = t.toString(), s = parseInt(t);
-      this.hiddenColumns[r] && !i && !n && (this.openRows[r] ? (this.openRows[r] = !1, this.$emit(
+      const r = t.toString(), n = parseInt(t);
+      this.hiddenColumns[r] && !s && !i && (this.openRows[r] ? (this.openRows[r] = !1, this.$emit(
         "expand:row",
         this.rowsFinal[this.sortedIndexes[r]],
         "collapse:row",
@@ -3460,7 +3606,7 @@ const {
         this.rowsFinal[this.sortedIndexes[r]],
         "expand:row",
         this.sortedIndexes[r]
-      )), this.generatedUpdatedKey = Date.now()), this.configFinal.enableRowTabIndex && (this.activeRow === s ? this.activeRow = null : this.activeRow = s), this.$emit("click:row", this.rowsFinal[s], "click:row", e.target, e, s);
+      )), this.generatedUpdatedKey = Date.now()), this.configFinal.enableRowTabIndex && (this.activeRow === n ? this.activeRow = null : this.activeRow = n), this.$emit("click:row", this.rowsFinal[n], "click:row", e.target, e, n);
     },
     /**
      *
@@ -3487,19 +3633,21 @@ const {
       e.which === 2 && e.preventDefault();
     },
     /**
-     * Event listener for hovered row. Sets the hoveredRow data entry
-     *
-     * @param index Index of hovered row
+     * DOM-based hover management — avoids full re-render on mouse movement
      */
-    onMouseenterRow(e) {
-      this.hoveredRow !== e && (this.hoveredRow = e);
+    _hoverRow(e, t) {
+      if (this.hoveredRow !== e) {
+        const s = this.configFinal.hoverClass;
+        s && this._lastHoveredEl && this._lastHoveredEl.classList.remove(s), this.hoveredRow = e, s && t && t.currentTarget && (t.currentTarget.classList.add(s), this._lastHoveredEl = t.currentTarget);
+      }
     },
     /**
      * Event listener for mouse leave of table body. Releases the hoveredRow data entry
      *
      */
     onMouseleaveTable() {
-      this.hoveredRow = null;
+      const e = this.configFinal.hoverClass;
+      e && this._lastHoveredEl && (this._lastHoveredEl.classList.remove(e), this._lastHoveredEl = null), this.hoveredRow = null;
     },
     /**
      *
@@ -3509,8 +3657,8 @@ const {
     removeSort(e) {
       for (let t in this.currentSortIndexes)
         if (Object.prototype.hasOwnProperty.call(this.currentSortIndexes, t)) {
-          let i = this.currentSortIndexes[t];
-          i.order > this.currentSortIndexes[e].order && i.order--, this.currentSortIndexes[t] = i;
+          let s = this.currentSortIndexes[t];
+          s.order > this.currentSortIndexes[e].order && s.order--, this.currentSortIndexes[t] = s;
         }
       delete this.currentSortIndexes[e], this.numberOfSorts === 0 ? (this.resetSorts(), this.currentPage !== 1 ? this.currentPage = 1 : this.recomputeEssentials(), this.configFinal.ajaxUrl && !this.pageSort && this.loadViaAjax(!0, !0, "SORT")) : this.sort();
     },
@@ -3527,11 +3675,11 @@ const {
     checkAll(e = !1) {
       let t = this.allSelectedProperty;
       e && (t = !0);
-      let i = 0;
-      for (let n in this.sortedIndexes)
-        Object.prototype.hasOwnProperty.call(this.sortedIndexes, n) && (n = parseInt(n), !this.rowsFinal[this.sortedIndexes[n]].disableSelect && (!this.configFinal.selectAllRows && this.visibleRows[this.sortedIndexes[n]] || this.configFinal.selectAllRows && this.filteredRows[this.sortedIndexes[n]]) ? (this.selected[this.sortedIndexes[n]] = t, i++) : this.selected[this.sortedIndexes[n]] = t);
-      t && (this.configFinal.selectAllRows ? this.allSelectedCustom = i && i === this.rowsFinal.filter((n) => !n.disableSelect).length : this.allSelectedCustom = i && i === this.rowsFinal.filter(
-        (n, r) => !n.disableSelect && this.visibleRows[this.sortedIndexes[r]]
+      let s = 0;
+      for (let i in this.sortedIndexes)
+        Object.prototype.hasOwnProperty.call(this.sortedIndexes, i) && (i = parseInt(i), !this.rowsFinal[this.sortedIndexes[i]].disableSelect && (!this.configFinal.selectAllRows && this.visibleRows[this.sortedIndexes[i]] || this.configFinal.selectAllRows && this.filteredRows[this.sortedIndexes[i]]) ? (this.selected[this.sortedIndexes[i]] = t, s++) : this.selected[this.sortedIndexes[i]] = t);
+      t && (this.configFinal.selectAllRows ? this.allSelectedCustom = s && s === this.rowsFinal.filter((i) => !i.disableSelect).length : this.allSelectedCustom = s && s === this.rowsFinal.filter(
+        (i, r) => !i.disableSelect && this.visibleRows[this.sortedIndexes[r]]
       ).length);
     },
     /**
@@ -3543,14 +3691,14 @@ const {
      */
     doFiltering(e) {
       let t = [];
-      for (let i = 0; i < this.filterGroups.length; i++)
+      for (let s = 0; s < this.filterGroups.length; s++)
         t.push(
           this.doFilteringForGroup(
             this.filtersFinal,
             e,
-            this.filterGroups[i]
+            this.filterGroups[s]
           )
-        ), this.DEBUG && i < this.filterGroups.length - 1 && console.log(this.configFinal.filterGroupRelation);
+        ), this.DEBUG && s < this.filterGroups.length - 1 && console.log(this.configFinal.filterGroupRelation);
       return this.DEBUG && console.log(
         "RESULTS FOR GROUPS:",
         t,
@@ -3567,94 +3715,94 @@ const {
      *
      * @returns {boolean}
      */
-    doFilteringForGroup(e, t, i, n = 0) {
+    doFilteringForGroup(e, t, s, i = 0) {
       let r = "   ";
-      for (let l = 0; l < n; l++)
+      for (let l = 0; l < i; l++)
         r += "   ";
       if (this.DEBUG) {
-        if (i.items) {
-          let l = r, c = i.items.slice(), g = function(u, o) {
+        if (s.items) {
+          let l = r, c = s.items.slice(), f = function(u, o) {
             return u.name === void 0 ? 1 : o.name === void 0 ? -1 : 0;
           };
-          c = c.sort(g);
+          c = c.sort(f);
           for (let u = 0; u < c.length; u++)
-            c[u].name && (l += c[u].name, u < c.length - 1 && (l += " " + i.relation + " "));
+            c[u].name && (l += c[u].name, u < c.length - 1 && (l += " " + s.relation + " "));
           console.log(l);
         }
-        console.log(r, "GROUP:", i);
+        console.log(r, "GROUP:", s);
       }
-      let s = !1;
-      if (i.relation === "AND") {
+      let n = !1;
+      if (s.relation === "AND") {
         for (let l in e)
           if (Object.prototype.hasOwnProperty.call(e, l)) {
             if (this.filterGroups.length && !this.findInFilterGroups(l, this.filterGroups))
               continue;
             let c = !0;
-            for (let g = 0; g < i.items.length; g++) {
-              let u = i.items[g];
+            for (let f = 0; f < s.items.length; f++) {
+              let u = s.items[f];
               if (u.name && t[u.name] === void 0) {
                 c = !1;
                 break;
               }
             }
             if (c)
-              for (let g = 0; g < i.items.length; g++) {
-                let u = i.items[g];
-                if (s = !0, u.items && (s = this.doFilteringForGroup(
+              for (let f = 0; f < s.items.length; f++) {
+                let u = s.items[f];
+                if (n = !0, u.items && (n = this.doFilteringForGroup(
                   e,
                   t,
                   u,
-                  n + 1
-                )), !s)
+                  i + 1
+                )), !n)
                   break;
                 if (typeof e[u.name] == "undefined")
                   continue;
                 let o = typeof e[u.name] == "object" && e[u.name] !== null && e[u.name].operator && this.operators.includes(e[u.name].operator) ? e[u.name].operator : this.defaultOperator, a = this.getFilterValues(e[u.name]);
-                const f = typeof e[u.name].compare == "function" ? e[u.name].compare : this.operatorFunctions[o];
-                for (let b = 0; b < a.length; b++)
-                  if (!f(
-                    a[b],
+                const g = typeof e[u.name].compare == "function" ? e[u.name].compare : this.operatorFunctions[o];
+                for (let S = 0; S < a.length; S++)
+                  if (!g(
+                    a[S],
                     t[u.name]
                   )) {
-                    s = !1;
+                    n = !1;
                     break;
                   }
-                if (!s)
+                if (!n)
                   break;
               }
           }
-        return s;
-      } else if (i.relation === "OR" || i.items) {
+        return n;
+      } else if (s.relation === "OR" || s.items) {
         for (let l in e)
           if (Object.prototype.hasOwnProperty.call(e, l)) {
             if (this.filterGroups.length && !this.findInFilterGroups(l, this.filterGroups))
               continue;
-            for (let c = 0; c < i.items.length; c++) {
-              let g = i.items[c];
-              if (g.items && (s = this.doFilteringForGroup(
+            for (let c = 0; c < s.items.length; c++) {
+              let f = s.items[c];
+              if (f.items && (n = this.doFilteringForGroup(
                 e,
                 t,
-                g,
-                n + 1
-              ), s))
+                f,
+                i + 1
+              ), n))
                 break;
-              if (typeof e[g.name] == "undefined")
+              if (typeof e[f.name] == "undefined")
                 continue;
-              let u = typeof e[g.name] == "object" && e[g.name] !== null && e[g.name].operator && this.operators.includes(e[g.name].operator) ? e[g.name].operator : this.defaultOperator, o = this.getFilterValues(e[g.name]);
-              const a = typeof e[g.name].compare == "function" ? e[g.name].compare : this.operatorFunctions[u];
-              for (let f = 0; f < o.length; f++)
+              let u = typeof e[f.name] == "object" && e[f.name] !== null && e[f.name].operator && this.operators.includes(e[f.name].operator) ? e[f.name].operator : this.defaultOperator, o = this.getFilterValues(e[f.name]);
+              const a = typeof e[f.name].compare == "function" ? e[f.name].compare : this.operatorFunctions[u];
+              for (let g = 0; g < o.length; g++)
                 if (a(
-                  o[f],
-                  t[g.name]
+                  o[g],
+                  t[f.name]
                 )) {
-                  s = !0;
+                  n = !0;
                   break;
                 }
-              if (s)
+              if (n)
                 break;
             }
           }
-        return s;
+        return n;
       } else
         return !0;
     },
@@ -3674,20 +3822,20 @@ const {
      * @param index just a counter
      * @returns {boolean}
      */
-    findInFilterGroups(e, t, i = 0) {
+    findInFilterGroups(e, t, s = 0) {
       if (!t)
         return !1;
-      let n = !1;
+      let i = !1;
       for (let r = 0; r < t.length; r++) {
-        let s = t[r];
-        if (s.items && (n = this.findInFilterGroups(e, s.items, i + 1), n))
+        let n = t[r];
+        if (n.items && (i = this.findInFilterGroups(e, n.items, s + 1), i))
           break;
-        if (s.name === e) {
-          n = !0;
+        if (n.name === e) {
+          i = !0;
           break;
         }
       }
-      return n;
+      return i;
     },
     /**
      * Change page with certain value
@@ -3704,16 +3852,16 @@ const {
      * @param asc bool if it shall be set to a direction
      */
     setSortColumn(e, t) {
-      const i = parseInt(e), n = e.toString();
-      if (!this.configFinal.sorts[i])
+      const s = parseInt(e), i = e.toString();
+      if (!this.configFinal.sorts[s])
         return;
       let r;
-      this.currentSortIndexes[n] ? (r = this.currentSortIndexes[n], r.asc = !r.asc) : (this.multiSort || (this.currentSortIndexes = {}), r = {
-        headline: this.configFinal.headlines[i],
-        index: i,
-        asc: this.configFinal.sorts[i] === !0 ? !0 : this.configFinal.sorts[i] === "ASC",
+      this.currentSortIndexes[i] ? (r = this.currentSortIndexes[i], r.asc = !r.asc) : (this.multiSort || (this.currentSortIndexes = {}), r = {
+        headline: this.configFinal.headlines[s],
+        index: s,
+        asc: this.configFinal.sorts[s] === !0 ? !0 : this.configFinal.sorts[s] === "ASC",
         order: this.numberOfSorts
-      }), typeof t != "undefined" && (r.asc = t), this.currentSortIndexes[i] = r, this.configFinal.storeState && localStorage.setItem(
+      }), typeof t != "undefined" && (r.asc = t), this.currentSortIndexes[s] = r, this.configFinal.storeState && localStorage.setItem(
         `vue-quintable-${this.identifier}-sort-indexes`,
         JSON.stringify(this.currentSortIndexes)
       ), this.$emit("update:sort", this.currentSortIndexes, "update:sort"), this.sort();
@@ -3727,50 +3875,50 @@ const {
         this.loadViaAjax(!e, !e, "SORT");
         return;
       }
-      let t = this.rowsFinal.slice(), i = [], n = [], r = {};
+      let t = this.rowsFinal.slice(), s = [], i = [], r = {};
       if (this.pageSort) {
-        if (n = this.visibleRowIndexes.slice(), !n.length) {
+        if (i = this.visibleRowIndexes.slice(), !i.length) {
           const a = this.configFinal.pagination ? this.configFinal.pagination : this.rowsFinal.length;
-          for (let f = 0; f < a; f++)
-            n.push(f);
+          for (let g = 0; g < a; g++)
+            i.push(g);
         }
         let o = 0;
         for (let a = 0; a < t.length; a++)
-          t[a].index = a, n.indexOf(a) !== -1 && (o < this.configFinal.pagination && i.push(t[a]), o++);
+          t[a].index = a, i.indexOf(a) !== -1 && (o < this.configFinal.pagination && s.push(t[a]), o++);
         if (Object.keys(this.sortedIndexes).length)
           r = Object.assign({}, this.sortedIndexes);
         else
           for (let a = 0; a < t.length; a++)
             r[a.toString()] = a;
       } else {
-        i = this.rowsFinal.slice();
-        for (let o = 0; o < i.length; o++)
-          i[o].index = o;
+        s = this.rowsFinal.slice();
+        for (let o = 0; o < s.length; o++)
+          s[o].index = o;
       }
-      let s = [];
+      let n = [];
       for (let o in this.currentSortIndexes)
         if (Object.prototype.hasOwnProperty.call(this.currentSortIndexes, o)) {
           let a = this.currentSortIndexes[o];
-          a.index = o, s.push(a);
+          a.index = o, n.push(a);
         }
-      s.sort(function(o, a) {
+      n.sort(function(o, a) {
         return o.order - a.order;
       });
-      let l = (o, a, f, b) => {
-        b = b || 0;
-        let y = f[b], S = y.index, w = o.cells ? o.cells : o, v = a.cells ? a.cells : a, R = typeof w[S].sortValue != "undefined" && w[S].sortValue !== null ? w[S].sortValue : w[S].html ? w[S].html : w[S].text;
-        typeof w[S].computeSortValue == "function" && (R = w[S].computeSortValue(this.currentSortIndexes));
-        let x = typeof v[S].sortValue != "undefined" && v[S].sortValue !== null ? v[S].sortValue : v[S].html ? v[S].html : v[S].text;
-        return typeof v[S].computeSortValue == "function" && (R = v[S].computeSortValue(this.currentSortIndexes)), typeof R == "string" && (R = R.toLowerCase()), typeof x == "string" && (x = x.toLowerCase()), isNaN(R) ? (typeof R == "string" && R.match(/^-?\d+$/) || typeof R == "string" && R.match(/^\d+\.\d+$/)) && (R = parseFloat(R)) : R = parseFloat(R), isNaN(x) ? (typeof x == "string" && x.match(/^-?\d+$/) || typeof x == "string" && x.match(/^\d+\.\d+$/)) && (x = parseFloat(x)) : x = parseFloat(x), y.asc ? R > x ? 1 : R < x ? -1 : f[b + 1] ? l(o, a, f, b + 1) : 1 : R < x ? 1 : R > x ? -1 : f[b + 1] ? l(o, a, f, b + 1) : -1;
+      let l = (o, a, g, S) => {
+        S = S || 0;
+        let m = g[S], y = m.index, w = o.cells ? o.cells : o, v = a.cells ? a.cells : a, F = typeof w[y].sortValue != "undefined" && w[y].sortValue !== null ? w[y].sortValue : w[y].html ? w[y].html : w[y].text;
+        typeof w[y].computeSortValue == "function" && (F = w[y].computeSortValue(this.currentSortIndexes));
+        let x = typeof v[y].sortValue != "undefined" && v[y].sortValue !== null ? v[y].sortValue : v[y].html ? v[y].html : v[y].text;
+        return typeof v[y].computeSortValue == "function" && (F = v[y].computeSortValue(this.currentSortIndexes)), typeof F == "string" && (F = F.toLowerCase()), typeof x == "string" && (x = x.toLowerCase()), isNaN(F) ? (typeof F == "string" && F.match(/^-?\d+$/) || typeof F == "string" && F.match(/^\d+\.\d+$/)) && (F = parseFloat(F)) : F = parseFloat(F), isNaN(x) ? (typeof x == "string" && x.match(/^-?\d+$/) || typeof x == "string" && x.match(/^\d+\.\d+$/)) && (x = parseFloat(x)) : x = parseFloat(x), m.asc ? F > x ? 1 : F < x ? -1 : g[S + 1] ? l(o, a, g, S + 1) : 1 : F < x ? 1 : F > x ? -1 : g[S + 1] ? l(o, a, g, S + 1) : -1;
       };
-      i.sort(function(o, a) {
-        return l(o, a, s);
+      s.sort(function(o, a) {
+        return l(o, a, n);
       });
       const c = [];
-      let g = 0, u = 0;
+      let f = 0, u = 0;
       for (let o = 0; o < t.length; o++) {
         const a = o.toString();
-        this.pageSort && n.indexOf(o) !== -1 ? (g < this.configFinal.pagination ? (c.push(i[u]), u++) : c.push(t[r[a]]), g++) : this.pageSort ? c.push(t[r[a]]) : c.push(i[o]);
+        this.pageSort && i.indexOf(o) !== -1 ? (f < this.configFinal.pagination ? (c.push(s[u]), u++) : c.push(t[r[a]]), f++) : this.pageSort ? c.push(t[r[a]]) : c.push(s[o]);
       }
       for (let o = 0; o < c.length; o++) {
         const a = o.toString();
@@ -3784,7 +3932,8 @@ const {
      */
     recomputeEssentials() {
       this.$nextTick(() => {
-        this.rowsUpdatedKey = Date.now(), this.indexesUpdatedKey = Date.now(), this.generatedUpdatedKey = Date.now();
+        const e = Date.now();
+        this.essentialsKey = e, this.generatedUpdatedKey = e;
       });
     },
     /**
@@ -3821,19 +3970,19 @@ const {
      * @param clearSelected
      * @param accessor
      */
-    loadViaAjax(e = !1, t = !0, i = null) {
-      this.DEBUG && console.log("CALLED FROM:", i);
-      let n = this.query;
-      if (n && n.length < this.configFinal.searchLength && (this.lastQuery.length < n.length || this.lastQuery.length < this.configFinal.searchLength))
+    loadViaAjax(e = !1, t = !0, s = null) {
+      this.DEBUG && console.log("CALLED FROM:", s);
+      let i = this.query;
+      if (i && i.length < this.configFinal.searchLength && (this.lastQuery.length < i.length || this.lastQuery.length < this.configFinal.searchLength))
         return;
-      if (!n && this.lastQuery) {
+      if (!i && this.lastQuery) {
         const l = this.lastQuery;
         if (this.lastQuery = "", l.length < this.configFinal.searchLength)
           return;
-      } else n && n.length < this.configFinal.searchLength && (n = "");
+      } else i && i.length < this.configFinal.searchLength && (i = "");
       this.cancelSource && this.cancelSource.cancel("Operation canceled by the user."), this.clearLists(t), this.ajaxRows = [], e && (this.currentPage = 1, this.resetSelect("loadViaAjax method")), this.loaderHeight = this.$refs["height-wrapper"] ? this.$refs["height-wrapper"].clientHeight : 0, this.fetching = !0;
       let r = {
-        search: n,
+        search: i,
         filters: this.filtersFinal,
         perPage: this.currentRowsPerPage,
         page: this.currentPage,
@@ -3844,7 +3993,7 @@ const {
         } : null
       };
       this.cancelSource = this.axiosFinal.CancelToken.source();
-      const s = {
+      const n = {
         "Content-Type": "application/json"
       };
       this.axiosFinal.request(this.configFinal.ajaxUrl, {
@@ -3852,7 +4001,7 @@ const {
         params: this.configFinal.requestMethod === "GET" ? r : null,
         data: this.configFinal.requestMethod === "POST" ? r : null,
         cancelToken: this.cancelSource.token,
-        headers: s
+        headers: n
       }).then((l) => {
         if (!l.data.rows || typeof l.data.rows.length == "undefined")
           throw "Response data has to contain rows property. Please see Readme.md for details";
@@ -3875,700 +4024,655 @@ const {
       });
     },
     /**
-     * Check if DOM element is visible
-     *
-     * @param el DOMElement
-     * @returns {boolean}
+     * Callback from shared breakpoint detector
      */
-    elementVisible(e) {
-      return e ? window.getComputedStyle(e).display !== "none" : !1;
+    _onBreakpointChange(e) {
+      (this.hiddenBreakpoints.length !== e.length || this.hiddenBreakpoints.some((t, s) => t !== e[s])) && (this.hiddenBreakpoints = e);
     },
     /**
-     * Event Listener for window resize event.
-     *
+     * Keep for backwards compatibility — now delegates to shared detector
      */
-    breakpointListener() {
-      clearTimeout(this.breakpointTimeout), this.breakpointTimeout = setTimeout(() => {
-        this.generateHiddenBreakpoints(!1);
-      }, 250);
-    },
-    /**
-     * Generate the list of hidden breakpoints
-     *
-     * @param regenerate
-     */
-    generateHiddenBreakpoints(e = !1) {
-      e && (this.hiddenBreakpoints = []);
-      let t = [];
-      this.elementVisible(this.$refs.xxl) || t.push("xxl"), this.elementVisible(this.$refs.xl) || t.push("xl"), this.elementVisible(this.$refs.lg) || t.push("lg"), this.elementVisible(this.$refs.md) || t.push("md"), this.elementVisible(this.$refs.sm) || t.push("sm"), t.push("all"), JSON.stringify(this.hiddenBreakpoints) !== JSON.stringify(t) && (this.hiddenBreakpoints = t);
+    generateHiddenBreakpoints() {
+      const e = Lt();
+      this._onBreakpointChange(e.hiddenBreakpoints);
     },
     checkStoredSelectedRows(e = !1) {
       if (this.storedState["pre-selected-rows"], this.storedState["selected-rows"]) {
         this.selected = JSON.parse(
           JSON.stringify(this.storedState["selected-rows"])
         );
-        const t = Object.values(this.selected).filter((i) => i).length;
-        this.configFinal.selectAllRows ? this.allSelectedCustom = t && t === this.rowsFinal.length : this.allSelectedCustom = t && t === this.visibleRows.filter((i) => i).length, e && delete this.storedState["selected-rows"];
+        const t = Object.values(this.selected).filter((s) => s).length;
+        this.configFinal.selectAllRows ? this.allSelectedCustom = t && t === this.rowsFinal.length : this.allSelectedCustom = t && t === this.visibleRows.filter((s) => s).length, e && delete this.storedState["selected-rows"];
       }
     },
     checkKey(e) {
       if (this.activeRow !== null) {
         if (e.keyCode === 40) {
           e.preventDefault();
-          const t = this.visibleRowIndexes.findIndex(
-            (i) => i === this.activeRow
-          );
-          t === this.visibleRowIndexes.length - 1 ? this.activeRow = 0 : this.activeRow = this.visibleRowIndexes[t + 1];
+          const t = this._visibleRowIndexMap[this.activeRow];
+          t === void 0 || t === this.visibleRowIndexes.length - 1 ? this.activeRow = this.visibleRowIndexes[0] : this.activeRow = this.visibleRowIndexes[t + 1];
         }
         if (e.keyCode === 38) {
           e.preventDefault();
-          const t = this.visibleRowIndexes.findIndex(
-            (i) => i === this.activeRow
-          );
-          t === 0 ? this.activeRow = this.visibleRowIndexes[this.visibleRowIndexes.length - 1] : this.activeRow = this.visibleRowIndexes[t - 1];
+          const t = this._visibleRowIndexMap[this.activeRow];
+          t === void 0 || t === 0 ? this.activeRow = this.visibleRowIndexes[this.visibleRowIndexes.length - 1] : this.activeRow = this.visibleRowIndexes[t - 1];
         }
       }
     }
   }
-}, Cn = { class: "table-wrapper quintable" }, xn = { class: "breakpoints quintable--breakpoints" }, Pn = { ref: "xs" }, vn = {
-  ref: "sm",
-  class: "d-none d-sm-block"
-}, On = {
-  ref: "md",
-  class: "d-none d-md-block"
-}, _n = {
-  ref: "lg",
-  class: "d-none d-lg-block"
-}, En = {
-  ref: "xl",
-  class: "d-none d-xl-block"
-}, An = {
-  ref: "xxl",
-  class: "d-none d-xxl-block"
-}, Tn = { class: "header slot slot-header quintable--header" }, qn = ["placeholder"], jn = { class: "slot slot-after-search quintable--after-search-container" }, Ln = {
+}, Ti = { class: "table-wrapper quintable" }, qi = { class: "header slot slot-header quintable--header" }, ji = ["placeholder"], Li = { class: "slot slot-after-search quintable--after-search-container" }, Ui = {
   ref: "height-wrapper",
   class: "clearfix quintable--table-container"
-}, Un = { key: 0 }, Nn = { class: "vue-quintable-header-row quintable--table-container--table--header-row" }, Vn = {
+}, Bi = { key: 0 }, Ni = { class: "vue-quintable-header-row quintable--table-container--table--header-row" }, Vi = {
   key: 0,
   class: "placeholder-th toggle-th toggle-cell quintable--table-container--table--header-row--placeholder-th"
-}, Bn = {
+}, Mi = {
   key: 1,
   class: "select-th pre quintable--table-container--table--header-row--select-th quintable--table-container--table--header-row--select-th--pre"
-}, Dn = { class: "p-1" }, Mn = {
+}, Di = { class: "p-1" }, Ii = {
   key: 1,
   class: "mb-0 mt-0"
-}, Hn = ["title", "onClick"], In = ["innerHTML"], Gn = {
+}, Hi = ["title", "onClick"], zi = ["innerHTML"], Gi = {
   key: 1,
   class: "headline quintable--table-container--table--header-row--th--headline"
-}, zn = {
+}, Ji = {
   key: 2,
   class: "sorting-icon ms-2 quintable--table-container--table--header-row--th--sorting-icon"
-}, Jn = ["onClick"], Kn = {
+}, Ki = ["onClick"], Qi = {
   key: 0,
   class: "badge bg-info text-white"
-}, Wn = { key: 1 }, Qn = {
+}, Wi = { key: 1 }, Xi = {
   key: 2,
   class: "select-th post quintable--table-container--table--header-row--select-th quintable--table-container--table--header-row--select-th--post"
-}, Xn = {
+}, Zi = {
   key: 1,
   class: "mb-0 mt-0"
-}, Zn = ["id", "onClick", "onAuxclick", "onMouseenter"], Yn = {
+}, Yi = ["id", "onClick", "onAuxclick", "onMouseenter"], $i = {
   key: 0,
   class: "toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td"
-}, $n = { key: 0 }, er = { key: 0 }, tr = { key: 1 }, sr = {
+}, er = { key: 0 }, tr = { key: 0 }, sr = { key: 1 }, nr = {
   key: 1,
   class: "mb-0 mt-0"
-}, ir = ["onUpdate:modelValue", "disabled", "onChange"], nr = ["id", "onClick", "onAuxclick"], rr = ["innerHTML"], lr = ["innerHTML"], or = {
+}, ir = ["onUpdate:modelValue", "disabled", "onChange"], rr = ["id", "onClick", "onAuxclick"], lr = ["innerHTML"], or = ["innerHTML"], ar = {
   key: 1,
   class: "mb-0 mt-0"
-}, ar = ["onUpdate:modelValue", "disabled", "onChange"], cr = ["onMouseenter", "onClick"], ur = ["colspan"], hr = { class: "mb-2 generated-table quintable--table-container--table--tbody--generated-row--generated-table" }, dr = ["id"], fr = {
+}, cr = ["onUpdate:modelValue", "disabled", "onChange"], ur = ["onMouseenter", "onClick"], hr = ["colspan"], fr = { class: "mb-2 generated-table quintable--table-container--table--tbody--generated-row--generated-table" }, dr = ["id"], gr = {
   key: 0,
   class: "toggle-cell invisible"
-}, gr = { key: 0 }, pr = { key: 0 }, mr = { key: 1 }, wr = ["onClick"], br = ["innerHTML"], yr = {
+}, pr = { key: 0 }, mr = { key: 0 }, br = { key: 1 }, wr = ["onClick"], yr = ["innerHTML"], Sr = {
   key: 1,
   class: "headline"
-}, Sr = {
+}, Rr = {
   key: 2,
   class: "sorting-icon ms-2 cursor-pointer quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon"
 }, kr = ["onClick"], Fr = {
   key: 0,
   class: "badge bg-info text-white"
-}, Rr = { key: 1 }, Cr = ["colspan", "onClick"], xr = ["innerHTML"], Pr = {
+}, Cr = { key: 1 }, xr = ["colspan", "onClick"], _r = ["innerHTML"], vr = {
   key: 1,
   class: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-value"
-}, vr = ["innerHTML"], Or = {
+}, Pr = ["innerHTML"], Or = {
   key: 3,
   class: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--component"
-}, _r = {
+}, Er = {
   key: 4,
   class: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--text"
-}, Er = ["id"], Ar = {
+}, Ar = ["id"], Tr = {
   key: 0,
   class: "toggle-cell invisible"
-}, Tr = { key: 0 }, qr = { key: 0 }, jr = { key: 1 }, Lr = ["onClick"], Ur = ["innerHTML"], Nr = {
+}, qr = { key: 0 }, jr = { key: 0 }, Lr = { key: 1 }, Ur = ["onClick"], Br = ["innerHTML"], Nr = {
   key: 1,
   class: "headline"
 }, Vr = {
   key: 2,
   class: "sorting-icon ms-2 cursor-pointer quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon"
-}, Br = ["onClick"], Dr = {
+}, Mr = ["onClick"], Dr = {
   key: 0,
   class: "badge bg-info text-white"
-}, Mr = { key: 1 }, Hr = ["colspan", "onClick"], Ir = ["innerHTML"], Gr = ["innerHTML"], zr = {
+}, Ir = { key: 1 }, Hr = ["colspan", "onClick"], zr = ["innerHTML"], Gr = ["innerHTML"], Jr = {
   key: 1,
   class: "clearfix slot-no-results slot quintable--table-container--no-results"
-}, Jr = { class: "text-center p-3 quintable--table-container--no-results--results" }, Kr = ["innerHTML"], Wr = {
+}, Kr = { class: "text-center p-3 quintable--table-container--no-results--results" }, Qr = ["innerHTML"], Wr = {
   key: 1,
   class: "slot-loading slot quintable--loading"
-}, Qr = { class: "loader text-center py-4 quintable--loading--loader-wrapper--loader" }, Xr = { class: "clearfix quintable--table-footer-container" }, Zr = { class: "row" }, Yr = { class: "col-lg-4 quintable--table-footer-container--sort-container" }, $r = { class: "col-lg-8 quintable--table-footer-container--pagination-wrapper" }, el = {
+}, Xr = { class: "loader text-center py-4 quintable--loading--loader-wrapper--loader" }, Zr = { class: "clearfix quintable--table-footer-container" }, Yr = { class: "row" }, $r = { class: "col-lg-4 quintable--table-footer-container--sort-container" }, el = { class: "col-lg-8 quintable--table-footer-container--pagination-wrapper" }, tl = {
   key: 0,
   class: "float-lg-end me-3 pagination-container quintable--table-footer-container--pagination-wrapper--pagination-container"
-}, tl = {
+}, sl = {
   key: 0,
   class: "mb-2 d-inline-block me-3 align-middle quintable--table-footer-container--pagination-wrapper--pagination-container--rows-select"
-}, sl = ["innerHTML"], il = { class: "pagination mb-0 quintable--table-footer-container--pagination-wrapper--pagination-container--nav--pagination" }, nl = { class: "page-link" }, rl = { class: "page-link" }, ll = ["onClick"], ol = { class: "page-link" }, al = { class: "page-link" }, cl = { class: "page-link" }, ul = {
+}, nl = ["innerHTML"], il = { class: "pagination mb-0 quintable--table-footer-container--pagination-wrapper--pagination-container--nav--pagination" }, rl = { class: "page-link" }, ll = { class: "page-link" }, ol = ["onClick"], al = { class: "page-link" }, cl = { class: "page-link" }, ul = { class: "page-link" }, hl = {
   key: 2,
   class: "d-inline-block align-middle mb-2 quintable--table-footer-container--pagination-wrapper--pagination-container--visible-rows"
-}, hl = { class: "footer slot slot-footer quintable--footer" };
-function dl(e, t, i, n, r, s) {
-  const l = je("quintable-font-awesome-icon"), c = je("quintable-p-check"), g = je("quintable-v-select"), u = As("tooltip");
-  return d(), p("div", Cn, [
-    k("div", xn, [
-      k("div", Pn, null, 512),
-      k("div", vn, null, 512),
-      k("div", On, null, 512),
-      k("div", _n, null, 512),
-      k("div", En, null, 512),
-      k("div", An, null, 512)
+}, fl = { class: "footer slot slot-footer quintable--footer" };
+function dl(e, t, s, i, r, n) {
+  const l = Ne("quintable-font-awesome-icon"), c = Ne("quintable-p-check"), f = Ne("quintable-v-select"), u = Us("tooltip");
+  return d(), p("div", Ti, [
+    R("div", qi, [
+      P(e.$slots, "header", {}, void 0, !0)
     ]),
-    k("div", Tn, [
-      O(e.$slots, "header", {}, void 0, !0)
-    ]),
-    s.configFinal.search ? (d(), p("div", {
+    n.configFinal.search ? (d(), p("div", {
       key: 0,
-      class: P(["mb-3 quintable--search-container", s.configFinal.searchContainerClass])
+      class: _(["mb-3 quintable--search-container", n.configFinal.searchContainerClass])
     }, [
-      O(e.$slots, "before-search", {}, void 0, !0),
-      O(e.$slots, "search", {
+      P(e.$slots, "before-search", {}, void 0, !0),
+      P(e.$slots, "search", {
         value: r.query,
-        loading: i.loading,
-        setSearchQuery: s.setSearchQuery,
-        placeholder: s.configFinal.searchPlaceholder,
-        searchClass: s.configFinal.searchClass
+        loading: s.loading,
+        setSearchQuery: n.setSearchQuery,
+        placeholder: n.configFinal.searchPlaceholder,
+        searchClass: n.configFinal.searchClass
       }, () => [
-        k("div", {
-          class: P(["quintable--search-container--input-container", s.configFinal.searchClass])
+        R("div", {
+          class: _(["quintable--search-container--input-container", n.configFinal.searchClass])
         }, [
-          I(k("input", {
+          H(R("input", {
             "onUpdate:modelValue": t[0] || (t[0] = (o) => r.query = o),
             type: "search",
-            placeholder: s.configFinal.searchPlaceholder,
+            placeholder: n.configFinal.searchPlaceholder,
             class: "form-control"
-          }, null, 8, qn), [
-            [Ts, r.query]
+          }, null, 8, ji), [
+            [Bs, r.query]
           ])
         ], 2)
       ], !0),
-      O(e.$slots, "after-search", {}, void 0, !0)
-    ], 2)) : m("", !0),
-    k("div", jn, [
-      O(e.$slots, "after-search-container", {}, void 0, !0)
+      P(e.$slots, "after-search", {}, void 0, !0)
+    ], 2)) : b("", !0),
+    R("div", Li, [
+      P(e.$slots, "after-search-container", {}, void 0, !0)
     ]),
-    k("div", Ln, [
-      s.ajaxLoading ? m("", !0) : (d(), p("table", {
+    R("div", Ui, [
+      n.ajaxLoading ? b("", !0) : (d(), p("table", {
         key: 0,
         ref: "table",
-        class: P(["vue-quintable table quintable--table-container--table", i.tableClasses])
+        class: _(["vue-quintable table quintable--table-container--table", s.tableClasses])
       }, [
-        s.configFinal.headlines.length ? (d(), p("thead", Un, [
-          k("tr", Nn, [
-            s.hasGeneratedRows && !s.configFinal.hideRowToggle ? (d(), p("th", Vn, t[21] || (t[21] = [
-              k("wbr", null, null, -1)
-            ]))) : m("", !0),
-            s.configFinal.select && s.configFinal.selectPosition === "pre" ? (d(), p("th", Bn, [
-              s.configFinal.selectAll && !s.noRows ? (d(), p(j, { key: 0 }, [
-                s.configFinal.prettySelect ? (d(), _(c, {
+        n.configFinal.headlines.length ? (d(), p("thead", Bi, [
+          R("tr", Ni, [
+            n.hasGeneratedRows && !n.configFinal.hideRowToggle ? (d(), p("th", Vi, t[21] || (t[21] = [
+              R("wbr", null, null, -1)
+            ]))) : b("", !0),
+            n.configFinal.select && n.configFinal.selectPosition === "pre" ? (d(), p("th", Mi, [
+              n.configFinal.selectAll && !n.noRows ? (d(), p(j, { key: 0 }, [
+                n.configFinal.prettySelect ? (d(), O(c, {
                   key: 0,
-                  modelValue: s.allSelectedProperty,
-                  "onUpdate:modelValue": t[1] || (t[1] = (o) => s.allSelectedProperty = o),
+                  modelValue: n.allSelectedProperty,
+                  "onUpdate:modelValue": t[1] || (t[1] = (o) => n.allSelectedProperty = o),
                   name: "check",
                   class: "p-icon p-smooth",
-                  onChange: t[2] || (t[2] = (o) => s.checkAll())
+                  onChange: t[2] || (t[2] = (o) => n.checkAll())
                 }, {
                   extra: Z(() => [
-                    k("span", null, [
-                      s.allSelectedProperty ? (d(), _(l, {
+                    R("span", null, [
+                      n.allSelectedProperty ? (d(), O(l, {
                         key: 0,
                         icon: "check",
                         class: "text-success icon-check"
-                      })) : m("", !0)
+                      })) : b("", !0)
                     ]),
-                    k("span", Dn, [
-                      s.someSelected && !s.allSelectedProperty ? (d(), _(l, {
+                    R("span", Di, [
+                      n.someSelected && !n.allSelectedProperty ? (d(), O(l, {
                         key: 0,
                         icon: "square",
                         class: "text-success icon-check"
-                      })) : m("", !0)
+                      })) : b("", !0)
                     ])
                   ]),
                   _: 1
-                }, 8, ["modelValue"])) : (d(), p("label", Mn, [
-                  I(k("input", {
-                    "onUpdate:modelValue": t[3] || (t[3] = (o) => s.allSelectedProperty = o),
+                }, 8, ["modelValue"])) : (d(), p("label", Ii, [
+                  H(R("input", {
+                    "onUpdate:modelValue": t[3] || (t[3] = (o) => n.allSelectedProperty = o),
                     type: "checkbox",
-                    onChange: t[4] || (t[4] = (o) => s.checkAll())
+                    onChange: t[4] || (t[4] = (o) => n.checkAll())
                   }, null, 544), [
-                    [de, s.allSelectedProperty]
+                    [de, n.allSelectedProperty]
                   ])
                 ]))
-              ], 64)) : m("", !0)
-            ])) : m("", !0),
-            (d(!0), p(j, null, Y(s.configFinal.headlines, (o, a) => (d(), p(j, null, [
-              (s.configFinal.columns[a] && !s.configFinal.columns[a].breakpoint || r.hiddenBreakpoints.findIndex(
-                (f) => s.configFinal.columns[a] && f === s.configFinal.columns[a].breakpoint
-              ) === -1) && !s.configFinal.columns[a].sticky && !s.configFinal.hiddenCols[a] && !s.emptyColumns[a] ? (d(), p("th", {
+              ], 64)) : b("", !0)
+            ])) : b("", !0),
+            (d(!0), p(j, null, Y(n.configFinal.headlines, (o, a) => (d(), p(j, null, [
+              n.cellVisible[a] ? (d(), p("th", {
                 key: "headline-" + a,
-                class: P(s.headerClass[a]),
-                title: s.configFinal.columns[a].title,
-                onClick: $((f) => s.setSortColumn(a), ["stop"])
+                class: _(n.headerClass[a]),
+                title: n.configFinal.columns[a].title,
+                onClick: $((g) => n.setSortColumn(a), ["stop"])
               }, [
-                s.showHeadlines[a] ? (d(), p("span", {
+                n.showHeadlines[a] ? (d(), p("span", {
                   key: 0,
                   class: "headline quintable--table-container--table--header-row--th--headline",
                   innerHTML: o
-                }, null, 8, In)) : (d(), p("span", Gn, t[22] || (t[22] = [
-                  k("wbr", null, null, -1)
+                }, null, 8, zi)) : (d(), p("span", Gi, t[22] || (t[22] = [
+                  R("wbr", null, null, -1)
                 ]))),
-                s.configFinal.sorts[a] ? (d(), p("span", zn, [
-                  r.currentSortIndexes[a] ? m("", !0) : (d(), _(l, {
+                n.configFinal.sorts[a] ? (d(), p("span", Ji, [
+                  r.currentSortIndexes[a] ? b("", !0) : (d(), O(l, {
                     key: 0,
                     icon: "sort",
                     class: "text-primary"
                   })),
-                  r.currentSortIndexes[a] && r.currentSortIndexes[a].asc ? (d(), _(l, {
+                  r.currentSortIndexes[a] && r.currentSortIndexes[a].asc ? (d(), O(l, {
                     key: 1,
                     icon: "sort-amount-down-alt",
                     class: "text-primary"
-                  })) : m("", !0),
-                  r.currentSortIndexes[a] && !r.currentSortIndexes[a].asc ? (d(), _(l, {
+                  })) : b("", !0),
+                  r.currentSortIndexes[a] && !r.currentSortIndexes[a].asc ? (d(), O(l, {
                     key: 2,
                     icon: "sort-amount-down",
                     class: "text-primary"
-                  })) : m("", !0),
+                  })) : b("", !0),
                   r.currentSortIndexes[a] ? (d(), p("span", {
                     key: 3,
                     class: "ms-1 text-muted",
-                    onClick: $((f) => s.removeSort(a), ["stop", "prevent"])
+                    onClick: $((g) => n.removeSort(a), ["stop", "prevent"])
                   }, [
-                    s.numberOfSorts > 1 ? (d(), p("span", Kn, T(r.currentSortIndexes[a].order + 1), 1)) : (d(), p("small", Wn, [
+                    n.numberOfSorts > 1 ? (d(), p("span", Qi, T(r.currentSortIndexes[a].order + 1), 1)) : (d(), p("small", Wi, [
                       L(l, { icon: "times" })
                     ]))
-                  ], 8, Jn)) : m("", !0)
-                ])) : m("", !0)
-              ], 10, Hn)) : m("", !0)
+                  ], 8, Ki)) : b("", !0)
+                ])) : b("", !0)
+              ], 10, Hi)) : b("", !0)
             ], 64))), 256)),
-            s.configFinal.select && s.configFinal.selectPosition === "post" ? (d(), p("th", Qn, [
-              s.configFinal.selectAll && !s.noRows ? (d(), p(j, { key: 0 }, [
-                s.configFinal.prettySelect ? (d(), _(c, {
+            n.configFinal.select && n.configFinal.selectPosition === "post" ? (d(), p("th", Xi, [
+              n.configFinal.selectAll && !n.noRows ? (d(), p(j, { key: 0 }, [
+                n.configFinal.prettySelect ? (d(), O(c, {
                   key: 0,
-                  modelValue: s.allSelectedProperty,
-                  "onUpdate:modelValue": t[5] || (t[5] = (o) => s.allSelectedProperty = o),
+                  modelValue: n.allSelectedProperty,
+                  "onUpdate:modelValue": t[5] || (t[5] = (o) => n.allSelectedProperty = o),
                   name: "check",
                   class: "p-icon p-smooth",
-                  onChange: t[6] || (t[6] = (o) => s.checkAll())
+                  onChange: t[6] || (t[6] = (o) => n.checkAll())
                 }, {
                   extra: Z(() => [
-                    k("span", null, [
-                      s.allSelectedProperty ? (d(), _(l, {
+                    R("span", null, [
+                      n.allSelectedProperty ? (d(), O(l, {
                         key: 0,
                         icon: "check",
                         class: "text-success icon-check"
-                      })) : m("", !0)
+                      })) : b("", !0)
                     ]),
-                    k("span", null, [
-                      s.someSelected && !s.allSelectedProperty ? (d(), _(l, {
+                    R("span", null, [
+                      n.someSelected && !n.allSelectedProperty ? (d(), O(l, {
                         key: 0,
                         icon: "square",
                         class: "text-success icon-check"
-                      })) : m("", !0)
+                      })) : b("", !0)
                     ])
                   ]),
                   _: 1
-                }, 8, ["modelValue"])) : (d(), p("label", Xn, [
-                  I(k("input", {
-                    "onUpdate:modelValue": t[7] || (t[7] = (o) => s.allSelectedProperty = o),
+                }, 8, ["modelValue"])) : (d(), p("label", Zi, [
+                  H(R("input", {
+                    "onUpdate:modelValue": t[7] || (t[7] = (o) => n.allSelectedProperty = o),
                     type: "checkbox",
-                    onChange: t[8] || (t[8] = (o) => s.checkAll())
+                    onChange: t[8] || (t[8] = (o) => n.checkAll())
                   }, null, 544), [
-                    [de, s.allSelectedProperty]
+                    [de, n.allSelectedProperty]
                   ])
                 ]))
-              ], 64)) : m("", !0)
-            ])) : m("", !0)
+              ], 64)) : b("", !0)
+            ])) : b("", !0)
           ])
-        ])) : m("", !0),
-        k("tbody", {
+        ])) : b("", !0),
+        R("tbody", {
           class: "quintable--table-container--table--tbody",
-          onMouseleave: t[11] || (t[11] = (...o) => s.onMouseleaveTable && s.onMouseleaveTable(...o))
+          onMouseleave: t[11] || (t[11] = (...o) => n.onMouseleaveTable && n.onMouseleaveTable(...o))
         }, [
-          (d(!0), p(j, null, Y(s.visibleRowIndexes, (o) => (d(), p(j, {
-            key: "vue-quintable-" + r.uuid + "-row-" + o + "-" + r.indexesUpdatedKey
+          (d(!0), p(j, null, Y(n.visibleRowIndexes, (o) => (d(), p(j, {
+            key: "vue-quintable-" + r.uuid + "-row-" + o + "-" + r.essentialsKey
           }, [
-            I((d(), p("tr", {
+            H((d(), p("tr", {
               id: "vue-quintable-" + r.uuid + "-row-" + o,
               ref_for: !0,
               ref: "row-highlighted-" + o,
-              class: P([s.rowClasses[o], "vue-quintable-row quintable--table-container--table--tbody--row"]),
-              style: pt(s.hiddenColumns[o] > 0 ? "cursor:pointer;" : ""),
-              onClick: (a) => s.onRowClick(a, o),
-              onAuxclick: (a) => s.onRowAuxClick(a, o),
-              onMousedown: t[10] || (t[10] = (a) => s.onRowMousedown(a)),
-              onMouseenter: (a) => s.onMouseenterRow(o)
+              class: _([n.rowClasses[o], "vue-quintable-row quintable--table-container--table--tbody--row"]),
+              style: wt(n.hiddenColumns[o] > 0 ? "cursor:pointer;" : ""),
+              onClick: (a) => n.onRowClick(a, o),
+              onAuxclick: (a) => n.onRowAuxClick(a, o),
+              onMousedown: t[10] || (t[10] = (a) => n.onRowMousedown(a)),
+              onMouseenter: (a) => n._hoverRow(o, a)
             }, [
-              s.hasGeneratedRows && !s.configFinal.hideRowToggle ? (d(), p("td", Yn, [
-                s.hiddenColumns[o] > 0 ? (d(), p("span", $n, [
-                  r.openRows[o] ? (d(), p("span", tr, [
+              n.hasGeneratedRows && !n.configFinal.hideRowToggle ? (d(), p("td", $i, [
+                n.hiddenColumns[o] > 0 ? (d(), p("span", er, [
+                  r.openRows[o] ? (d(), p("span", sr, [
                     L(l, {
                       "fixed-width": "",
-                      icon: s.configFinal.expandedRowIcon
+                      icon: n.configFinal.expandedRowIcon
                     }, null, 8, ["icon"])
-                  ])) : (d(), p("span", er, [
+                  ])) : (d(), p("span", tr, [
                     L(l, {
                       "fixed-width": "",
-                      icon: s.configFinal.collapsedRowIcon
+                      icon: n.configFinal.collapsedRowIcon
                     }, null, 8, ["icon"])
                   ]))
-                ])) : m("", !0)
-              ])) : m("", !0),
-              s.configFinal.select && s.configFinal.selectPosition === "pre" ? (d(), p("td", {
+                ])) : b("", !0)
+              ])) : b("", !0),
+              n.configFinal.select && n.configFinal.selectPosition === "pre" ? (d(), p("td", {
                 key: 1,
-                class: P(["select-td pre quintable--table-container--table--tbody--row--select-td quintable--table-container--table--tbody--row--select-td--pre", { "disabled-select": s.rowsFinal[o].disableSelect }])
+                class: _(["select-td pre quintable--table-container--table--tbody--row--select-td quintable--table-container--table--tbody--row--select-td--pre", { "disabled-select": n.rowsFinal[o].disableSelect }])
               }, [
-                !s.rowsFinal[o].disableSelect || s.rowsFinal[o].showDisabledSelect ? (d(), p(j, { key: 0 }, [
-                  s.configFinal.prettySelect ? (d(), _(c, {
+                !n.rowsFinal[o].disableSelect || n.rowsFinal[o].showDisabledSelect ? (d(), p(j, { key: 0 }, [
+                  n.configFinal.prettySelect ? (d(), O(c, {
                     key: 0,
                     modelValue: r.selected[o],
                     "onUpdate:modelValue": (a) => r.selected[o] = a,
                     name: "check",
                     class: "p-icon",
-                    disabled: s.rowsFinal[o].disableSelect,
-                    onChange: (a) => s.checkListener(a, o)
+                    disabled: n.rowsFinal[o].disableSelect,
+                    onChange: (a) => n.checkListener(a, o)
                   }, {
                     extra: Z(() => [
-                      k("span", null, [
-                        r.selected[o] ? (d(), _(l, {
+                      R("span", null, [
+                        r.selected[o] ? (d(), O(l, {
                           key: 0,
                           icon: "check",
                           class: "text-success icon-check"
-                        })) : m("", !0)
+                        })) : b("", !0)
                       ])
                     ]),
                     _: 2
-                  }, 1032, ["modelValue", "onUpdate:modelValue", "disabled", "onChange"])) : (d(), p("label", sr, [
-                    I(k("input", {
+                  }, 1032, ["modelValue", "onUpdate:modelValue", "disabled", "onChange"])) : (d(), p("label", nr, [
+                    H(R("input", {
                       "onUpdate:modelValue": (a) => r.selected[o] = a,
                       type: "checkbox",
-                      disabled: s.rowsFinal[o].disableSelect,
-                      onChange: (a) => s.checkListener(a, o)
+                      disabled: n.rowsFinal[o].disableSelect,
+                      onChange: (a) => n.checkListener(a, o)
                     }, null, 40, ir), [
                       [de, r.selected[o]]
                     ])
                   ]))
-                ], 64)) : m("", !0)
-              ], 2)) : m("", !0),
-              (d(!0), p(j, null, Y(s.rowsFinal[o].cells ? s.rowsFinal[o].cells : s.rowsFinal[o], (a, f) => (d(), p(j, null, [
-                !s.configFinal.hiddenCols[f] && !s.emptyColumns[f] && s.configFinal.columns[f] && a && r.hiddenBreakpoints.findIndex(
-                  (b) => b === s.configFinal.columns[f].breakpoint
-                ) === -1 && s.configFinal.columns[f].breakpoint !== "all" && !s.configFinal.stickyCols[f] ? I((d(), p("td", {
-                  id: "vue-quintable-" + r.uuid + "-cell-" + o + "-" + f,
-                  key: "vue-quintable-" + r.uuid + "-cell-" + o + "-" + f,
-                  class: P([
-                    "vue-quintable-cell quintable--table-container--table--tbody--row--cell",
-                    s.cellClassesParsed[o][f] + " " + s.configFinal.columnClasses[f]
-                  ]),
-                  onClick: (b) => s.onCellClick(b, a),
-                  onAuxclick: (b) => s.onCellAuxClick(b, a),
-                  onMousedown: t[9] || (t[9] = (b) => s.onCellMousedown(b))
+                ], 64)) : b("", !0)
+              ], 2)) : b("", !0),
+              (d(!0), p(j, null, Y(n._renderRows[o], (a) => (d(), p(j, null, [
+                a.vis ? H((d(), p("td", {
+                  id: a.key,
+                  key: a.key,
+                  class: _(["vue-quintable-cell quintable--table-container--table--tbody--row--cell", a.cls]),
+                  onClick: (g) => n.onCellClick(g, a.cell),
+                  onAuxclick: (g) => n.onCellAuxClick(g, a.cell),
+                  onMousedown: t[9] || (t[9] = (g) => n.onCellMousedown(g))
                 }, [
-                  O(e.$slots, "cell-complete", { cell: a }, () => [
-                    O(e.$slots, "cell-content", { cell: a }, () => [
-                      s.configFinal.columns[f].cellFormatter && s.cellFormatters(f, a).type === "html" ? (d(), p("div", {
+                  P(e.$slots, "cell-complete", {
+                    cell: a.cell
+                  }, () => [
+                    P(e.$slots, "cell-content", {
+                      cell: a.cell
+                    }, () => [
+                      a.fmt && a.fmt.type === "html" ? (d(), p("div", {
                         key: 0,
-                        class: P(["cell-inner", "quintable--table-container--table--tbody--row--cell--inner-cell--formatted-html"]),
-                        innerHTML: s.cellFormatters(f, a).value
-                      }, null, 8, rr)) : s.configFinal.columns[f].cellFormatter ? (d(), p("div", {
+                        class: _(["cell-inner", "quintable--table-container--table--tbody--row--cell--inner-cell--formatted-html"]),
+                        innerHTML: a.fmt.value
+                      }, null, 8, lr)) : a.fmt ? (d(), p("div", {
                         key: 1,
-                        class: P(["cell-inner", "quintable--table-container--table--tbody--row--cell--inner-cell--formatted-value"])
-                      }, T(s.cellFormatters(f, a).value), 1)) : s.valueToString(a.html) ? (d(), p("div", {
+                        class: _(["cell-inner", "quintable--table-container--table--tbody--row--cell--inner-cell--formatted-value"])
+                      }, T(a.fmt.value), 1)) : n.valueToString(a.cell.html) ? (d(), p("div", {
                         key: 2,
-                        class: P(["cell-inner", "quintable--table-container--table--tbody--row--cell--inner-cell--html"]),
-                        innerHTML: a.html
-                      }, null, 8, lr)) : a.component ? (d(), p("div", {
+                        class: _(["cell-inner", "quintable--table-container--table--tbody--row--cell--inner-cell--html"]),
+                        innerHTML: a.cell.html
+                      }, null, 8, or)) : a.cell.component ? (d(), p("div", {
                         key: 3,
-                        class: P(["cell-inner", "quintable--table-container--table--tbody--row--cell--inner-cell--component"])
+                        class: _(["cell-inner", "quintable--table-container--table--tbody--row--cell--inner-cell--component"])
                       }, [
-                        (d(), _(Le(a.component.name), Ue({ ref_for: !0 }, a.component.props, { onAction: s.handleComponentEvent }), null, 16, ["onAction"]))
-                      ])) : s.valueToString(a.text) ? (d(), p("div", {
+                        (d(), O(Ve(a.cell.component.name), Me({ ref_for: !0 }, a.cell.component.props, { onAction: n.handleComponentEvent }), null, 16, ["onAction"]))
+                      ])) : n.valueToString(a.cell.text) ? (d(), p("div", {
                         key: 4,
-                        class: P(["cell-inner", "quintable--table-container--table--tbody--row--cell--inner-cell--text"])
-                      }, T(a.text), 1)) : m("", !0)
+                        class: _(["cell-inner", "quintable--table-container--table--tbody--row--cell--inner-cell--text"])
+                      }, T(a.cell.text), 1)) : b("", !0)
                     ], !0)
                   ], !0)
-                ], 42, nr)), [
+                ], 42, rr)), [
                   [u, {
                     placement: "left",
-                    content: a.tooltip,
-                    trigger: a.tooltip ? "hover" : "manual"
+                    content: a.cell.tooltip,
+                    trigger: a.cell.tooltip ? "hover" : "manual"
                   }]
-                ]) : m("", !0)
+                ]) : b("", !0)
               ], 64))), 256)),
-              s.configFinal.select && s.configFinal.selectPosition === "post" ? (d(), p("td", {
+              n.configFinal.select && n.configFinal.selectPosition === "post" ? (d(), p("td", {
                 key: 2,
-                class: P(["select-td post quintable--table-container--table--tbody--row--select-td quintable--table-container--table--tbody--row--select-td--post", { "disabled-select": s.rowsFinal[o].disableSelect }])
+                class: _(["select-td post quintable--table-container--table--tbody--row--select-td quintable--table-container--table--tbody--row--select-td--post", { "disabled-select": n.rowsFinal[o].disableSelect }])
               }, [
-                !s.rowsFinal[o].disableSelect || s.rowsFinal[o].showDisabledSelect ? (d(), p(j, { key: 0 }, [
-                  s.configFinal.prettySelect ? (d(), _(c, {
+                !n.rowsFinal[o].disableSelect || n.rowsFinal[o].showDisabledSelect ? (d(), p(j, { key: 0 }, [
+                  n.configFinal.prettySelect ? (d(), O(c, {
                     key: 0,
                     modelValue: r.selected[o],
                     "onUpdate:modelValue": (a) => r.selected[o] = a,
                     name: "check",
                     class: "p-icon",
-                    disabled: s.rowsFinal[o].disableSelect,
-                    onChange: (a) => s.checkListener(a, o)
+                    disabled: n.rowsFinal[o].disableSelect,
+                    onChange: (a) => n.checkListener(a, o)
                   }, {
                     extra: Z(() => [
-                      k("span", null, [
-                        r.selected[o] ? (d(), _(l, {
+                      R("span", null, [
+                        r.selected[o] ? (d(), O(l, {
                           key: 0,
                           icon: "check",
                           class: "text-success icon-check"
-                        })) : m("", !0)
+                        })) : b("", !0)
                       ])
                     ]),
                     _: 2
-                  }, 1032, ["modelValue", "onUpdate:modelValue", "disabled", "onChange"])) : (d(), p("label", or, [
-                    I(k("input", {
+                  }, 1032, ["modelValue", "onUpdate:modelValue", "disabled", "onChange"])) : (d(), p("label", ar, [
+                    H(R("input", {
                       "onUpdate:modelValue": (a) => r.selected[o] = a,
                       type: "checkbox",
-                      disabled: s.rowsFinal[o].disableSelect,
-                      onChange: (a) => s.checkListener(a, o)
-                    }, null, 40, ar), [
+                      disabled: n.rowsFinal[o].disableSelect,
+                      onChange: (a) => n.checkListener(a, o)
+                    }, null, 40, cr), [
                       [de, r.selected[o]]
                     ])
                   ]))
-                ], 64)) : m("", !0)
-              ], 2)) : m("", !0)
-            ], 46, Zn)), [
+                ], 64)) : b("", !0)
+              ], 2)) : b("", !0)
+            ], 46, Yi)), [
               [u, {
                 placement: "top",
-                content: s.rowsFinal[o].tooltip,
-                trigger: s.rowsFinal[o].tooltip ? "hover" : "manual",
+                content: n.rowsFinal[o].tooltip,
+                trigger: n.rowsFinal[o].tooltip ? "hover" : "manual",
                 offset: 5
               }]
             ]),
-            (s.generatedRows[o] || s.stickyRows[o]) && s.visibleRows[o] ? (d(), p(j, { key: 0 }, [
-              r.generatedUpdatedKey && r.openRows[o] && Object.keys(s.generatedRows[o]).length || Object.keys(s.stickyRows[o]).length ? (d(), p("tr", {
-                key: "generated-row-" + o + "-" + r.rowsUpdatedKey + "-" + r.generatedUpdatedKey,
+            (n.generatedRows[o] || n.stickyRows[o]) && n.visibleRows[o] ? (d(), p(j, { key: 0 }, [
+              r.generatedUpdatedKey && r.openRows[o] && Object.keys(n.generatedRows[o]).length || Object.keys(n.stickyRows[o]).length ? (d(), p("tr", {
+                key: "generated-row-" + o + "-" + r.essentialsKey + "-" + r.generatedUpdatedKey,
                 ref_for: !0,
                 ref: "generated-row-highlighted-" + o,
-                class: P(["generated-row quintable--table-container--table--tbody--generated-row", {
+                class: _(["generated-row quintable--table-container--table--tbody--generated-row", {
                   "parent-row-expanded": r.openRows[o],
-                  "parent-row-collapsed": s.hiddenColumns[o] > 0 && !r.openRows[o]
+                  "parent-row-collapsed": n.hiddenColumns[o] > 0 && !r.openRows[o]
                 }]),
-                onMouseenter: (a) => s.onMouseenterRow(o),
-                onClick: (a) => s.onRowClick(a, o)
+                onMouseenter: (a) => n._hoverRow(o, a),
+                onClick: (a) => n.onRowClick(a, o)
               }, [
-                k("td", {
-                  colspan: s.configFinal.number + 1,
+                R("td", {
+                  colspan: n.configFinal.number + 1,
                   class: "ps-0 pe-0 pt-0"
                 }, [
-                  k("div", {
-                    class: P({
-                      [s.configFinal.hoverClass]: r.hoveredRow === o,
-                      [s.configFinal.activeClass]: r.activeRow === o
+                  R("div", {
+                    class: _({
+                      [n.configFinal.hoverClass]: r.hoveredRow === o,
+                      [n.configFinal.activeClass]: r.activeRow === o
                     })
                   }, [
-                    k("table", hr, [
-                      k("tbody", null, [
-                        (d(!0), p(j, null, Y(s.generatedRows[o], (a, f) => (d(), p(j, null, [
+                    R("table", fr, [
+                      R("tbody", null, [
+                        (d(!0), p(j, null, Y(n.generatedRows[o], (a, g) => (d(), p(j, null, [
                           r.openRows[o] ? (d(), p("tr", {
-                            id: "vue-quintable-" + r.uuid + "-generated-row-cell-" + o + "-" + f,
-                            key: "vue-quintable-" + r.uuid + "-generated-row-cell-" + o + "-" + f + "-" + r.generatedUpdatedKey,
+                            id: "vue-quintable-" + r.uuid + "-generated-row-cell-" + o + "-" + g,
+                            key: "vue-quintable-" + r.uuid + "-generated-row-cell-" + o + "-" + g + "-" + r.generatedUpdatedKey,
                             class: "generated-row-cell quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell"
                           }, [
-                            !s.configFinal.hideRowToggle && s.generatedRows[o] && Object.keys(s.generatedRows[o]).length ? (d(), p("td", fr, [
-                              s.hiddenColumns[o] > 0 ? (d(), p("span", gr, [
-                                r.openRows[o] ? (d(), p("span", mr, [
+                            !n.configFinal.hideRowToggle && n.generatedRows[o] && Object.keys(n.generatedRows[o]).length ? (d(), p("td", gr, [
+                              n.hiddenColumns[o] > 0 ? (d(), p("span", pr, [
+                                r.openRows[o] ? (d(), p("span", br, [
                                   L(l, {
                                     "fixed-width": "",
-                                    icon: s.configFinal.expandedRowIcon
+                                    icon: n.configFinal.expandedRowIcon
                                   }, null, 8, ["icon"])
-                                ])) : (d(), p("span", pr, [
+                                ])) : (d(), p("span", mr, [
                                   L(l, {
                                     "fixed-width": "",
-                                    icon: s.configFinal.collapsedRowIcon
+                                    icon: n.configFinal.collapsedRowIcon
                                   }, null, 8, ["icon"])
                                 ]))
-                              ])) : m("", !0)
-                            ])) : m("", !0),
-                            s.showHeadlines[f] || s.configFinal.sorts[f] ? (d(), p("td", {
+                              ])) : b("", !0)
+                            ])) : b("", !0),
+                            n.showHeadlines[g] || n.configFinal.sorts[g] ? (d(), p("td", {
                               key: 1,
-                              class: P([s.configFinal.columnClasses[f], "generated-cell-element generated-cell-headline quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-headline"]),
-                              onClick: $((b) => s.setSortColumn(f), ["stop"])
+                              class: _([n.configFinal.columnClasses[g], "generated-cell-element generated-cell-headline quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-headline"]),
+                              onClick: $((S) => n.setSortColumn(g), ["stop"])
                             }, [
-                              s.showHeadlines[f] ? (d(), p("strong", {
+                              n.showHeadlines[g] ? (d(), p("strong", {
                                 key: 0,
-                                innerHTML: s.configFinal.headlines[f]
-                              }, null, 8, br)) : (d(), p("span", yr, t[23] || (t[23] = [
-                                k("wbr", null, null, -1)
+                                innerHTML: n.configFinal.headlines[g]
+                              }, null, 8, yr)) : (d(), p("span", Sr, t[23] || (t[23] = [
+                                R("wbr", null, null, -1)
                               ]))),
-                              s.configFinal.sorts[f] && r.hoveredRow === o ? (d(), p("span", Sr, [
-                                r.currentSortIndexes[f] ? m("", !0) : (d(), _(l, {
+                              n.configFinal.sorts[g] && r.hoveredRow === o ? (d(), p("span", Rr, [
+                                r.currentSortIndexes[g] ? b("", !0) : (d(), O(l, {
                                   key: 0,
                                   icon: "sort",
                                   class: "text-primary"
                                 })),
-                                r.currentSortIndexes[f] && r.currentSortIndexes[f].asc ? (d(), _(l, {
+                                r.currentSortIndexes[g] && r.currentSortIndexes[g].asc ? (d(), O(l, {
                                   key: 1,
                                   icon: "sort-amount-down-alt",
                                   class: "text-primary"
-                                })) : m("", !0),
-                                r.currentSortIndexes[f] && !r.currentSortIndexes[f].asc ? (d(), _(l, {
+                                })) : b("", !0),
+                                r.currentSortIndexes[g] && !r.currentSortIndexes[g].asc ? (d(), O(l, {
                                   key: 2,
                                   icon: "sort-amount-down",
                                   class: "text-primary"
-                                })) : m("", !0),
-                                r.currentSortIndexes[f] ? (d(), p("span", {
+                                })) : b("", !0),
+                                r.currentSortIndexes[g] ? (d(), p("span", {
                                   key: 3,
                                   class: "ms-1 text-muted",
-                                  onClick: $((b) => s.removeSort(f), ["stop", "prevent"])
+                                  onClick: $((S) => n.removeSort(g), ["stop", "prevent"])
                                 }, [
-                                  s.numberOfSorts > 1 ? (d(), p("span", Fr, T(r.currentSortIndexes[f].order + 1), 1)) : (d(), p("small", Rr, [
+                                  n.numberOfSorts > 1 ? (d(), p("span", Fr, T(r.currentSortIndexes[g].order + 1), 1)) : (d(), p("small", Cr, [
                                     L(l, { icon: "times" })
                                   ]))
-                                ], 8, kr)) : m("", !0)
-                              ])) : m("", !0)
-                            ], 10, wr)) : m("", !0),
-                            I((d(), p("td", {
-                              colspan: !s.showHeadlines[f] && !s.configFinal.sorts[f] ? 2 : 1,
-                              class: P([
-                                s.configFinal.columnClasses[f] + " " + s.cellClassesParsed[o][f],
+                                ], 8, kr)) : b("", !0)
+                              ])) : b("", !0)
+                            ], 10, wr)) : b("", !0),
+                            H((d(), p("td", {
+                              colspan: !n.showHeadlines[g] && !n.configFinal.sorts[g] ? 2 : 1,
+                              class: _([
+                                n.configFinal.columnClasses[g] + " " + n.cellClassesParsed[o][g],
                                 "generated-cell-element generated-cell-element-content generated-cell-content quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-content"
                               ]),
-                              onClick: (b) => s.onCellClick(b, a)
+                              onClick: (S) => n.onCellClick(S, a)
                             }, [
-                              O(e.$slots, "generated-cell-complete", { cell: a }, () => [
-                                O(e.$slots, "generated-cell-content", { cell: a }, () => [
-                                  s.configFinal.columns[f].cellFormatter && s.cellFormatters(f, a).type === "html" ? (d(), p("div", {
+                              P(e.$slots, "generated-cell-complete", { cell: a }, () => [
+                                P(e.$slots, "generated-cell-content", { cell: a }, () => [
+                                  n.configFinal.columns[g].cellFormatter && n.cellFormatters(g, a).type === "html" ? (d(), p("div", {
                                     key: 0,
                                     class: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--formatted-html",
-                                    innerHTML: s.cellFormatters(f, a).value
-                                  }, null, 8, xr)) : s.configFinal.columns[f].cellFormatter ? (d(), p("div", Pr, T(s.cellFormatters(f, a).value), 1)) : s.valueToString(a.html) ? (d(), p("div", {
+                                    innerHTML: n.cellFormatters(g, a).value
+                                  }, null, 8, _r)) : n.configFinal.columns[g].cellFormatter ? (d(), p("div", vr, T(n.cellFormatters(g, a).value), 1)) : n.valueToString(a.html) ? (d(), p("div", {
                                     key: 2,
                                     class: "cell-inner quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell--cell-inner--html",
                                     innerHTML: a.html
-                                  }, null, 8, vr)) : a.component ? (d(), p("div", Or, [
-                                    (d(), _(Le(a.component.name), Ue({ ref_for: !0 }, a.component.props, { onAction: s.handleComponentEvent }), null, 16, ["onAction"]))
-                                  ])) : s.valueToString(a.text) ? (d(), p("div", _r, T(a.text), 1)) : m("", !0)
+                                  }, null, 8, Pr)) : a.component ? (d(), p("div", Or, [
+                                    (d(), O(Ve(a.component.name), Me({ ref_for: !0 }, a.component.props, { onAction: n.handleComponentEvent }), null, 16, ["onAction"]))
+                                  ])) : n.valueToString(a.text) ? (d(), p("div", Er, T(a.text), 1)) : b("", !0)
                                 ], !0)
                               ], !0)
-                            ], 10, Cr)), [
+                            ], 10, xr)), [
                               [u, {
                                 placement: "top",
                                 content: a.tooltip,
                                 trigger: a.tooltip ? "hover" : "manual"
                               }]
                             ])
-                          ], 8, dr)) : m("", !0)
+                          ], 8, dr)) : b("", !0)
                         ], 64))), 256)),
-                        (d(!0), p(j, null, Y(s.stickyRows[o], (a, f) => (d(), p("tr", {
-                          id: "vue-quintable-" + r.uuid + "-sticky-row-cell-" + o + "-" + f,
-                          key: "vue-quintable-" + r.uuid + "-sticky-row-cell-" + o + "-" + f,
+                        (d(!0), p(j, null, Y(n.stickyRows[o], (a, g) => (d(), p("tr", {
+                          id: "vue-quintable-" + r.uuid + "-sticky-row-cell-" + o + "-" + g,
+                          key: "vue-quintable-" + r.uuid + "-sticky-row-cell-" + o + "-" + g,
                           class: "sticky-row-cell quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell"
                         }, [
-                          !s.configFinal.hideRowToggle && s.generatedRows[o] && Object.keys(s.generatedRows[o]).length ? (d(), p("td", Ar, [
-                            s.hiddenColumns[o] > 0 ? (d(), p("span", Tr, [
-                              r.openRows[o] ? (d(), p("span", jr, [
+                          !n.configFinal.hideRowToggle && n.generatedRows[o] && Object.keys(n.generatedRows[o]).length ? (d(), p("td", Tr, [
+                            n.hiddenColumns[o] > 0 ? (d(), p("span", qr, [
+                              r.openRows[o] ? (d(), p("span", Lr, [
                                 L(l, {
                                   "fixed-width": "",
-                                  icon: s.configFinal.expandedRowIcon
+                                  icon: n.configFinal.expandedRowIcon
                                 }, null, 8, ["icon"])
-                              ])) : (d(), p("span", qr, [
+                              ])) : (d(), p("span", jr, [
                                 L(l, {
                                   "fixed-width": "",
-                                  icon: s.configFinal.collapsedRowIcon
+                                  icon: n.configFinal.collapsedRowIcon
                                 }, null, 8, ["icon"])
                               ]))
-                            ])) : m("", !0)
-                          ])) : m("", !0),
-                          s.showHeadlines[f] || s.configFinal.sorts[f] ? (d(), p("td", {
+                            ])) : b("", !0)
+                          ])) : b("", !0),
+                          n.showHeadlines[g] || n.configFinal.sorts[g] ? (d(), p("td", {
                             key: 1,
-                            class: P([s.configFinal.columnClasses[f], "generated-cell-element sticky-cell-headline quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-headline"]),
-                            onClick: $((b) => s.setSortColumn(f), ["stop"])
+                            class: _([n.configFinal.columnClasses[g], "generated-cell-element sticky-cell-headline quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-headline"]),
+                            onClick: $((S) => n.setSortColumn(g), ["stop"])
                           }, [
-                            s.showHeadlines[f] ? (d(), p("strong", {
+                            n.showHeadlines[g] ? (d(), p("strong", {
                               key: 0,
-                              innerHTML: s.configFinal.headlines[f]
-                            }, null, 8, Ur)) : (d(), p("span", Nr, t[24] || (t[24] = [
-                              k("wbr", null, null, -1)
+                              innerHTML: n.configFinal.headlines[g]
+                            }, null, 8, Br)) : (d(), p("span", Nr, t[24] || (t[24] = [
+                              R("wbr", null, null, -1)
                             ]))),
-                            s.configFinal.sorts[f] && r.hoveredRow === o ? (d(), p("span", Vr, [
-                              r.currentSortIndexes[f] ? m("", !0) : (d(), _(l, {
+                            n.configFinal.sorts[g] && r.hoveredRow === o ? (d(), p("span", Vr, [
+                              r.currentSortIndexes[g] ? b("", !0) : (d(), O(l, {
                                 key: 0,
                                 icon: "sort",
                                 class: "text-primary"
                               })),
-                              r.currentSortIndexes[f] && r.currentSortIndexes[f].asc ? (d(), _(l, {
+                              r.currentSortIndexes[g] && r.currentSortIndexes[g].asc ? (d(), O(l, {
                                 key: 1,
                                 icon: "sort-amount-down-alt",
                                 class: "text-primary"
-                              })) : m("", !0),
-                              r.currentSortIndexes[f] && !r.currentSortIndexes[f].asc ? (d(), _(l, {
+                              })) : b("", !0),
+                              r.currentSortIndexes[g] && !r.currentSortIndexes[g].asc ? (d(), O(l, {
                                 key: 2,
                                 icon: "sort-amount-down",
                                 class: "text-primary"
-                              })) : m("", !0),
-                              r.currentSortIndexes[f] ? (d(), p("span", {
+                              })) : b("", !0),
+                              r.currentSortIndexes[g] ? (d(), p("span", {
                                 key: 3,
                                 class: "ms-1 text-muted",
-                                onClick: $((b) => s.removeSort(f), ["stop", "prevent"])
+                                onClick: $((S) => n.removeSort(g), ["stop", "prevent"])
                               }, [
-                                s.numberOfSorts > 1 ? (d(), p("span", Dr, T(r.currentSortIndexes[f].order + 1), 1)) : (d(), p("small", Mr, [
+                                n.numberOfSorts > 1 ? (d(), p("span", Dr, T(r.currentSortIndexes[g].order + 1), 1)) : (d(), p("small", Ir, [
                                   L(l, { icon: "times" })
                                 ]))
-                              ], 8, Br)) : m("", !0)
-                            ])) : m("", !0)
-                          ], 10, Lr)) : m("", !0),
-                          I((d(), p("td", {
-                            colspan: !s.showHeadlines[f] && !s.configFinal.sorts[f] ? 2 : 1,
-                            class: P([
-                              s.configFinal.columnClasses[f] + " " + s.cellClassesParsed[o][f],
+                              ], 8, Mr)) : b("", !0)
+                            ])) : b("", !0)
+                          ], 10, Ur)) : b("", !0),
+                          H((d(), p("td", {
+                            colspan: !n.showHeadlines[g] && !n.configFinal.sorts[g] ? 2 : 1,
+                            class: _([
+                              n.configFinal.columnClasses[g] + " " + n.cellClassesParsed[o][g],
                               "generated-cell-element generated-cell-element-content sticky-cell-content quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sticky-cell-content"
                             ]),
-                            onClick: (b) => s.onCellClick(b, a)
+                            onClick: (S) => n.onCellClick(S, a)
                           }, [
-                            O(e.$slots, "sticky-cell-complete", { cell: a }, () => [
-                              O(e.$slots, "sticky-cell-content", { cell: a }, () => [
-                                s.configFinal.columns[f].cellFormatter && s.cellFormatters(f, a).type === "html" ? (d(), p("div", {
+                            P(e.$slots, "sticky-cell-complete", { cell: a }, () => [
+                              P(e.$slots, "sticky-cell-content", { cell: a }, () => [
+                                n.configFinal.columns[g].cellFormatter && n.cellFormatters(g, a).type === "html" ? (d(), p("div", {
                                   key: 0,
-                                  class: P(["cell-inner", "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--formatted-html"]),
-                                  innerHTML: s.cellFormatters(f, a).value
-                                }, null, 8, Ir)) : s.configFinal.columns[f].cellFormatter ? (d(), p("div", {
+                                  class: _(["cell-inner", "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--formatted-html"]),
+                                  innerHTML: n.cellFormatters(g, a).value
+                                }, null, 8, zr)) : n.configFinal.columns[g].cellFormatter ? (d(), p("div", {
                                   key: 1,
-                                  class: P(["cell-inner", "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--formatted-value"])
-                                }, T(s.cellFormatters(f, a).value), 1)) : s.valueToString(a.html) ? (d(), p("div", {
+                                  class: _(["cell-inner", "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--formatted-value"])
+                                }, T(n.cellFormatters(g, a).value), 1)) : n.valueToString(a.html) ? (d(), p("div", {
                                   key: 2,
-                                  class: P(["cell-inner", "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--html"]),
+                                  class: _(["cell-inner", "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--html"]),
                                   innerHTML: a.html
                                 }, null, 8, Gr)) : a.component ? (d(), p("div", {
                                   key: 3,
-                                  class: P(["cell-inner", "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--component"])
+                                  class: _(["cell-inner", "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--component"])
                                 }, [
-                                  (d(), _(Le(a.component.name), Ue({ ref_for: !0 }, a.component.props, { onAction: s.handleComponentEvent }), null, 16, ["onAction"]))
-                                ])) : s.valueToString(a.text) ? (d(), p("div", {
+                                  (d(), O(Ve(a.component.name), Me({ ref_for: !0 }, a.component.props, { onAction: n.handleComponentEvent }), null, 16, ["onAction"]))
+                                ])) : n.valueToString(a.text) ? (d(), p("div", {
                                   key: 4,
-                                  class: P(["cell-inner", "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--text"])
-                                }, T(a.text), 1)) : m("", !0)
+                                  class: _(["cell-inner", "quintable--table-container--table--tbody--generated-row--generated-table--sticky-row-cell--sticky-cell--cell-inner--text"])
+                                }, T(a.text), 1)) : b("", !0)
                               ], !0)
                             ], !0)
                           ], 10, Hr)), [
@@ -4578,34 +4682,34 @@ function dl(e, t, i, n, r, s) {
                               trigger: a.tooltip ? "hover" : "manual"
                             }]
                           ])
-                        ], 8, Er))), 128))
+                        ], 8, Ar))), 128))
                       ])
                     ])
                   ], 2)
-                ], 8, ur)
-              ], 42, cr)) : m("", !0)
-            ], 64)) : m("", !0)
+                ], 8, hr)
+              ], 42, ur)) : b("", !0)
+            ], 64)) : b("", !0)
           ], 64))), 128))
         ], 32)
       ], 2)),
-      s.noRows && !s.ajaxLoading ? (d(), p("div", zr, [
-        O(e.$slots, "no-results", {}, () => [
-          k("div", Jr, [
-            k("em", {
-              innerHTML: s.configFinal.emptyPlaceholder
-            }, null, 8, Kr)
+      n.noRows && !n.ajaxLoading ? (d(), p("div", Jr, [
+        P(e.$slots, "no-results", {}, () => [
+          R("div", Kr, [
+            R("em", {
+              innerHTML: n.configFinal.emptyPlaceholder
+            }, null, 8, Qr)
           ])
         ], !0),
-        t[25] || (t[25] = k("hr", null, null, -1))
-      ])) : m("", !0)
+        t[25] || (t[25] = R("hr", null, null, -1))
+      ])) : b("", !0)
     ], 512),
-    s.ajaxLoading ? (d(), p("div", Wr, [
-      O(e.$slots, "loading", {}, () => [
-        k("div", {
+    n.ajaxLoading ? (d(), p("div", Wr, [
+      P(e.$slots, "loading", {}, () => [
+        R("div", {
           class: "loader-wrapper quintable--loading--loader-wrapper",
-          style: pt("height:" + r.loaderHeight + "px;")
+          style: wt("height:" + r.loaderHeight + "px;")
         }, [
-          k("div", Qr, [
+          R("div", Xr, [
             L(l, {
               icon: "circle-notch",
               spin: "",
@@ -4614,131 +4718,131 @@ function dl(e, t, i, n, r, s) {
           ])
         ], 4)
       ], !0)
-    ])) : m("", !0),
-    k("div", Xr, [
-      k("div", Zr, [
-        k("div", Yr, [
-          s.configFinal.multiSortSelect || s.configFinal.pageSortSelect ? (d(), p("div", {
+    ])) : b("", !0),
+    R("div", Zr, [
+      R("div", Yr, [
+        R("div", $r, [
+          n.configFinal.multiSortSelect || n.configFinal.pageSortSelect ? (d(), p("div", {
             key: 0,
-            class: P(
-              `pb-lg-0 pb-3 float-start quintable--table-footer-container--sort-container--sort-select flex-inline ${s.configFinal.pageSort ? "me-3" : ""}`.trim()
+            class: _(
+              `pb-lg-0 pb-3 float-start quintable--table-footer-container--sort-container--sort-select flex-inline ${n.configFinal.pageSort ? "me-3" : ""}`.trim()
             )
           }, [
-            s.configFinal.multiSortSelect ? (d(), _(c, {
+            n.configFinal.multiSortSelect ? (d(), O(c, {
               key: 0,
-              modelValue: s.multiSort,
-              "onUpdate:modelValue": t[12] || (t[12] = (o) => s.multiSort = o),
+              modelValue: n.multiSort,
+              "onUpdate:modelValue": t[12] || (t[12] = (o) => n.multiSort = o),
               class: "p-switch quintable--table-footer-container--sort-container--sort-select--multi-sort-select",
               value: "true"
             }, {
               default: Z(() => [
-                mt(T(s.configFinal.multiSortPlaceholder), 1)
+                yt(T(n.configFinal.multiSortPlaceholder), 1)
               ]),
               _: 1
-            }, 8, ["modelValue"])) : m("", !0),
-            s.configFinal.pageSortSelect ? (d(), _(c, {
+            }, 8, ["modelValue"])) : b("", !0),
+            n.configFinal.pageSortSelect ? (d(), O(c, {
               key: 1,
-              modelValue: s.pageSort,
-              "onUpdate:modelValue": t[13] || (t[13] = (o) => s.pageSort = o),
+              modelValue: n.pageSort,
+              "onUpdate:modelValue": t[13] || (t[13] = (o) => n.pageSort = o),
               class: "p-switch quintable--table-footer-container--sort-container--sort-select--page-sort-select",
               value: "true"
             }, {
               default: Z(() => [
-                mt(T(s.configFinal.pageSortPlaceholder), 1)
+                yt(T(n.configFinal.pageSortPlaceholder), 1)
               ]),
               _: 1
-            }, 8, ["modelValue"])) : m("", !0)
-          ], 2)) : m("", !0)
+            }, 8, ["modelValue"])) : b("", !0)
+          ], 2)) : b("", !0)
         ]),
-        k("div", $r, [
-          s.configFinal && s.configFinal.pagination ? (d(), p("div", el, [
-            s.configFinal.rowsSelect ? (d(), p("div", tl, [
-              k("span", {
+        R("div", el, [
+          n.configFinal && n.configFinal.pagination ? (d(), p("div", tl, [
+            n.configFinal.rowsSelect ? (d(), p("div", sl, [
+              R("span", {
                 class: "d-inline-block align-middle me-2 quintable--table-footer-container--pagination-wrapper--pagination-container--rows-select--placeholder",
-                innerHTML: s.configFinal.rowsPlaceholder
-              }, null, 8, sl),
-              L(g, {
-                modelValue: s.currentRowsPerPageProperty,
-                "onUpdate:modelValue": t[14] || (t[14] = (o) => s.currentRowsPerPageProperty = o),
+                innerHTML: n.configFinal.rowsPlaceholder
+              }, null, 8, nl),
+              L(f, {
+                modelValue: n.currentRowsPerPageProperty,
+                "onUpdate:modelValue": t[14] || (t[14] = (o) => n.currentRowsPerPageProperty = o),
                 class: "d-inline-block align-middle quintable--table-footer-container--pagination-wrapper--pagination-container--rows-select--select",
-                options: s.paginationOptionsFilled,
+                options: n.paginationOptionsFilled,
                 clearable: !1
               }, null, 8, ["modelValue", "options"])
-            ])) : m("", !0),
-            s.configFinal && s.configFinal.pagination && s.pages > 1 ? (d(), p("nav", {
+            ])) : b("", !0),
+            n.configFinal && n.configFinal.pagination && n.pages > 1 ? (d(), p("nav", {
               key: 1,
-              class: P(["d-inline-block align-middle mb-2 quintable--table-footer-container--pagination-wrapper--pagination-container--nav", { "me-3": s.numberOfVisibleRows, disabled: s.ajaxLoading }])
+              class: _(["d-inline-block align-middle mb-2 quintable--table-footer-container--pagination-wrapper--pagination-container--nav", { "me-3": n.numberOfVisibleRows, disabled: n.ajaxLoading }])
             }, [
-              k("ul", il, [
-                s.pages > s.pageRange ? (d(), p("li", {
+              R("ul", il, [
+                n.pages > n.pageRange ? (d(), p("li", {
                   key: 0,
-                  class: P(["page-item", { disabled: r.currentPage <= 1 }]),
-                  onClick: t[15] || (t[15] = (o) => s.gotoPage("first"))
+                  class: _(["page-item", { disabled: r.currentPage <= 1 }]),
+                  onClick: t[15] || (t[15] = (o) => n.gotoPage("first"))
                 }, [
-                  k("span", nl, [
+                  R("span", rl, [
                     L(l, { icon: "angle-double-left" })
                   ])
-                ], 2)) : m("", !0),
-                k("li", {
-                  class: P(["page-item", { disabled: r.currentPage <= 1 }]),
-                  onClick: t[16] || (t[16] = (o) => s.gotoPage("prev"))
+                ], 2)) : b("", !0),
+                R("li", {
+                  class: _(["page-item", { disabled: r.currentPage <= 1 }]),
+                  onClick: t[16] || (t[16] = (o) => n.gotoPage("prev"))
                 }, [
-                  k("span", rl, [
+                  R("span", ll, [
                     L(l, { icon: "angle-left" })
                   ])
                 ], 2),
-                s.pageRange < s.pages && s.visiblePages[0] > 1 ? (d(), p("li", {
+                n.pageRange < n.pages && n.visiblePages[0] > 1 ? (d(), p("li", {
                   key: 1,
                   class: "page-item",
-                  onClick: t[17] || (t[17] = (o) => s.updatePageOffset(-1))
+                  onClick: t[17] || (t[17] = (o) => n.updatePageOffset(-1))
                 }, t[26] || (t[26] = [
-                  k("span", { class: "page-link" }, " ... ", -1)
-                ]))) : m("", !0),
-                (d(!0), p(j, null, Y(s.visiblePages, (o) => (d(), p("li", {
+                  R("span", { class: "page-link" }, " ... ", -1)
+                ]))) : b("", !0),
+                (d(!0), p(j, null, Y(n.visiblePages, (o) => (d(), p("li", {
                   key: "pagination-item-" + o,
-                  class: P(["page-item", { active: o === r.currentPage }]),
-                  onClick: (a) => s.gotoPage(o)
+                  class: _(["page-item", { active: o === r.currentPage }]),
+                  onClick: (a) => n.gotoPage(o)
                 }, [
-                  k("span", ol, T(o), 1)
-                ], 10, ll))), 128)),
-                s.pageRange < s.pages && s.visiblePages[s.visiblePages.length - 1] < s.pages ? (d(), p("li", {
+                  R("span", al, T(o), 1)
+                ], 10, ol))), 128)),
+                n.pageRange < n.pages && n.visiblePages[n.visiblePages.length - 1] < n.pages ? (d(), p("li", {
                   key: 2,
                   class: "page-item",
-                  onClick: t[18] || (t[18] = (o) => s.updatePageOffset(1))
+                  onClick: t[18] || (t[18] = (o) => n.updatePageOffset(1))
                 }, t[27] || (t[27] = [
-                  k("span", { class: "page-link" }, " ... ", -1)
-                ]))) : m("", !0),
-                k("li", {
-                  class: P(["page-item", { disabled: s.pages === r.currentPage }]),
-                  onClick: t[19] || (t[19] = (o) => s.gotoPage("next"))
+                  R("span", { class: "page-link" }, " ... ", -1)
+                ]))) : b("", !0),
+                R("li", {
+                  class: _(["page-item", { disabled: n.pages === r.currentPage }]),
+                  onClick: t[19] || (t[19] = (o) => n.gotoPage("next"))
                 }, [
-                  k("span", al, [
+                  R("span", cl, [
                     L(l, { icon: "angle-right" })
                   ])
                 ], 2),
-                s.pages > s.pageRange ? (d(), p("li", {
+                n.pages > n.pageRange ? (d(), p("li", {
                   key: 3,
-                  class: P(["page-item", { disabled: s.pages === r.currentPage }]),
-                  onClick: t[20] || (t[20] = (o) => s.gotoPage("last"))
+                  class: _(["page-item", { disabled: n.pages === r.currentPage }]),
+                  onClick: t[20] || (t[20] = (o) => n.gotoPage("last"))
                 }, [
-                  k("span", cl, [
+                  R("span", ul, [
                     L(l, { icon: "angle-double-right" })
                   ])
-                ], 2)) : m("", !0)
+                ], 2)) : b("", !0)
               ])
-            ], 2)) : m("", !0),
-            s.numberOfVisibleRows ? (d(), p("span", ul, T(s.firstVisibleRow) + "-" + T(s.lastVisibleRow) + " " + T(s.configFinal.numberOfVisibleRowsFillerWord) + " " + T(s.numberOfVisibleRows), 1)) : m("", !0)
-          ])) : m("", !0)
+            ], 2)) : b("", !0),
+            n.numberOfVisibleRows ? (d(), p("span", hl, T(n.firstVisibleRow) + "-" + T(n.lastVisibleRow) + " " + T(n.configFinal.numberOfVisibleRowsFillerWord) + " " + T(n.numberOfVisibleRows), 1)) : b("", !0)
+          ])) : b("", !0)
         ])
       ])
     ]),
-    k("div", hl, [
-      O(e.$slots, "footer", {}, void 0, !0)
+    R("div", fl, [
+      P(e.$slots, "footer", {}, void 0, !0)
     ])
   ]);
 }
-const fl = /* @__PURE__ */ Je(Rn, [["render", dl], ["__scopeId", "data-v-e403edb3"]]), Ml = (e, t = {}) => {
-  e.component("VueQuintable", fl), Ls(e), Gs(e), zs(e), e.use(At, {
+const gl = /* @__PURE__ */ Xe(Ai, [["render", dl], ["__scopeId", "data-v-8289e0dd"]]), Dl = (e, t = {}) => {
+  e.component("VueQuintable", gl), Vs(e), Qs(e), Ws(e), e.use(Ut, {
     // You can tweak defaults here; example sets a custom distance.
     distance: 6
     // If you want a custom theme class, add CSS and set theme on each use.
@@ -4746,7 +4850,7 @@ const fl = /* @__PURE__ */ Je(Rn, [["render", dl], ["__scopeId", "data-v-e403edb
   }), t.axios && (e.config.globalProperties || (e.config.globalProperties = {}), e.config.globalProperties.$globalVueQuintableaxios = t.axios);
 };
 export {
-  fl as VueQuintable,
-  Ml as default
+  gl as VueQuintable,
+  Dl as default
 };
 //# sourceMappingURL=vue-quintable.es.js.map
