@@ -1,5 +1,5 @@
 import vue from "@vitejs/plugin-vue2";
-import eslint from "vite-plugin-eslint";
+import eslint from "vite-plugin-eslint2";
 import { splitVendorChunkPlugin } from "vite";
 import commonjs from "vite-plugin-commonjs";
 import { resolve, normalize, sep, isAbsolute } from "path";
