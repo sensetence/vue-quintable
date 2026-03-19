@@ -568,7 +568,7 @@ Vue.component(
 
 Vue.component("drag-component", DragComponent.default || DragComponent);
 
-import Chance from "chance";
+import { createChance } from "../utils/create-chance";
 
 export default {
   components: {
@@ -633,7 +633,7 @@ export default {
 
     const rows = [];
 
-    const chance = new Chance();
+    const chance = createChance();
 
     for (let i = 0; i < this.rowCount; i++) {
       rows.push([

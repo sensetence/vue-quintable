@@ -176,7 +176,7 @@ export default {
 <script>
 import VueQuintable from "../components/VueQuintable.vue";
 
-import Chance from "chance";
+import { createChance } from "../utils/create-chance";
 import moment from "moment-timezone";
 
 export default {
@@ -210,7 +210,7 @@ export default {
       let count = 10;
       const rows = [];
 
-      const chance = new Chance();
+      const chance = createChance();
 
       for (let i = 0; i < count; i++) {
         rows.push([
@@ -266,7 +266,7 @@ export default {
       const timeNY = m.tz("America/New_York").format("hh:mm A");
       const timeH = m.tz("America/Chicago").format("hh:mm A");
 
-      const chance = new Chance();
+      const chance = createChance();
 
       return [
         [

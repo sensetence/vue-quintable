@@ -49,17 +49,19 @@ async function selectExample(page, label) {
 
 for (const example of examples) {
   test(`visual regression: ${example.label}`, async ({ page }) => {
-    // Make Chance() deterministic so screenshots are stable across runs.
-    // Chance's Mersenne Twister uses Math.random() when no seed is given.
+    // Seed Math.random() for examples that use it directly (e.g. FiltersExample)
     await page.addInitScript(() => {
-      let state = 42;
+      let s = 42;
       Math.random = function () {
-        state = (state * 1103515245 + 12345) & 0x7fffffff;
-        return state / 0x7fffffff;
+        s = (s + 0x6d2b79f5) | 0;
+        let t = Math.imul(s ^ (s >>> 15), 1 | s);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
       };
     });
 
-    await page.goto("/");
+    // Pass seed to make Chance instances deterministic via createChance()
+    await page.goto("/?seed=42");
 
     // Wait for the app to fully load
     await page.waitForSelector(".example-content", { state: "visible" });

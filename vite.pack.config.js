@@ -1,5 +1,5 @@
 import vue from "@vitejs/plugin-vue2";
-import eslint from "vite-plugin-eslint";
+import eslint from "vite-plugin-eslint2";
 import { splitVendorChunkPlugin } from "vite";
 import commonjs from "vite-plugin-commonjs";
 import { resolve, normalize, sep, isAbsolute } from "path";
@@ -44,6 +44,14 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": resolve(__dirname),
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: "modern",
+        silenceDeprecations: ["import", "global-builtin", "color-functions", "legacy-js-api"],
+      },
     },
   },
   publicDir: false,

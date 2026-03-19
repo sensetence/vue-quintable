@@ -1,7 +1,7 @@
 import vue from "@vitejs/plugin-vue2";
 import pluginRewriteAll from "vite-plugin-rewrite-all";
 import basicSsl from "@vitejs/plugin-basic-ssl";
-import eslint from "vite-plugin-eslint";
+import eslint from "vite-plugin-eslint2";
 import { splitVendorChunkPlugin } from "vite";
 import commonjs from "vite-plugin-commonjs";
 import { resolve } from "path";
@@ -23,6 +23,14 @@ export default defineConfig({
     vue(),
     commonjs(),
   ],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: "modern",
+        silenceDeprecations: ["import", "global-builtin", "color-functions", "legacy-js-api"],
+      },
+    },
+  },
   server: {
     https: true,
     host: "localhost",
