@@ -990,6 +990,9 @@ function isLocalStorageAvailable() {
   }
   return _localStorageAvailable;
 }
+function _resetLocalStorageCache() {
+  _localStorageAvailable = null;
+}
 
 // Freeze operatorFunctions at module scope — they never change
 const operatorFunctions = Object.freeze({
@@ -1019,6 +1022,8 @@ const operatorFunctions = Object.freeze({
     return regex.test(b);
   },
 });
+
+export { _resetLocalStorageCache };
 
 export default {
   name: "VueQuintable",
@@ -3535,7 +3540,7 @@ export default {
           ) {
             this.selected[this.sortedIndexes[index]] = value;
             counter++;
-          } else {
+          } else if (!this.rowsFinal[this.sortedIndexes[index]].disableSelect) {
             this.selected[this.sortedIndexes[index]] = value;
           }
         }
@@ -4036,7 +4041,7 @@ export default {
               : cellsB[i].text;
 
         if (typeof cellsB[i].computeSortValue === "function") {
-          aValue = cellsB[i].computeSortValue(this.currentSortIndexes);
+          bValue = cellsB[i].computeSortValue(this.currentSortIndexes);
         }
 
         if (typeof aValue === "string") {
@@ -4161,7 +4166,7 @@ export default {
         }
 
         this.openRows[index] =
-          this.configFinal.expandedAll || this.rowsFinal[i].expanded;
+          this.configFinal.expandedAll || !!this.rowsFinal[i].expanded;
       }
     },
 
