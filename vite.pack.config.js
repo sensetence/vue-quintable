@@ -30,7 +30,10 @@ if (process.env.BUILD_DEST_DIRECTORY) {
 const name = config.packageName;
 
 const externals = ["vue", ...Object.keys(dependencies)];
-const externalExcludes = [];
+// axios is bundled into the dist (NOT externalized) so consumers never have to
+// compile axios 1.x themselves — webpack 5 cannot resolve axios' "process/browser"
+// reference. Keep it here even if axios is re-added to dependencies later.
+const externalExcludes = ["axios"];
 
 export default defineConfig({
   plugins: [
