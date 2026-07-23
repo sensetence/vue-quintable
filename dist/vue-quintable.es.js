@@ -4,19 +4,12 @@ import { FontAwesomeIcon as de } from "@fortawesome/vue-fontawesome";
 import pe from "v-tooltip";
 import { faAngleDoubleLeft as ge, faAngleDoubleRight as me, faAngleLeft as be, faAngleRight as we, faCaretDown as ye, faCaretUp as _e, faCheck as ve, faChevronDown as Se, faChevronUp as xe, faCircleNotch as Ce, faEye as Fe, faEyeSlash as qe, faMinus as Re, faPlus as ke, faSort as Pe, faSortAmountDown as Oe, faSortAmountDownAlt as $e, faSquare as je, faTimes as Ie } from "@fortawesome/free-solid-svg-icons";
 import Ae from "axios";
-import oe from "fuzzy.js";
+import le from "fuzzy.js";
 var Ee = typeof globalThis != "undefined" ? globalThis : typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : {};
 function Ve(i) {
   return i && i.__esModule && Object.prototype.hasOwnProperty.call(i, "default") ? i.default : i;
 }
-var L = {}, Te = {
-  get exports() {
-    return L;
-  },
-  set exports(i) {
-    L = i;
-  }
-};
+var ae = { exports: {} };
 /*!
  * pretty-checkbox-vue v1.1.9
  * (c) 2017-2018 Hamed Ehtesham
@@ -141,19 +134,20 @@ var L = {}, Te = {
       l._withStripped = !0, t.exports = { render: l, staticRenderFns: [] };
     }]);
   });
-})(Te);
-const Le = /* @__PURE__ */ Ve(L);
+})(ae);
+var Te = ae.exports;
+const Le = /* @__PURE__ */ Ve(Te);
 const k = {
   sm: "(min-width: 576px)",
   md: "(min-width: 768px)",
   lg: "(min-width: 992px)",
   xl: "(min-width: 1200px)",
   xxl: "(min-width: 1400px)"
-}, ae = typeof window != "undefined" && typeof window.matchMedia == "function";
+}, oe = typeof window != "undefined" && typeof window.matchMedia == "function";
 let P = null;
 class Me {
   constructor() {
-    if (this._subscribers = /* @__PURE__ */ new Set(), this._mqls = {}, this.hiddenBreakpoints = [], this._onChange = this._onChange.bind(this), this._compute(), ae)
+    if (this._subscribers = /* @__PURE__ */ new Set(), this._mqls = {}, this.hiddenBreakpoints = [], this._onChange = this._onChange.bind(this), this._compute(), oe)
       for (const e in k) {
         const t = window.matchMedia(k[e]);
         this._mqls[e] = t, t.addEventListener ? t.addEventListener("change", this._onChange) : t.addListener(this._onChange);
@@ -164,7 +158,7 @@ class Me {
   }
   _compute() {
     const e = [];
-    if (ae)
+    if (oe)
       for (const t in k)
         window.matchMedia(k[t]).matches || e.push(t);
     e.push("all"), this.hiddenBreakpoints = e, this._subscribers.forEach((t) => t(e));
@@ -567,26 +561,26 @@ const mt = {
       this.config.hideEmptyColumns && (b = !0);
       let w = "none";
       ["none", "active", "all"].includes(this.config.ignoreSortEmptyColumns) && (w = this.config.ignoreSortEmptyColumns);
-      let M = !1;
-      this.config.search && (M = !0);
-      let B = 1;
-      this.config.searchLength && (B = this.config.searchLength);
-      let U = "Search...";
-      this.config.searchPlaceholder && (U = this.config.searchPlaceholder);
-      let D = "Multiple sort";
-      this.config.multiSortPlaceholder && (D = this.config.multiSortPlaceholder);
-      let G = "Page sort";
-      this.config.pageSortPlaceholder && (G = this.config.pageSortPlaceholder);
+      let L = !1;
+      this.config.search && (L = !0);
+      let M = 1;
+      this.config.searchLength && (M = this.config.searchLength);
+      let B = "Search...";
+      this.config.searchPlaceholder && (B = this.config.searchPlaceholder);
+      let U = "Multiple sort";
+      this.config.multiSortPlaceholder && (U = this.config.multiSortPlaceholder);
+      let D = "Page sort";
+      this.config.pageSortPlaceholder && (D = this.config.pageSortPlaceholder);
+      let G = "AND";
+      ["AND", "OR"].includes(this.config.filterRelation) && (G = this.config.filterRelation);
       let H = "AND";
-      ["AND", "OR"].includes(this.config.filterRelation) && (H = this.config.filterRelation);
-      let N = "AND";
-      ["AND", "OR"].includes(this.config.filterGroupRelation) && (N = this.config.filterGroupRelation);
-      let z = "Rows per page:";
-      this.config.rowsPlaceholder && (z = this.config.rowsPlaceholder);
-      let Q = "No rows...";
-      this.config.emptyPlaceholder && (Q = this.config.emptyPlaceholder);
-      let K = !1;
-      this.config.selectAll && (K = !0);
+      ["AND", "OR"].includes(this.config.filterGroupRelation) && (H = this.config.filterGroupRelation);
+      let N = "Rows per page:";
+      this.config.rowsPlaceholder && (N = this.config.rowsPlaceholder);
+      let z = "No rows...";
+      this.config.emptyPlaceholder && (z = this.config.emptyPlaceholder);
+      let Q = !1;
+      this.config.selectAll && (Q = !0);
       let F = !1;
       this.config.selectAllRows && (F = !0), h && F && (console.warn(
         "Option selectAllRows was deactivated automatically because ajaxUrl is set!"
@@ -597,36 +591,36 @@ const mt = {
       ), q = !1), gt() || (console.warn(
         "Option storeState was deactivated automatically because local storage is not available!"
       ), q = !1);
+      let K = !1;
+      this.config.defaultSelected && (K = !0);
       let J = !1;
-      this.config.defaultSelected && (J = !0);
+      this.config.hideRowToggle && (J = !0);
       let W = !1;
-      this.config.hideRowToggle && (W = !0);
-      let X = !1;
-      this.config.enableRowTabIndex && (X = !0);
-      let Y = "chevron-up";
+      this.config.enableRowTabIndex && (W = !0);
+      let X = "chevron-up";
       this.config.expandedRowIcon && typeof this.config.expandedRowIcon == "string" && ["chevron-up", "minus", "caret-up", "eye-slash"].includes(
         this.config.expandedRowIcon.toLowerCase()
-      ) && (Y = this.config.expandedRowIcon.toLowerCase());
-      let Z = "chevron-down";
+      ) && (X = this.config.expandedRowIcon.toLowerCase());
+      let Y = "chevron-down";
       this.config.collapsedRowIcon && typeof this.config.collapsedRowIcon == "string" && ["chevron-down", "plus", "caret-down", "eye"].includes(
         this.config.collapsedRowIcon.toLowerCase()
-      ) && (Z = this.config.collapsedRowIcon.toLowerCase());
-      let ee = 5;
-      this.config.pageRange && (ee = this.config.pageRange);
-      let te = "col-12";
-      this.config.searchClass && (te = this.config.searchClass);
-      let ie = "row";
-      this.config.searchContainerClass && (ie = this.config.searchContainerClass);
-      let se = "GET";
-      this.config.requestMethod && typeof this.config.requestMethod == "string" && ["POST", "GET"].includes(this.config.requestMethod.toUpperCase()) && (se = this.config.requestMethod.toUpperCase());
-      let ne = 0, j = [], I = [], A = [], R = [], E = [], V = [], x = [], T = [], le = null;
+      ) && (Y = this.config.collapsedRowIcon.toLowerCase());
+      let Z = 5;
+      this.config.pageRange && (Z = this.config.pageRange);
+      let ee = "col-12";
+      this.config.searchClass && (ee = this.config.searchClass);
+      let te = "row";
+      this.config.searchContainerClass && (te = this.config.searchContainerClass);
+      let ie = "GET";
+      this.config.requestMethod && typeof this.config.requestMethod == "string" && ["POST", "GET"].includes(this.config.requestMethod.toUpperCase()) && (ie = this.config.requestMethod.toUpperCase());
+      let se = 0, j = [], I = [], A = [], R = [], E = [], V = [], x = [], T = [], ne = null;
       if (this.config.columns) {
-        ne = this.config.columns.length;
+        se = this.config.columns.length;
         for (let f = 0; f < this.config.columns.length; f++)
           x[f] = "", this.config.columns[f] && this.config.columns[f].headline ? (j[f] = this.config.columns[f].headline, x[f] += this.config.columns[f].headline.replace(/([a-z])([A-Z])/g, "$1-$2").replace(/\s+/g, "-").toLowerCase()) : j[f] = "", x[f] += " column-" + (f + 1), this.config.columns[f].classes && (x[f] += " " + this.config.columns[f].classes), this.config.columns[f] && this.config.columns[f].breakpoint ? I[f] = this.config.columns[f].breakpoint : I[f] = "", this.config.columns[f] && this.config.columns[f].sort ? this.config.columns[f].firstSortDirection && typeof this.config.columns[f].firstSortDirection == "string" && ["DESC", "ASC"].includes(
             this.config.columns[f].firstSortDirection.toUpperCase()
           ) ? R[f] = this.config.columns[f].firstSortDirection.toUpperCase() : R[f] = !0 : R[f] = !1, this.config.columns[f] && this.config.columns[f].ignoreEmpty ? T[f] = !0 : T[f] = !1, this.config.columns[f] && this.config.columns[f].sticky ? E[f] = !0 : E[f] = !1, this.config.columns[f] && this.config.columns[f].hidden ? A[f] = !0 : A[f] = !1, this.config.columns[f] && this.config.columns[f].align ? V[f] = this.config.columns[f].align : V[f] = !1;
-        le = this.config.columns;
+        ne = this.config.columns;
       }
       return Object.freeze({
         headlines: j,
@@ -636,21 +630,21 @@ const mt = {
         multiSort: o,
         pageSortSelect: c,
         multiSortSelect: r,
-        filterGroupRelation: N,
-        filterRelation: H,
+        filterGroupRelation: H,
+        filterRelation: G,
         rowsSelect: m,
         keepSelect: v,
         disallowAllOption: y,
-        defaultSelected: J,
-        searchLength: B,
-        search: M,
-        searchPlaceholder: U,
+        defaultSelected: K,
+        searchLength: M,
+        search: L,
+        searchPlaceholder: B,
         useFuzzySearch: g,
         ajaxUrl: h,
-        pageSortPlaceholder: G,
-        multiSortPlaceholder: D,
-        rowsPlaceholder: z,
-        emptyPlaceholder: Q,
+        pageSortPlaceholder: D,
+        multiSortPlaceholder: U,
+        rowsPlaceholder: N,
+        emptyPlaceholder: z,
         stickyCols: E,
         alignments: V,
         breakpoints: I,
@@ -661,23 +655,23 @@ const mt = {
         pagination: i,
         numberOfVisibleRowsFillerWord: e,
         select: t,
-        selectAll: K,
+        selectAll: Q,
         selectAllRows: F,
         hoverClass: s,
         activeClass: l,
         expandedAll: d,
-        pageRange: ee,
+        pageRange: Z,
         prettySelect: p,
-        number: ne,
-        columns: le,
-        hideRowToggle: W,
-        enableRowTabIndex: X,
-        expandedRowIcon: Y,
-        collapsedRowIcon: Z,
+        number: se,
+        columns: ne,
+        hideRowToggle: J,
+        enableRowTabIndex: W,
+        expandedRowIcon: X,
+        collapsedRowIcon: Y,
         selectPosition: u,
-        searchClass: te,
-        searchContainerClass: ie,
-        requestMethod: se,
+        searchClass: ee,
+        searchContainerClass: te,
+        requestMethod: ie,
         storeState: q,
         ajaxRequestDelay: n
       });
@@ -859,7 +853,7 @@ const mt = {
             let a = n[o], r = a.html ? a.html : a.text;
             if (r) {
               const c = (r + "").toLowerCase();
-              if (this.configFinal.useFuzzySearch && oe(c, e).score > 6) {
+              if (this.configFinal.useFuzzySearch && le(c, e).score > 6) {
                 s = !0;
                 break;
               }
@@ -872,7 +866,7 @@ const mt = {
           if (!s && this.rowsFinal[t].keywords)
             for (let o = 0; o < this.rowsFinal[t].keywords.length; o++) {
               const a = (this.rowsFinal[t].keywords[o] + "").toLowerCase();
-              if (this.configFinal.useFuzzySearch && oe(a, e).score > 6) {
+              if (this.configFinal.useFuzzySearch && le(a, e).score > 6) {
                 s = !0;
                 break;
               }
@@ -1781,6 +1775,8 @@ const Rt = {
       let t = !1;
       for (let s = 0; s < this.configFinal.columns.length; s++)
         if (i[s] && !e[s]) {
+          if (this.configFinal.hideEmptyColumns && !this.configFinal.ignoreEmpty[s])
+            continue;
           t = !0;
           break;
         }
@@ -2173,7 +2169,7 @@ var kt = function() {
   Pt,
   !1,
   null,
-  "6e222ec7",
+  "13ce32ca",
   null,
   null
 );

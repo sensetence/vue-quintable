@@ -721,6 +721,16 @@ export default {
 
       for (let j = 0; j < this.configFinal.columns.length; j++) {
         if (colMatch[j] && !colHide[j]) {
+          // Columns subject to per-row empty-hiding are not guaranteed visible
+          // for every row (they may be empty on some rows while non-empty on
+          // others), so their presence must be decided per row below instead of
+          // forcing the toggle onto every row via the fast path.
+          if (
+            this.configFinal.hideEmptyColumns &&
+            !this.configFinal.ignoreEmpty[j]
+          ) {
+            continue;
+          }
           anyVisible = true;
           break;
         }

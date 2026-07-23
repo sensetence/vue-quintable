@@ -485,6 +485,51 @@ describe("Computed property branches", () => {
     w.destroy();
   });
 
+  it("hiddenColumns is per-row when a collapsed column is empty on some rows", () => {
+    // Column B is breakpoint:"all" (always collapsed into the expandable row)
+    // and non-empty on only one row of the page. With hideEmptyColumns the
+    // toggle chevron must appear ONLY on the affected row, not on every row.
+    const rows = [
+      [{ text: "x" }, { text: "" }],
+      [{ text: "y" }, { text: "data" }],
+      [{ text: "z" }, { text: "" }],
+    ];
+    const w = createTable({
+      config: {
+        columns: [{ headline: "A" }, { headline: "B", breakpoint: "all" }],
+        hideEmptyColumns: true,
+      },
+      rows,
+    });
+    const hidden = w.vm.hiddenColumns;
+    expect(hidden[0]).toBe(0);
+    expect(hidden[1]).toBeGreaterThan(0);
+    expect(hidden[2]).toBe(0);
+    w.destroy();
+  });
+
+  it("hiddenColumns keeps toggle on all rows for an ignoreEmpty collapsed column", () => {
+    // ignoreEmpty column is never hidden per-row, so every row keeps the chevron.
+    const rows = [
+      [{ text: "x" }, { text: "" }],
+      [{ text: "y" }, { text: "data" }],
+    ];
+    const w = createTable({
+      config: {
+        columns: [
+          { headline: "A" },
+          { headline: "B", breakpoint: "all", ignoreEmpty: true },
+        ],
+        hideEmptyColumns: true,
+      },
+      rows,
+    });
+    const hidden = w.vm.hiddenColumns;
+    expect(hidden[0]).toBeGreaterThan(0);
+    expect(hidden[1]).toBeGreaterThan(0);
+    w.destroy();
+  });
+
   it("allSelectedProperty uses allSelectedCustom when not null", () => {
     const w = createTable({
       config: { columns: [{ headline: "A" }, { headline: "B" }], select: true },
