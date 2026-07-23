@@ -1,7 +1,6 @@
 {
   "name": "@sensetence/vue-quintable",
   "version": "2.4.3",
-  "private": false,
   "scripts": {
     "dev": "vite --config vite.build.config.js",
     "build": "vite build --config vite.build.config.js",
@@ -30,6 +29,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.10",
     "core-js": "^3.9.1",
     "fuzzy.js": "^0.1.0",
+    "lodash": "4.18.0",
     "prismjs": "^1.30.0",
     "uuid": "^3.4.0",
     "v-tooltip": "^2.1.3",
