@@ -2609,12 +2609,19 @@ export default {
      */
     filters: {
       handler() {
+        const fromStored = !!(
+          this.configFinal.storeState && this.storedState.filters
+        );
+
+        // Drop the restored filters before the request: filtersFinal (and thus
+        // the ajax params) still returns storedState.filters while it exists.
+        if (fromStored) {
+          delete this.storedState.filters;
+        }
+
         if (this.configFinal.ajaxUrl) {
-          const clear = !(
-            this.configFinal.storeState && this.storedState.filters
-          );
           this.pageSort = false;
-          this.loadViaAjax(clear, clear, "FILTERS");
+          this.loadViaAjax(!fromStored, !fromStored, "FILTERS");
         }
 
         if (this.pageSort) {
@@ -2624,7 +2631,6 @@ export default {
         }
 
         if (this.configFinal.storeState) {
-          delete this.storedState.filters;
           localStorage.setItem(
             `vue-quintable-${this.identifier}-filters`,
             JSON.stringify(this.filtersFinal),
