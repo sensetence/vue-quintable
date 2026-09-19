@@ -39,6 +39,36 @@ describe("AJAX loading", () => {
     w.destroy();
   });
 
+  it("first filter change after restore queries with the new filters, not the stored ones", async () => {
+    localStorage.setItem(
+      "vue-quintable-stale-table-filters",
+      JSON.stringify({ status: "old" })
+    );
+    const ax = makeAxiosMock();
+    const w = createTable({
+      config: {
+        columns: [{ headline: "A" }, { headline: "B" }],
+        ajaxUrl: "http://test.local/api",
+        storeState: true,
+      },
+      rows: [],
+      propsData: {
+        axios: ax,
+        identifier: "stale-table",
+        filters: { status: "old" },
+      },
+    });
+    await w.vm.$nextTick();
+    ax.request.mockClear();
+
+    w.setProps({ filters: { status: "new" } });
+    await w.vm.$nextTick();
+
+    const sent = ax.request.mock.calls[0][1];
+    expect((sent.params || sent.data).filters).toEqual({ status: "new" });
+    w.destroy();
+  });
+
   it("loadViaAjax uses POST when requestMethod is POST", async () => {
     const ax = makeAxiosMock();
     const w = createTable({

@@ -2869,14 +2869,11 @@ const Hi = {
   watch: {
     filters: {
       handler() {
-        if (this.configFinal.ajaxUrl) {
-          const t = !(this.configFinal.storeState && this.storedState.filters);
-          this.pageSort = !1, this.loadViaAjax(t, t, "FILTERS");
-        }
-        this.pageSort && (this.currentSortIndexes = {}, this.resetSorts(), this.recomputeEssentials()), this.configFinal.storeState && (this.$delete(this.storedState, "filters"), localStorage.setItem(
+        const t = !!(this.configFinal.storeState && this.storedState.filters);
+        t && this.$delete(this.storedState, "filters"), this.configFinal.ajaxUrl && (this.pageSort = !1, this.loadViaAjax(!t, !t, "FILTERS")), this.pageSort && (this.currentSortIndexes = {}, this.resetSorts(), this.recomputeEssentials()), this.configFinal.storeState && localStorage.setItem(
           `vue-quintable-${this.identifier}-filters`,
           JSON.stringify(this.filtersFinal)
-        ));
+        );
       },
       deep: !0
     },

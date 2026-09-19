@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.4.4] - 2026-09-19
+
+### Fixed
+- storeState + ajaxUrl: the first filter change after a page reload sent the restored (stale) filters to the server. The restored state is now dropped before the request is built.
+
 ## [2.2.0] - 2023-01-09
 
 Updates for version 2.2.0
