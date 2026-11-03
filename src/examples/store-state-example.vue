@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch, onMounted } from "vue";
+import { ref, watch, onMounted } from "vue";
 import Chance from "chance";
 import VueQuintable from "../components/table/vue-quintable.vue";
 import AlertInfo from "../components/alert/alert-info.vue";
@@ -49,7 +49,7 @@ const activeOptions = [
 ];
 
 const active = ref<"both" | boolean>("both");
-const filters = reactive<Record<string, any>>({});
+const filters = ref<Record<string, any>>({});
 const selected = ref<any[]>([]);
 const rows = ref<any[]>([]);
 
@@ -112,19 +112,19 @@ onMounted(() => {
 
 watch(active, (val) => {
   if (val === "both") {
-    delete filters.active;
+    delete filters.value.active;
   } else {
-    filters.active = val;
+    filters.value.active = val;
   }
 });
 
 watch(filters, () => {
-  if (typeof filters.active === "undefined") {
+  if (typeof filters.value.active === "undefined") {
     active.value = "both";
-  } else if (filters.active !== active.value) {
-    active.value = filters.active;
+  } else if (filters.value.active !== active.value) {
+    active.value = filters.value.active;
   }
-});
+}, { deep: true });
 
 // example code
 const code = `&lt;template&gt;
@@ -148,7 +148,7 @@ const code = `&lt;template&gt;
 &lt;/template&gt;
 
 &lt;script setup lang=&quot;ts&quot;&gt;
-import {ref, reactive, watch, onMounted} from 'vue';
+import {ref, watch, onMounted} from 'vue';
 import Chance from 'chance';
 import VueQuintable from '../components/table/vue-quintable.vue';
 
@@ -161,7 +161,7 @@ const activeOptions = [
 ];
 
 const active = ref&lt;'both' | boolean&gt;('both');
-const filters = reactive&lt;Record&lt;string, any&gt;&gt;({});
+const filters = ref&lt;Record&lt;string, any&gt;&gt;({});
 const selected = ref&lt;any[]&gt;([]);
 const rows = ref&lt;any[]&gt;([]);
 
@@ -219,18 +219,18 @@ onMounted(() =&gt; {
 
 watch(active, (val) =&gt; {
   if (val === 'both') {
-    delete filters.active;
+    delete filters.value.active;
   } else {
-    filters.active = val;
+    filters.value.active = val;
   }
 });
 
 watch(filters, () =&gt; {
-  if (typeof filters.active === 'undefined') {
+  if (typeof filters.value.active === 'undefined') {
     active.value = 'both';
-  } else if (filters.active !== active.value) {
-    active.value = filters.active;
+  } else if (filters.value.active !== active.value) {
+    active.value = filters.value.active;
   }
-});
+}, { deep: true });
 &lt;/script&gt;`;
 </script>

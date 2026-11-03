@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from "vue";
+import { ref, watch } from "vue";
 import VueQuintable from "../components/table/vue-quintable.vue";
 import AlertInfo from "../components/alert/alert-info.vue";
 import CodeBlock from "../components/code-block/code-block.vue";
@@ -48,7 +48,7 @@ const indexesOptions = [
 ];
 
 const indexes = ref<"all" | "bigger" | "smaller">("all");
-const filters = reactive<Record<string, any>>({});
+const filters = ref<Record<string, any>>({});
 const selected = ref<any[]>([]);
 
 const config = {
@@ -71,29 +71,29 @@ const config = {
 
 watch(indexes, (val) => {
   if (val === "all") {
-    delete filters.bigger;
-    delete filters.smaller;
+    delete filters.value.bigger;
+    delete filters.value.smaller;
   } else if (val === "bigger") {
-    filters.bigger = true;
-    delete filters.smaller;
+    filters.value.bigger = true;
+    delete filters.value.smaller;
   } else if (val === "smaller") {
-    filters.smaller = true;
-    delete filters.bigger;
+    filters.value.smaller = true;
+    delete filters.value.bigger;
   }
 });
 
 watch(filters, () => {
   if (
-    typeof filters.smaller === "undefined" &&
-    typeof filters.bigger === "undefined"
+    typeof filters.value.smaller === "undefined" &&
+    typeof filters.value.bigger === "undefined"
   ) {
     indexes.value = "all";
-  } else if (filters.smaller) {
+  } else if (filters.value.smaller) {
     indexes.value = "smaller";
-  } else if (filters.bigger) {
+  } else if (filters.value.bigger) {
     indexes.value = "bigger";
   }
-});
+}, { deep: true });
 
 // example code
 const code = `&lt;template&gt;
@@ -116,7 +116,7 @@ const code = `&lt;template&gt;
 &lt;/template&gt;
 
 &lt;script setup lang=&quot;ts&quot;&gt;
-import {ref, reactive, watch} from 'vue';
+import {ref, watch} from 'vue';
 import VueQuintable from '../components/table/vue-quintable.vue';
 
 // table data
@@ -129,7 +129,7 @@ const indexesOptions = [
 ];
 
 const indexes = ref&lt;'all' | 'bigger' | 'smaller'&gt;('all');
-const filters = reactive&lt;Record&lt;string, any&gt;&gt;({});
+const filters = ref&lt;Record&lt;string, any&gt;&gt;({});
 const selected = ref&lt;any[]&gt;([]);
 
 const config = {
@@ -152,25 +152,25 @@ const config = {
 
 watch(indexes, (val) =&gt; {
   if (val === 'all') {
-    delete filters.bigger;
-    delete filters.smaller;
+    delete filters.value.bigger;
+    delete filters.value.smaller;
   } else if (val === 'bigger') {
-    filters.bigger = true;
-    delete filters.smaller;
+    filters.value.bigger = true;
+    delete filters.value.smaller;
   } else if (val === 'smaller') {
-    filters.smaller = true;
-    delete filters.bigger;
+    filters.value.smaller = true;
+    delete filters.value.bigger;
   }
 });
 
 watch(filters, () =&gt; {
-  if (typeof filters.smaller === 'undefined' &amp;&amp; typeof filters.bigger === 'undefined') {
+  if (typeof filters.value.smaller === 'undefined' &amp;&amp; typeof filters.value.bigger === 'undefined') {
     indexes.value = 'all';
-  } else if (filters.smaller) {
+  } else if (filters.value.smaller) {
     indexes.value = 'smaller';
-  } else if (filters.bigger) {
+  } else if (filters.value.bigger) {
     indexes.value = 'bigger';
   }
-});
+}, { deep: true });
 &lt;/script&gt;`;
 </script>
