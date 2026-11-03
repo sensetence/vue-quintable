@@ -54,7 +54,7 @@ describe("Events", () => {
       }
     });
 
-    it("emits expand:row with 'collapse:row' as second param when row collapses", async () => {
+    it("emits collapse:row (and legacy expand:row) when row collapses", async () => {
       const config = {
         columns: [{ headline: "Name" }, { headline: "Age", breakpoint: "xl" }],
       };
@@ -72,11 +72,12 @@ describe("Events", () => {
       const row = wrapper.find("tbody tr");
       await row.trigger("click");
 
+      const collapseEvents = wrapper.emitted("collapse:row");
+      expect(collapseEvents).toHaveLength(1);
+      expect(collapseEvents[0][1]).toBe("collapse:row");
+
       const events = wrapper.emitted("expand:row");
-      if (events) {
-        const collapseEvent = events.find((e) => e[1] === "collapse:row");
-        expect(collapseEvent).toBeTruthy();
-      }
+      expect(events.find((e) => e[1] === "collapse:row")).toBeTruthy();
     });
   });
 

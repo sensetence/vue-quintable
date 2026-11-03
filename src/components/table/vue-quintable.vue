@@ -1013,7 +1013,7 @@ const operatorFunctions = Object.freeze({
     if (typeof b !== "string") return false;
     return b.indexOf(a) === 0;
   },
-  endsWitch: (a, b) => {
+  endsWith: (a, b) => {
     if (typeof b !== "string") return false;
     return b.indexOf(a, b.length - a.length) !== -1;
   },
@@ -1124,12 +1124,12 @@ export default {
     "update:rows-per-page",
     "input",
     "update:selected-rows",
-    "dennis",
     "update:page",
     "active:row",
     "component:event",
     "auxclick:row",
     "expand:row",
+    "collapse:row",
     "click:row",
     "click:cell",
     "auxclick:cell",
@@ -2891,7 +2891,6 @@ export default {
 
         this.$emit("input", selected);
         this.$emit("update:selected-rows", selected);
-        this.$emit("dennis", selected);
       },
       deep: true,
     },
@@ -3400,6 +3399,13 @@ export default {
           );
         } else {
           this.openRows[index] = false;
+          this.$emit(
+            "collapse:row",
+            this.rowsFinal[this.sortedIndexes[index]],
+            "collapse:row",
+            this.sortedIndexes[index],
+          );
+          // deprecated: legacy listeners get collapses via expand:row as well
           this.$emit(
             "expand:row",
             this.rowsFinal[this.sortedIndexes[index]],

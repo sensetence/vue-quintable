@@ -691,13 +691,13 @@ describe("Computed property branches", () => {
     w.unmount();
   });
 
-  it("operator functions: endsWitch", () => {
+  it("operator functions: endsWith", () => {
     const w = createTable({
       config: { columns: [{ headline: "A" }, { headline: "B" }] },
     });
-    expect(w.vm.operatorFunctions.endsWitch("def", "abcdef")).toBe(true);
-    expect(w.vm.operatorFunctions.endsWitch("xyz", "abcdef")).toBe(false);
-    expect(w.vm.operatorFunctions.endsWitch("abc", 123)).toBe(false);
+    expect(w.vm.operatorFunctions.endsWith("def", "abcdef")).toBe(true);
+    expect(w.vm.operatorFunctions.endsWith("xyz", "abcdef")).toBe(false);
+    expect(w.vm.operatorFunctions.endsWith("abc", 123)).toBe(false);
     w.unmount();
   });
 
