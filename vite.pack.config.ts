@@ -1,9 +1,9 @@
 import vue from "@vitejs/plugin-vue";
+// @ts-expect-error types exist but the package "exports" field hides them
 import eslint from "vite-plugin-eslint";
 import commonjs from "vite-plugin-commonjs";
 import { resolve, normalize, sep, isAbsolute } from "path";
 import { defineConfig } from "vite";
-import { camelCase } from "lodash-es";
 import { config, dependencies } from "./package.json";
 import sanitize from "sanitize-filename";
 
@@ -35,7 +35,6 @@ const externals = [
   "@fortawesome/fontawesome-svg-core",
   "@fortawesome/free-solid-svg-icons",
 ];
-const externalExcludes = [];
 
 export default defineConfig({
   plugins: [
@@ -68,7 +67,7 @@ export default defineConfig({
       formats: ["cjs", "es", "umd"],
     },
     rollupOptions: {
-      external: externals.filter((dep) => !externalExcludes.includes(dep)),
+      external: externals,
       // external: [
       //   "vue",
       //   "@fortawesome/fontawesome-svg-core",
@@ -77,7 +76,7 @@ export default defineConfig({
       // ],
       output: {
         exports: "named",
-        name: camelCase(name),
+        name: "vueQuintable",
         assetFileNames: `${name}.[ext]`,
         globals: {
           vue: "Vue",

@@ -53,7 +53,6 @@
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-vue": "^10.5.1",
     "jsdom": "^29.0.0",
-    "lodash-es": "^4.17.23",
     "moment-timezone": "^0.6.0",
     "prettier": "^3.4.2",
     "prismjs": "^1.30.0",
@@ -69,10 +68,10 @@
     "vue-tsc": "^2.2.8"
   },
   "peerDependencies": {
-    "axios": "^1.9.0",
-    "bootstrap": "^5.3",
     "@fortawesome/fontawesome-svg-core": "^6.7.2 || ^7",
-    "@fortawesome/free-solid-svg-icons": "^6.7.2 || ^7"
+    "@fortawesome/free-solid-svg-icons": "^6.7.2 || ^7",
+    "axios": "^1.9.0",
+    "bootstrap": "^5.3"
   },
   "homepage": "https://sensetence.com/vue-quintable/",
   "keywords": [
