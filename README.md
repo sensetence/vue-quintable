@@ -1,693 +1,595 @@
-<img alt="vue-quintable" src="https://sensetence.com/vue-quintable-demo/vue-table.png" width="265" height="222">
+<p align="center">
+  <img alt="VueQuintable" src="https://sensetence.com/vue-quintable-demo/vue-table.png" width="265" height="222">
+</p>
 
-| :warning:  VueQuintable version 2.x is for bootstrap 5.x. If you want to use bootstrap 4.x please install latest 1.x VueQuintable version:warning: |
-| :----------------------------------------------------------: |
+<h1 align="center">VueQuintable</h1>
 
-| :exclamation:  The `@sensetence/vue-quintable` module is the successor of `@quintet/vue-quintable`. Please note that future development and bug fixes will be provided in the ` @sensetence/vue-quintable` module only. :exclamation: |
-| :----------------------------------------------------------: |
+<p align="center">
+  A highly configurable, responsive table component for <a href="https://vuejs.org/">Vue 3</a>, built on <a href="https://getbootstrap.com/">Bootstrap 5</a>.
+</p>
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/@sensetence/vue-quintable"><img alt="npm" src="https://img.shields.io/npm/v/@sensetence/vue-quintable"></a>
+  <a href="https://www.npmjs.com/package/@sensetence/vue-quintable"><img alt="downloads" src="https://img.shields.io/npm/dm/@sensetence/vue-quintable"></a>
+  <img alt="Vue 3" src="https://img.shields.io/badge/vue-3.x-42b883">
+  <img alt="Bootstrap 5" src="https://img.shields.io/badge/bootstrap-5.x-7952b3">
+  <a href="#license"><img alt="license" src="https://img.shields.io/npm/l/@sensetence/vue-quintable"></a>
+</p>
 
+<p align="center">
+  <a href="https://sensetence.com/vue-quintable-demo/"><b>Demo</b></a>
+</p>
 
+---
 
+| VueQuintable | Vue | Bootstrap | npm tag |
+|--------------|-----|-----------|---------|
+| **3.x**      | 3.x | 5.x       | `latest` |
+| 2.x          | 2.x | 5.x       | `v2-lts` |
+| 1.x          | 2.x | 4.x       | –       |
 
-# VueQuintable
+> **Note:** `@sensetence/vue-quintable` is the successor of `@quintet/vue-quintable`. Development and bug fixes happen in `@sensetence/vue-quintable` only.
 
-VueQuintable is a table wrapper for Vue.js 2.x. It is build with bootstrap 5.x. High configurable, easy to use, flexible and responsive.
+## Contents
 
-[Demo](https://sensetence.com/vue-quintable-demo/)
-
-## Getting Started
-
-These instructions will get you running VueQuintable for your project for development purposes.
-
-### Prerequisites
-
-VueQuintable is a [vue.js](https://vuejs.org/) package and uses [bootstrap](https://getbootstrap.com/) by default. Please install both before using the package. If you want to use [ajax](https://de.wikipedia.org/wiki/Ajax_(Programmierung)) functionalities please install [axios](https://github.com/axios/axios) as it is used by VueQuintable.
-
-*npm:*
-
-```shell
-npm install --save axios
-```
-
-*yarn:*
-
-```shell
-yarn add axios
-```
-
-
-
-### Installing
-
-*npm:*
-
-```shell
-npm install --save bootstrap
-npm install --save @popperjs/core
-npm install --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
-npm install --save @sensetence/vue-quintable
-```
-
-*yarn:*
-
-```shell
-yarn add bootstrap
-yarn add @popperjs/core
-yarn add @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
-yarn add @sensetence/vue-quintable
-```
-
-
-
-### Integration
-
-```js
-import Vue from 'vue'
-
-//use bootstrap
-import 'bootstrap/dist/css/bootstrap.css'
-
-import "@sensetence/vue-quintable/dist/vue-quintable.css"
-import VueTable from '@sensetence/vue-quintable'
-Vue.use(VueTable);
-```
-
-### Use directly in browser
-
-You can either install VueQuintable via bower
-
-```shell
-bower install --save https://github.com/sensetence/vue-quintable
-```
-
-or just download the source and include the scripts and styles in dist folder to use VueQuintable for your browser page.
-
-```html
-<script type="text/javascript" src="/path/to/vue/dist/vue.min.js"></script>
-
-<script type="text/javascript" src="/path/to/project/dist/vue-quintable.umd.min.js"></script>
-
-<link rel="stylesheet" href="/path/to/project/dist/vue-quintable.css"></link>
-```
-
-```javascript
-Vue.use(window["vue-quintable"]);
-```
+- [Features](#features)
+- [Installation](#installation)
+- [Setup](#setup)
+- [Quick start](#quick-start)
+- [Component props](#component-props)
+- [Configuration](#configuration) – [config](#config) · [columns](#columns) · [rows](#rows) · [cells](#cells)
+- [Custom components in cells](#custom-components-in-cells)
+- [Cell formatters](#cell-formatters)
+- [Filters](#filters) · [Filter groups](#filter-groups)
+- [Sort order](#sort-order)
+- [Selecting rows](#selecting-rows)
+- [Slots](#slots)
+- [Events](#events)
+- [AJAX / server-side data](#ajax--server-side-data)
+- [Persisting table state](#persisting-table-state)
+- [Good to know](#good-to-know)
+- [Development](#development)
 
 ## Features
 
-These points will convince you that VueQuintable is the last table plugin you will ever need
+- Responsive columns: columns below a Bootstrap breakpoint are rendered as expandable additional rows
+- Sticky columns that are always shown as additional row
+- Pagination with page range and selectable rows per page
+- Sort, multi-sort and page-only sort, with custom sort values
+- Search, optionally fuzzy, with custom keywords per row
+- Filters with operators and custom compare functions
+- Recursive filter groups with AND/OR relations
+- Row selection (checkboxes, select all, select across pages, pre-selection)
+- Tooltips for rows and cells
+- Row and cell click events, keyboard navigation through rows
+- Hide empty columns automatically, hide/show columns dynamically
+- Custom cell formatters, HTML cells and Vue components inside cells
+- Slots for cells, search, loader, empty state, header and footer
+- Server-side data via AJAX (GET or POST) for search, filter, sort and pagination
+- Table state persisted in local storage
+- Nested tables
 
-- Responsive columns which will be rendered as additional rows
-- Pagination
-- Sort/Multi-sort
-- Search
-- Custom Filters
-- Recursive filter groups with relations
-- Select rows
-- Custom search keywords and filter values for rows
-- Vue-binded values for columns and rows
-- Nested VueQuintables
-- Vue components inside tables
-- Custom cell formatters
+## Installation
 
+VueQuintable needs Vue 3, Bootstrap 5 and Font Awesome (shared with your app as peer dependencies). For [AJAX](#ajax--server-side-data) features install [axios](https://github.com/axios/axios) too.
 
+```shell
+# yarn
+yarn add @sensetence/vue-quintable bootstrap @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
+yarn add axios   # optional, for AJAX
 
-## Slots
-
-You can define some slots to customize the table as you want to.
-
-- header | used for content above the table
-- before-search | used for content before the search bar
-- after-search | used for content after the search bar
-- after-search-container | used for content before the search bar container
-- footer | used for content below the table
-- no-results | used for placeholder if there are no table entries due to filtering etc.
-- loading | custom loader
-- cell-complete | *deprecated*
-- cell-content | custom content for cells, cell is delivered as slot scope. Used also for generated and sticky cells
-- generated-cell-complete | *deprecated*
-- generated-cell-content  | custom content for generated cells
-- sticky-cell-complete | *deprecated*
-- sticky-cell-content  | custom content for sticky cells
-
-```html
-<template v-slot:header>Your HTML-Code</template>
-
-//for content of regular table cells
-<template v-slot:cell-content="{cell}">
-    <button v-if="cell.any_property ==='any_value'" class="cell-content-button">
-        {{cell.any_property}}
-    </button>
-</template>
-
-//for content of responsive generated table cells
-<template v-slot:generated-cell-content="{cell}">
-    <button v-if="cell.any_property ==='any_value'" class="generated-cell-content--button">
-        {{cell.any_property}}
-    </button>
-</template>
-
-//for content of sticky table cells
-<template v-slot:sticky-cell-content="{cell}">
-    <button v-if="cell.any_property ==='any_value'" class="sticky-cell-content-button">
-        {{cell.any_property}}
-    </button>
-</template>
-
-//for same content of regular, responsive generated and sticky table cells
-<template v-for="slotName in ['cell-content','generated-cell-content','sticky-cell-content']" #[slotName]="{cell}">
-    <button v-if="cell.any_property ==='any_value'" :key="`button-${slotName}`" :class="`${slotName}`-cell-button">
-        {{cell.any_property}}
-    </button>
-</template>
+# npm
+npm install @sensetence/vue-quintable bootstrap @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
+npm install axios   # optional, for AJAX
 ```
 
+Font Awesome 6 and 7 are supported (`^6.7.2 || ^7`).
 
-## Events
+## Setup
 
-Add listeners for the following events to handle them as you want to.
+```js
+import { createApp } from "vue";
+import App from "./App.vue";
 
-- click:row | passes row as first parameter, triggered when row is clicked
+import "bootstrap/dist/css/bootstrap.css";
+import "@sensetence/vue-quintable/style.css";
+import VueQuintable from "@sensetence/vue-quintable";
 
-- click:cell | passes cell as first parameter, triggered when cell is clicked
+const app = createApp(App);
 
-- expand:row | passes row as first parameter, triggered when row is expanded
+app.use(VueQuintable);
+// or pass a configured axios instance for all tables:
+// app.use(VueQuintable, { axios: myAxiosInstance });
 
-- collapse:row | passes row as first  parameter, triggered when row is collapsed
+app.mount("#app");
+```
 
-- filtered:rows | passes filtered rows as first parameter, triggered when filter or search query affect rows
+The plugin registers the global component `<vue-quintable>` and the `v-tooltip` directive ([floating-vue](https://floating-vue.starpad.dev/)). The component is also available as named export:
 
-- ajax:rows | passes an object with ajax rows and total count as first parameter, triggered when rows are updated from server
+```js
+import { VueQuintable } from "@sensetence/vue-quintable";
+```
 
-- ajax:error | passes an error as first parameter, triggered when an server error occurs while loading rows via ajax
+## Quick start
 
-- update:perPage | passes integer as first parameter, triggered when per page parameter changes
+```vue
+<template>
+  <vue-quintable :config="config" :rows="rows" />
+</template>
 
-- update:page | passes integer as first parameter, triggered when page is changed
+<script setup>
+import { ref } from "vue";
 
-- update:search | passes string as first parameter, triggered when search query is entered
+const config = ref({
+  columns: [
+    { headline: "Name", sort: true },
+    { headline: "Age", sort: true },
+    { headline: "Birth Place", breakpoint: "md" },
+    { headline: "Job", sticky: true },
+  ],
+  pagination: 10,
+  search: true,
+});
 
-- update:sort | passes object of sort group as first parameter, triggered when sort order is active/changes
+const rows = ref([
+  [{ text: "Mia Wong" }, { text: 50 }, { text: "Beijing" }, { text: "Trainee" }],
+  [{ text: "Peter Stanbridge" }, { text: 18 }, { text: "London" }, { text: "Trainee" }],
+  [{ text: "Natalie Lee-Walsh" }, { text: 25 }, { text: "Dublin" }, { text: "Trainee" }],
+]);
+</script>
+```
 
-- component:event | generic event for passing data from child component
+More examples live in [`src/examples`](src/examples) and can be started with `yarn dev` (see [Development](#development)).
 
-- active:row | fires if active row is updated, the config property enableRowTabIndex has to be set to true
+## Component props
 
-
-
+| Prop                  | Type                    | Default | Description |
+|-----------------------|-------------------------|---------|-------------|
+| `config`              | Object                  | –       | **Required.** Table configuration, see [config](#config). |
+| `rows`                | Array                   | `[]`    | Table rows, see [rows](#rows). Required unless `config.ajaxUrl` is set. |
+| `selected-rows`       | Array                   | `[]`    | Use with `v-model:selected-rows` to receive the selected rows, see [Selecting rows](#selecting-rows). |
+| `pre-selected-rows`   | Array                   | `[]`    | Select rows from outside: array of `{ key, value }`. A row is selected if its property `key` equals `value`, e.g. `{ key: "id", value: 42 }`. Not applied initially – use `config.defaultSelected` or `row.selected` for the initial selection. |
+| `filters`             | Object                  | `{}`    | Active filters, see [Filters](#filters). Supports `v-model:filters`. |
+| `filter-groups`       | Array                   | `[]`    | Filter groups with relations, see [Filter groups](#filter-groups). |
+| `sort-order`          | Array                   | `[]`    | Sort columns by default or on the fly, see [Sort order](#sort-order). |
+| `loading`             | Boolean                 | `false` | Shows the loader (or the `loading` slot) instead of the table. |
+| `table-classes`       | String                  | `""`    | Additional CSS classes for the `<table>` element, e.g. `"table-striped table-sm"`. |
+| `dynamic-config`      | Boolean                 | `false` | If `true`, changes inside `config` don't re-initialize the table. Useful to change column settings (e.g. `hidden`) on the fly. |
+| `axios`               | Function                | `null`  | Configured axios instance for this table. Falls back to the plugin option, then to the default axios. |
+| `updated`             | Boolean \| Date \| Object | `false` | Change the value to reload the current page via AJAX, e.g. `new Date()`. |
+| `identifier`          | String                  | `null`  | Unique table id. Required for `config.storeState` (local storage key) and shown in verbose logs. |
+| `initial-search-term` | String                  | `null`  | Initial search query if `config.search` is enabled. |
+| `nested`              | Boolean                 | `false` | Set to `true` for a table nested inside another table's slot, so its row clicks work. |
+| `verbose`             | Boolean                 | `false` | Logs debug information to the browser console. |
 
 ## Configuration
 
-The following will give you an overview how to configure the VueQuintable for your needs.
+### config
 
-### Table Properties
+| Key                             | Type                          | Default            | Description |
+|---------------------------------|-------------------------------|--------------------|-------------|
+| `columns`                       | Array                         | –                  | **Required.** Column definitions, see [columns](#columns). |
+| **Layout**                      |                               |                    |             |
+| `hideEmptyColumns`              | Boolean                       | `false`            | Hide columns that are empty (`text`, `html`, `component`) in all visible rows. |
+| `ignoreSortEmptyColumns`        | `"none"` \| `"active"` \| `"all"` | `"none"`       | With `hideEmptyColumns`: `"none"` keeps sortable columns always visible, `"active"` keeps them visible while sorted, `"all"` hides them like other columns. |
+| `expandedAll`                   | Boolean                       | `false`            | Expand all rows with hidden (breakpoint) columns by default. |
+| `hideRowToggle`                 | Boolean                       | `false`            | Hide the expand/collapse toggle icon. |
+| `expandedRowIcon`               | String                        | `"chevron-up"`     | Icon for expanded rows: `"chevron-up"`, `"minus"`, `"caret-up"`, `"eye-slash"`. |
+| `collapsedRowIcon`              | String                        | `"chevron-down"`   | Icon for collapsed rows: `"chevron-down"`, `"plus"`, `"caret-down"`, `"eye"`. |
+| `hoverClass`                    | String \| Boolean             | `"bg-muted"`       | CSS class for hovered rows. `false` disables it. |
+| `activeClass`                   | String \| Boolean             | `"bg-muted"`       | CSS class for the active row. `false` disables it. |
+| `enableRowTabIndex`             | Boolean                       | `false`            | Clicking a row makes it active; arrow keys move the active row (`active:row` event). |
+| **Pagination**                  |                               |                    |             |
+| `pagination`                    | Number \| Boolean             | `false`            | Rows per page. `true` means 25. Other values snap down to one of 1–10, 15, 20, 25, 30, 50, 100. |
+| `pageRange`                     | Number                        | `5`                | Number of page links shown. |
+| `rowsSelect`                    | Boolean                       | `false`            | Let the user choose the rows per page. |
+| `disallowAllOption`             | Boolean                       | `false`            | Hide the "All" option in the rows per page select. |
+| `rowsPlaceholder`               | String                        | `"Rows per page:"` | Label of the rows per page select. |
+| `numberOfVisibleRowsFillerWord` | String                        | `"of"`             | Filler word in "1-10 of 50", e.g. `"von"` for German. |
+| **Search**                      |                               |                    |             |
+| `search`                        | Boolean                       | `false`            | Show the search input. |
+| `searchLength`                  | Number                        | `1`                | Minimum query length that triggers the search. |
+| `searchPlaceholder`             | String                        | `"Search..."`      | Placeholder of the search input. |
+| `useFuzzySearch`                | Boolean                       | `false`            | Additionally match rows fuzzily (via [fuzzy.js](https://github.com/bripkens/fuzzy.js)). |
+| `searchContainerClass`          | String                        | `"row"`            | CSS class of the search container. |
+| `searchClass`                   | String                        | `"col-12"`         | CSS class of the search input wrapper. |
+| `emptyPlaceholder`              | String                        | `"No rows..."`     | Text if search or filters match no rows. |
+| **Filters**                     |                               |                    |             |
+| `filterRelation`                | `"AND"` \| `"OR"`             | `"AND"`            | Relation between filters that are not part of a filter group. |
+| `filterGroupRelation`           | `"AND"` \| `"OR"`             | `"AND"`            | Relation between filter groups. |
+| **Sorting**                     |                               |                    |             |
+| `multiSort`                     | Boolean                       | `false`            | Sort by multiple columns. |
+| `multiSortSelect`               | Boolean                       | `false`            | Let the user toggle multi-sort. |
+| `multiSortPlaceholder`          | String                        | `"Multiple sort"`  | Label of the multi-sort toggle. |
+| `pageSort`                      | Boolean                       | `false`            | Sort only the rows of the current page. |
+| `pageSortSelect`                | Boolean                       | `false`            | Let the user toggle page sort. |
+| `pageSortPlaceholder`           | String                        | `"Page sort"`      | Label of the page sort toggle. |
+| **Selection**                   |                               |                    |             |
+| `select`                        | Boolean                       | `false`            | Show checkboxes to select rows. |
+| `selectPosition`                | `"pre"` \| `"post"`           | `"post"`           | Checkbox column first (`"pre"`) or last (`"post"`). |
+| `prettySelect`                  | Boolean                       | `false`            | Use [pretty checkbox](https://lokesh-coder.github.io/pretty-checkbox/) styling. |
+| `selectAll`                     | Boolean                       | `false`            | Show a "select all" checkbox. |
+| `selectAllRows`                 | Boolean                       | `false`            | "Select all" selects the rows of all pages. Disabled automatically with `ajaxUrl`. |
+| `defaultSelected`               | Boolean                       | `false`            | Select all rows initially. |
+| `keepSelect`                    | Boolean                       | `false`            | Keep the selection when search, filters or sorting change (otherwise it is reset). |
+| **AJAX**                        |                               |                    |             |
+| `ajaxUrl`                       | String                        | `false`            | Load rows from the server for search, filter, sort and pagination, see [AJAX](#ajax--server-side-data). |
+| `requestMethod`                 | `"GET"` \| `"POST"`           | `"GET"`            | HTTP method of AJAX requests. |
+| `ajaxRequestDelay`              | Number                        | `250`              | Debounce for AJAX search requests in milliseconds. |
+| **State**                       |                               |                    |             |
+| `storeState`                    | Boolean                       | `false`            | Persist the table state in local storage, see [Persisting table state](#persisting-table-state). Requires the `identifier` prop. |
 
-| Parameter         | Type     | Required                    | Description                                                                                                                                                                                                                                                                                                                                                 |
-|-------------------|----------| --------------------------- |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| config            | Object   | yes                         | The table configuration object. See details below.                                                                                                                                                                                                                                                                                                          |
-| rows              | Array    | yes (if no ajax url is set) | Table rows containing all cells. See details below.                                                                                                                                                                                                                                                                                                         |
-| preSelectedRows   | Array    | no                          | Array of objects{key,value} to set selection of rows from outside. You have to set the key to an unique property of the row e.g. an id and the value to the actual properties' value of the row. If done so, the row will be (pre-) selected. Note: This won't work initially, for initial select use *config.defaultSelected* or *row.selected* properties |
-| dynamicConfig     | Boolean  | no                          | If set to true the Table wont be re-initialized and re-rendered if some values inside the *config* property are changed. This is useful to dynamically set *config* values for columns                                                                                                                                                                      |
-| filters           | Object   | no                          | The active filters for displaying rows. This has to be an object with filter name as key and filter value as value. Additionally a set of operators can be passed. See example below.                                                                                                                                                                       |
-| filter-groups     | Array    | no                          | Filter groups with relations. See example below.                                                                                                                                                                                                                                                                                                            |
-| sort-order        | Object   | no                          | Set sorting values and order by default or on the fly. See examples below.                                                                                                                                                                                                                                                                                  |
-| axios             | Object   | no                          | Pass a configured axios instance to be used for ajax functionalities. Only relevant if ajax is used. Recommendation: set it to the current time using new Date() for update                                                                                                                                                                                 |
-| updated           | Boolean\|Date |no | Property to trigger reload on current page. Only relevant if ajax is used.                                                                                                                                                                                                                                                                                |
-| verbose           | Boolean  | no                          | Default is false. Set to true to see debug informations on developer tools in your Browser.                                                                                                                                                                                                                                                                 |
-| identifier        | String   | no                          | Default is null, for nested tables default is a random string. Use for slots of nested tables                                                                                                                                                                                                                                                               |
-| initialSearchTerm | String   | no                          | Default is null, initial search term if search is enabled                                                                                                                                                                                                                                                                                                   |
-| nested            | Boolean  | no                          | Default is false, use it if a quintable is nested inside a slot                                                                                                                                                                                                                                                                                             |
+### columns
 
-#### Property *config* properties
+| Key                      | Type                     | Description |
+|--------------------------|--------------------------|-------------|
+| `headline`               | String                   | Column headline. |
+| `title`                  | String                   | Text shown on hover over the headline. |
+| `classes`                | String                   | Space separated CSS classes for headline, cells, generated and sticky rows. |
+| `align`                  | `"start"` \| `"end"` \| `"center"` | Text alignment of the column. |
+| `sort`                   | Boolean                  | Make the column sortable. |
+| `firstSortDirection`     | `"ASC"` \| `"DESC"`      | Direction of the first click on the sort header. Default `"ASC"`. |
+| `breakpoint`             | `"xs"` \| `"sm"` \| `"md"` \| `"lg"` \| `"xl"` \| `"xxl"` \| `"all"` | Below (and at) this Bootstrap breakpoint the column moves into an expandable additional row. |
+| `alwaysExpanded`         | Boolean                  | With `breakpoint`: the additional row is always expanded. |
+| `sticky`                 | Boolean                  | Always show the column as expanded additional row. Don't combine with `breakpoint`. |
+| `showHeadlineBreakpoint` | Breakpoint               | Show the headline in additional rows from this breakpoint downwards. |
+| `hideHeadlineBreakpoint` | Breakpoint               | Hide the headline in additional rows from this breakpoint downwards. |
+| `hidden`                 | Boolean                  | Never show the column. Best used with `dynamic-config`. |
+| `ignoreEmpty`            | Boolean                  | With `hideEmptyColumns`: never hide this column. |
+| `cellFormatter`          | Function                 | Format cells of this column, see [Cell formatters](#cell-formatters). |
 
-| Key                           | Type                            | Required | Pre-condition                                                               | Description                                                                                                                                                                                                                                                       | Default          | Example                               |
-|-------------------------------| ------------------------------- | -------- |-----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| ---------------- | ------------------------------------- |
-| columns                       | Array                           | yes      | -                                                                           | Contains the configuration for the table columns including headlines.                                                                                                                                                                                             | null             | *See below*                           |
-| hideEmptyColumns              | Boolean                         | no       | -                                                                           | If set to true columns of visible rows which are empty for each row will be hidden. Will check *text*,  *html*, *component* properties                                                                                                                            | false            | true                                  |
-| ignoreSortEmptyColumns        | String{"none"\|"active"\|"all"} | no       | *hideEmptyColumns* enabled                                                  | Select if/how columns with *sort* enabled shall be hidden if they are empty for each row. "none": sorting columns keep always visible. "active": sorting columns will always keep visible if they are active. "all": empty sorting columns will be hidden as well | "none"           | "all"                                 |
-| expandedAll                   | Boolean                         | no       | Breakpoints for columns are set                                             | If set to true, all columns will be expanded by default                                                                                                                                                                                                           | false            | true                                  |
-| enableRowTabIndex             | Boolean                         | no       | -                                                                           | If set to true, an active row will be set on click and can be navigated by arrow keys                                                                                                                                                                             | false            | true                                  |
-| hoverClass                    | Boolean\|String                 | no       | -                                                                           | Class for rows on hover                                                                                                                                                                                                                                           | "bg-muted"       | "bg-success"                          |
-| activeClass                   | Boolean\|String                 | no       | -                                                                           | Class for active row                                                                                                                                                                                                                                              | "bg-muted"       | "bg-success"                          |
-| hideRowToggle                 | Boolean                         | no       | Breakpoints for columns are set                                             | If set to true, no plus symbols will be displayed for row toggle.                                                                                                                                                                                                 | false            | true                                  |
-| expandedRowIcon               | String | no | Breakpoints for columns are set                                             | Toggle icon for expanded rows. Possible values: "chevron-up", "minus", "caret-up", "eye-slash"                                                                                                                                                                    | "chevron-up" | "minus" |
-| collapsedRowIcon              | String | no | Breakpoints for columns are set                                             | Toggle icon for collapsed rows. Possible values: "chevron-down", "minus", "caret-down", "eye"                                                                                                                                                                     | "chevron-down" | "plus" |
-| pagination                    | Boolean\|Number                 | no       | -                                                                           | If set to true, the default page size will be 25.                                                                                                                                                                                                                 | false            | 5                                     |
-| numberOfVisibleRowsFillerWord | String | no | pagination is set                                                           | Filler word for numbers of visible rows displaying, especially needed for translation (no english tables)                                                                                                                                                         | "of" | "von" |
-| pageRange                     | Number                          | no       | *pagination* enabled                                                        | Displayed page range of pagination.                                                                                                                                                                                                                               | 5                | 3                                     |
-| rowsSelect                    | Boolean                         | no       | *pagination* enabled                                                        | If set to true, user will be allowed to set rows per page                                                                                                                                                                                                         | false            | true                                  |
-| disallowAllOption             | Boolean                         | no       | *pagination* enabled and *rows select* is enabled                           | If set to true, "all" option will not be displayed in *rows per page* select                                                                                                                                                                                      | false            | true                                  |
-| rowsPlaceholder               | String                          | no       | *pagination* enabled and *rows select* is enabled                           | Text for *rows per page* selection                                                                                                                                                                                                                                | "Rows per page:" | "Rows:"                               |
-| select                        | Boolean                         | no       | -                                                                           | If set to true rows can be selected by check boxes. Tables v-model can be used for selected row Array.                                                                                                                                                            | false            | true                                  |
-| prettySelect                  | Boolean                         | no       | *select* is enabled                                                         | If set to true, [pretty checkboxes](https://lokesh-coder.github.io/pretty-checkbox/ ) library will be used.                                                                                                                                                       | false            | true                                  |
-| selectPosition                | String{"pre"\|"post"}           | no       | *select* is enabled                                                         | Position of the select check boxes, first or last column.                                                                                                                                                                                                         | "post"           | "pre"                                 |
-| selectAll                     | Boolean                         | no       | *select* is enabled                                                         | If set to true,  additional checkbox will appear to select all rows                                                                                                                                                                                               | false            | true                                  |
-| selectAllRows                 | Boolean                         | no       | *select* is enabled                                                         | If set to true, *select all* selects all rows allover the pages. Please keep in mind that this won't work with server side pagination.                                                                                                                            | false            | true                                  |
-| defaultSelected               | Boolean                         | no       | *select* is enabled                                                         | If set to true, all rows will be selected initially.                                                                                                                                                                                                              | false            | true                                  |
-| search                        | Boolean                         | no       | -                                                                           | If set to true a filter search input will be displayed                                                                                                                                                                                                            | false            | true                                  |
-| searchLength                  | Number                          | no       | *search* is enabled                                                         | Minimum length of query that triggers search.                                                                                                                                                                                                                     | 1                | 3                                     |
-| searchPlaceholder             | String                          | no       | *search* is enabled                                                         | Placeholder if no search query is entered                                                                                                                                                                                                                         | "Search..."      | "Search rows..."                      |
-| searchContainerClass          | String                          | no       | *search* is enabled                                                         | CSS class for search container                                                                                                                                                                                                                                    | "row"            | "container-class"                            |
-| searchClass                   | String                          | no       | *search* is enabled                                                         | CSS class for search input wrapper                                                                                                                                                                                                                                | "col-12"         | "col-md-8"                            |
-| emptyPlaceholder              | String                          | no       | *search* is enabled or *filters* are set                                    | Placeholder if filtering rows has no results.                                                                                                                                                                                                                     | "No rows"        | "No results"                          |
-| filterRelation                | String{"OR"\|"AND"}             | no       | *filters* are set                                                           | Filter relation, if no filter group affected                                                                                                                                                                                                                      | "AND"            | "OR"                                  |
-| filterGroupRelation           | String{"OR"\|"AND"}             | no       | *filters* are set                                                           | Default relation filter groups to each other                                                                                                                                                                                                                      | "AND"            | "OR"                                  |
-| multiSort                     | Boolean                         | no       | *sort* is enabled on at least one column                                    | If set to true multi-key sorting is enabled                                                                                                                                                                                                                       | false            | true                                  |
-| multiSortSelect               | Boolean                         | no       | *sort* is enabled on at least one column                                    | If set to true user will be allowed to enable and disable *multi sort*                                                                                                                                                                                            | false            | true                                  |
-| multiSortPlaceholder          | String                          | no       | *sort* is enabled on at least one column and *multi sort select* is enabled | Placeholder for multiple sort description                                                                                                                                                                                                                         | "Multiple sort"  | "Toggle multiple"                     |
-| pageSort                      | Boolean                         | no       | *sort* is enabled on at least one column                                    | If set to true sorting on current page enabled                                                                                                                                                                                                                    | false            | true                                  |
-| pageSortSelect                | Boolean                         | no       | *sort* is enabled on at least one column                                    | If set to true user will be allowed to enable and disable *page sort*                                                                                                                                                                                             | false            | true                                  |
-| pageSortPlaceholder           | String                          | no       | *sort* is enabled on at least one column and *page sort select* is enabled  | Placeholder for page sort description                                                                                                                                                                                                                             | "Page sort"      | "Toggle page"                         |
-| ajaxUrl                       | String\|Boolean                 | no       | -                                                                           | If set ajax will be used for search/filter/sort/pagination                                                                                                                                                                                                        | false            | "http://your.server.url/api/endpoint" |
-| requestMethod                 | String{"GET"\|"POST"}             | no       | *ajaxUrl* is set                                                            | Request method for ajax request                                                                                                                                                                                                                                   | "GET"            | "POST" |
-| storeState                    | Boolean | no | *identifier* is set                                                         | Store table state in local storage to have persistent table when reload page                                                                                                                                                                                      | false | true |
-| ajaxRequestDelay              | Integer | no | *ajaxUrl* is set                                                            | Delay for ajax search requests in milliseconds                                                                                                                                                                                                                    | 250 | 100 |
+### rows
 
-##### Property *columns* for property *config* properties
+A row is either an array of [cells](#cells) or an object:
 
-| Key                    | Type     | Options/Return | Pre-condition                                 | Description                                                  |
-| ---------------------- | -------- | ----------------------------------- | --------------------------------------------- | ------------------------------------------------------------ |
-| headline               | String   | -              | -                         | Headline for column                      |
-| title                  | String   | -              | - | Description, displayed on hover the headline |
-| classes                | String   | -                                          | -                                             | Space separated css classes string. Will be applied for headlines, cells, generated rows and sticky rows. |
-| hidden                 | Boolean  | true\|false    |-                         | If set to true the column will not be displayed in any case. Highly recommended to use only when *dynamicConfig* is set to to true. |
-| ignoreEmpty            | Boolean  | true\|false   |*config* property *hideEmptyColumns*  enabled                         | The column will never be hidden automatically due to emptiness |
-| sort                   | Boolean  | true\|false    |-                         | If set to true, this column will be sortable |
-| firstSortDirection | String | "ASC"\|"DESC"  |*sort* is set | Indicates the first direction of sorting when sort is activated for a column by clicking on the sort header. Default: "ASC" |
-| breakpoint             | String   | "xs"\|"sm"\|"md"\|"lg"\|"xl"\|"xxl"\|"all" | -                                             | Bootstrap breakpoint from which descending the columns headline will be shown |
-| showHeadlineBreakpoint | String   | "xs"\|"sm"\|"md"\|"lg"\|"xl"\|"xxl"\|"all" |*headline* is set | Bootstrap breakpoint from which descending the columns headline will be shown |
-| hideHeadlineBreakpoint | String   | "xs"\|"sm"\|"md"\|"lg"\|"xl"\|"xxl"\|"all" |*headline* is set | Bootstrap breakpoint from which descending the columns headline will be hidden |
-| align                  | String   | "start"\|"end"\|"center" |-           | Text alignment for whole column            |
-| alwaysExpanded         | Boolean  | true\|false    |*breakpoint* is set                         | If set to true, the additional columns row will be always expanded if the breakpoint is reached |
-| sticky                 | Boolean  | true\|false    |*breakpoint* is not set                         | If set to true,  this column will be always displayed as additional row and will be expanded always |
-| cellFormatter          | Function | String\|Object |-                      | Function for complex custom cell formatting. The cell will be passed as function parameter. Has to return a string handled as text or an object with String value and String type{"html","text"} |
+| Key                  | Type     | Description |
+|----------------------|----------|-------------|
+| `cells`              | Array    | The [cells](#cells) of the row. |
+| `classes`            | String   | Additional CSS classes for the row. |
+| `align`              | `"start"` \| `"end"` \| `"center"` | Text alignment of the row. Overridden by column and cell `align`. |
+| `tooltip`            | String   | Tooltip shown on hover over the row. |
+| `expanded`           | Boolean  | Expand the row initially (if it has hidden breakpoint columns). |
+| `keywords`           | String[] | Additional keywords matched by the search. |
+| `filters`            | Object   | Filter values of the row, e.g. `{ active: true, city: "London" }`, see [Filters](#filters). |
+| `selected`           | Boolean  | Select the row initially. |
+| `disableSelect`      | Boolean  | Exclude the row from selection. |
+| `showDisabledSelect` | Boolean  | With `disableSelect`: show a disabled checkbox instead of none. |
 
+### cells
 
+Use exactly one of `text`, `html` or `component`.
 
-#### Property *rows* properties
+| Key         | Type             | Description |
+|-------------|------------------|-------------|
+| `text`      | String \| Number | Text content. |
+| `html`      | String           | HTML content. Only pass trusted or sanitized HTML. |
+| `component` | Object           | `{ name, props }` of a globally registered component, see [Custom components](#custom-components-in-cells). Prefer the `cell-content` slot. |
+| `classes`   | String           | Additional CSS classes for the cell. |
+| `align`     | `"start"` \| `"end"` \| `"center"` | Text alignment. Overrides column and row `align`. |
+| `tooltip`   | String           | Tooltip shown on hover over the cell. |
+| `sortValue` | String \| Number | Value used for sorting instead of the content, e.g. for formatted or HTML cells. |
+| `isEmpty`   | Boolean          | Mark a cell as empty (for `hideEmptyColumns`), e.g. when its content comes from a slot. Overrides `text` and `html`. |
 
-| Key           | Type                              | Pre-condition                                   | Description                                                  | Default |
-| ------------- | --------------------------------- | ----------------------------------------------- | ------------------------------------------------------------ | ------- |
-| cells         | Array                             | -                                               | List of cells for the row                                    | null    |
-| selected      | Boolean                           | *select* is enabled                             | If set to true the row will be selected on default           | false   |
-| disableSelect | Boolean                           | *select* is enabled                             | If set to true this row will be excluded from selection at all | false   |
-| expanded      | Boolean                           | *breakpoint* of at least one column is affected | If set to true the row will be expanded on default           | false   |
-| keywords      | String[]                          | *search* is enabled                             | Additional keywords which will match a search query          | null    |
-| classes       | String                            | -                                               | Additional CSS classes for row                               | null    |
-| filters       | Object                            | *filters* are set                               | Filters with filter name(s) and value(s), which will match selected filter(s) | null    |
-| align         | String{"start"\|"end"\|"center"} | -                                               | Text alignment for whole row, this will be overwritten by *columns* align value | "start"  |
-
-##### Property *cells* for property *rows* properties
-
-| Key       | Type           | Pre-condition                                             | Description                                                  |
-| --------- | -------------- | --------------------------------------------------------- | ------------------------------------------------------------ |
-| text      | String         | non of the following are set: *html*, *component*         | Content string                                               |
-| html      | String         | non of the following are set: *text*, *component*         | HTML content string                                          |
-| component | String         | non of the following are set: *text*, *html*              | Custom component object, see code example below. Should not be used, use slot *cell-content* instead |
-| classes   | String         | -                                                         | Additional CSS classes for cell                              |
-| align     | String         | -                                                         | Text alignment for whole column, this will overwrite *columns* and *rows* align values |
-| isEmpty   | Boolean        | non of the following are set: *text*, *html*, *component* | Flag for custom cells (e.g for slot generation). This is checked for hiding empty cells and the flag will overwrite potential content of *text* and *html* if set to true |
-| sortValue | String\|Number | *sort* is enabled for the column of the cell              | cell value for the sorting of the column, especially useful if the sorting is enabled for formatted or html/component |
-
-Lets have a look on an example for *rows* and *cells*
-
-```javascript
-//Table with columns "Name","Age","Birth Place","Job"
-
-[
-    //simple row as array
-    [ 
-        {
-            text:"John Doe"
-        },
-        {
-            text:50
-        },
-        {
-            text:"Trainee"
-        },
-    ],
-    //advances row as object
-    {
-    	cells:[
-            {
-                html:"<b>Max</b> Mustermann",
-                classes:"special-td",
-                align:"end",
-             },
-            {
-                component:{
-                    name:"age-component",
-                    props:{
-                        age:20,
-                    }
-                },
-            },
-            {
-                text:"Trainee"
-            },
-		]
-    }
-]
-
-
-```
-
-##### Component Definition
-
-To use a custom component inside a VueQuintable you have to define it as the following:
-
-```vue
-<template>
-    <div @click="check">
-      Age: {{age}}
-    </div>
-</template>
-
-
-<script setup>
-
-  import { defineProps, defineEmits } from 'vue';
-
-  // 1. Props definition
-  // Use defineProps to declare props (no change to the prop structure itself)
-  const props = defineProps({
-    age: {
-      type: [Number, String], // Assuming age is a number or string
-      required: true
-    }
-  });
-
-  // 2. Emits definition
-  // Use defineEmits to declare the events this component can emit
-  const emit = defineEmits(['action']);
-
-  // 3. Methods conversion
-  // The method is now a regular JavaScript function
-  function check() {
-    // The event is emitted using the 'emit' function
-    // The payload is passed as the second argument
-    emit("action", {
-      // Accessing the prop value via the 'props' constant
-      age: props.age,
-    });
-  }
-
-</script>
-
-```
-
-Import and use the Component in your Code:
+Any other property is passed through and available in [slots](#slots) as `cell.yourProperty`.
 
 ```js
-import TestComponent from "./components/TestComponent.vue"
+const rows = [
+  // simple row: array of cells
+  [{ text: "John Doe" }, { text: 50 }, { text: "Trainee" }],
 
-Vue.component(
-    "test-component",
-    TestComponent.default || TestComponent
-);
+  // advanced row: object
+  {
+    classes: "special-row",
+    tooltip: "Max is new",
+    keywords: ["intern"],
+    filters: { active: true },
+    cells: [
+      { html: "<b>Max</b> Mustermann", classes: "special-td", align: "end" },
+      { component: { name: "age-component", props: { age: 20 } }, sortValue: 20 },
+      { text: "Trainee" },
+    ],
+  },
+];
 ```
 
+## Custom components in cells
 
-
-#### Property *filters* properties
-
-| Key      | Type         | Required | Description                                                  |
-| -------- | ------------ | -------- | ------------------------------------------------------------ |
-| values   | Mixed\|Array | Yes      | Compare values. Can be single value or array of values which will match the filter values of rows. |
-| operator | String       | No       | Operator for comparing. The defined operators are:<br />*equal, greater, less, greaterEqual, lessEqual, startsWith, endsWith, contains, notContains, matches* |
-| compare  | Function     | No       | Custom compare function. See Below.                          |
-
-This example shows selected values for **active**, **printable**, **first_name**, **middle_name**, and **last_name** filters. Operators can be:
-
-```javascript
-{
-   active:true,
-   printable:false,
-   first_name:
-    {
-        operator:"contains",
-        values:["Jo","ja"],   
-    },
-    middle_name:
-    {
-        compare:"matches",
-        values:new RegExp("r.+a","g"),   
-    },
-    last_name:
-    {
-        compare:(value,rowValue)=>{
-        	return rowValue.indexOf(value) === 2;
-        },
-        values:"a",   
-    }
-   
-}
-```
-
-
-
-#### Property *filter-groups* properties
-
-| Key      | Type                | Description                                                  |
-| -------- | ------------------- | ------------------------------------------------------------ |
-| items    | Object[]            | List that contains Object of filter names or nested groups related to the group |
-| relation | String{"OR"\|"AND"} | Relation between the items                                   |
-
-This filter groups example will cause to show rows that have filter matching filter values for selected  **name** *OR* **active** filter **AND** selected printable filter. This groups are infinitely nestable.
-
-```javascript
-[
-    {
-        items:[
-            {
-                items:[
-                    {
-                        name:"name"
-                    },
-                    {
-                        name:"active"
-                    }
-                ],
-                relation:"OR",
-            },
-            {
-                items:[
-                    {
-                        name:"printable"
-                    }
-                ],
-            }
-        ],
-        relation:"AND"
-    }
-],
-```
-
-#### Property *sort-order* properties
-
-These examples depict a sorting ordered second column (index=1) before first column (index=0). You can use Objects to set the ascending or descending order optionally. The Default will be *asc=true*, column index starts on zero.
-
-```javascript
-//simple
-[
-   1,0
-]
-
-//advanced
-[
-    {
-        index:1,
-        asc:false
-    },
-    {
-        index:0,
-        asc:true
-    },
-]
-
-```
-
-
-
-## Basic Example
-
-A simple basic example to show the usage of VueQuintable. More examples are included in the project and can be started with:
-
-```shell
-npm run start
-```
-
-
+The `cell-content` slot is the recommended way to render custom content. Components referenced by `cell.component.name` must be registered globally. An `action` event emitted by the component is forwarded as `component:event`.
 
 ```vue
+<!-- AgeComponent.vue -->
 <template>
-	<vue-quintable :config="config" :rows="rows"></vue-quintable>
+  <div @click="emit('action', { age: props.age })">Age: {{ props.age }}</div>
 </template>
 
 <script setup>
-    import { ref } from 'vue';
-    ...
-    
-    const config = ref({
-                columns: [
-                    {
-                        headline: "Name",
-                    }, {
-                        headline: "Age",
-                    }, {
-                        headline: "Birth Place",
-                        breakpoint: "md"
-                    }, {
-                        headline: "Job",
-                        sticky: true,
-                    }
-                ],
-            });
-
-    const rows = ref([
-                [
-                    {
-                        text: "Mia Wong"
-                    },
-                    {
-                        text: 50
-                    },
-                    {
-                        text: "Beijing"
-                    },
-                    {
-                        text: "Trainee"
-                    },
-                ],
-                [
-                    {
-                        text: "Peter Stanbridge"
-                    },
-                    {
-                        text: 18
-                    },
-                    {
-                        text: "London"
-                    },
-                    {
-                        text: "Trainee"
-                    },
-                ],
-                [
-                    {
-                        text: "Natalie Lee-Walsh"
-                    },
-                    {
-                        text: 25
-                    },
-                    {
-                        text: "Dublin"
-                    },
-                    {
-                        text: "Trainee"
-                    },
-                ],
-            ]);
-          
-  ...
+const props = defineProps({ age: { type: [Number, String], required: true } });
+const emit = defineEmits(["action"]);
 </script>
 ```
 
+```js
+import AgeComponent from "./components/AgeComponent.vue";
 
-
-#### AJAX data example
+app.component("age-component", AgeComponent);
+```
 
 ```vue
-<template>
-
-...
-
-<vue-quintable :loading="loading" :config="remoteConfig" :rows="remoteRows" />
-
-...
-
-</template>
-
-<script setup>
-	import axios from 'axios'
-    import { ref, onMounted } from 'vue';
-	...
-
-    const loading = ref(false);
-    const remoteConfig = ref(null);
-    const remoteRows = ref(null);
-
-    onMounted(() => {
-      loading.value = true;
-
-      // Use the ref.value to access and update the state
-      axios.get("http://your.server.url/api/endpoint")
-          .then((response) => {
-            remoteRows.value = response.data.rows;
-            remoteConfig.value = response.data.config;
-          })
-          .catch(error => {
-            // Basic error handling
-            console.error("Error fetching remote data:", error);
-          })
-          .finally(() => {
-            // Set loading to false regardless of success or failure
-            loading.value = false;
-          });
-    });
-...
-
-</script>
+<vue-quintable :config="config" :rows="rows" @component:event="onComponentEvent" />
 ```
 
-The request for the ajax handling on server has got the following structure:
+## Cell formatters
 
-```javascript
-{
-    //String search query
-    search:"some query",
-    //Object Filters, see above
-    filters:{},
-    //Number etries per page
-    perPage:12,
-    //Number current page, starting at 1
-    page:2,
-    //Object sorting columns and 
-    sort:{
-        //Array of sorting column indexes
-        indexes: this.currentSortIndexes,
-        //Object of column definitions keyed by column index
-        columns: this.sortingColumns,
+`cellFormatter` receives the cell and returns either a string (rendered as text) or `{ value, type }` with `type` `"text"` or `"html"`.
+
+```js
+const config = {
+  columns: [
+    { headline: "Name" },
+    {
+      headline: "Salary",
+      cellFormatter: (cell) => ({
+        value: `<b>${cell.text.toLocaleString()} €</b>`,
+        type: "html",
+      }),
     },
+  ],
 };
 ```
 
-The response has to be the following structure:
+## Filters
 
-```javascript
+Rows declare their filter values in `row.filters`. The `filters` prop holds the active filters keyed by filter name. A filter is either a plain value or an object:
+
+| Key        | Type             | Description |
+|------------|------------------|-------------|
+| `values`   | Any \| Array     | **Required.** Single value or array of values compared to the row's filter value. |
+| `operator` | String           | Compare operator, default `equal`. See below. |
+| `compare`  | Function         | Custom compare function `(value, rowValue) => Boolean`. Overrides `operator`. |
+
+| Operator       | Matches if the row value … |
+|----------------|----------------------------|
+| `equal`        | equals the value (`===`) |
+| `greater`      | is greater than the value |
+| `less`         | is less than the value |
+| `greaterEqual` | is greater than or equal to the value |
+| `lessEqual`    | is less than or equal to the value |
+| `contains`     | (string or array) contains the value |
+| `notContains`  | (string or array) doesn't contain the value |
+| `startsWith`   | (string) starts with the value |
+| `endsWith`     | (string) ends with the value |
+| `matches`      | (string) matches the value, a `RegExp` |
+
+```js
+const filters = {
+  active: true,
+  printable: false,
+  first_name: { operator: "contains", values: ["Jo", "ja"] },
+  middle_name: { operator: "matches", values: /r.+a/ },
+  last_name: {
+    compare: (value, rowValue) => rowValue.indexOf(value) === 2,
+    values: "a",
+  },
+};
+```
+
+### Filter groups
+
+Groups combine filters with `AND`/`OR` relations and can be nested infinitely. An item is `{ name }` of a filter or another group.
+
+| Key        | Type              | Description |
+|------------|-------------------|-------------|
+| `items`    | Object[]          | Filter names (`{ name }`) or nested groups. |
+| `relation` | `"AND"` \| `"OR"` | Relation between the items. |
+
+This example shows rows matching (**name** *OR* **active**) *AND* **printable**:
+
+```js
+const filterGroups = [
+  {
+    relation: "AND",
+    items: [
+      { relation: "OR", items: [{ name: "name" }, { name: "active" }] },
+      { items: [{ name: "printable" }] },
+    ],
+  },
+];
+```
+
+## Sort order
+
+`sort-order` is an array of column indexes (starting at 0) or `{ index, asc }` objects. `asc` defaults to `true`. Only columns with `sort: true` are sorted, and more than one entry requires `config.multiSort`. This sorts by the second column descending, then by the first ascending:
+
+```js
+// simple
+[1, 0]
+
+// advanced
+[
+  { index: 1, asc: false },
+  { index: 0, asc: true },
+]
+```
+
+## Selecting rows
+
+Enable `config.select` and bind the selection with `v-model:selected-rows`. The binding receives the selected rows; to select rows from outside use `pre-selected-rows`, `row.selected` or `config.defaultSelected`.
+
+```vue
+<vue-quintable
+  v-model:selected-rows="selectedRows"
+  :config="{ ...config, select: true, selectAll: true }"
+  :rows="rows"
+  :pre-selected-rows="[{ key: 'id', value: 42 }]"
+/>
+```
+
+## Slots
+
+| Slot                     | Scope | Description |
+|--------------------------|-------|-------------|
+| `header`                 | – | Content above the table. |
+| `before-search`          | – | Content before the search input. |
+| `search`                 | `{ value, loading, setSearchQuery, placeholder, searchClass }` | Replace the search input. |
+| `after-search`           | – | Content after the search input. |
+| `after-search-container` | – | Content after the search container. |
+| `cell-content`           | `{ cell }` | Content of regular cells. |
+| `generated-cell-content` | `{ cell }` | Content of cells in responsive (breakpoint) rows. |
+| `sticky-cell-content`    | `{ cell }` | Content of sticky cells. |
+| `no-results`             | – | Placeholder if no rows match. |
+| `loading`                | – | Custom loader. |
+| `footer`                 | – | Content below the table. |
+
+`cell-complete`, `generated-cell-complete` and `sticky-cell-complete` are deprecated aliases.
+
+```vue
+<vue-quintable :config="config" :rows="rows">
+  <template #header>Your HTML</template>
+
+  <!-- same content for regular, generated and sticky cells -->
+  <template
+    v-for="slotName in ['cell-content', 'generated-cell-content', 'sticky-cell-content']"
+    :key="slotName"
+    #[slotName]="{ cell }"
+  >
+    <button v-if="cell.type === 'action'" class="btn btn-sm btn-primary">
+      {{ cell.text }}
+    </button>
+    <template v-else>{{ cell.text }}</template>
+  </template>
+
+  <template #search="{ value, setSearchQuery }">
+    <input :value="value" class="form-control" @input="setSearchQuery($event.target.value)" />
+  </template>
+</vue-quintable>
+```
+
+## Events
+
+All events pass the event name as second argument.
+
+| Event                 | Arguments | Fired when |
+|-----------------------|-----------|------------|
+| `click:row`           | `row, name, target, event, index` | A row is clicked. |
+| `auxclick:row`        | `row, name, target, event, index` | A row is middle-clicked. |
+| `click:cell`          | `cell, name, target, event` | A cell is clicked. |
+| `auxclick:cell`       | `cell, name, target, event` | A cell is middle-clicked. |
+| `hover:row`           | `row, name` | The mouse enters a row. |
+| `active:row`          | `row, name, index` | The active row changes (requires `enableRowTabIndex`). |
+| `expand:row`          | `row, name, index` | A row is expanded. *Deprecated:* also fires on collapse with `name` `"collapse:row"`. |
+| `collapse:row`        | `row, name, index` | A row is collapsed. |
+| `update:selected-rows`| `rows` | The selection changes. |
+| `update:filters`      | `filters, name` | The active filters change. |
+| `filtered:rows`       | `rows, name` | Search or filters change the visible rows. |
+| `update:search`       | `query, name` | The search query changes. |
+| `update:sort`         | `sortIndexes, name` | The sort order changes. |
+| `update:page`         | `page, name` | The page changes. |
+| `update:rows-per-page`| `perPage, name` | The rows per page change. |
+| `change:breakpoints`  | `hiddenBreakpoints, name` | The window crosses a Bootstrap breakpoint. |
+| `component:event`     | `data, name` | A [cell component](#custom-components-in-cells) emits `action`. |
+| `ajax:rows`           | `{ rows, old, all }, name` | Rows were loaded from the server. |
+| `ajax:error`          | `error, name` | Loading rows from the server failed. |
+
+```vue
+<vue-quintable :config="config" :rows="rows" @click:row="onRowClick" @expand:row="onToggle" />
+```
+
+## AJAX / server-side data
+
+### Load once, render locally
+
+```vue
+<template>
+  <vue-quintable :loading="loading" :config="config" :rows="rows" />
+</template>
+
+<script setup>
+import axios from "axios";
+import { ref, onMounted } from "vue";
+
+const loading = ref(true);
+const config = ref({ columns: [] });
+const rows = ref([]);
+
+onMounted(async () => {
+  try {
+    const { data } = await axios.get("https://your.server.url/api/endpoint");
+    config.value = data.config;
+    rows.value = data.rows;
+  } finally {
+    loading.value = false;
+  }
+});
+</script>
+```
+
+### Server-side search, filter, sort and pagination
+
+Set `config.ajaxUrl` and omit `rows`. On every change VueQuintable sends a request (query parameters for `GET`, JSON body for `POST`):
+
+```js
 {
-	//Array of all rows, structure see above
-	rows:[]
-    //Number of all matching rows, without paging
-    all:240
+  search: "some query",          // String: search query
+  filters: {},                   // Object: active filters, see above
+  perPage: 25,                   // Number: rows per page
+  page: 2,                       // Number: current page, starting at 1
+  hiddenColumns: [false, true],  // Boolean[]: hidden flag per column
+  sort: {                        // Object|null: null if not sorted
+    indexes: {},                 // sorting column indexes
+    columns: {},                 // sorting column definitions keyed by index
+  },
 }
 ```
 
+The server responds with:
 
+```js
+{
+  rows: [],   // Array: rows of the current page, structure see above
+  all: 240,   // Number: count of all matching rows (without paging)
+}
+```
 
-### Good to know
+Change the `updated` prop (e.g. to `new Date()`) to reload the current page.
 
-- Links won't trigger expanded rows to collapse. Also you can prevent collapse parent row by define an element with the class "prevent-toggle"
-- VueQuintable uses v-model for selected rows, its also possible to use v-model:selected (best practice)
-- If you use the storeState property, filters have to be updated via v-model:filters
+## Persisting table state
+
+With `config.storeState` and an `identifier`, filters, search query, page, rows per page, sort order and selection are stored in local storage and restored on reload. Bind filters with `v-model:filters` so restored filters reach your component.
+
+```vue
+<vue-quintable
+  v-model:filters="filters"
+  identifier="customers"
+  :config="{ ...config, storeState: true }"
+  :rows="rows"
+/>
+```
+
+## Good to know
+
+- Clicks on links don't toggle the row. Add the class `prevent-toggle` to any element to prevent toggling, too.
+- `v-model:selected-rows` replaces Vue 2's `v-model`; plain `v-model` is not supported.
+- Set `:nested="true"` on tables inside another table's slot.
+- `html` cells and HTML returned by cell formatters are rendered unescaped. Never pass unsanitized user input.
+
+## Development
+
+```shell
+yarn install
+yarn dev          # demo with all examples
+yarn test         # unit tests (vitest)
+yarn test:e2e     # end-to-end tests (playwright)
+yarn prod         # build the library into dist/
+```
 
 ## License
 
-VueQuintable is free for everyone to use in any project (MIT License).
+VueQuintable is free for everyone to use in any project ([MIT License](https://opensource.org/licenses/MIT)).
 
 ## Authors
 
-Sensetence UG - Samuel Zeitler
+Sensetence UG – Samuel Krusche
+Sensetence UG – Dennis Parsch
+
+[https://sensetence.com](https://sensetence.com)
+
