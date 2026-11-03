@@ -28,7 +28,13 @@ if (process.env.BUILD_DEST_DIRECTORY) {
 
 const name = config.packageName;
 
-const externals = ["vue", ...Object.keys(dependencies)];
+// FA is a peer dependency so the host app and quintable share one svg-core instance (icon library)
+const externals = [
+  "vue",
+  ...Object.keys(dependencies),
+  "@fortawesome/fontawesome-svg-core",
+  "@fortawesome/free-solid-svg-icons",
+];
 const externalExcludes = [];
 
 export default defineConfig({

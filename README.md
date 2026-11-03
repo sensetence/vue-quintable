@@ -45,6 +45,7 @@ yarn add axios
 ```shell
 npm install --save bootstrap
 npm install --save @popperjs/core
+npm install --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 npm install --save @sensetence/vue-quintable
 ```
 
@@ -53,6 +54,7 @@ npm install --save @sensetence/vue-quintable
 ```shell
 yarn add bootstrap
 yarn add @popperjs/core
+yarn add @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 yarn add @sensetence/vue-quintable
 ```
 
