@@ -35,6 +35,11 @@ export const EXAMPLES = [
   "search-example",
   "filter-groups-example",
   "slot-controls-example",
+  "accessibility-example",
+  "column-tools-example",
+  "pinned-columns-example",
+  "virtual-scroll-example",
+  "url-state-example",
 ];
 
 export const VIEWPORTS = {
