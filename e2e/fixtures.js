@@ -34,6 +34,7 @@ export const EXAMPLES = [
   "texts-example",
   "search-example",
   "filter-groups-example",
+  "slot-controls-example",
 ];
 
 export const VIEWPORTS = {

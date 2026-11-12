@@ -4,7 +4,7 @@
 <svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
 <path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
 </path>
-</svg>The table reports a failed request with the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
+</svg>When a request fails, the table shows its <code>error</code> slot and fires the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
 <div class="d-flex flex-wrap align-items-center gap-4 mb-3">
 <div class="d-flex align-items-center gap-2">
 <label class="mb-0" for="ajax-server">Load from</label>
@@ -18,6 +18,8 @@
 <label class="form-check-label" for="verbose">Log requests to the console</label>
 </div>
 </div>
+<p class="mb-2" aria-live="polite"> Failed requests so far: <strong>0</strong>
+</p>
 <div data-v="" class="table-wrapper quintable" style="--quintable-page-size: 5;">
 <div data-v="" class="header slot slot-header quintable--header">
 </div>
@@ -212,7 +214,7 @@
 <svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
 <path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
 </path>
-</svg>The table reports a failed request with the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
+</svg>When a request fails, the table shows its <code>error</code> slot and fires the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
 <div class="d-flex flex-wrap align-items-center gap-4 mb-3">
 <div class="d-flex align-items-center gap-2">
 <label class="mb-0" for="ajax-server">Load from</label>
@@ -226,6 +228,8 @@
 <label class="form-check-label" for="verbose">Log requests to the console</label>
 </div>
 </div>
+<p class="mb-2" aria-live="polite"> Failed requests so far: <strong>0</strong>
+</p>
 <div data-v="" class="table-wrapper quintable" style="--quintable-page-size: 5;">
 <div data-v="" class="header slot slot-header quintable--header">
 </div>
@@ -420,7 +424,7 @@
 <svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
 <path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
 </path>
-</svg>The table reports a failed request with the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
+</svg>When a request fails, the table shows its <code>error</code> slot and fires the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
 <div class="d-flex flex-wrap align-items-center gap-4 mb-3">
 <div class="d-flex align-items-center gap-2">
 <label class="mb-0" for="ajax-server">Load from</label>
@@ -434,6 +438,8 @@
 <label class="form-check-label" for="verbose">Log requests to the console</label>
 </div>
 </div>
+<p class="mb-2" aria-live="polite"> Failed requests so far: <strong>0</strong>
+</p>
 <div data-v="" class="table-wrapper quintable" style="--quintable-page-size: 5;">
 <div data-v="" class="header slot slot-header quintable--header">
 </div>
@@ -628,7 +634,7 @@
 <svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
 <path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
 </path>
-</svg>The table reports a failed request with the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
+</svg>When a request fails, the table shows its <code>error</code> slot and fires the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
 <div class="d-flex flex-wrap align-items-center gap-4 mb-3">
 <div class="d-flex align-items-center gap-2">
 <label class="mb-0" for="ajax-server">Load from</label>
@@ -642,6 +648,8 @@
 <label class="form-check-label" for="verbose">Log requests to the console</label>
 </div>
 </div>
+<p class="mb-2" aria-live="polite"> Failed requests so far: <strong>0</strong>
+</p>
 <div data-v="" class="table-wrapper quintable" style="--quintable-page-size: 5;">
 <div data-v="" class="header slot slot-header quintable--header">
 </div>
@@ -840,7 +848,7 @@
 <svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
 <path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
 </path>
-</svg>The table reports a failed request with the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
+</svg>When a request fails, the table shows its <code>error</code> slot and fires the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
 <div class="d-flex flex-wrap align-items-center gap-4 mb-3">
 <div class="d-flex align-items-center gap-2">
 <label class="mb-0" for="ajax-server">Load from</label>
@@ -854,6 +862,8 @@
 <label class="form-check-label" for="verbose">Log requests to the console</label>
 </div>
 </div>
+<p class="mb-2" aria-live="polite"> Failed requests so far: <strong>0</strong>
+</p>
 <div data-v="" class="table-wrapper quintable" style="--quintable-page-size: 5;">
 <div data-v="" class="header slot slot-header quintable--header">
 </div>
@@ -1052,7 +1062,7 @@
 <svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
 <path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
 </path>
-</svg>The table reports a failed request with the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
+</svg>When a request fails, the table shows its <code>error</code> slot and fires the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
 <div class="d-flex flex-wrap align-items-center gap-4 mb-3">
 <div class="d-flex align-items-center gap-2">
 <label class="mb-0" for="ajax-server">Load from</label>
@@ -1066,6 +1076,8 @@
 <label class="form-check-label" for="verbose">Log requests to the console</label>
 </div>
 </div>
+<p class="mb-2" aria-live="polite"> Failed requests so far: <strong>0</strong>
+</p>
 <div data-v="" class="table-wrapper quintable" style="--quintable-page-size: 5;">
 <div data-v="" class="header slot slot-header quintable--header">
 </div>
@@ -1264,7 +1276,7 @@
 <svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
 <path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
 </path>
-</svg>The table reports a failed request with the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
+</svg>When a request fails, the table shows its <code>error</code> slot and fires the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
 <div class="d-flex flex-wrap align-items-center gap-4 mb-3">
 <div class="d-flex align-items-center gap-2">
 <label class="mb-0" for="ajax-server">Load from</label>
@@ -1278,6 +1290,8 @@
 <label class="form-check-label" for="verbose">Log requests to the console</label>
 </div>
 </div>
+<p class="mb-2" aria-live="polite"> Failed requests so far: <strong>0</strong>
+</p>
 <div data-v="" class="table-wrapper quintable" style="--quintable-page-size: 5;">
 <div data-v="" class="header slot slot-header quintable--header">
 </div>
@@ -1431,7 +1445,7 @@
 <svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
 <path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
 </path>
-</svg>The table reports a failed request with the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
+</svg>When a request fails, the table shows its <code>error</code> slot and fires the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
 <div class="d-flex flex-wrap align-items-center gap-4 mb-3">
 <div class="d-flex align-items-center gap-2">
 <label class="mb-0" for="ajax-server">Load from</label>
@@ -1445,6 +1459,8 @@
 <label class="form-check-label" for="verbose">Log requests to the console</label>
 </div>
 </div>
+<p class="mb-2" aria-live="polite"> Failed requests so far: <strong>0</strong>
+</p>
 <div data-v="" class="table-wrapper quintable" style="--quintable-page-size: 5;">
 <div data-v="" class="header slot slot-header quintable--header">
 </div>
@@ -1598,7 +1614,7 @@
 <svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
 <path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
 </path>
-</svg>The table reports a failed request with the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
+</svg>When a request fails, the table shows its <code>error</code> slot and fires the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
 <div class="d-flex flex-wrap align-items-center gap-4 mb-3">
 <div class="d-flex align-items-center gap-2">
 <label class="mb-0" for="ajax-server">Load from</label>
@@ -1612,6 +1628,8 @@
 <label class="form-check-label" for="verbose">Log requests to the console</label>
 </div>
 </div>
+<p class="mb-2" aria-live="polite"> Failed requests so far: <strong>0</strong>
+</p>
 <div data-v="" class="table-wrapper quintable" style="--quintable-page-size: 5;">
 <div data-v="" class="header slot slot-header quintable--header">
 </div>
@@ -1765,7 +1783,7 @@
 <svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
 <path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
 </path>
-</svg>The table reports a failed request with the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
+</svg>When a request fails, the table shows its <code>error</code> slot and fires the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
 <div class="d-flex flex-wrap align-items-center gap-4 mb-3">
 <div class="d-flex align-items-center gap-2">
 <label class="mb-0" for="ajax-server">Load from</label>
@@ -1779,6 +1797,8 @@
 <label class="form-check-label" for="verbose">Log requests to the console</label>
 </div>
 </div>
+<p class="mb-2" aria-live="polite"> Failed requests so far: <strong>0</strong>
+</p>
 <div data-v="" class="table-wrapper quintable" style="--quintable-page-size: 5;">
 <div data-v="" class="header slot slot-header quintable--header">
 </div>
@@ -1977,7 +1997,7 @@
 <svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
 <path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
 </path>
-</svg>The table reports a failed request with the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
+</svg>When a request fails, the table shows its <code>error</code> slot and fires the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
 <div class="d-flex flex-wrap align-items-center gap-4 mb-3">
 <div class="d-flex align-items-center gap-2">
 <label class="mb-0" for="ajax-server">Load from</label>
@@ -1991,6 +2011,8 @@
 <label class="form-check-label" for="verbose">Log requests to the console</label>
 </div>
 </div>
+<p class="mb-2" aria-live="polite"> Failed requests so far: <strong>0</strong>
+</p>
 <div data-v="" class="table-wrapper quintable" style="--quintable-page-size: 5;">
 <div data-v="" class="header slot slot-header quintable--header">
 </div>
@@ -2289,7 +2311,7 @@
 <svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
 <path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
 </path>
-</svg>The table reports a failed request with the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
+</svg>When a request fails, the table shows its <code>error</code> slot and fires the <code>ajax:error</code> event. Switch to the unreachable server (an <code>.invalid</code> host never resolves), then back. With the <code>verbose</code> prop the table logs every request to the browser console.</p>
 <div class="d-flex flex-wrap align-items-center gap-4 mb-3">
 <div class="d-flex align-items-center gap-2">
 <label class="mb-0" for="ajax-server">Load from</label>
@@ -2303,6 +2325,8 @@
 <label class="form-check-label" for="verbose">Log requests to the console</label>
 </div>
 </div>
+<p class="mb-2" aria-live="polite"> Failed requests so far: <strong>0</strong>
+</p>
 <div data-v="" class="table-wrapper quintable" style="--quintable-page-size: 5;">
 <div data-v="" class="header slot slot-header quintable--header">
 </div>

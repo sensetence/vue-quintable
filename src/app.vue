@@ -76,6 +76,7 @@ const examples: SelectItemWithComponent[] = [
   ["ajax-error-example", "Ajax Error Example"],
   ["events-example", "Events Example"],
   ["slots-example", "Slots Example"],
+  ["slot-controls-example", "Slots for Icons & Controls Example"],
   ["texts-example", "Texts & Languages Example"],
   ["vue-binded-example", "Vue-binded Example"],
   ["search-example", "Search Example"],

@@ -1,9 +1,9 @@
 <template>
   <div class="content">
     <alert-info
-      >The table reports a failed request with the
-      <code>ajax:error</code> event. Switch to the unreachable server (an
-      <code>.invalid</code> host never resolves), then back. With the
+      >When a request fails, the table shows its <code>error</code> slot and
+      fires the <code>ajax:error</code> event. Switch to the unreachable server
+      (an <code>.invalid</code> host never resolves), then back. With the
       <code>verbose</code> prop the table logs every request to the browser
       console.</alert-info
     >
@@ -33,19 +33,31 @@
       </div>
     </div>
 
-    <div v-if="error" class="alert alert-danger" role="alert">
-      The rows could not be loaded: {{ error }}. Check the URL and the server,
-      then load again.
-    </div>
+    <p class="mb-2" aria-live="polite">
+      Failed requests so far: <strong>{{ failures }}</strong>
+    </p>
 
     <!-- table -->
     <vue-quintable
       :config="config"
       :verbose="verbose"
       identifier="ajax-error-example"
-      @ajax:rows="error = ''"
-      @ajax:error="onError"
-    />
+      @ajax:error="failures++"
+    >
+      <template #error="{ error, reload }">
+        <div class="alert alert-danger" role="alert">
+          The rows could not be loaded: {{ error.message }}. Check the URL and
+          the server, then
+          <button
+            type="button"
+            class="btn btn-link alert-link p-0 align-baseline"
+            @click="reload()"
+          >
+            load them again</button
+          >.
+        </div>
+      </template>
+    </vue-quintable>
 
     <!-- code -->
     <show-hide-button v-model:show-code="showCode" />
@@ -70,11 +82,7 @@ const BROKEN_URL = "https://quintable-demo.invalid/data.php";
 
 const url = ref(DEMO_URL);
 const verbose = ref(false);
-const error = ref("");
-
-function onError(e: Error) {
-  error.value = e.message;
-}
+const failures = ref(0);
 
 // table data
 const config = computed(() => ({
