@@ -37,7 +37,7 @@
 - [Setup](#setup)
 - [Quick start](#quick-start)
 - [Component props](#component-props)
-- [Configuration](#configuration) – [config](#config) · [columns](#columns) · [rows](#rows) · [cells](#cells)
+- [Configuration](#configuration) – [config](#config) · [columns](#columns) · [rows](#rows) · [cells](#cells) · [Option combinations](#option-combinations)
 - [Custom components in cells](#custom-components-in-cells)
 - [Cell formatters](#cell-formatters)
 - [Filters](#filters) · [Filter groups](#filter-groups)
@@ -48,6 +48,12 @@
 - [AJAX / server-side data](#ajax--server-side-data)
 - [Persisting table state](#persisting-table-state)
 - [Reusing rows](#reusing-rows)
+- [Large tables: virtual scrolling](#large-tables-virtual-scrolling)
+- [Column tools](#column-tools) · [Sticky header and pinned columns](#sticky-header-and-pinned-columns)
+- [Accessibility](#accessibility)
+- [State in the address](#state-in-the-address)
+- [Methods](#methods)
+- [TypeScript](#typescript)
 - [Good to know](#good-to-know)
 - [Development](#development)
 
@@ -67,8 +73,15 @@
 - Custom cell formatters, HTML cells and Vue components inside cells
 - Slots for cells, search, loader, empty state, header and footer
 - Server-side data via AJAX (GET or POST) for search, filter, sort and pagination
-- Table state persisted in local storage
+- Table state persisted in local storage or in the page's address
+- Virtual scrolling for tens of thousands of rows
+- Sticky header, pinned columns, resizable columns and a column picker
+- A filter per column (text, select, range) and search matches marked in the cells
+- Keyboard and screen reader support (opt-in)
+- TypeScript types for config, rows, events, slots and methods
 - Nested tables
+
+Every feature beyond the basics is opt-in: without its option the table renders and behaves as before.
 
 ## Installation
 
@@ -172,11 +185,13 @@ More examples live in [`src/examples`](src/examples) and can be started with `ya
 
 ### config
 
+What an option needs, and what it does not work with, is listed in [Option combinations](#option-combinations).
+
 | Key                             | Type                          | Default            | Description |
 |---------------------------------|-------------------------------|--------------------|-------------|
 | `columns`                       | Array                         | –                  | **Required.** Column definitions, see [columns](#columns). |
 | **Layout**                      |                               |                    |             |
-| `hideEmptyColumns`              | Boolean                       | `false`            | Hide columns that are empty (`text`, `html`, `component`) in all visible rows. |
+| `hideEmptyColumns`              | Boolean                       | `false`            | Hide columns that have no `text` or `html` in any visible row. A cell with only a `component` counts as empty unless it sets `isEmpty: false`. |
 | `ignoreSortEmptyColumns`        | `"none"` \| `"active"` \| `"all"` | `"none"`       | With `hideEmptyColumns`: `"none"` keeps sortable columns always visible, `"active"` keeps them visible while sorted, `"all"` hides them like other columns. |
 | `expandedAll`                   | Boolean                       | `false`            | Expand all rows with hidden (breakpoint) columns by default. |
 | `hideRowToggle`                 | Boolean                       | `false`            | Hide the expand/collapse toggle icon. |
@@ -190,6 +205,14 @@ More examples live in [`src/examples`](src/examples) and can be started with `ya
 | `skeletonLoading`               | Boolean                       | `false`            | While loading, show grey bars in the shape of the table (visible columns, one page of rows) instead of the spinner. |
 | `ignoreControlClicks`           | Boolean                       | `false`            | A click on a link, button or form field in a row is that control's own: no `click:row`, `click:cell` or `auxclick:*` event. A click on a disabled control stays the row's. |
 | `reuseRows`                     | Boolean                       | `false`            | Update rows in place on sort, page change and filter instead of re-creating them. Faster for large pages; read [Reusing rows](#reusing-rows) before you turn it on. |
+| `stickyHeader`                  | Boolean                       | `false`            | The headings stay on top while the rows scroll, see [Sticky header and pinned columns](#sticky-header-and-pinned-columns). |
+| `scrollHeight`                  | Number \| String              | `false`            | The table scrolls in a box of this height, e.g. `400` (px) or `"60vh"`. |
+| `virtualScroll`                 | Boolean                       | `false`            | Render only the rows in the scroll box, see [Large tables](#large-tables-virtual-scrolling). Without `scrollHeight` the box is 400px high. |
+| `rowHeight`                     | Number                        | `41`               | With `virtualScroll`: the height in px rows are estimated at until the first one was measured. |
+| `resizableColumns`              | Boolean                       | `false`            | Drag a heading's end edge (or use the arrow keys on it) to size its column, see [Column tools](#column-tools). |
+| `resizeColumnLabel`             | String                        | `"Resize column"`  | Accessible name of the edges. |
+| `columnPicker`                  | Boolean                       | `false`            | A menu to show and hide columns, see [Column tools](#column-tools). |
+| `columnPickerPlaceholder`       | String                        | `"Columns"`        | Label of the menu button. |
 | **Pagination**                  |                               |                    |             |
 | `pagination`                    | Number \| Boolean             | `false`            | Rows per page. `true` means 25. Other values snap down to one of 1–10, 15, 20, 25, 30, 50, 100, 250, 500, 1000. |
 | `pageRange`                     | Number                        | `5`                | Number of page links shown. |
@@ -205,9 +228,16 @@ More examples live in [`src/examples`](src/examples) and can be started with `ya
 | `searchContainerClass`          | String                        | `"row"`            | CSS class of the search container. |
 | `searchClass`                   | String                        | `"col-12"`         | CSS class of the search input wrapper. |
 | `emptyPlaceholder`              | String                        | `"No rows..."`     | Text if search or filters match no rows. |
+| `highlightSearch`               | Boolean                       | `false`            | Mark the query in text cells (`<mark class="quintable--search-mark">`). HTML and component cells stay as they are. |
+| `searchDebounce`                | Number                        | `0`                | Milliseconds the local search waits after the last key press. For large tables; AJAX tables use `ajaxRequestDelay`. |
 | **Filters**                     |                               |                    |             |
 | `filterRelation`                | `"AND"` \| `"OR"`             | `"AND"`            | Relation between filters that are not part of a filter group. |
 | `filterGroupRelation`           | `"AND"` \| `"OR"`             | `"AND"`            | Relation between filter groups. |
+| `columnFilters`                 | Boolean                       | `false`            | A row of filters below the headings, one per column, see [Column tools](#column-tools). |
+| `columnFilterPlaceholder`       | String                        | `"Filter"`         | Placeholder of the text filters (and start of their accessible name). |
+| `columnFilterAllLabel`          | String                        | `"All"`            | The "no filter" choice of select filters. |
+| `columnFilterMinLabel`          | String                        | `"Min"`            | Placeholder of a range filter's lower bound. |
+| `columnFilterMaxLabel`          | String                        | `"Max"`            | Placeholder of a range filter's upper bound. |
 | **Sorting**                     |                               |                    |             |
 | `multiSort`                     | Boolean                       | `false`            | Sort by multiple columns. |
 | `multiSortSelect`               | Boolean                       | `false`            | Let the user toggle multi-sort. |
@@ -229,8 +259,17 @@ More examples live in [`src/examples`](src/examples) and can be started with `ya
 | `requestMethod`                 | `"GET"` \| `"POST"`           | `"GET"`            | HTTP method of AJAX requests. |
 | `ajaxRequestDelay`              | Number                        | `250`              | Debounce for AJAX search requests in milliseconds. |
 | `reloadOn`                      | Function                      | –                  | `(reload) => unsubscribe`: called once on mount with a function that re-fetches the current page; call it on your own signal (e.g. a router visit). The returned function is called on unmount. Only for tables with `ajaxUrl`. |
+| **Accessibility**               |                               |                    |             |
+| `accessible`                    | Boolean                       | `false`            | Keyboard and screen reader support, see [Accessibility](#accessibility). |
+| `selectRowLabel`                | String                        | `"Select row"`     | Accessible name of a row's checkbox, followed by the row's number. |
+| `selectAllLabel`                | String                        | `"Select all rows"`| Accessible name of the "select all" checkbox. |
+| `expandRowLabel`                | String                        | `"Show details"`   | Accessible name of a closed row's toggle. |
+| `collapseRowLabel`              | String                        | `"Hide details"`   | Accessible name of an open row's toggle. |
+| `paginationLabel`               | String                        | `"Pagination"`     | Accessible name of the page navigation. |
+| `firstPageLabel`, `previousPageLabel`, `nextPageLabel`, `lastPageLabel` | String | `"First page"`, … | Accessible names of the page arrows. |
 | **State**                       |                               |                    |             |
 | `storeState`                    | Boolean                       | `false`            | Persist the table state in local storage, see [Persisting table state](#persisting-table-state). Requires the `identifier` prop. |
+| `urlState`                      | Boolean                       | `false`            | Keep page, sort, search, rows per page and column filters in the page's address, see [State in the address](#state-in-the-address). |
 
 ### columns
 
@@ -250,6 +289,13 @@ More examples live in [`src/examples`](src/examples) and can be started with `ya
 | `hidden`                 | Boolean                  | Never show the column. Best used with `dynamic-config`. |
 | `ignoreEmpty`            | Boolean                  | With `hideEmptyColumns`: never hide this column. |
 | `cellFormatter`          | Function                 | Format cells of this column, see [Cell formatters](#cell-formatters). |
+| `pin`                    | `"start"` \| `"end"`     | Keep the column in place while the table scrolls sideways, see [Sticky header and pinned columns](#sticky-header-and-pinned-columns). |
+| `width`                  | Number \| String         | Width of the heading, e.g. `120` (px) or `"10rem"`. |
+| `resizable`              | Boolean                  | With `resizableColumns`: `false` keeps this column's width. |
+| `filter`                 | `"text"` \| `"select"` \| `"range"` \| `false` | With `columnFilters`: the column's filter. Default `"text"`. |
+| `filterOptions`          | Array                    | With `columnFilters`: the choices of a select filter. Default: the column's values (on the current page for AJAX tables). |
+
+Any other property of a column reaches the `headline` slot as `column.yourProperty`.
 
 ### rows
 
@@ -305,6 +351,93 @@ const rows = [
   },
 ];
 ```
+
+### Option combinations
+
+**Needs:** without it the option does nothing. **Not with:** the combination does not work, or the option has no effect in it. **Combine with:** what the option is meant to go with. Slots that replace a part of the table (e.g. `rows-per-page`) also replace the options of that part.
+
+| Option | Needs | Not with | Combine with |
+|--------|-------|----------|--------------|
+| **Layout** | | | |
+| `hideEmptyColumns` | – | With pagination or `ajaxUrl` it checks the rows of the current page only, so a column can come and go between pages. Component cells count as empty unless they set `isEmpty: false`. | `ignoreSortEmptyColumns`, column `ignoreEmpty`, cell `isEmpty` |
+| `ignoreSortEmptyColumns` | `hideEmptyColumns` | – | – |
+| `expandedAll` | Columns with `breakpoint` | – | `hideRowToggle` |
+| `hideRowToggle` | Columns with `breakpoint` | `accessible`: without the toggle the keyboard can't open a row's details. | `expandedAll`, column `alwaysExpanded` |
+| `expandedRowIcon`, `collapsedRowIcon` | Columns with `breakpoint` | `hideRowToggle`, `toggle-icon` slot | – |
+| `hoverClass` | – | A custom class or `false`: the `--quintable-row-*` variables and the joint look of a row and its details apply to the default only. | – |
+| `activeClass` | `enableRowTabIndex` (only then a row becomes active) | A custom class or `false`: no built-in accent edge. | – |
+| `enableRowTabIndex` | – | The arrow keys stay on the current page. Every table with an active row reacts to them. | `virtualScroll` (the box scrolls along), `accessible` |
+| `autoFit` | Columns with `breakpoint` `"xxl"`, `"xl"` or `"lg"` | `resizableColumns`: sized columns widen the table, and `autoFit` folds columns while you size them. `stickyHeader` without `scrollHeight` once the table scrolls in its container. | – |
+| `cellTitles` | Cell content cut with `text-overflow: ellipsis` (your CSS) | A cell `tooltip` or an own `title` wins. | – |
+| `skeletonLoading` | `ajaxUrl` or the `loading` prop | `loading` slot | – |
+| `ignoreControlClicks` | – | – | Component cells, cell slots and `row-prepend`/`row-append` with buttons, links or fields |
+| `reuseRows` | – | Cell components or slots with their own state, focus and open tooltips in rows (see [Reusing rows](#reusing-rows)) | `virtualScroll`, large pages |
+| `stickyHeader` | – | A table that scrolls sideways in its container (`pin`, `autoFit`, sized columns of `resizableColumns`): the header then sticks inside the container only, so set `scrollHeight`. A fixed navbar: set `--quintable-sticky-top`. | `scrollHeight`, `virtualScroll`, `columnFilters` (the filter row sticks too) |
+| `scrollHeight` | – | – | `stickyHeader`, `virtualScroll`, column `pin` |
+| `virtualScroll` | `scrollHeight` (400px if not set) | Small pages and `ajaxUrl`: only the rows of the current or loaded page are virtual, so there is little to gain. More than about 400,000 rows on one page. | `reuseRows`, `stickyHeader`, `pagination: false` |
+| `rowHeight` | `virtualScroll` | – | – |
+| `resizableColumns` | – | `autoFit` (see there). A column that `columnPicker` or a breakpoint shows later starts at 120px. | `storeState` (widths are stored), column `width` and `resizable` |
+| `columnPicker` | – | Columns with `hidden` are not listed. A column that `hideEmptyColumns` or a breakpoint hides stays listed as shown. | `storeState` (hidden columns are stored) |
+| `columnPickerPlaceholder` | `columnPicker` | – | – |
+| `resizeColumnLabel` | `resizableColumns` | – | – |
+| **Pagination** | | | |
+| `pagination` | – | – | `rowsSelect`, `pageSort` |
+| `pageRange` | `pagination` | `pagination` slot | – |
+| `rowsSelect` | `pagination` | `rows-per-page` slot | `disallowAllOption`; for "All" with many rows `virtualScroll` or `reuseRows` |
+| `disallowAllOption` | `rowsSelect` | `rows-per-page` slot | – |
+| `rowsPlaceholder` | `rowsSelect` | `rows-per-page` slot | – |
+| `numberOfVisibleRowsFillerWord` | `pagination` | `rows-info` slot | – |
+| **Search** | | | |
+| `search` | – | – | `highlightSearch`, `searchDebounce` |
+| `searchLength` | `search` | – | Also for `ajaxUrl`: shorter queries send no request. |
+| `searchPlaceholder` | `search` | `search` slot | `accessible` (it names the field) |
+| `useFuzzySearch` | `search` | `ajaxUrl` (the server searches). `highlightSearch` marks exact matches only. | – |
+| `searchContainerClass`, `searchClass` | `search` | `search` slot (`searchClass` is passed to it) | – |
+| `emptyPlaceholder` | – | `no-results` slot | `empty` slot for a table without rows |
+| `highlightSearch` | `search` | HTML and component cells, `cell-content` slots, fuzzy matches | `searchDebounce` |
+| `searchDebounce` | `search` | `ajaxUrl` (uses `ajaxRequestDelay`) | `highlightSearch`, large tables |
+| **Filters** | | | |
+| `filterRelation` | The `filters` prop | The `filter-groups` prop (then the groups' relations decide) | – |
+| `filterGroupRelation` | The `filter-groups` prop | – | – |
+| `columnFilters` | – | `ajaxUrl`: the server must apply the `columnFilters` parameter, and select filters list the current page's values only unless the column has `filterOptions`. | `search` and the `filters` prop (a row must pass all), `storeState`, `urlState`, `stickyHeader` |
+| `columnFilterPlaceholder`, `columnFilterAllLabel`, `columnFilterMinLabel`, `columnFilterMaxLabel` | `columnFilters` | – | – |
+| **Sorting** | | | |
+| `multiSort` | Sortable columns | – | The `sort-order` prop with several entries needs it. |
+| `multiSortSelect`, `multiSortPlaceholder` | Sortable columns | `sort-switches` slot | – |
+| `pageSort` | `pagination` | `ajaxUrl`: it sorts the loaded page in the browser, and a new search turns it off. | – |
+| `pageSortSelect`, `pageSortPlaceholder` | `pagination` | `sort-switches` slot | – |
+| `alwaysShowSortIcons` | Sortable columns | – | – |
+| **Selection** | | | |
+| `select` | – | – | `selectAll`, `keepSelect` |
+| `selectPosition` | `select` | – | – |
+| `prettySelect` | `select` | `select-checkbox` and `select-all-checkbox` slots | – |
+| `selectAll` | `select` | `select-all-checkbox` slot | `selectAllRows` |
+| `selectAllRows` | `select`, `selectAll` | `ajaxUrl` (switched off with a warning) | – |
+| `defaultSelected` | `select` | `ajaxUrl`: rows loaded later are not selected. | `selectAllRows` (selects all pages) |
+| `keepSelect` | `select` | – | – |
+| **Accessibility** | | | |
+| `accessible` | – | `hideRowToggle` (see there). The `select-checkbox`, `select-all-checkbox` and `pagination` slots replace controls: give them their own accessible names. | `enableRowTabIndex` |
+| `selectRowLabel`, `selectAllLabel`, `expandRowLabel`, `collapseRowLabel`, `paginationLabel`, `firstPageLabel`, `previousPageLabel`, `nextPageLabel`, `lastPageLabel` | `accessible` | – | – |
+| **AJAX** | | | |
+| `ajaxUrl` | – | The `rows` prop (ignored), `selectAllRows`, `useFuzzySearch`, `searchDebounce`, `defaultSelected` | `requestMethod`, `ajaxRequestDelay`, `reloadOn`, `skeletonLoading` |
+| `requestMethod`, `ajaxRequestDelay` | `ajaxUrl` | – | – |
+| `reloadOn` | `ajaxUrl` | – | – |
+| **State** | | | |
+| `storeState` | The `identifier` prop and local storage (otherwise switched off with a warning) | `urlState` wins where both hold a value. | `columnPicker`, `resizableColumns`, `columnFilters` (stored too) |
+| `urlState` | – (an `identifier` is recommended) | Two tables on one page without `identifier` share their parameters. | `storeState` |
+| **Columns** | | | |
+| `breakpoint` | – | Column `sticky`. Column `pin`: a folded column is not pinned. | `alwaysExpanded`, `showHeadlineBreakpoint`, `hideHeadlineBreakpoint` |
+| `alwaysExpanded` | Column `breakpoint` | – | – |
+| `sticky` | – | Column `breakpoint` | – |
+| `showHeadlineBreakpoint`, `hideHeadlineBreakpoint` | Column `breakpoint` or `sticky` | – | – |
+| `hidden` | – | `columnPicker` does not list it. | The `dynamic-config` prop |
+| `ignoreEmpty` | `hideEmptyColumns` | – | – |
+| `firstSortDirection` | Column `sort` | – | – |
+| `pin` | A table that scrolls sideways (its columns don't fit) | More than 10 pinned cells per side. A column folded by `breakpoint` or `autoFit`. | `scrollHeight` (needed with `stickyHeader`) |
+| `width` | – | `resizableColumns` replaces it once the column was sized. | – |
+| `resizable` | `resizableColumns` | – | – |
+| `filter`, `filterOptions` | `columnFilters` | – | – |
+| `cellFormatter` | – | `highlightSearch` marks its result only if it is text, not HTML. | – |
 
 ## Custom components in cells
 
@@ -536,6 +669,9 @@ All events pass the event name as second argument.
 | `component:event`     | `data, name` | A [cell component](#custom-components-in-cells) emits `action`. |
 | `ajax:rows`           | `{ rows, old, all }, name` | Rows were loaded from the server. |
 | `ajax:error`          | `error, name` | Loading rows from the server failed. |
+| `update:hidden-columns` | `hidden, name` | The column picker hid or showed a column; `hidden` lists the hidden columns' indexes. |
+| `resize:column`       | `index, width, name` | A column was sized (`width` in px). |
+| `update:column-filters` | `values, name` | A column filter changed; `values` holds them by column index. |
 
 ```vue
 <vue-quintable :config="config" :rows="rows" @click:row="onRowClick" @expand:row="onToggle" />
@@ -625,6 +761,91 @@ By default, every sort, page change, search and filter re-creates the rows it sh
 - **Hover:** after a sort, page change, search or filter the hover disappears until the mouse enters a row again. Without the switch it stays when the hovered row is still shown.
 
 Row details (expanded rows, sticky and `alwaysExpanded` columns) are re-created as before. Events, emitted data and the rendered HTML are the same with and without the switch.
+
+## Large tables: virtual scrolling
+
+With `virtualScroll: true` the table renders only the rows in its scroll box and a few around it, about 30 instead of thousands. It works with or without pagination, with search, filters, sorting, selection, row details and the arrow keys of `enableRowTabIndex` (the box scrolls along). The box is `scrollHeight` high (400px by default).
+
+```js
+const config = {
+  columns,
+  virtualScroll: true,
+  scrollHeight: 480,
+  reuseRows: true, // rows are updated, not re-created, while scrolling
+  stickyHeader: true,
+};
+```
+
+Rows are measured once rendered; the others count with the height of the first one measured (`rowHeight` until then). Rows of very different heights make the scrollbar jump a little while they are measured. Browsers limit an element's height (about 17 million px in Firefox), so keep a table without pages below about 400,000 rows.
+
+## Column tools
+
+- **`columnPicker`** adds a "Columns" menu above the table. Columns the config hides (`hidden`) are not listed; the last shown column can't be hidden. Hidden columns are left out of the row details too, and the `hiddenColumns` AJAX parameter lists them.
+- **`resizableColumns`** puts a grip on each heading's end edge. Drag it, or focus it with Tab and use the arrow keys; a double-click resets all widths. Once a column was sized, the table keeps fixed widths for all columns and scrolls sideways when they don't fit.
+- **`columnFilters`** adds a row of filters below the headings. A column's `filter` picks the kind: `"text"` (contains, case-insensitive), `"select"` (equals one of `filterOptions` or the column's values) or `"range"` (a number between min and max, from `sortValue` or the text). Column filters work together with the search and the `filters` prop; AJAX tables get them as the `columnFilters` parameter.
+
+With `storeState`, hidden columns, widths and column filters are stored, too.
+
+```js
+const config = {
+  columns: [
+    { headline: "Product" },
+    { headline: "Category", filter: "select" },
+    { headline: "Price", filter: "range", align: "end" },
+    { headline: "SKU", filter: false, resizable: false, width: 110 },
+  ],
+  columnPicker: true,
+  resizableColumns: true,
+  columnFilters: true,
+};
+```
+
+## Sticky header and pinned columns
+
+`stickyHeader: true` keeps the headings (and the column filters) on top while the rows scroll. Without `scrollHeight` they stick to the top of the page; set the CSS variable `--quintable-sticky-top` (e.g. to your navbar's height) to stick below a fixed bar. With `scrollHeight` they stick inside the table's box.
+
+A column with `pin: "start"` or `pin: "end"` stays in place while the table scrolls sideways; the toggle and checkbox columns before (or after) it stay with it. Up to 10 cells per side can be pinned. Pinned columns need the table to scroll sideways inside its container: it does when its columns don't fit. A sticky header together with pinned columns needs `scrollHeight`, because the header then sticks inside the table's box.
+
+## Accessibility
+
+With `accessible: true`:
+
+- sortable headings can be reached with Tab and sorted with Enter or Space, and tell how they are sorted (`aria-sort`),
+- a row's toggle is a button that says whether the details are open (`aria-expanded`),
+- checkboxes, the search field and the page navigation have accessible names (set them with the `…Label` options, e.g. in another language),
+- page links can be reached with Tab and followed with Enter or Space; the current page is marked (`aria-current`).
+
+Keyboard focus is visible on all of them. Without the option the table's HTML is the same as before.
+
+## State in the address
+
+With `urlState: true` the table keeps page, sort, search, rows per page and column filters in the page's address, so a link opens the same view. The parameters start with the table's `identifier` (or `qt`), e.g. `?orders-page=2&orders-sort=1:desc`. Values at their default are left out, other parameters stay, and no history entries are added. The address wins over `storeState`.
+
+## Methods
+
+A template ref to the table can call:
+
+| Method | Description |
+|--------|-------------|
+| `setSearchQuery(query)` | Search for `query`. |
+| `setSortColumn(index, asc?)` | Sort by a column (or flip its direction). |
+| `removeSort(index)` | Stop sorting by a column. |
+| `gotoPage(page)` | Go to a page number or `"first"`, `"prev"`, `"next"`, `"last"`. |
+| `toggleColumn(index, visible?)` | With `columnPicker`: show or hide a column. |
+| `setColumnFilter(index, value)` / `clearColumnFilters()` | With `columnFilters`: set (an empty value removes) or clear the column filters. |
+| `resetColumnWidths()` | With `resizableColumns`: back to the widths the content gives. |
+
+## TypeScript
+
+The package ships types for its props, config, columns, rows, cells, events, slots and methods. Templates are checked with [vue-tsc](https://github.com/vuejs/language-tools) / Volar:
+
+```ts
+import { VueQuintable, type QuintableConfig, type QuintableRow } from "@sensetence/vue-quintable";
+
+const config: QuintableConfig = { columns: [{ headline: "Name", sort: true }], virtualScroll: true };
+const table = ref<InstanceType<typeof VueQuintable> | null>(null);
+table.value?.setSearchQuery("Ada");
+```
 
 ## Good to know
 
