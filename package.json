@@ -11,15 +11,19 @@
     "prod": "node ./pack.js",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:types": "vue-tsc --noEmit -p types/test/tsconfig.json"
   },
   "main": "./dist/vue-quintable.cjs.js",
   "module": "./dist/vue-quintable.es.js",
+  "types": "./types/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "types/index.d.ts"
   ],
   "exports": {
     ".": {
+      "types": "./types/index.d.ts",
       "import": "./dist/vue-quintable.es.js",
       "require": "./dist/vue-quintable.cjs.js"
     },
