@@ -8,6 +8,7 @@
       :checked="shouldBeChecked"
       :disabled="_disabled"
       :required="_required"
+      :aria-label="ariaLabel"
       @change="updateInput"
     />
     <div :class="onClasses">
@@ -37,6 +38,11 @@ export default {
 
   props: {
     type: {
+      type: String,
+      default: null,
+    },
+    // the input's accessible name (VueQuintable's accessible option)
+    ariaLabel: {
       type: String,
       default: null,
     },

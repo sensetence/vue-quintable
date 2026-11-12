@@ -55,3 +55,29 @@ export function withUpdates(proxy: any, updates: Map<string, unknown>) {
   }
   return next;
 }
+
+/**
+ * highlightSearch: a text split at each case-insensitive occurrence of a (lower-case) query, the occurrences marked;
+ * null if it does not occur.
+ */
+export function splitMarks(text: string, query: string) {
+  const lower = text.toLowerCase();
+  let at = lower.indexOf(query);
+  if (!query || at === -1) {
+    return null;
+  }
+  const parts: { text: string; mark: boolean }[] = [];
+  let from = 0;
+  while (at !== -1) {
+    if (at > from) {
+      parts.push({ text: text.slice(from, at), mark: false });
+    }
+    parts.push({ text: text.slice(at, at + query.length), mark: true });
+    from = at + query.length;
+    at = lower.indexOf(query, from);
+  }
+  if (from < text.length) {
+    parts.push({ text: text.slice(from), mark: false });
+  }
+  return parts;
+}

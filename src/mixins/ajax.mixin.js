@@ -85,7 +85,12 @@ export default {
         filters: this.filtersFinal,
         perPage: this.currentRowsPerPage,
         page: this.currentPage,
-        hiddenColumns: this.configFinal.hiddenCols,
+        ...(this.configFinal.columnFilters
+          ? { columnFilters: this.columnFilterValues }
+          : null),
+        hiddenColumns: this.configFinal.columnPicker
+          ? this.configFinal.columns.map((c, j) => !!this._isHiddenCol(j))
+          : this.configFinal.hiddenCols,
         sort:
           this.numberOfSorts > 0
             ? {

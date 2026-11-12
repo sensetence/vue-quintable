@@ -10,6 +10,8 @@ const DEFAULT_ROW_CLASS = "bg-muted";
 // ignoreControlClicks: the elements whose click is their own, not the row's or the cell's.
 const CONTROL_SELECTOR =
   "a, button, input, select, textarea, label, [role='button']";
+// accessible: the row's own toggle is a button, but its click is the row's (it opens the details).
+const ROW_TOGGLE = ".quintable--toggle-button";
 
 // The elements an event passed, from its target up, as they were when it was dispatched. Checked from the target
 // alone, an earlier handler (a nested table's) may have re-rendered and detached it by now: the browser runs Vue's
@@ -57,7 +59,10 @@ export default {
       const element = path
         .slice(0, path.indexOf(e.currentTarget) + 1)
         .find(
-          (node) => node instanceof Element && node.matches(CONTROL_SELECTOR),
+          (node) =>
+            node instanceof Element &&
+            node.matches(CONTROL_SELECTOR) &&
+            !node.matches(ROW_TOGGLE),
         );
       if (!element) {
         return false;
@@ -364,6 +369,55 @@ export default {
       this._hoverTarget = null;
       this._paintRows();
       this.hoveredRow = null;
+    },
+
+    // accessible: Enter and Space sort by a focused sortable heading.
+    _onHeaderKeydown(event, index) {
+      if (
+        this.configFinal.accessible &&
+        this.configFinal.sorts[index] &&
+        (event.key === "Enter" || event.key === " ") &&
+        event.target === event.currentTarget
+      ) {
+        event.preventDefault();
+        this.setSortColumn(index);
+      }
+    },
+
+    // accessible: Enter and Space on a focused page link click it.
+    _onPaginationKeydown(event) {
+      if (
+        this.configFinal.accessible &&
+        (event.key === "Enter" || event.key === " ") &&
+        event.target instanceof Element &&
+        event.target.matches(".page-link[tabindex]")
+      ) {
+        event.preventDefault();
+        event.target.click();
+      }
+    },
+
+    // accessible: the attributes of a row's toggle button.
+    _toggleA11y(rIndex) {
+      const open = !!this.openRows[rIndex];
+      return {
+        type: "button",
+        class: "quintable--toggle-button",
+        "aria-expanded": String(open),
+        "aria-label": open
+          ? this.configFinal.collapseRowLabel
+          : this.configFinal.expandRowLabel,
+      };
+    },
+
+    // accessible: the attributes of a page link; label for an arrow, current for the page shown.
+    _pageLinkA11y(label = null, current = false) {
+      return {
+        role: "button",
+        tabindex: 0,
+        "aria-label": label,
+        "aria-current": current ? "page" : null,
+      };
     },
 
     checkKey(event) {

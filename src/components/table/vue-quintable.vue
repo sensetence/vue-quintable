@@ -13,6 +13,37 @@
     </div>
 
     <div
+      v-if="configFinal.columnPicker"
+      class="quintable--toolbar d-flex justify-content-end mb-2"
+    >
+      <details class="quintable--column-picker" @toggle="_onPickerToggle">
+        <summary class="btn btn-sm btn-outline-secondary">
+          {{ configFinal.columnPickerPlaceholder }}
+        </summary>
+        <div class="dropdown-menu show quintable--column-picker--menu">
+          <label
+            v-for="column in _pickerColumns"
+            :key="column.index"
+            class="dropdown-item d-flex align-items-center gap-2 mb-0"
+          >
+            <input
+              type="checkbox"
+              class="form-check-input mt-0"
+              :checked="column.visible"
+              :disabled="
+                column.visible &&
+                _pickerColumns.filter((c) => c.visible).length <= 1
+              "
+              @change="toggleColumn(column.index)"
+            />
+            <!-- eslint-disable-next-line vue/no-v-html -->
+            <span v-html="column.headline"></span>
+          </label>
+        </div>
+      </details>
+    </div>
+
+    <div
       v-if="configFinal.search"
       class="mb-3 quintable--search-container"
       :class="configFinal.searchContainerClass"
@@ -34,6 +65,9 @@
             v-model="query"
             type="search"
             :placeholder="configFinal.searchPlaceholder"
+            :aria-label="
+              configFinal.accessible ? configFinal.searchPlaceholder : null
+            "
             class="form-control"
           />
         </div>
@@ -46,13 +80,25 @@
     <div
       ref="height-wrapper"
       class="clearfix quintable--table-container"
-      :class="{ 'quintable-fit-scroll': fitScroll }"
+      :class="{
+        'quintable-fit-scroll': fitScroll,
+        'quintable-scroll': !!_scrollHeight,
+        'quintable-scroll-x': _pin.any || !!_layoutWidths,
+        'quintable-virtual': configFinal.virtualScroll,
+      }"
+      :style="_scrollHeight ? { maxHeight: _scrollHeight } : null"
     >
       <table
         v-if="!ajaxLoading"
         ref="table"
         class="vue-quintable table quintable--table-container--table"
-        :class="tableClasses"
+        :class="[
+          tableClasses,
+          configFinal.stickyHeader ? 'quintable--sticky-header' : '',
+          configFinal.resizableColumns ? 'quintable--resizable' : '',
+          _layoutWidths ? 'quintable--fixed-layout' : '',
+        ]"
+        :style="_layoutWidths && _layoutWidths.table"
       >
         <thead v-if="configFinal.headlines.length">
           <tr
@@ -62,12 +108,16 @@
             <th
               v-if="hasGeneratedRows && !configFinal.hideRowToggle"
               class="placeholder-th toggle-th toggle-cell quintable--table-container--table--header-row--placeholder-th"
+              :class="_pin.toggle && _pin.toggle.cls"
+              :style="_extraThStyle('toggle')"
             >
               <wbr />
             </th>
             <th
               v-if="configFinal.select && configFinal.selectPosition === 'pre'"
               class="select-th pre quintable--table-container--table--header-row--select-th quintable--table-container--table--header-row--select-th--pre"
+              :class="_pin.selectPre && _pin.selectPre.cls"
+              :style="_extraThStyle('selectPre')"
             >
               <template v-if="configFinal.selectAll && !noRows">
                 <slot
@@ -80,6 +130,9 @@
                 <quintable-p-check
                   v-else-if="configFinal.prettySelect"
                   v-model="allSelectedProperty"
+                  :aria-label="
+                    configFinal.accessible ? configFinal.selectAllLabel : null
+                  "
                   name="check"
                   class="p-icon p-smooth"
                   @change="checkAll()"
@@ -103,6 +156,9 @@
                   <input
                     v-model="allSelectedProperty"
                     type="checkbox"
+                    :aria-label="
+                      configFinal.accessible ? configFinal.selectAllLabel : null
+                    "
                     @change="checkAll()"
                   />
                 </label>
@@ -111,6 +167,8 @@
             <th
               v-if="$slots['row-prepend']"
               class="row-prepend-th quintable--table-container--table--header-row--prepend-th"
+              :class="_pin.prepend && _pin.prepend.cls"
+              :style="_extraThStyle('prepend')"
             >
               <slot name="header-prepend"></slot>
             </th>
@@ -118,9 +176,16 @@
               <th
                 v-if="cellVisible[hIndex]"
                 :key="'headline-' + hIndex"
-                :class="headerClass[hIndex]"
+                :class="[
+                  headerClass[hIndex],
+                  _pin.cols[hIndex] && _pin.cols[hIndex].cls,
+                ]"
+                :style="_thStyles[hIndex]"
+                :data-column="configFinal.resizableColumns ? hIndex : null"
                 :title="configFinal.columns[hIndex].title"
+                v-bind="configFinal.accessible ? _headerA11y[hIndex] : null"
                 @click.stop="setSortColumn(hIndex)"
+                @keydown="_onHeaderKeydown($event, hIndex)"
               >
                 <!-- eslint-disable-next-line vue/no-v-html -->
                 <span
@@ -183,17 +248,37 @@
                     </small>
                   </span>
                 </span>
+                <span
+                  v-if="
+                    configFinal.resizableColumns &&
+                    configFinal.columns[hIndex].resizable !== false
+                  "
+                  class="quintable--resize-handle"
+                  role="separator"
+                  aria-orientation="vertical"
+                  tabindex="0"
+                  :aria-label="configFinal.resizeColumnLabel"
+                  :aria-valuenow="columnWidths[hIndex] || null"
+                  @pointerdown.stop.prevent="_startResize($event, hIndex)"
+                  @click.stop
+                  @dblclick.stop="resetColumnWidths()"
+                  @keydown.stop="_resizeKeydown($event, hIndex)"
+                ></span>
               </th>
             </template>
             <th
               v-if="$slots['row-append']"
               class="row-append-th quintable--table-container--table--header-row--append-th"
+              :class="_pin.append && _pin.append.cls"
+              :style="_extraThStyle('append')"
             >
               <slot name="header-append"></slot>
             </th>
             <th
               v-if="configFinal.select && configFinal.selectPosition === 'post'"
               class="select-th post quintable--table-container--table--header-row--select-th quintable--table-container--table--header-row--select-th--post"
+              :class="_pin.selectPost && _pin.selectPost.cls"
+              :style="_extraThStyle('selectPost')"
             >
               <template v-if="configFinal.selectAll && !noRows">
                 <slot
@@ -206,6 +291,9 @@
                 <quintable-p-check
                   v-else-if="configFinal.prettySelect"
                   v-model="allSelectedProperty"
+                  :aria-label="
+                    configFinal.accessible ? configFinal.selectAllLabel : null
+                  "
                   name="check"
                   class="p-icon p-smooth"
                   @change="checkAll()"
@@ -229,11 +317,102 @@
                   <input
                     v-model="allSelectedProperty"
                     type="checkbox"
+                    :aria-label="
+                      configFinal.accessible ? configFinal.selectAllLabel : null
+                    "
                     @change="checkAll()"
                   />
                 </label>
               </template>
             </th>
+          </tr>
+          <tr
+            v-if="configFinal.columnFilters"
+            class="quintable--filter-row quintable--table-container--table--filter-row"
+          >
+            <th
+              v-if="hasGeneratedRows && !configFinal.hideRowToggle"
+              :class="_pin.toggle && _pin.toggle.cls"
+            ></th>
+            <th
+              v-if="configFinal.select && configFinal.selectPosition === 'pre'"
+              :class="_pin.selectPre && _pin.selectPre.cls"
+            ></th>
+            <th
+              v-if="$slots['row-prepend']"
+              :class="_pin.prepend && _pin.prepend.cls"
+            ></th>
+            <template v-for="(headline, hIndex) in configFinal.headlines">
+              <th
+                v-if="cellVisible[hIndex]"
+                :key="'filter-' + hIndex"
+                :class="[
+                  configFinal.columnClasses[hIndex],
+                  _pin.cols[hIndex] && _pin.cols[hIndex].cls,
+                ]"
+              >
+                <input
+                  v-if="configFinal.filterTypes[hIndex] === 'text'"
+                  type="search"
+                  class="form-control form-control-sm"
+                  :placeholder="configFinal.columnFilterPlaceholder"
+                  :aria-label="_filterLabel(hIndex)"
+                  :value="columnFilterValues[hIndex] || ''"
+                  @input="_onFilterInput(hIndex, $event)"
+                />
+                <select
+                  v-else-if="configFinal.filterTypes[hIndex] === 'select'"
+                  class="form-select form-select-sm"
+                  :aria-label="_filterLabel(hIndex)"
+                  :value="columnFilterValues[hIndex] || ''"
+                  @change="_onFilterInput(hIndex, $event)"
+                >
+                  <option value="">
+                    {{ configFinal.columnFilterAllLabel }}
+                  </option>
+                  <option
+                    v-for="option in _columnFilterOptions[hIndex]"
+                    :key="option"
+                    :value="option"
+                  >
+                    {{ option }}
+                  </option>
+                </select>
+                <div
+                  v-else-if="configFinal.filterTypes[hIndex] === 'range'"
+                  class="d-flex gap-1"
+                >
+                  <input
+                    v-for="bound in ['min', 'max']"
+                    :key="bound"
+                    type="number"
+                    class="form-control form-control-sm"
+                    :placeholder="
+                      bound === 'min'
+                        ? configFinal.columnFilterMinLabel
+                        : configFinal.columnFilterMaxLabel
+                    "
+                    :aria-label="
+                      _filterLabel(hIndex) +
+                      ' ' +
+                      (bound === 'min'
+                        ? configFinal.columnFilterMinLabel
+                        : configFinal.columnFilterMaxLabel)
+                    "
+                    :value="(columnFilterValues[hIndex] || {})[bound] ?? ''"
+                    @input="_onFilterInput(hIndex, $event, bound)"
+                  />
+                </div>
+              </th>
+            </template>
+            <th
+              v-if="$slots['row-append']"
+              :class="_pin.append && _pin.append.cls"
+            ></th>
+            <th
+              v-if="configFinal.select && configFinal.selectPosition === 'post'"
+              :class="_pin.selectPost && _pin.selectPost.cls"
+            ></th>
           </tr>
         </thead>
         <tbody
@@ -241,8 +420,23 @@
           @mouseleave="onMouseleaveTable"
           @mouseover="onCellMouseover"
         >
+          <tr
+            v-if="configFinal.virtualScroll"
+            class="quintable--virtual-spacer"
+            aria-hidden="true"
+          >
+            <td
+              :colspan="
+                columnCount +
+                ($slots['row-prepend'] ? 1 : 0) +
+                ($slots['row-append'] ? 1 : 0)
+              "
+              class="quintable--virtual-spacer-cell"
+              :style="{ height: virtualRange.top + 'px' }"
+            ></td>
+          </tr>
           <template
-            v-for="(rIndex, position) in visibleRowIndexes"
+            v-for="(rIndex, position) in _renderedRowIndexes"
             :key="
               configFinal.reuseRows
                 ? position
@@ -269,8 +463,34 @@
               <td
                 v-if="hasGeneratedRows && !configFinal.hideRowToggle"
                 class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td"
+                :class="_pin.toggle && _pin.toggle.cls"
               >
-                <span v-if="hiddenColumns[rIndex] > 0">
+                <!-- accessible: a button; else the plain span (no dynamic component in every row) -->
+                <button
+                  v-if="configFinal.accessible && hiddenColumns[rIndex] > 0"
+                  v-bind="_toggleA11y(rIndex)"
+                >
+                  <slot
+                    v-if="$slots['toggle-icon']"
+                    name="toggle-icon"
+                    :row="rowsFinal[rIndex]"
+                    :index="rIndex"
+                    :expanded="!!openRows[rIndex]"
+                  ></slot>
+                  <span v-else-if="!openRows[rIndex]"
+                    ><quintable-font-awesome-icon
+                      fixed-width
+                      :icon="configFinal.collapsedRowIcon"
+                    ></quintable-font-awesome-icon
+                  ></span>
+                  <span v-else
+                    ><quintable-font-awesome-icon
+                      fixed-width
+                      :icon="configFinal.expandedRowIcon"
+                    ></quintable-font-awesome-icon
+                  ></span>
+                </button>
+                <span v-else-if="hiddenColumns[rIndex] > 0">
                   <slot
                     v-if="$slots['toggle-icon']"
                     name="toggle-icon"
@@ -297,7 +517,10 @@
                   configFinal.select && configFinal.selectPosition === 'pre'
                 "
                 class="select-td pre quintable--table-container--table--tbody--row--select-td quintable--table-container--table--tbody--row--select-td--pre"
-                :class="{ 'disabled-select': rowsFinal[rIndex].disableSelect }"
+                :class="[
+                  { 'disabled-select': rowsFinal[rIndex].disableSelect },
+                  _pin.selectPre && _pin.selectPre.cls,
+                ]"
               >
                 <template
                   v-if="
@@ -317,6 +540,13 @@
                   <quintable-p-check
                     v-else-if="configFinal.prettySelect"
                     v-model="selected[rIndex]"
+                    :aria-label="
+                      configFinal.accessible
+                        ? configFinal.selectRowLabel +
+                          ' ' +
+                          (_visibleRowIndexMap[rIndex] + 1)
+                        : null
+                    "
                     name="check"
                     class="p-icon"
                     :disabled="rowsFinal[rIndex].disableSelect"
@@ -335,6 +565,13 @@
                     <input
                       v-model="selected[rIndex]"
                       type="checkbox"
+                      :aria-label="
+                        configFinal.accessible
+                          ? configFinal.selectRowLabel +
+                            ' ' +
+                            (_visibleRowIndexMap[rIndex] + 1)
+                          : null
+                      "
                       :disabled="rowsFinal[rIndex].disableSelect"
                       @change="checkListener($event, rIndex)"
                     />
@@ -345,6 +582,7 @@
               <td
                 v-if="$slots['row-prepend']"
                 class="row-prepend-td quintable--table-container--table--tbody--row--prepend-td"
+                :class="_pin.prepend && _pin.prepend.cls"
               >
                 <slot
                   name="row-prepend"
@@ -388,6 +626,21 @@
                         v-html="rc.value"
                       ></div>
                       <div
+                        v-else-if="rc.kind === 'text' && rc.marks"
+                        class="cell-inner"
+                        :class="rc.innerClass"
+                      >
+                        <template v-for="(piece, p) in rc.marks" :key="p"
+                          ><mark
+                            v-if="piece.mark"
+                            class="quintable--search-mark"
+                            >{{ piece.text }}</mark
+                          ><template v-else>{{
+                            piece.text
+                          }}</template></template
+                        >
+                      </div>
+                      <div
                         v-else-if="rc.kind === 'text'"
                         class="cell-inner"
                         :class="rc.innerClass"
@@ -414,6 +667,18 @@
                     v-html="rc.value"
                   ></div>
                   <div
+                    v-else-if="rc.kind === 'text' && rc.marks"
+                    class="cell-inner"
+                    :class="rc.innerClass"
+                  >
+                    <template v-for="(piece, p) in rc.marks" :key="p"
+                      ><mark v-if="piece.mark" class="quintable--search-mark">{{
+                        piece.text
+                      }}</mark
+                      ><template v-else>{{ piece.text }}</template></template
+                    >
+                  </div>
+                  <div
                     v-else-if="rc.kind === 'text'"
                     class="cell-inner"
                     :class="rc.innerClass"
@@ -425,6 +690,7 @@
               <td
                 v-if="$slots['row-append']"
                 class="row-append-td quintable--table-container--table--tbody--row--append-td"
+                :class="_pin.append && _pin.append.cls"
               >
                 <slot
                   name="row-append"
@@ -438,7 +704,10 @@
                   configFinal.select && configFinal.selectPosition === 'post'
                 "
                 class="select-td post quintable--table-container--table--tbody--row--select-td quintable--table-container--table--tbody--row--select-td--post"
-                :class="{ 'disabled-select': rowsFinal[rIndex].disableSelect }"
+                :class="[
+                  { 'disabled-select': rowsFinal[rIndex].disableSelect },
+                  _pin.selectPost && _pin.selectPost.cls,
+                ]"
               >
                 <template
                   v-if="
@@ -458,6 +727,13 @@
                   <quintable-p-check
                     v-else-if="configFinal.prettySelect"
                     v-model="selected[rIndex]"
+                    :aria-label="
+                      configFinal.accessible
+                        ? configFinal.selectRowLabel +
+                          ' ' +
+                          (_visibleRowIndexMap[rIndex] + 1)
+                        : null
+                    "
                     name="check"
                     class="p-icon"
                     :disabled="rowsFinal[rIndex].disableSelect"
@@ -476,6 +752,13 @@
                     <input
                       v-model="selected[rIndex]"
                       type="checkbox"
+                      :aria-label="
+                        configFinal.accessible
+                          ? configFinal.selectRowLabel +
+                            ' ' +
+                            (_visibleRowIndexMap[rIndex] + 1)
+                          : null
+                      "
                       :disabled="rowsFinal[rIndex].disableSelect"
                       @change="checkListener($event, rIndex)"
                     />
@@ -712,6 +995,23 @@
                                       v-html="rc.value"
                                     ></div>
                                     <div
+                                      v-else-if="rc.kind === 'text' && rc.marks"
+                                      class="cell-inner"
+                                      :class="rc.innerClass"
+                                    >
+                                      <template
+                                        v-for="(piece, p) in rc.marks"
+                                        :key="p"
+                                        ><mark
+                                          v-if="piece.mark"
+                                          class="quintable--search-mark"
+                                          >{{ piece.text }}</mark
+                                        ><template v-else>{{
+                                          piece.text
+                                        }}</template></template
+                                      >
+                                    </div>
+                                    <div
                                       v-else-if="rc.kind === 'text'"
                                       class="cell-inner"
                                       :class="rc.innerClass"
@@ -738,6 +1038,23 @@
                                   v-html="rc.value"
                                 ></div>
                                 <div
+                                  v-else-if="rc.kind === 'text' && rc.marks"
+                                  class="cell-inner"
+                                  :class="rc.innerClass"
+                                >
+                                  <template
+                                    v-for="(piece, p) in rc.marks"
+                                    :key="p"
+                                    ><mark
+                                      v-if="piece.mark"
+                                      class="quintable--search-mark"
+                                      >{{ piece.text }}</mark
+                                    ><template v-else>{{
+                                      piece.text
+                                    }}</template></template
+                                  >
+                                </div>
+                                <div
                                   v-else-if="rc.kind === 'text'"
                                   class="cell-inner"
                                   :class="rc.innerClass"
@@ -755,6 +1072,21 @@
               </tr>
             </template>
           </template>
+          <tr
+            v-if="configFinal.virtualScroll"
+            class="quintable--virtual-spacer"
+            aria-hidden="true"
+          >
+            <td
+              :colspan="
+                columnCount +
+                ($slots['row-prepend'] ? 1 : 0) +
+                ($slots['row-append'] ? 1 : 0)
+              "
+              class="quintable--virtual-spacer-cell"
+              :style="{ height: virtualRange.bottom + 'px' }"
+            ></td>
+          </tr>
         </tbody>
       </table>
 
@@ -1004,11 +1336,15 @@
             ></slot>
             <nav
               v-else-if="configFinal && configFinal.pagination && pages > 1"
+              :aria-label="
+                configFinal.accessible ? configFinal.paginationLabel : null
+              "
               class="d-inline-block align-middle mb-2 quintable--table-footer-container--pagination-wrapper--pagination-container--nav"
               :class="{ 'me-3': numberOfVisibleRows, disabled: ajaxLoading }"
             >
               <ul
                 class="pagination mb-0 quintable--table-footer-container--pagination-wrapper--pagination-container--nav--pagination"
+                @keydown="_onPaginationKeydown"
               >
                 <li
                   v-if="pages > pageRange"
@@ -1016,7 +1352,14 @@
                   :class="{ disabled: currentPage <= 1 }"
                   @click="gotoPage('first')"
                 >
-                  <span class="page-link">
+                  <span
+                    class="page-link"
+                    v-bind="
+                      configFinal.accessible
+                        ? _pageLinkA11y(configFinal.firstPageLabel)
+                        : null
+                    "
+                  >
                     <slot
                       v-if="$slots['pagination-icon']"
                       name="pagination-icon"
@@ -1030,7 +1373,14 @@
                   :class="{ disabled: currentPage <= 1 }"
                   @click="gotoPage('prev')"
                 >
-                  <span class="page-link">
+                  <span
+                    class="page-link"
+                    v-bind="
+                      configFinal.accessible
+                        ? _pageLinkA11y(configFinal.previousPageLabel)
+                        : null
+                    "
+                  >
                     <slot
                       v-if="$slots['pagination-icon']"
                       name="pagination-icon"
@@ -1044,7 +1394,12 @@
                   class="page-item"
                   @click="updatePageOffset(-1)"
                 >
-                  <span class="page-link"> ... </span>
+                  <span
+                    class="page-link"
+                    v-bind="configFinal.accessible ? _pageLinkA11y() : null"
+                  >
+                    ...
+                  </span>
                 </li>
 
                 <li
@@ -1054,7 +1409,14 @@
                   :class="{ active: page === currentPage }"
                   @click="gotoPage(page)"
                 >
-                  <span class="page-link">
+                  <span
+                    class="page-link"
+                    v-bind="
+                      configFinal.accessible
+                        ? _pageLinkA11y(null, page === currentPage)
+                        : null
+                    "
+                  >
                     {{ page }}
                   </span>
                 </li>
@@ -1067,7 +1429,12 @@
                   class="page-item"
                   @click="updatePageOffset(1)"
                 >
-                  <span class="page-link"> ... </span>
+                  <span
+                    class="page-link"
+                    v-bind="configFinal.accessible ? _pageLinkA11y() : null"
+                  >
+                    ...
+                  </span>
                 </li>
 
                 <li
@@ -1075,7 +1442,14 @@
                   :class="{ disabled: pages === currentPage }"
                   @click="gotoPage('next')"
                 >
-                  <span class="page-link">
+                  <span
+                    class="page-link"
+                    v-bind="
+                      configFinal.accessible
+                        ? _pageLinkA11y(configFinal.nextPageLabel)
+                        : null
+                    "
+                  >
                     <slot
                       v-if="$slots['pagination-icon']"
                       name="pagination-icon"
@@ -1090,7 +1464,14 @@
                   :class="{ disabled: pages === currentPage }"
                   @click="gotoPage('last')"
                 >
-                  <span class="page-link">
+                  <span
+                    class="page-link"
+                    v-bind="
+                      configFinal.accessible
+                        ? _pageLinkA11y(configFinal.lastPageLabel)
+                        : null
+                    "
+                  >
                     <slot
                       v-if="$slots['pagination-icon']"
                       name="pagination-icon"
@@ -1133,7 +1514,13 @@ import { computed, getCurrentInstance, h, toRaw } from "vue";
 import { getSharedBreakpoints } from "../../utils/shared-breakpoints";
 import { PAGINATION_OPTIONS, _resetLocalStorageCache } from "./config";
 import { operatorFunctions } from "./filter";
-import { sameList, valueToString, cellsOf, withUpdates } from "./helpers";
+import {
+  sameList,
+  valueToString,
+  cellsOf,
+  withUpdates,
+  splitMarks,
+} from "./helpers";
 import { vTooltip } from "./tooltip";
 // Computed values and methods by topic, as in v2 (src/mixins there too). Props, data, watchers and lifecycle hooks
 // stay here: the order watchers are created in decides the order of the events they emit.
@@ -1145,6 +1532,9 @@ import paginationMixin from "../../mixins/pagination.mixin";
 import selectionMixin from "../../mixins/selection.mixin";
 import eventsMixin from "../../mixins/events.mixin";
 import breakpointMixin from "../../mixins/breakpoint.mixin";
+import columnsMixin from "../../mixins/columns.mixin";
+import urlStateMixin from "../../mixins/url-state.mixin";
+import virtualScrollMixin from "../../mixins/virtual-scroll.mixin";
 
 let _quintableIdCounter = 0;
 
@@ -1187,6 +1577,17 @@ function cellContent(cell, formatted, useFormatted, classPrefix) {
     value = cell.text;
   }
   return { kind, value, innerClass: kind && classPrefix + modifier };
+}
+
+// highlightSearch: a text cell's content split at the query's occurrences (marks), if it has any.
+function withMarks(content, query) {
+  if (query && content.kind === "text") {
+    const marks = splitMarks(String(content.value), query);
+    if (marks) {
+      content.marks = marks;
+    }
+  }
+  return content;
 }
 
 // The parts of a row's details: the cells collapsed by a breakpoint (shown while the row is open), then the sticky ones.
@@ -1235,6 +1636,9 @@ export default {
     selectionMixin,
     eventsMixin,
     breakpointMixin,
+    columnsMixin,
+    urlStateMixin,
+    virtualScrollMixin,
   ],
   inject: {
     // Config defaults for every table of the app: app.use(VueQuintable, { defaults: { ... } }).
@@ -1347,6 +1751,9 @@ export default {
     "update:sort",
     "ajax:rows",
     "ajax:error",
+    "update:hidden-columns",
+    "resize:column",
+    "update:column-filters",
   ],
   data() {
     return {
@@ -1368,6 +1775,16 @@ export default {
       ajaxRows: [],
       ajaxPages: 0,
       ajaxAll: 0,
+      // resizableColumns: the widths in px, by column index or the table's own cells (see columns.mixin.js).
+      columnWidths: {},
+      // virtualScroll: the rendered rows (positions start to end of the page's rows) and the spacer heights.
+      virtualRange: { start: 0, end: 40, top: 0, bottom: 0 },
+      // columnFilters: the value of each column's filter, by column index.
+      columnFilterValues: {},
+      // columnPicker: the columns the user hid, index → true.
+      userHiddenColumns: {},
+      // searchDebounce: the query the rows are searched by, the typed one after a pause.
+      debouncedQuery: "",
       // The last failed AJAX request's error (error slot), null once a request starts.
       ajaxError: null,
       customRowsPerPage: null,
@@ -1408,9 +1825,7 @@ export default {
     // while rows load there are none to check.
     skeleton() {
       const cols = this.configFinal.columns;
-      const shown = cols.map(
-        (col, j) => !!col && !this.configFinal.hiddenCols[j],
-      );
+      const shown = cols.map((col, j) => !!col && !this._isHiddenCol(j));
       return {
         columns: shown.map(
           (show, j) =>
@@ -1448,7 +1863,7 @@ export default {
       const cache = {};
       for (let j = 0; j < this.configFinal.columns.length; j++) {
         cache[j] =
-          this.configFinal.hiddenCols[j] ||
+          this._isHiddenCol(j) ||
           (!this.configFinal.ignoreEmpty[j] &&
             this.configFinal.hideEmptyColumns &&
             this._colEmptyCache[j]) ||
@@ -1462,7 +1877,7 @@ export default {
       return Object.freeze(
         this.configFinal.columns.map(
           (col, j) =>
-            !this.configFinal.hiddenCols[j] &&
+            !this._isHiddenCol(j) &&
             !this.emptyColumns[j] &&
             !!col &&
             !this._colBreakpointMatch[j] &&
@@ -1804,7 +2219,14 @@ export default {
       const cellCls = this.cellClassesParsed;
       const fmtCells = this._fmtCells;
       const uid = this.uuid;
-      for (const rIndex of this.visibleRowIndexes) {
+      const marks = this.configFinal.highlightSearch ? this._markQuery : "";
+      const pins = this._pin.cols;
+      // resizableColumns: in the fixed layout long words break instead of widening a column
+      const wrap =
+        this.configFinal.resizableColumns && this._layoutWidths
+          ? " quintable-wrap-anywhere"
+          : "";
+      for (const rIndex of this._renderedRowIndexes) {
         const row = this.rowsFinal[rIndex];
         if (!row) continue;
         const cells = cellsOf(row);
@@ -1818,13 +2240,21 @@ export default {
           const fmt = rowFmt ? rowFmt[i] || null : null;
           arr.push({
             cell: cell,
-            cls: (rowCls ? rowCls[i] || "" : "") + " " + (colClasses[i] || ""),
+            cls:
+              (rowCls ? rowCls[i] || "" : "") +
+              " " +
+              (colClasses[i] || "") +
+              (pins[i] ? " " + pins[i].cls : "") +
+              wrap,
             vis,
             key: prefix + i,
             ...(vis
               ? {
                   tooltip: cellTooltip(cell, "left"),
-                  ...cellContent(cell, fmt, !!fmt, CELL_INNER),
+                  ...withMarks(
+                    cellContent(cell, fmt, !!fmt, CELL_INNER),
+                    marks,
+                  ),
                 }
               : null),
           });
@@ -1838,7 +2268,8 @@ export default {
     _detailCells() {
       const details = {};
       const fmtCells = this._fmtCells;
-      for (const rIndex of this.visibleRowIndexes) {
+      const marks = this.configFinal.highlightSearch ? this._markQuery : "";
+      for (const rIndex of this._renderedRowIndexes) {
         const prefix = "vue-quintable-" + this.uuid + "-";
         details[rIndex] = DETAIL_PARTS.map((part) => {
           const generated = part.kind === "generated";
@@ -1864,7 +2295,15 @@ export default {
                 key: generated ? id + "-" + this.generatedUpdatedKey : id,
                 tooltip: open ? cellTooltip(cell, "top") : null,
                 ...(open
-                  ? cellContent(cell, formatted, hasFormatter, part.innerPrefix)
+                  ? withMarks(
+                      cellContent(
+                        cell,
+                        formatted,
+                        hasFormatter,
+                        part.innerPrefix,
+                      ),
+                      marks,
+                    )
                   : null),
               };
             }),
@@ -2084,7 +2523,10 @@ export default {
 
       if (this.configFinal.ajaxUrl) {
         this.pageSort = false;
-        const clear = !(this.configFinal.storeState && this.storedState.query);
+        const clear = !(
+          (this.configFinal.storeState || this.configFinal.urlState) &&
+          this.storedState.query
+        );
         clearTimeout(this.queryAjaxTimeout);
         this.queryAjaxTimeout = setTimeout(() => {
           this.loadViaAjax(clear, clear, "QUERY");
@@ -2125,7 +2567,8 @@ export default {
       this.$emit("update:rows-per-page", val, "update:rows-per-page");
 
       const clear = !(
-        this.configFinal.storeState && this.storedState["rows-per-page"]
+        (this.configFinal.storeState || this.configFinal.urlState) &&
+        this.storedState["rows-per-page"]
       );
 
       if (this.configFinal.storeState) {
@@ -2240,7 +2683,8 @@ export default {
       this.$emit("update:page", val, "update:page");
 
       const clear = !(
-        this.configFinal.storeState && this.storedState["current-page"]
+        (this.configFinal.storeState || this.configFinal.urlState) &&
+        this.storedState["current-page"]
       );
 
       if (this.configFinal.storeState) {
@@ -2323,11 +2767,19 @@ export default {
       this.$emit("active:row", this.rowsFinal[val], "active:row", realIndex);
       this._paintRows();
       this._flagRow("active", old, val);
+      // virtualScroll: the arrow keys may move the active row out of the rendered window.
+      if (this.configFinal.virtualScroll && val !== null) {
+        this._scrollRowIntoView(val);
+      }
     },
   },
   created() {
     if (this.configFinal.storeState) {
       this._restoreState();
+    }
+    // urlState: the link's state wins over the stored one.
+    if (this.configFinal.urlState) {
+      this._readUrlState();
     }
 
     this.initLists();
@@ -2374,10 +2826,23 @@ export default {
     if (this.configFinal.enableRowTabIndex) {
       document.addEventListener("keydown", this.checkKey);
     }
+
+    // searchDebounce: created last, so it runs after the query watcher above and changes no event order.
+    this.debouncedQuery = this.query;
+    this.$watch("query", this._debounceQuery);
+
+    // urlState: created last as well; writes the state into the address bar.
+    if (this.configFinal.urlState) {
+      this.$watch(() => this._urlStateParams, this._writeUrlState);
+    }
   },
   mounted() {
     if (this.configFinal.ajaxUrl) {
       this.loadViaAjax(false, true, "MOUNTED");
+    }
+    this._schedulePins();
+    if (this.configFinal.virtualScroll) {
+      this._setupVirtual();
     }
 
     if (this.configFinal.defaultSelected) {
@@ -2407,6 +2872,12 @@ export default {
     // A render rewrites the class of patched rows and adds or re-creates details rows: set the hover and the active
     // class on them again.
     this._paintRows();
+    // column pin: new cells, or a new table after loading, need their offsets.
+    this._schedulePins();
+    // virtualScroll: measure the rendered rows, correct the window.
+    if (this.configFinal.virtualScroll || this._virtualListening) {
+      this._setupVirtual();
+    }
     // autoFit: a new page or sort can bring longer values that widen the table without resizing anything observed.
     if (this.configFinal.autoFit) {
       this._observeFitTable();
@@ -2414,6 +2885,11 @@ export default {
     }
   },
   beforeUnmount() {
+    clearTimeout(this._debounceTimer);
+    this._removePickerListeners();
+    this._unobservePins();
+    clearTimeout(this._columnFilterTimeout);
+    this._teardownVirtual();
     if (this._sharedBP) {
       this._sharedBP.unsubscribe(this._onBreakpointChange);
     }
@@ -2594,6 +3070,29 @@ export default {
       if (sortIndexes) {
         this.storedState["sort-indexes"] = JSON.parse(sortIndexes);
       }
+
+      const columnWidths = this.configFinal.resizableColumns
+        ? read("column-widths")
+        : null;
+      if (columnWidths) {
+        this.columnWidths = JSON.parse(columnWidths);
+      }
+
+      const columnFilters = this.configFinal.columnFilters
+        ? read("column-filters")
+        : null;
+      if (columnFilters) {
+        this.columnFilterValues = JSON.parse(columnFilters);
+      }
+
+      const hiddenColumns = this.configFinal.columnPicker
+        ? read("hidden-columns")
+        : null;
+      if (hiddenColumns) {
+        this.userHiddenColumns = Object.fromEntries(
+          JSON.parse(hiddenColumns).map((index) => [index, true]),
+        );
+      }
     },
   },
 };
@@ -2708,6 +3207,221 @@ table.generated-table td {
 .toggle-cell.invisible > span {
   pointer-events: none;
   opacity: 0;
+}
+
+/* scrollHeight: the table scrolls in its own box; column pin: sideways in its container. */
+.quintable-scroll {
+  overflow: auto;
+}
+.quintable-scroll-x {
+  overflow-x: auto;
+}
+
+/* stickyHeader: the headings stay on top while the rows scroll, the page or the table's own box. */
+.quintable--sticky-header > thead {
+  position: sticky;
+  top: var(--quintable-sticky-top, 0);
+  z-index: 2;
+}
+.quintable--sticky-header > thead > tr > th {
+  box-shadow: inset 0 -1px 0 var(--bs-border-color);
+}
+
+/* column pin: pinned cells stay while the table scrolls sideways, above the cells that pass under them. Their
+   background is Bootstrap's opaque table background; a hovered row tints them with a shadow, not a translucent
+   background, so nothing shows through. A soft edge marks where the pinned cells end. */
+.quintable-pin {
+  position: sticky;
+  z-index: 1;
+}
+/* Each pinned cell's offset: the widths of the pinned cells before it, measured into the table's variables. */
+.quintable-pin-start-0 {
+  inset-inline-start: var(--quintable-pin-start-0, 0px);
+}
+.quintable-pin-start-1 {
+  inset-inline-start: var(--quintable-pin-start-1, 0px);
+}
+.quintable-pin-start-2 {
+  inset-inline-start: var(--quintable-pin-start-2, 0px);
+}
+.quintable-pin-start-3 {
+  inset-inline-start: var(--quintable-pin-start-3, 0px);
+}
+.quintable-pin-start-4 {
+  inset-inline-start: var(--quintable-pin-start-4, 0px);
+}
+.quintable-pin-start-5 {
+  inset-inline-start: var(--quintable-pin-start-5, 0px);
+}
+.quintable-pin-start-6 {
+  inset-inline-start: var(--quintable-pin-start-6, 0px);
+}
+.quintable-pin-start-7 {
+  inset-inline-start: var(--quintable-pin-start-7, 0px);
+}
+.quintable-pin-start-8 {
+  inset-inline-start: var(--quintable-pin-start-8, 0px);
+}
+.quintable-pin-start-9 {
+  inset-inline-start: var(--quintable-pin-start-9, 0px);
+}
+.quintable-pin-end-0 {
+  inset-inline-end: var(--quintable-pin-end-0, 0px);
+}
+.quintable-pin-end-1 {
+  inset-inline-end: var(--quintable-pin-end-1, 0px);
+}
+.quintable-pin-end-2 {
+  inset-inline-end: var(--quintable-pin-end-2, 0px);
+}
+.quintable-pin-end-3 {
+  inset-inline-end: var(--quintable-pin-end-3, 0px);
+}
+.quintable-pin-end-4 {
+  inset-inline-end: var(--quintable-pin-end-4, 0px);
+}
+.quintable-pin-end-5 {
+  inset-inline-end: var(--quintable-pin-end-5, 0px);
+}
+.quintable-pin-end-6 {
+  inset-inline-end: var(--quintable-pin-end-6, 0px);
+}
+.quintable-pin-end-7 {
+  inset-inline-end: var(--quintable-pin-end-7, 0px);
+}
+.quintable-pin-end-8 {
+  inset-inline-end: var(--quintable-pin-end-8, 0px);
+}
+.quintable-pin-end-9 {
+  inset-inline-end: var(--quintable-pin-end-9, 0px);
+}
+.quintable-pin-edge::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  pointer-events: none;
+}
+.quintable-pin-start.quintable-pin-edge::after {
+  inset-inline-end: -6px;
+  background: linear-gradient(
+    to right,
+    rgba(var(--bs-emphasis-color-rgb, 0, 0, 0), 0.08),
+    transparent
+  );
+}
+.quintable-pin-end.quintable-pin-edge::after {
+  inset-inline-start: -6px;
+  background: linear-gradient(
+    to left,
+    rgba(var(--bs-emphasis-color-rgb, 0, 0, 0), 0.08),
+    transparent
+  );
+}
+/* Right-to-left: the edges point the other way. */
+.quintable-pin-start.quintable-pin-edge:dir(rtl)::after {
+  transform: scaleX(-1);
+}
+.quintable-pin-end.quintable-pin-edge:dir(rtl)::after {
+  transform: scaleX(-1);
+}
+.table-wrapper .bg-muted > td.quintable-pin {
+  background-color: var(--bs-table-bg, var(--bs-body-bg));
+  box-shadow: inset 0 0 0 9999px
+    var(
+      --quintable-row-hover-bg,
+      rgba(var(--bs-emphasis-color-rgb, 0, 0, 0), 0.1)
+    );
+}
+.table-wrapper
+  .bg-muted:is(.row-active, .parent-row-active)
+  > td.quintable-pin {
+  background-color: var(
+    --quintable-row-active-bg,
+    var(--bs-primary-bg-subtle, #cfe2ff)
+  );
+  box-shadow: none;
+}
+
+/* resizableColumns: a grip on the end edge of each heading. Once a column was sized, the columns keep fixed
+   widths and long words break instead of widening them. */
+:where(.quintable--resizable > thead > tr) > th:not(.quintable-pin) {
+  position: relative;
+}
+.quintable--resize-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  inset-inline-end: 0;
+  width: 0.5rem;
+  cursor: col-resize;
+  touch-action: none;
+}
+.quintable--resize-handle:hover,
+.quintable--resize-handle:focus-visible {
+  outline: none;
+  background: linear-gradient(
+    to right,
+    transparent calc(100% - 3px),
+    var(--bs-primary, #0d6efd) calc(100% - 3px)
+  );
+}
+.quintable--resize-handle:dir(rtl):hover,
+.quintable--resize-handle:dir(rtl):focus-visible {
+  transform: scaleX(-1);
+}
+/* A class only the cells of the fixed layout have: a rule on a class every cell has would be checked for every cell
+   in every table, at each restyle. */
+.quintable-wrap-anywhere,
+.quintable--fixed-layout > thead > tr > th {
+  overflow-wrap: anywhere;
+}
+
+/* virtualScroll: the rows not rendered take their room in two empty rows. The browser must not move the scroll
+   position when a spacer changes (scroll anchoring): the table would answer with a new window, and so on. */
+.quintable-virtual {
+  overflow-anchor: none;
+}
+.quintable--virtual-spacer-cell {
+  padding: 0;
+  border: 0;
+}
+
+/* columnPicker: a disclosure button with its menu below, right-aligned. */
+.quintable--column-picker {
+  position: relative;
+}
+.quintable--column-picker > summary {
+  list-style: none;
+}
+.quintable--column-picker > summary::-webkit-details-marker {
+  display: none;
+}
+.quintable--column-picker--menu {
+  top: 100%;
+  right: 0;
+  left: auto;
+  max-height: 20rem;
+  overflow-y: auto;
+}
+
+/* accessible: the toggle is a button that looks like the icon it holds. */
+.quintable--toggle-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+}
+
+/* accessible: what the keyboard reaches shows where focus is. */
+.quintable--toggle-button:focus-visible,
+.sort-header[tabindex]:focus-visible,
+.page-link[tabindex]:focus-visible {
+  outline: 2px solid var(--bs-focus-ring-color, rgba(13, 110, 253, 0.5));
+  outline-offset: -2px;
 }
 
 .cursor-pointer {

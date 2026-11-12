@@ -45,6 +45,7 @@ Neues Beispiel: Datei in `src/examples` anlegen (Aufbau wie die vorhandenen), in
 yarn test           # Unit-Tests (vitest, tests/)
 yarn test:watch     # vitest im Watch-Modus
 yarn test:e2e       # Playwright (e2e/), startet den Dev-Server selbst (oder nutzt den laufenden)
+yarn test:types     # prüft types/index.d.ts mit einer Beispiel-Nutzung (types/test/usage.vue)
 npx eslint          # Lint
 make format         # prettier über src/ (v3)
 make lint           # format + eslint (v3)
@@ -131,6 +132,12 @@ Ein Fix, der v2 und v3 betrifft, kommt in beide Branches, z. B. `fix: drop resto
 | Komponente | `src/components/table/vue-quintable.vue` + `src/mixins/*.mixin.js` (gleiche Namen wie v2) + `config.ts`, `filter.ts`, `sort.ts`, `tooltip.ts`, `helpers.ts` neben der Komponente | `src/components/VueQuintable.vue` + `src/mixins/*.mixin.js` |
 
 Also meist von Hand portieren und in beiden Linien je ein Release machen. Die Mixins tragen in v3 dieselben Namen wie in v2, enthalten in v3 aber nur `computed` und `methods`: Watcher und Lifecycle-Hooks stehen in v3 in `vue-quintable.vue`, weil Vue Watcher aus Mixins zuerst anlegt und ihre Reihenfolge die Reihenfolge der Events bestimmt.
+
+Nur v3 hat diese Mixins: `columns.mixin.js` (Spaltenauswahl, angepinnte Spalten, Spaltenbreiten, Spaltenfilter), `url-state.mixin.js` (`urlState`) und `virtual-scroll.mixin.js` (`virtualScroll`).
+
+**Neue Funktionen nur per Schalter:** Jede neue Funktion der Tabelle hängt an einer Config-Option. Ohne sie bleiben HTML, Events und Verhalten wie vorher. Das prüfen die E2E-Snapshots, die alle unverändert bleiben müssen. Kosten im Rendern beachten: Eine Bindung wie `:style="x"` in jeder Zelle kostet auch dann, wenn `x` leer ist (Vue ruft `patchStyle`, der Browser legt ein Style-Objekt an). Was nur mit einem Schalter gilt, gehört in eine Klasse oder hinter ein `v-if`.
+
+**Typen:** `types/index.d.ts` ist von Hand geschrieben. Wer Props, Config-Optionen, Events, Slots oder öffentliche Methoden ändert, ändert sie dort mit und lässt `yarn test:types` laufen.
 
 ## Wenn ein Release schiefgeht
 

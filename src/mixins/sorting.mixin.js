@@ -27,6 +27,20 @@ export default {
       return columns;
     },
 
+    // accessible: a sortable heading can take focus and says how its column is sorted.
+    _headerA11y() {
+      return this.configFinal.headlines.map((headline, index) => {
+        if (!this.configFinal.sorts[index]) {
+          return {};
+        }
+        const sort = this.currentSortIndexes[index];
+        return {
+          tabindex: 0,
+          "aria-sort": sort ? (sort.asc ? "ascending" : "descending") : "none",
+        };
+      });
+    },
+
     /**
      * Checks if page sort is currently active. Special case: no user action in place
      *

@@ -31,6 +31,14 @@ const BOOLEANS = [
   "ignoreControlClicks",
   "alwaysShowSortIcons",
   "reuseRows",
+  "accessible",
+  "highlightSearch",
+  "columnPicker",
+  "stickyHeader",
+  "resizableColumns",
+  "columnFilters",
+  "virtualScroll",
+  "urlState",
 ];
 
 // Values that fall back to a default when not set (or falsy).
@@ -47,6 +55,24 @@ const DEFAULTS: Dict = {
   pageRange: 5,
   searchClass: "col-12",
   searchContainerClass: "row",
+  searchDebounce: 0,
+  scrollHeight: false,
+  rowHeight: 41,
+  columnPickerPlaceholder: "Columns",
+  columnFilterPlaceholder: "Filter",
+  selectRowLabel: "Select row",
+  selectAllLabel: "Select all rows",
+  paginationLabel: "Pagination",
+  expandRowLabel: "Show details",
+  collapseRowLabel: "Hide details",
+  firstPageLabel: "First page",
+  previousPageLabel: "Previous page",
+  nextPageLabel: "Next page",
+  lastPageLabel: "Last page",
+  resizeColumnLabel: "Resize column",
+  columnFilterAllLabel: "All",
+  columnFilterMinLabel: "Min",
+  columnFilterMaxLabel: "Max",
 };
 
 // Values that must be one of a list; the first entry is the default.
@@ -116,6 +142,9 @@ function columnLists(columns: any[]) {
     breakpoints: [] as string[],
     hiddenCols: [] as boolean[],
     ignoreEmpty: [] as boolean[],
+    pins: [] as ("start" | "end" | false)[],
+    widths: [] as (string | false)[],
+    filterTypes: [] as ("text" | "select" | "range" | false)[],
   };
   for (let i = 0; i < columns.length; i++) {
     const col = columns[i];
@@ -148,6 +177,20 @@ function columnLists(columns: any[]) {
     lists.stickyCols[i] = !!(col && col.sticky);
     lists.hiddenCols[i] = !!(col && col.hidden);
     lists.alignments[i] = (col && col.align) || false;
+    lists.pins[i] =
+      col && (col.pin === "start" || col.pin === "end") ? col.pin : false;
+    lists.widths[i] =
+      col && col.width
+        ? typeof col.width === "number"
+          ? col.width + "px"
+          : String(col.width)
+        : false;
+    lists.filterTypes[i] =
+      col && col.filter === false
+        ? false
+        : col && (col.filter === "select" || col.filter === "range")
+          ? col.filter
+          : "text";
   }
   return lists;
 }

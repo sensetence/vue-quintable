@@ -41,6 +41,46 @@ export default {
      *
      */
     filteredRows() {
+      const visible = this._searchAndFilter();
+      // columnFilters: read after everything above, so a table without them reads its sources as before.
+      if (
+        this.configFinal.columnFilters &&
+        !this.configFinal.ajaxUrl &&
+        this._columnFilterActive
+      ) {
+        return this._applyColumnFilters(visible);
+      }
+      return visible;
+    },
+    // highlightSearch: the lower-case query the text cells mark, "" while none is searched.
+    _markQuery() {
+      if (!this.configFinal.search) {
+        return "";
+      }
+      const query = String(
+        this.configFinal.searchDebounce && !this.configFinal.ajaxUrl
+          ? this.debouncedQuery
+          : this.query,
+      );
+      return query.length >= this.configFinal.searchLength
+        ? query.toLowerCase()
+        : "";
+    },
+
+    // What filter.ts needs from the table.
+    _filterContext() {
+      return {
+        groups: this.filterGroups,
+        operators: this.operatorFunctions,
+        operatorNames: this.operators,
+        defaultOperator: this.defaultOperator,
+        debug: this.DEBUG,
+      };
+    },
+  },
+  methods: {
+    // The rows that pass search and filters (filteredRows without the column filters).
+    _searchAndFilter() {
       if (this.configFinal.ajaxUrl) {
         return this.rowsFinal;
       }
@@ -48,6 +88,9 @@ export default {
       const rows = this.rowsFinal;
       const visible = new Array(rows.length).fill(true);
       const search = this.configFinal.search;
+      // searchDebounce: the rows follow the query after a pause.
+      const queryOf = () =>
+        this.configFinal.searchDebounce ? this.debouncedQuery : this.query;
 
       // Sources are read in the order of before (the query only with search on, and past here only once there is a
       // row): the order a computed reads its sources in decides the order watchers run in, and with it of events.
@@ -55,7 +98,7 @@ export default {
         (!search && !this.filterActive) ||
         (!this.filterActive &&
           search &&
-          this.query.length < this.configFinal.searchLength)
+          queryOf().length < this.configFinal.searchLength)
       ) {
         return visible;
       }
@@ -71,10 +114,10 @@ export default {
 
         if (searching === undefined) {
           searching =
-            search && this.query.length >= this.configFinal.searchLength;
+            search && queryOf().length >= this.configFinal.searchLength;
         }
         if (searching && !matches) {
-          const query = (this.query + "").toLowerCase();
+          const query = (queryOf() + "").toLowerCase();
           const fuzzySearch = this.configFinal.useFuzzySearch;
           matches = (value) => {
             const text = (value + "").toLowerCase();
@@ -134,19 +177,19 @@ export default {
 
       return visible;
     },
-
-    // What filter.ts needs from the table.
-    _filterContext() {
-      return {
-        groups: this.filterGroups,
-        operators: this.operatorFunctions,
-        operatorNames: this.operators,
-        defaultOperator: this.defaultOperator,
-        debug: this.DEBUG,
-      };
+    // searchDebounce: follows the typed query after the pause; at once without one.
+    _debounceQuery(query) {
+      clearTimeout(this._debounceTimer);
+      const delay = this.configFinal.searchDebounce;
+      if (!delay || this.configFinal.ajaxUrl) {
+        this.debouncedQuery = query;
+        return;
+      }
+      this._debounceTimer = setTimeout(() => {
+        this.debouncedQuery = query;
+      }, delay);
     },
-  },
-  methods: {
+
     /**
      * sets search query from outside (search slot)
      *
