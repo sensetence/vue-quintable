@@ -79,8 +79,11 @@ import VueQuintable from "../components/table/vue-quintable.vue";
 import AlertInfo from "../components/alert/alert-info.vue";
 import CodeBlock from "../components/code-block/code-block.vue";
 import ShowHideButton from "../components/code-block/show-hide-button.vue";
+import { exampleCode } from "../components/code-block/example-code";
+import source from "./events-example.vue?raw";
 
 const showCode = ref(false);
+const code = exampleCode(source);
 const ignoreControlClicks = ref(false);
 
 // table data
@@ -105,6 +108,7 @@ const config = computed(() => ({
   rowsSelect: true,
   search: true,
   searchLength: 2,
+  // a click on a link, button or field in a row fires no click:row / click:cell
   ignoreControlClicks: ignoreControlClicks.value,
 }));
 
@@ -136,100 +140,4 @@ function eventListener(data: unknown, event: string, target?: HTMLElement) {
     eventsLog.value.splice(0, 1);
   }
 }
-
-// example code
-const code = `&lt;template&gt;
-  &lt;vue-quintable
-      @update:sort=&quot;eventListener&quot;
-      @update:page=&quot;eventListener&quot;
-      @update:search=&quot;eventListener&quot;
-      @update:rows-per-page=&quot;eventListener&quot;
-      @click:row=&quot;eventListener&quot;
-      @click:cell=&quot;eventListener&quot;
-      @auxclick:cell=&quot;eventListener&quot;
-      @auxclick:row=&quot;eventListener&quot;
-      @expand:row=&quot;eventListener&quot;
-      @filtered:rows=&quot;eventListener&quot;
-      @hover:row=&quot;eventListener&quot;
-      @collapse:row=&quot;eventListener&quot;
-      @change:breakpoints=&quot;eventListener&quot;
-      :config=&quot;config&quot;
-      :rows=&quot;rows&quot;
-  &gt;
-    &lt;template #cell-content=&quot;{ cell }&quot;&gt;
-        &lt;span v-if=&quot;cell.type === 'prevent-toggle'&quot; class=&quot;prevent-toggle&quot;&gt;
-          {{ cell.value }}
-        &lt;/span&gt;
-        &lt;button
-            v-else-if=&quot;cell.type === 'button'&quot;
-            type=&quot;button&quot;
-            class=&quot;btn btn-sm btn-outline-primary&quot;
-            @click=&quot;eventListener(cell.value, 'click:button')&quot;
-        &gt;
-          Profile
-        &lt;/button&gt;
-    &lt;/template&gt;
-  &lt;/vue-quintable&gt;
-&lt;/template&gt;
-
-&lt;script setup lang=&quot;ts&quot;&gt;
-import {ref, computed} from 'vue';
-import Chance from 'chance';
-import VueQuintable from '../components/table/vue-quintable.vue';
-
-// table data
-type EventLogEntry = {
-  event: string;
-  data: string;
-  target: string | null;
-};
-
-const chance = new Chance();
-const eventsLog = ref&lt;EventLogEntry[]&gt;([]);
-
-const config = {
-  columns: [
-    {headline: 'Name'},
-    {headline: 'Age', sort: true},
-    {headline: 'Birth Place'},
-    {headline: 'Job', breakpoint: 'all'},
-    {headline: 'Profile'},
-  ],
-  pagination: 5,
-  rowsSelect: true,
-  search: true,
-  searchLength: 2,
-  // a click on a link, button or field in a row fires no click:row / click:cell
-  ignoreControlClicks: true,
-};
-
-const rows = computed(() =&gt; {
-  const items = [];
-  for (let i = 0; i &lt; 20; i++) {
-    const name = chance.name({nationality: 'en'});
-    items.push([
-      {text: name},
-      {type: 'prevent-toggle', value: chance.age()},
-      {text: chance.city(), classes: 'prevent-toggle'},
-      {text: chance.profession()},
-      {type: 'button', value: name},
-    ]);
-  }
-  return items;
-});
-
-// event logging
-function eventListener(data: unknown, event: string, target?: HTMLElement) {
-  eventsLog.value.push({
-    event,
-    data: JSON.stringify(data),
-    target: target ? target.outerHTML : null,
-  });
-
-  // limit to the last 5 events
-  if (eventsLog.value.length &gt; 5) {
-    eventsLog.value.splice(0, 1);
-  }
-}
-&lt;/script&gt;`;
 </script>

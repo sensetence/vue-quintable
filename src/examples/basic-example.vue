@@ -17,8 +17,11 @@ import AlertInfo from "../components/alert/alert-info.vue";
 import VueQuintable from "../components/table/vue-quintable.vue";
 import CodeBlock from "../components/code-block/code-block.vue";
 import ShowHideButton from "../components/code-block/show-hide-button.vue";
+import { exampleCode } from "../components/code-block/example-code";
+import source from "./basic-example.vue?raw";
 
 const showCode = ref(false);
+const code = exampleCode(source);
 
 // table data
 const config = {
@@ -101,103 +104,6 @@ const rows = [
     classes: "text-red",
   },
 ];
-
-// example code
-const code = `&lt;template&gt;
-  &lt;vue-quintable :config=&quot;config&quot; :rows=&quot;rows&quot;/&gt;
-&lt;/template&gt;
-
-&lt;script setup lang=&quot;ts&quot;&gt;
-import VueQuintable from &quot;../components/table/vue-quintable.vue&quot;;
-
-// table data
-const config = {
-  columns: [
-    {
-      headline: &quot;Name&quot;,
-    },
-    {
-      headline: &quot;Age&quot;,
-    },
-    {
-      headline: &quot;Birth Place&quot;,
-    },
-    {
-      headline: &quot;Job&quot;,
-    },
-  ],
-};
-
-const rows = [
-  [
-    {
-      html: &quot;&lt;em&gt;John Doe&lt;/em&gt;&quot;,
-    },
-    {
-      text: 40,
-    },
-    {
-      text: &quot;New York&quot;,
-    },
-    {
-      text: &quot;CFO&quot;,
-    },
-  ],
-  [
-    {
-      text: &quot;Mia Wong&quot;,
-      classes: &quot;text-primary&quot;,
-    },
-    {
-      text: 50,
-    },
-    {
-      text: &quot;Beijing&quot;,
-    },
-    {
-      text: &quot;CEO&quot;,
-    },
-  ],
-  [
-    {
-      text: &quot;Peter Stanbridge&quot;,
-    },
-    {
-      text: 18,
-    },
-    {
-      text: &quot;London&quot;,
-    },
-    {
-      text: &quot;Trainee&quot;,
-      align: &quot;end&quot;,
-    },
-  ],
-  {
-    cells: [
-      {
-        text: &quot;Natalie Lee-Walsh&quot;,
-      },
-      {
-        text: 25,
-      },
-      {
-        text: &quot;Dublin&quot;,
-      },
-      {
-        text: &quot;Managing Director&quot;,
-      },
-    ],
-    classes: &quot;text-red&quot;,
-  },
-];
-&lt;/script&gt;
-
-&lt;style lang=&quot;scss&quot;&gt;
-.text-red td {
-  color: red;
-}
-&lt;/style&gt;`;
 </script>
 
 <style lang="scss">

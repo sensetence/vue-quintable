@@ -1,9 +1,8 @@
-<!-- eslint-disable vue/no-v-html -->
 <template>
   <pre
     class="line-numbers mt-2"
     data-toolbar-order="copy-to-clipboard"
-  ><code ref="codeBlock" class="language-markup" v-html="code"/></pre>
+  ><code ref="codeBlock" class="language-markup" v-text="code"/></pre>
 </template>
 
 <script setup lang="ts">
@@ -12,7 +11,7 @@ import "prismjs/themes/prism-okaidia.css";
 import "prismjs/plugins/line-numbers/prism-line-numbers.css";
 import "prismjs/plugins/toolbar/prism-toolbar.css";
 
-// the code cannot be passed as child because vue removes whitespaces
+// v-text, not a child: the template would collapse the code's whitespace
 defineProps({
   code: {
     type: String,

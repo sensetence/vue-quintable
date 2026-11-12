@@ -30,6 +30,8 @@ yarn install
 
 Startet die Demo mit allen Beispielen aus `src/examples` (Einstieg `src/app.vue`).
 
+Neues Beispiel: Datei in `src/examples` anlegen (Aufbau wie die vorhandenen), in `src/app.vue` und in `EXAMPLES` von `e2e/fixtures.js` eintragen. Den angezeigten Code nicht von Hand schreiben: `exampleCode(source)` (`src/components/code-block/example-code.ts`) bildet ihn aus der eigenen Datei (`import source from "./name-example.vue?raw"`) und lässt Hinweis, Code-Knopf und Code-Block weg. Was im Code-Block erklärt werden soll, gehört als Kommentar in die Datei.
+
 | Linie | Befehl     | URL |
 |-------|------------|-----|
 | v3    | `yarn dev` | http://localhost:5173 |

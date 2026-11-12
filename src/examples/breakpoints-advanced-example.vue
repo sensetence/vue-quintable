@@ -18,10 +18,13 @@ import { computed, ref } from "vue";
 import Chance from "chance";
 import VueQuintable from "../components/table/vue-quintable.vue";
 import ShowHideButton from "../components/code-block/show-hide-button.vue";
+import { exampleCode } from "../components/code-block/example-code";
+import source from "./breakpoints-advanced-example.vue?raw";
 import CodeBlock from "../components/code-block/code-block.vue";
 import AlertInfo from "../components/alert/alert-info.vue";
 
 const showCode = ref(false);
+const code = exampleCode(source);
 
 // table data
 const config = {
@@ -81,74 +84,4 @@ const rows = computed(() => {
 
   return rows;
 });
-
-// example code
-const code = `&lt;template&gt;
-  &lt;vue-quintable :config=&quot;config&quot; :rows=&quot;rows&quot;/&gt;
-&lt;/template&gt;
-
-&lt;script setup lang=&quot;ts&quot;&gt;
-import {computed} from 'vue';
-import Chance from &quot;chance&quot;;
-import VueQuintable from &quot;../components/table/vue-quintable.vue&quot;;
-
-// table data
-const config = {
-  expandedRowIcon: &quot;caret-up&quot;,
-  collapsedRowIcon: &quot;plus&quot;,
-  columns: [
-    {
-      headline: &quot;Name&quot;,
-    },
-    {
-      headline: &quot;Age&quot;,
-      showHeadlineBreakpoint: &quot;md&quot;,
-      breakpoint: &quot;md&quot;,
-    },
-    {
-      headline: &quot;Birth Place&quot;,
-      sticky: true,
-      sort: true,
-    },
-    {
-      headline: &quot;Description&quot;,
-      hideHeadlineBreakpoint: &quot;xxl&quot;,
-      sticky: true,
-    },
-    {
-      headline: &quot;Job&quot;,
-      breakpoint: &quot;all&quot;,
-    },
-  ],
-};
-
-const rows = computed(() =&gt; {
-  let count = 10;
-  const rows = [];
-
-  const chance = new Chance();
-
-  for (let i = 0; i &lt; count; i++) {
-    rows.push([
-      {
-        text: chance.name({nationality: &quot;en&quot;}),
-      },
-      {
-        text: chance.age(),
-      },
-      {
-        text: chance.city(),
-      },
-      {
-        text: [...Array(50).keys()].map(() =&gt; chance.word()).join(&quot; &quot;),
-      },
-      {
-        text: chance.profession(),
-      },
-    ]);
-  }
-
-  return rows;
-});
-&lt;/script&gt;`;
 </script>

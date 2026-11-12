@@ -74,8 +74,11 @@ import AlertInfo from "../components/alert/alert-info.vue";
 import VueQuintable from "../components/table/vue-quintable.vue";
 import CodeBlock from "../components/code-block/code-block.vue";
 import ShowHideButton from "../components/code-block/show-hide-button.vue";
+import { exampleCode } from "../components/code-block/example-code";
+import source from "./container-fit-example.vue?raw";
 
 const showCode = ref(false);
+const code = exampleCode(source);
 const width = ref(640);
 const autoFit = ref(true);
 const cellTitles = ref(true);
@@ -86,6 +89,7 @@ const chance = new Chance();
 const config = computed(() => ({
   columns: [
     { headline: "Name" },
+    // xxl, xl and lg fold by the room in the box, largest first
     { headline: "Email", breakpoint: "lg" },
     { headline: "Company", breakpoint: "xl" },
     { headline: "Address", breakpoint: "xxl" },
@@ -103,55 +107,6 @@ const rows = Array.from({ length: 12 }, () => [
   { text: chance.address() + ", " + chance.city() },
   { type: "note", text: chance.sentence({ words: 14 }) },
 ]);
-
-// example code
-const code = `&lt;template&gt;
-  &lt;div class=&quot;fit-box&quot;&gt;
-    &lt;vue-quintable :config=&quot;config&quot; :rows=&quot;rows&quot;&gt;
-      &lt;template #cell-content=&quot;{ cell }&quot;&gt;
-        &lt;div v-if=&quot;cell.type === 'note'&quot; class=&quot;text-truncate note&quot;&gt;
-          {{ cell.text }}
-        &lt;/div&gt;
-      &lt;/template&gt;
-    &lt;/vue-quintable&gt;
-  &lt;/div&gt;
-&lt;/template&gt;
-
-&lt;script setup lang=&quot;ts&quot;&gt;
-import Chance from &quot;chance&quot;;
-import VueQuintable from &quot;../components/table/vue-quintable.vue&quot;;
-
-const chance = new Chance();
-
-const config = {
-  columns: [
-    { headline: &quot;Name&quot; },
-    // xxl, xl and lg fold by the room in the box, largest first
-    { headline: &quot;Email&quot;, breakpoint: &quot;lg&quot; },
-    { headline: &quot;Company&quot;, breakpoint: &quot;xl&quot; },
-    { headline: &quot;Address&quot;, breakpoint: &quot;xxl&quot; },
-    { headline: &quot;Notes&quot; },
-  ],
-  pagination: 5,
-  autoFit: true,
-  cellTitles: true,
-};
-
-const rows = Array.from({ length: 12 }, () =&gt; [
-  { text: chance.name({ nationality: &quot;en&quot; }) },
-  { text: chance.email() },
-  { text: chance.company() },
-  { text: chance.address() + &quot;, &quot; + chance.city() },
-  { type: &quot;note&quot;, text: chance.sentence({ words: 14 }) },
-]);
-&lt;/script&gt;
-
-&lt;style scoped&gt;
-/* cellTitles: an element that cuts its text with text-overflow: ellipsis */
-.note {
-  max-width: 16rem;
-}
-&lt;/style&gt;`;
 </script>
 
 <style scoped>

@@ -35,8 +35,11 @@ import VueQuintable from "../components/table/vue-quintable.vue";
 import AlertInfo from "../components/alert/alert-info.vue";
 import CodeBlock from "../components/code-block/code-block.vue";
 import ShowHideButton from "../components/code-block/show-hide-button.vue";
+import { exampleCode } from "../components/code-block/example-code";
+import source from "./ajax-store-state-example.vue?raw";
 
 const showCode = ref(false);
+const code = exampleCode(source);
 
 // table data
 const identifier = "stored-state-table-ajax";
@@ -82,95 +85,20 @@ watch(indexes, (val) => {
   }
 });
 
-watch(filters, () => {
-  if (
-    typeof filters.value.smaller === "undefined" &&
-    typeof filters.value.bigger === "undefined"
-  ) {
-    indexes.value = "all";
-  } else if (filters.value.smaller) {
-    indexes.value = "smaller";
-  } else if (filters.value.bigger) {
-    indexes.value = "bigger";
-  }
-}, { deep: true });
-
-// example code
-const code = `&lt;template&gt;
-  &lt;vue-quintable
-      :config=&quot;config&quot;
-      v-model:filters=&quot;filters&quot;
-      v-model:selected-rows=&quot;selected&quot;
-      :identifier=&quot;identifier&quot;
-  &gt;
-    &lt;template #header&gt;
-      &lt;quintable-v-select
-          v-model=&quot;indexes&quot;
-          :options=&quot;indexesOptions&quot;
-          :reduce=&quot;(x) =&gt; x.value&quot;
-          :clearable=&quot;false&quot;
-          class=&quot;mb-3&quot;
-      /&gt;
-    &lt;/template&gt;
-  &lt;/vue-quintable&gt;
-&lt;/template&gt;
-
-&lt;script setup lang=&quot;ts&quot;&gt;
-import {ref, watch} from 'vue';
-import VueQuintable from '../components/table/vue-quintable.vue';
-
-// table data
-const identifier = 'stored-state-table-ajax';
-
-const indexesOptions = [
-  {label: 'All', value: 'all'},
-  {label: 'Bigger than 100', value: 'bigger'},
-  {label: 'Smaller than 100', value: 'smaller'},
-];
-
-const indexes = ref&lt;'all' | 'bigger' | 'smaller'&gt;('all');
-const filters = ref&lt;Record&lt;string, any&gt;&gt;({});
-const selected = ref&lt;any[]&gt;([]);
-
-const config = {
-  columns: [
-    {headline: 'Name', sort: true},
-    {headline: 'Email', sort: true, breakpoint: 'sm'},
-    {headline: 'Phone', breakpoint: 'md'},
-    {headline: 'Job Title', sort: true, breakpoint: 'md'},
-    {headline: 'City', breakpoint: 'md'},
-    {headline: 'Address', breakpoint: 'md'},
-  ],
-  pagination: 5,
-  rowsSelect: true,
-  search: true,
-  select: true,
-  prettySelect: true,
-  storeState: true,
-  ajaxUrl: 'https://sensetence.com/vue-quintable-demo/data.php',
-};
-
-watch(indexes, (val) =&gt; {
-  if (val === 'all') {
-    delete filters.value.bigger;
-    delete filters.value.smaller;
-  } else if (val === 'bigger') {
-    filters.value.bigger = true;
-    delete filters.value.smaller;
-  } else if (val === 'smaller') {
-    filters.value.smaller = true;
-    delete filters.value.bigger;
-  }
-});
-
-watch(filters, () =&gt; {
-  if (typeof filters.value.smaller === 'undefined' &amp;&amp; typeof filters.value.bigger === 'undefined') {
-    indexes.value = 'all';
-  } else if (filters.value.smaller) {
-    indexes.value = 'smaller';
-  } else if (filters.value.bigger) {
-    indexes.value = 'bigger';
-  }
-}, { deep: true });
-&lt;/script&gt;`;
+watch(
+  filters,
+  () => {
+    if (
+      typeof filters.value.smaller === "undefined" &&
+      typeof filters.value.bigger === "undefined"
+    ) {
+      indexes.value = "all";
+    } else if (filters.value.smaller) {
+      indexes.value = "smaller";
+    } else if (filters.value.bigger) {
+      indexes.value = "bigger";
+    }
+  },
+  { deep: true },
+);
 </script>

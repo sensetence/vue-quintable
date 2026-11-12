@@ -43,17 +43,20 @@
 import { computed, ref } from "vue";
 import VueQuintable from "../components/table/vue-quintable.vue";
 import ShowHideButton from "../components/code-block/show-hide-button.vue";
+import { exampleCode } from "../components/code-block/example-code";
+import source from "./ajax-skeleton-example.vue?raw";
 import CodeBlock from "../components/code-block/code-block.vue";
 import AlertInfo from "../components/alert/alert-info.vue";
 
 const showCode = ref(false);
+const code = exampleCode(source);
 const skeletonLoading = ref(true);
 
 // A page-wide signal. In an app this is e.g. a router event after a visit.
 const listeners = new Set<() => void>();
 function reloadOn(reload: () => void) {
   listeners.add(reload);
-  return () => listeners.delete(reload);
+  return () => listeners.delete(reload); // called when the table unmounts
 }
 function reloadAll() {
   listeners.forEach((reload) => reload());
@@ -76,44 +79,6 @@ const config = computed(() => ({
   reloadOn,
 }));
 
-// example code
-const code = `&lt;template&gt;
-  &lt;button type=&quot;button&quot; class=&quot;btn btn-sm btn-outline-primary&quot; @click=&quot;reloadAll&quot;&gt;
-    Reload
-  &lt;/button&gt;
-  &lt;vue-quintable :config=&quot;config&quot; /&gt;
-&lt;/template&gt;
-
-&lt;script setup lang=&quot;ts&quot;&gt;
-import VueQuintable from &quot;../components/table/vue-quintable.vue&quot;;
-
-// A page-wide signal. In an app this is e.g. a router event after a visit.
-const listeners = new Set&lt;() =&gt; void&gt;();
-function reloadOn(reload: () =&gt; void) {
-  listeners.add(reload);
-  return () =&gt; listeners.delete(reload); // called when the table unmounts
-}
-function reloadAll() {
-  listeners.forEach((reload) =&gt; reload());
-}
-
-const config = {
-  columns: [
-    { headline: &quot;Name&quot;, sort: true },
-    { headline: &quot;Email&quot;, breakpoint: &quot;sm&quot;, sort: true },
-    { headline: &quot;Phone&quot;, breakpoint: &quot;md&quot; },
-    { headline: &quot;Job Title&quot;, breakpoint: &quot;md&quot;, sort: true },
-    { headline: &quot;City&quot;, breakpoint: &quot;md&quot; },
-  ],
-  pagination: 5,
-  search: true,
-  ajaxUrl: &quot;https://sensetence.com/vue-quintable-demo/data.php&quot;,
-  requestMethod: &quot;POST&quot;,
-  skeletonLoading: true,
-  reloadOn,
-};
-
 // Or for every table of the app:
 // app.use(VueQuintable, { defaults: { skeletonLoading: true, reloadOn } });
-&lt;/script&gt;`;
 </script>
