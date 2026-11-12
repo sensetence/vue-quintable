@@ -1,0 +1,1690 @@
+### initial | dialogs: []
+<div data-v="" class="content">
+<p class="alert alert-info">
+<svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
+</path>
+</svg>This is a nested VueQuintable example.</p>
+<div data-v="" class="table-wrapper quintable">
+<div data-v="" class="header slot slot-header quintable--header">
+</div>
+<div data-v="" class="slot slot-after-search quintable--after-search-container">
+</div>
+<div data-v="" class="clearfix quintable--table-container">
+<table data-v="" class="vue-quintable table quintable--table-container--table">
+<thead data-v="">
+<tr data-v="" class="vue-quintable-header-row quintable--table-container--table--header-row">
+<th data-v="" class="placeholder-th toggle-th toggle-cell quintable--table-container--table--header-row--placeholder-th">
+<wbr data-v="">
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th name column-1">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Name</span>
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th age column-2">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Age</span>
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th job column-4">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Job</span>
+</th>
+</tr>
+</thead>
+<tbody data-v="" class="quintable--table-container--table--tbody">
+<tr data-v="" id="vue-quintable-qt-row-0" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Bertha Marshall</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">41</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Project Engineer</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-1" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-1-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Connor Maxwell</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-1-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">19</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-1-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Land Developer</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-2" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-2-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Barbara Lee</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-2-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">38</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-2-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Distribution Manager</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-3" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-3-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Tillie Newman</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-3-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">39</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-3-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Baker</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-4" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-4-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Terry Daniels</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-4-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">48</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-4-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Home Economist</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-5" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Victor Farmer</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">60</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Political Analyst</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-6" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-6-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Luella Ford</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-6-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">34</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-6-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Bio-feedback Specialist</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-7" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Barbara Young</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">33</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">City Manager</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-8" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-8-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Louise Mendoza</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-8-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">30</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-8-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Physicist</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-9" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-9-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Isaiah Christensen</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-9-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">44</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-9-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Film Producer</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div data-v="" class="clearfix quintable--table-footer-container">
+<div data-v="" class="row">
+<div data-v="" class="col-lg-4 quintable--table-footer-container--sort-container">
+</div>
+<div data-v="" class="col-lg-8 quintable--table-footer-container--pagination-wrapper">
+</div>
+</div>
+</div>
+<div data-v="" class="footer slot slot-footer quintable--footer">
+</div>
+</div>
+<button class="btn btn-secondary mt-3">
+<svg class="svg-inline--fa fa-chevron-down" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+<span class="ms-2">Show Code </span>
+</button>
+</div>
+
+### tick intervals | dialogs: []
+<div data-v="" class="content">
+<p class="alert alert-info">
+<svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
+</path>
+</svg>This is a nested VueQuintable example.</p>
+<div data-v="" class="table-wrapper quintable">
+<div data-v="" class="header slot slot-header quintable--header">
+</div>
+<div data-v="" class="slot slot-after-search quintable--after-search-container">
+</div>
+<div data-v="" class="clearfix quintable--table-container">
+<table data-v="" class="vue-quintable table quintable--table-container--table">
+<thead data-v="">
+<tr data-v="" class="vue-quintable-header-row quintable--table-container--table--header-row">
+<th data-v="" class="placeholder-th toggle-th toggle-cell quintable--table-container--table--header-row--placeholder-th">
+<wbr data-v="">
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th name column-1">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Name</span>
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th age column-2">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Age</span>
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th job column-4">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Job</span>
+</th>
+</tr>
+</thead>
+<tbody data-v="" class="quintable--table-container--table--tbody">
+<tr data-v="" id="vue-quintable-qt-row-0" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Bertha Marshall</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">41</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Project Engineer</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-1" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-1-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Connor Maxwell</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-1-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">19</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-1-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Land Developer</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-2" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-2-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Barbara Lee</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-2-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">38</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-2-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Distribution Manager</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-3" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-3-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Tillie Newman</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-3-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">39</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-3-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Baker</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-4" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-4-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Terry Daniels</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-4-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">48</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-4-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Home Economist</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-5" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Victor Farmer</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">60</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Political Analyst</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-6" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-6-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Luella Ford</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-6-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">34</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-6-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Bio-feedback Specialist</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-7" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Barbara Young</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">33</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">City Manager</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-8" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-8-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Louise Mendoza</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-8-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">30</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-8-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Physicist</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-9" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-9-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Isaiah Christensen</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-9-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">44</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-9-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Film Producer</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div data-v="" class="clearfix quintable--table-footer-container">
+<div data-v="" class="row">
+<div data-v="" class="col-lg-4 quintable--table-footer-container--sort-container">
+</div>
+<div data-v="" class="col-lg-8 quintable--table-footer-container--pagination-wrapper">
+</div>
+</div>
+</div>
+<div data-v="" class="footer slot slot-footer quintable--footer">
+</div>
+</div>
+<button class="btn btn-secondary mt-3">
+<svg class="svg-inline--fa fa-chevron-down" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+<span class="ms-2">Show Code </span>
+</button>
+</div>
+
+### tick intervals again | dialogs: []
+<div data-v="" class="content">
+<p class="alert alert-info">
+<svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
+</path>
+</svg>This is a nested VueQuintable example.</p>
+<div data-v="" class="table-wrapper quintable">
+<div data-v="" class="header slot slot-header quintable--header">
+</div>
+<div data-v="" class="slot slot-after-search quintable--after-search-container">
+</div>
+<div data-v="" class="clearfix quintable--table-container">
+<table data-v="" class="vue-quintable table quintable--table-container--table">
+<thead data-v="">
+<tr data-v="" class="vue-quintable-header-row quintable--table-container--table--header-row">
+<th data-v="" class="placeholder-th toggle-th toggle-cell quintable--table-container--table--header-row--placeholder-th">
+<wbr data-v="">
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th name column-1">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Name</span>
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th age column-2">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Age</span>
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th job column-4">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Job</span>
+</th>
+</tr>
+</thead>
+<tbody data-v="" class="quintable--table-container--table--tbody">
+<tr data-v="" id="vue-quintable-qt-row-0" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Bertha Marshall</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">41</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Project Engineer</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-1" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-1-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Connor Maxwell</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-1-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">19</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-1-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Land Developer</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-2" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-2-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Barbara Lee</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-2-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">38</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-2-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Distribution Manager</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-3" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-3-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Tillie Newman</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-3-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">39</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-3-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Baker</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-4" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-4-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Terry Daniels</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-4-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">48</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-4-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Home Economist</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-5" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Victor Farmer</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">60</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Political Analyst</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-6" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-6-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Luella Ford</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-6-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">34</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-6-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Bio-feedback Specialist</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-7" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Barbara Young</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">33</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">City Manager</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-8" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-8-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Louise Mendoza</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-8-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">30</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-8-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Physicist</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-9" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-9-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Isaiah Christensen</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-9-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">44</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-9-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Film Producer</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div data-v="" class="clearfix quintable--table-footer-container">
+<div data-v="" class="row">
+<div data-v="" class="col-lg-4 quintable--table-footer-container--sort-container">
+</div>
+<div data-v="" class="col-lg-8 quintable--table-footer-container--pagination-wrapper">
+</div>
+</div>
+</div>
+<div data-v="" class="footer slot slot-footer quintable--footer">
+</div>
+</div>
+<button class="btn btn-secondary mt-3">
+<svg class="svg-inline--fa fa-chevron-down" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+<span class="ms-2">Show Code </span>
+</button>
+</div>
+
+### click the first row | dialogs: []
+<div data-v="" class="content">
+<p class="alert alert-info">
+<svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
+</path>
+</svg>This is a nested VueQuintable example.</p>
+<div data-v="" class="table-wrapper quintable">
+<div data-v="" class="header slot slot-header quintable--header">
+</div>
+<div data-v="" class="slot slot-after-search quintable--after-search-container">
+</div>
+<div data-v="" class="clearfix quintable--table-container">
+<table data-v="" class="vue-quintable table quintable--table-container--table">
+<thead data-v="">
+<tr data-v="" class="vue-quintable-header-row quintable--table-container--table--header-row">
+<th data-v="" class="placeholder-th toggle-th toggle-cell quintable--table-container--table--header-row--placeholder-th">
+<wbr data-v="">
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th name column-1">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Name</span>
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th age column-2">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Age</span>
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th job column-4">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Job</span>
+</th>
+</tr>
+</thead>
+<tbody data-v="" class="quintable--table-container--table--tbody">
+<tr data-v="" id="vue-quintable-qt-row-0" class="row-expanded vue-quintable-row quintable--table-container--table--tbody--row bg-muted" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-up fa-fw" data-prefix="fas" data-icon="chevron-up" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L224 173.3 54.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Bertha Marshall</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">41</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Project Engineer</div>
+</td>
+</tr>
+<tr data-v="" class="generated-row quintable--table-container--table--tbody--generated-row parent-row-expanded bg-muted">
+<td data-v="" colspan="4" class="ps-0 pe-0 pt-0">
+<div data-v="" class="">
+<table data-v="" class="mb-2 generated-table quintable--table-container--table--tbody--generated-row--generated-table">
+<tbody data-v="">
+<tr data-v="" id="vue-quintable-qt-generated-row-cell-0-2" class="generated-row-cell quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell">
+<td data-v="" class="toggle-cell invisible">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-up fa-fw" data-prefix="fas" data-icon="chevron-up" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L224 173.3 54.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" class="children column-3 generated-cell-element generated-cell-headline quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-headline">
+<strong data-v="">Children</strong>
+</td>
+<td data-v="" colspan="1" class="children column-3 generated-cell-element generated-cell-element-content generated-cell-content quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--generated-cell-content">
+<div>
+<div data-v="" class="table-wrapper quintable ms-4">
+<div data-v="" class="header slot slot-header quintable--header">
+</div>
+<div data-v="" class="slot slot-after-search quintable--after-search-container">
+</div>
+<div data-v="" class="clearfix quintable--table-container">
+<table data-v="" class="vue-quintable table quintable--table-container--table">
+<thead data-v="">
+<tr data-v="" class="vue-quintable-header-row quintable--table-container--table--header-row">
+<th data-v="" class="text-center sort-header quintable--table-container--table--header-row--th name column-1">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Name</span>
+<span data-v="" class="sorting-icon quintable--table-container--table--header-row--th--sorting-icon">
+<svg data-v="" class="svg-inline--fa fa-up-long fa-width-auto" data-prefix="fas" data-icon="up-long" role="img" viewBox="0 0 320 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M137.4-22.6c12.5-12.5 32.8-12.5 45.3 0l128 128c9.2 9.2 11.9 22.9 6.9 34.9S300.9 160 288 160l-64 0 0 336c0 26.5-21.5 48-48 48l-32 0c-26.5 0-48-21.5-48-48l0-336-64 0c-12.9 0-24.6-7.8-29.6-19.8S.2 114.5 9.4 105.4l128-128z">
+</path>
+</svg>
+<svg data-v="" class="svg-inline--fa fa-down-long fa-width-auto" data-prefix="fas" data-icon="down-long" role="img" viewBox="0 0 320 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M137.4 534.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9S300.9 352 288 352l-64 0 0-336c0-26.5-21.5-48-48-48l-32 0c-26.5 0-48 21.5-48 48l0 336-64 0c-12.9 0-24.6 7.8-29.6 19.8S.2 397.5 9.4 406.6l128 128z">
+</path>
+</svg>
+</span>
+</th>
+<th data-v="" class="text-center quintable--table-container--table--header-row--th country-of-birth column-2">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Country of Birth</span>
+</th>
+<th data-v="" class="text-center quintable--table-container--table--header-row--th time-of-birth column-3">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Time of Birth</span>
+</th>
+</tr>
+</thead>
+<tbody data-v="" class="quintable--table-container--table--tbody">
+<tr data-v="" id="vue-quintable-qt-row-0" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
+<td data-v="" id="vue-quintable-qt-cell-0-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-center name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Ian Horton</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-center country-of-birth column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--formatted-value">Country: Kiribati</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-center time-of-birth column-3">
+<strong>05:11 PM</strong>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-1" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
+<td data-v="" id="vue-quintable-qt-cell-1-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-center name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Kevin Drake</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-1-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-center country-of-birth column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--formatted-value">Country: Afghanistan</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-1-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-center time-of-birth column-3">
+<strong>11:11 AM</strong>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-2" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
+<td data-v="" id="vue-quintable-qt-cell-2-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-center name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Vincent Hogan</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-2-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-center country-of-birth column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--formatted-value">Country: Portugal</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-2-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-center time-of-birth column-3">
+<strong>10:11 AM</strong>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div data-v="" class="clearfix quintable--table-footer-container">
+<div data-v="" class="row">
+<div data-v="" class="col-lg-4 quintable--table-footer-container--sort-container">
+</div>
+<div data-v="" class="col-lg-8 quintable--table-footer-container--pagination-wrapper">
+</div>
+</div>
+</div>
+<div data-v="" class="footer slot slot-footer quintable--footer">
+</div>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-1" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-1-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Connor Maxwell</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-1-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">19</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-1-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Land Developer</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-2" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-2-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Barbara Lee</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-2-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">38</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-2-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Distribution Manager</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-3" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-3-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Tillie Newman</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-3-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">39</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-3-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Baker</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-4" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-4-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Terry Daniels</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-4-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">48</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-4-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Home Economist</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-5" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Victor Farmer</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">60</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Political Analyst</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-6" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-6-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Luella Ford</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-6-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">34</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-6-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Bio-feedback Specialist</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-7" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Barbara Young</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">33</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">City Manager</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-8" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-8-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Louise Mendoza</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-8-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">30</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-8-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Physicist</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-9" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-9-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Isaiah Christensen</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-9-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">44</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-9-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Film Producer</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div data-v="" class="clearfix quintable--table-footer-container">
+<div data-v="" class="row">
+<div data-v="" class="col-lg-4 quintable--table-footer-container--sort-container">
+</div>
+<div data-v="" class="col-lg-8 quintable--table-footer-container--pagination-wrapper">
+</div>
+</div>
+</div>
+<div data-v="" class="footer slot slot-footer quintable--footer">
+</div>
+</div>
+<button class="btn btn-secondary mt-3">
+<svg class="svg-inline--fa fa-chevron-down" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+<span class="ms-2">Show Code </span>
+</button>
+</div>
+
+### click the first row again | dialogs: []
+<div data-v="" class="content">
+<p class="alert alert-info">
+<svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
+</path>
+</svg>This is a nested VueQuintable example.</p>
+<div data-v="" class="table-wrapper quintable">
+<div data-v="" class="header slot slot-header quintable--header">
+</div>
+<div data-v="" class="slot slot-after-search quintable--after-search-container">
+</div>
+<div data-v="" class="clearfix quintable--table-container">
+<table data-v="" class="vue-quintable table quintable--table-container--table">
+<thead data-v="">
+<tr data-v="" class="vue-quintable-header-row quintable--table-container--table--header-row">
+<th data-v="" class="placeholder-th toggle-th toggle-cell quintable--table-container--table--header-row--placeholder-th">
+<wbr data-v="">
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th name column-1">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Name</span>
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th age column-2">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Age</span>
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th job column-4">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Job</span>
+</th>
+</tr>
+</thead>
+<tbody data-v="" class="quintable--table-container--table--tbody">
+<tr data-v="" id="vue-quintable-qt-row-0" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row bg-muted" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Bertha Marshall</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">41</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Project Engineer</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-1" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-1-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Connor Maxwell</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-1-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">19</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-1-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Land Developer</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-2" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-2-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Barbara Lee</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-2-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">38</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-2-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Distribution Manager</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-3" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-3-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Tillie Newman</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-3-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">39</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-3-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Baker</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-4" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-4-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Terry Daniels</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-4-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">48</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-4-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Home Economist</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-5" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Victor Farmer</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">60</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Political Analyst</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-6" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-6-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Luella Ford</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-6-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">34</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-6-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Bio-feedback Specialist</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-7" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Barbara Young</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">33</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">City Manager</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-8" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-8-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Louise Mendoza</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-8-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">30</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-8-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Physicist</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-9" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-9-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Isaiah Christensen</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-9-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">44</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-9-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Film Producer</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div data-v="" class="clearfix quintable--table-footer-container">
+<div data-v="" class="row">
+<div data-v="" class="col-lg-4 quintable--table-footer-container--sort-container">
+</div>
+<div data-v="" class="col-lg-8 quintable--table-footer-container--pagination-wrapper">
+</div>
+</div>
+</div>
+<div data-v="" class="footer slot slot-footer quintable--footer">
+</div>
+</div>
+<button class="btn btn-secondary mt-3">
+<svg class="svg-inline--fa fa-chevron-down" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+<span class="ms-2">Show Code </span>
+</button>
+</div>
+
+### hover the second row | dialogs: []
+<div data-v="" class="content">
+<p class="alert alert-info">
+<svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
+</path>
+</svg>This is a nested VueQuintable example.</p>
+<div data-v="" class="table-wrapper quintable">
+<div data-v="" class="header slot slot-header quintable--header">
+</div>
+<div data-v="" class="slot slot-after-search quintable--after-search-container">
+</div>
+<div data-v="" class="clearfix quintable--table-container">
+<table data-v="" class="vue-quintable table quintable--table-container--table">
+<thead data-v="">
+<tr data-v="" class="vue-quintable-header-row quintable--table-container--table--header-row">
+<th data-v="" class="placeholder-th toggle-th toggle-cell quintable--table-container--table--header-row--placeholder-th">
+<wbr data-v="">
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th name column-1">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Name</span>
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th age column-2">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Age</span>
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th job column-4">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Job</span>
+</th>
+</tr>
+</thead>
+<tbody data-v="" class="quintable--table-container--table--tbody">
+<tr data-v="" id="vue-quintable-qt-row-0" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Bertha Marshall</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">41</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Project Engineer</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-1" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row bg-muted" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-1-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Connor Maxwell</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-1-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">19</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-1-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Land Developer</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-2" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-2-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Barbara Lee</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-2-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">38</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-2-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Distribution Manager</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-3" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-3-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Tillie Newman</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-3-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">39</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-3-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Baker</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-4" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-4-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Terry Daniels</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-4-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">48</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-4-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Home Economist</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-5" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Victor Farmer</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">60</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Political Analyst</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-6" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-6-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Luella Ford</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-6-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">34</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-6-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Bio-feedback Specialist</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-7" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Barbara Young</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">33</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">City Manager</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-8" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-8-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Louise Mendoza</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-8-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">30</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-8-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Physicist</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-9" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
+<td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
+<span data-v="">
+<span data-v="">
+<svg data-v="" class="svg-inline--fa fa-chevron-down fa-fw" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+</span>
+</span>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-9-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Isaiah Christensen</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-9-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell age column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">44</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-9-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell job column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Film Producer</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div data-v="" class="clearfix quintable--table-footer-container">
+<div data-v="" class="row">
+<div data-v="" class="col-lg-4 quintable--table-footer-container--sort-container">
+</div>
+<div data-v="" class="col-lg-8 quintable--table-footer-container--pagination-wrapper">
+</div>
+</div>
+</div>
+<div data-v="" class="footer slot slot-footer quintable--footer">
+</div>
+</div>
+<button class="btn btn-secondary mt-3">
+<svg class="svg-inline--fa fa-chevron-down" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+<span class="ms-2">Show Code </span>
+</button>
+</div>
