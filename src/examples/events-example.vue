@@ -1,8 +1,22 @@
 <template>
   <div class="content">
     <alert-info
-      >Interact with the table to see when events get fired.</alert-info
+      >Interact with the table to see when events get fired. Click a Profile
+      button with and without <code>ignoreControlClicks</code>: with it, the
+      click stays the button's and fires no click:cell or click:row.</alert-info
     >
+
+    <div class="form-check form-switch mb-3">
+      <input
+        id="ignore-control-clicks"
+        v-model="ignoreControlClicks"
+        class="form-check-input"
+        type="checkbox"
+      />
+      <label class="form-check-label" for="ignore-control-clicks"
+        >Clicks on buttons and links are not row clicks</label
+      >
+    </div>
 
     <!-- event list -->
     <div v-if="eventsLog.length" class="list-group mb-3">
@@ -40,6 +54,14 @@
         <span v-if="cell.type === 'prevent-toggle'" class="prevent-toggle">
           {{ cell.value }}
         </span>
+        <button
+          v-else-if="cell.type === 'button'"
+          type="button"
+          class="btn btn-sm btn-outline-primary"
+          @click="eventListener(cell.value, 'click:button')"
+        >
+          Profile
+        </button>
       </template>
     </vue-quintable>
 
@@ -59,6 +81,7 @@ import CodeBlock from "../components/code-block/code-block.vue";
 import ShowHideButton from "../components/code-block/show-hide-button.vue";
 
 const showCode = ref(false);
+const ignoreControlClicks = ref(false);
 
 // table data
 type EventLogEntry = {
@@ -70,27 +93,31 @@ type EventLogEntry = {
 const chance = new Chance();
 const eventsLog = ref<EventLogEntry[]>([]);
 
-const config = {
+const config = computed(() => ({
   columns: [
     { headline: "Name" },
     { headline: "Age", sort: true },
     { headline: "Birth Place" },
     { headline: "Job", breakpoint: "all" },
+    { headline: "Profile" },
   ],
   pagination: 5,
   rowsSelect: true,
   search: true,
   searchLength: 2,
-};
+  ignoreControlClicks: ignoreControlClicks.value,
+}));
 
 const rows = computed(() => {
   const items = [];
   for (let i = 0; i < 20; i++) {
+    const name = chance.name({ nationality: "en" });
     items.push([
-      { text: chance.name({ nationality: "en" }) },
+      { text: name },
       { type: "prevent-toggle", value: chance.age() },
       { text: chance.city(), classes: "prevent-toggle" },
       { text: chance.profession() },
+      { type: "button", value: name },
     ]);
   }
   return items;
@@ -133,6 +160,14 @@ const code = `&lt;template&gt;
         &lt;span v-if=&quot;cell.type === 'prevent-toggle'&quot; class=&quot;prevent-toggle&quot;&gt;
           {{ cell.value }}
         &lt;/span&gt;
+        &lt;button
+            v-else-if=&quot;cell.type === 'button'&quot;
+            type=&quot;button&quot;
+            class=&quot;btn btn-sm btn-outline-primary&quot;
+            @click=&quot;eventListener(cell.value, 'click:button')&quot;
+        &gt;
+          Profile
+        &lt;/button&gt;
     &lt;/template&gt;
   &lt;/vue-quintable&gt;
 &lt;/template&gt;
@@ -158,21 +193,26 @@ const config = {
     {headline: 'Age', sort: true},
     {headline: 'Birth Place'},
     {headline: 'Job', breakpoint: 'all'},
+    {headline: 'Profile'},
   ],
   pagination: 5,
   rowsSelect: true,
   search: true,
   searchLength: 2,
+  // a click on a link, button or field in a row fires no click:row / click:cell
+  ignoreControlClicks: true,
 };
 
 const rows = computed(() =&gt; {
   const items = [];
   for (let i = 0; i &lt; 20; i++) {
+    const name = chance.name({nationality: 'en'});
     items.push([
-      {text: chance.name({nationality: 'en'})},
+      {text: name},
       {type: 'prevent-toggle', value: chance.age()},
       {text: chance.city(), classes: 'prevent-toggle'},
       {text: chance.profession()},
+      {type: 'button', value: name},
     ]);
   }
   return items;

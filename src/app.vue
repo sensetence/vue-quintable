@@ -44,10 +44,12 @@ import SelectExample from "./examples/select-example.vue";
 import CellFormatterExample from "./examples/cell-formatter-example.vue";
 import BreakpointsExample from "./examples/breakpoints-example.vue";
 import BreakpointsAdvancedExample from "./examples/breakpoints-advanced-example.vue";
+import ContainerFitExample from "./examples/container-fit-example.vue";
 import TooltipsExample from "./examples/tooltips-example.vue";
 import AjaxExample from "./examples/ajax-example.vue";
 import AjaxSelectExample from "./examples/ajax-select-example.vue";
 import AjaxLoadedExample from "./examples/ajax-loaded-example.vue";
+import AjaxSkeletonExample from "./examples/ajax-skeleton-example.vue";
 import EventsExample from "./examples/events-example.vue";
 import SlotsExample from "./examples/slots-example.vue";
 import VueBindedExample from "./examples/vue-binded-example.vue";
@@ -106,6 +108,11 @@ const examples: SelectItemWithComponent[] = [
     component: shallowRef(BreakpointsAdvancedExample),
   },
   {
+    value: "container-fit-example",
+    label: "Container Fit Example",
+    component: shallowRef(ContainerFitExample),
+  },
+  {
     value: "tooltips-example",
     label: "Tooltips Example",
     component: shallowRef(TooltipsExample),
@@ -124,6 +131,11 @@ const examples: SelectItemWithComponent[] = [
     value: "ajax-loaded-example",
     label: "Ajax Loaded Example",
     component: shallowRef(AjaxLoadedExample),
+  },
+  {
+    value: "ajax-skeleton-example",
+    label: "Ajax Skeleton & Reload Example",
+    component: shallowRef(AjaxSkeletonExample),
   },
   {
     value: "events-example",

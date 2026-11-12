@@ -1,6 +1,22 @@
 <template>
   <div class="content">
-    <alert-info>Hover and click on headlines for sorting.</alert-info>
+    <alert-info
+      >Hover and click on headlines for sorting. The arrows show while the
+      header row is hovered, or always with
+      <code>alwaysShowSortIcons</code>.</alert-info
+    >
+
+    <div class="form-check form-switch mb-3">
+      <input
+        id="always-show-sort-icons"
+        v-model="alwaysShowSortIcons"
+        class="form-check-input"
+        type="checkbox"
+      />
+      <label class="form-check-label" for="always-show-sort-icons"
+        >Always show sort icons</label
+      >
+    </div>
 
     <!-- table -->
     <vue-quintable :sort-order="sortOrder" :config="config" :rows="rows" />
@@ -20,9 +36,10 @@ import CodeBlock from "../components/code-block/code-block.vue";
 import ShowHideButton from "../components/code-block/show-hide-button.vue";
 
 const showCode = ref(false);
+const alwaysShowSortIcons = ref(false);
 
 // table data
-const config = {
+const config = computed(() => ({
   columns: [
     {
       headline: "Name",
@@ -47,7 +64,8 @@ const config = {
   pageSortSelect: true,
   pagination: 5,
   search: true,
-};
+  alwaysShowSortIcons: alwaysShowSortIcons.value,
+}));
 
 const sortOrder = [
   {
@@ -131,6 +149,7 @@ const config = {
   pageSortSelect: true,
   pagination: 5,
   search: true,
+  alwaysShowSortIcons: true,
 };
 
 const sortOrder = [

@@ -13,6 +13,7 @@ const examples = [
     value: "BreakpointsAdvancedExample",
     label: "Breakpoints Advanced Example",
   },
+  { value: "ContainerFitExample", label: "Container Fit Example" },
   { value: "TooltipsExample", label: "Tooltips" },
   { value: "EventsExample", label: "Events Example" },
   { value: "SlotsExample", label: "Slots Example" },
