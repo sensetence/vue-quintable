@@ -26,7 +26,7 @@
     "./style.css": "./dist/vue-quintable.css"
   },
   "dependencies": {
-    "@fortawesome/vue-fontawesome": "^3.1.0",
+    "@fortawesome/vue-fontawesome": "^3.3.3",
     "floating-vue": "^5.2.2",
     "fuzzy.js": "^0.1.0",
     "vue": "^3.5.13",
@@ -68,8 +68,8 @@
     "vue-tsc": "^2.2.8"
   },
   "peerDependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.7.2 || ^7",
-    "@fortawesome/free-solid-svg-icons": "^6.7.2 || ^7",
+    "@fortawesome/fontawesome-svg-core": "^7.3.1",
+    "@fortawesome/free-solid-svg-icons": "^7.3.1",
     "axios": "^1.9.0",
     "bootstrap": "^5.3"
   },

@@ -13,7 +13,7 @@
       <template #default>
         <div class="btn p-2 drag-element">
           <quintable-font-awesome-icon
-            icon="arrows-alt"
+            icon="up-down-left-right"
           ></quintable-font-awesome-icon>
         </div>
       </template>

@@ -470,7 +470,7 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "7.3.1"
 
-"@fortawesome/vue-fontawesome@^3.1.0":
+"@fortawesome/vue-fontawesome@^3.3.3":
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/@fortawesome/vue-fontawesome/-/vue-fontawesome-3.3.3.tgz#90f54fee789bb23766a6d1c4d610294deab9a714"
   integrity sha512-Jbjze98gGcVBSdkscLbnDlHECumMAFVWDarMtycctn9qL3p92ApnV36VW4PwVrcm9IWrHnnE6ZL9x7MXStSCfA==

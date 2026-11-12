@@ -83,7 +83,7 @@ npm install @sensetence/vue-quintable bootstrap @fortawesome/fontawesome-svg-cor
 npm install axios   # optional, for AJAX
 ```
 
-Font Awesome 6 and 7 are supported (`^6.7.2 || ^7`).
+Font Awesome 7 is required (`^7.3.1`): the table asks for icons by their FA 7 names.
 
 ## Setup
 
@@ -98,11 +98,16 @@ import VueQuintable from "@sensetence/vue-quintable";
 const app = createApp(App);
 
 app.use(VueQuintable);
-// or pass a configured axios instance for all tables:
-// app.use(VueQuintable, { axios: myAxiosInstance });
+// or pass a configured axios instance and config defaults for all tables:
+// app.use(VueQuintable, {
+//   axios: myAxiosInstance,
+//   defaults: { autoFit: true, cellTitles: true, skeletonLoading: true, ignoreControlClicks: true },
+// });
 
 app.mount("#app");
 ```
+
+`defaults` holds config keys every table starts from; a table's own `config` wins.
 
 The plugin registers the global component `<vue-quintable>` and the `v-tooltip` directive ([floating-vue](https://floating-vue.starpad.dev/)). The component is also available as named export:
 
@@ -179,6 +184,10 @@ More examples live in [`src/examples`](src/examples) and can be started with `ya
 | `hoverClass`                    | String \| Boolean             | `"bg-muted"`       | CSS class for hovered rows. `false` disables it. |
 | `activeClass`                   | String \| Boolean             | `"bg-muted"`       | CSS class for the active row. `false` disables it. |
 | `enableRowTabIndex`             | Boolean                       | `false`            | Clicking a row makes it active; arrow keys move the active row (`active:row` event). |
+| `autoFit`                       | Boolean                       | `false`            | Columns with breakpoint `xxl`, `xl` or `lg` fold into the row details only while the table is wider than its container, largest first, never by window width (`sm`, `md` and `all` still follow the window). What still overflows then scrolls inside the container (class `quintable-fit-scroll`). |
+| `cellTitles`                    | Boolean                       | `false`            | An element in a cell that cuts its text with `text-overflow: ellipsis` shows the whole text as its `title` on hover. An own `title` or a cell tooltip wins. |
+| `skeletonLoading`               | Boolean                       | `false`            | While loading, show grey bars in the shape of the table (visible columns, one page of rows) instead of the spinner. |
+| `ignoreControlClicks`           | Boolean                       | `false`            | A click on a link, button or form field in a row is that control's own: no `click:row`, `click:cell` or `auxclick:*` event. A click on a disabled control stays the row's. |
 | **Pagination**                  |                               |                    |             |
 | `pagination`                    | Number \| Boolean             | `false`            | Rows per page. `true` means 25. Other values snap down to one of 1–10, 15, 20, 25, 30, 50, 100. |
 | `pageRange`                     | Number                        | `5`                | Number of page links shown. |
@@ -204,6 +213,7 @@ More examples live in [`src/examples`](src/examples) and can be started with `ya
 | `pageSort`                      | Boolean                       | `false`            | Sort only the rows of the current page. |
 | `pageSortSelect`                | Boolean                       | `false`            | Let the user toggle page sort. |
 | `pageSortPlaceholder`           | String                        | `"Page sort"`      | Label of the page sort toggle. |
+| `alwaysShowSortIcons`           | Boolean                       | `false`            | Show the sort arrows of every sortable heading faintly at all times. Otherwise they show only while the header row is hovered (always on touch screens). |
 | **Selection**                   |                               |                    |             |
 | `select`                        | Boolean                       | `false`            | Show checkboxes to select rows. |
 | `selectPosition`                | `"pre"` \| `"post"`           | `"post"`           | Checkbox column first (`"pre"`) or last (`"post"`). |
@@ -216,6 +226,7 @@ More examples live in [`src/examples`](src/examples) and can be started with `ya
 | `ajaxUrl`                       | String                        | `false`            | Load rows from the server for search, filter, sort and pagination, see [AJAX](#ajax--server-side-data). |
 | `requestMethod`                 | `"GET"` \| `"POST"`           | `"GET"`            | HTTP method of AJAX requests. |
 | `ajaxRequestDelay`              | Number                        | `250`              | Debounce for AJAX search requests in milliseconds. |
+| `reloadOn`                      | Function                      | –                  | `(reload) => unsubscribe`: called once on mount with a function that re-fetches the current page; call it on your own signal (e.g. a router visit). The returned function is called on unmount. Only for tables with `ajaxUrl`. |
 | **State**                       |                               |                    |             |
 | `storeState`                    | Boolean                       | `false`            | Persist the table state in local storage, see [Persisting table state](#persisting-table-state). Requires the `identifier` prop. |
 
@@ -437,7 +448,7 @@ Enable `config.select` and bind the selection with `v-model:selected-rows`. The 
 | `generated-cell-content` | `{ cell }` | Content of cells in responsive (breakpoint) rows. |
 | `sticky-cell-content`    | `{ cell }` | Content of sticky cells. |
 | `no-results`             | – | Placeholder if no rows match. |
-| `loading`                | – | Custom loader. |
+| `loading`                | `{ hiddenBreakpoints }` | Custom loader. `hiddenBreakpoints` lists the breakpoints whose columns are folded right now, for a loader in the table's shape. |
 | `footer`                 | – | Content below the table. |
 
 `cell-complete`, `generated-cell-complete` and `sticky-cell-complete` are deprecated aliases.
@@ -568,6 +579,9 @@ With `config.storeState` and an `identifier`, filters, search query, page, rows 
 ## Good to know
 
 - Clicks on links don't toggle the row. Add the class `prevent-toggle` to any element to prevent toggling, too.
+- Sortable headings show two arrows after their text: faint while the header row is hovered (or always, see `alwaysShowSortIcons`), in full while the heading is hovered. A sorted heading shows one icon of its direction. A right-aligned heading (`text-end` / `text-right`) has them before its text. The icons take the heading's colour.
+- The root element carries the rows per page as the CSS variable `--quintable-page-size`, e.g. to keep a page's height while the next one loads.
+- "Select all" selects only the rows in its scope (the visible page, or with `selectAllRows` all pages) that pass search and filters; every other row is deselected, as in 2.x.
 - `v-model:selected-rows` replaces Vue 2's `v-model`; plain `v-model` is not supported.
 - Set `:nested="true"` on tables inside another table's slot.
 - `html` cells and HTML returned by cell formatters are rendered unescaped. Never pass unsanitized user input.

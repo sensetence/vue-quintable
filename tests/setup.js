@@ -2,8 +2,6 @@ import { config } from "@vue/test-utils";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
-  faAngleDoubleLeft,
-  faAngleDoubleRight,
   faAngleLeft,
   faAngleRight,
   faCaretDown,
@@ -16,16 +14,17 @@ import {
   faEyeSlash,
   faMinus,
   faPlus,
-  faSort,
-  faSortAmountDown,
-  faSortAmountDownAlt,
   faSquare,
-  faTimes,
+  faAnglesLeft,
+  faAnglesRight,
+  faUpLong,
+  faDownLong,
+  faArrowDownWideShort,
+  faArrowUpShortWide,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
-  faAngleDoubleLeft,
-  faAngleDoubleRight,
   faAngleLeft,
   faAngleRight,
   faCaretDown,
@@ -38,11 +37,14 @@ library.add(
   faEyeSlash,
   faMinus,
   faPlus,
-  faSort,
-  faSortAmountDown,
-  faSortAmountDownAlt,
   faSquare,
-  faTimes
+  faAnglesLeft,
+  faAnglesRight,
+  faUpLong,
+  faDownLong,
+  faArrowDownWideShort,
+  faArrowUpShortWide,
+  faXmark,
 );
 
 // Register global components for all tests (Vue 3 style)

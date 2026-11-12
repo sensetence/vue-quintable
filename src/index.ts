@@ -18,6 +18,8 @@ import VueQuintable from "./components/table/vue-quintable.vue";
 
 interface InstallOptions {
   axios?: any;
+  // Config defaults for every table; a table's own config wins.
+  defaults?: Record<string, unknown>;
 }
 
 // Vue 3 plugin install
@@ -36,6 +38,10 @@ const install = (app: App, options: InstallOptions = {}) => {
     // If you want a custom theme class, add CSS and set theme on each use.
     // See floating-vue docs for options.
   });
+
+  if (options.defaults) {
+    app.provide("vueQuintableDefaults", options.defaults);
+  }
 
   // Global axios reference (was Vue.prototype.* in Vue 2)
   if (options.axios) {

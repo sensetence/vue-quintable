@@ -23,7 +23,7 @@
       </button>
     </div>
     <div class="btn btn-danger me-2" title="Delete Row" @click="deleteRow">
-      <quintable-font-awesome-icon icon="times"></quintable-font-awesome-icon>
+      <quintable-font-awesome-icon icon="xmark"></quintable-font-awesome-icon>
     </div>
     <vue-draggable
       v-model="targetItems"

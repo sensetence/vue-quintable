@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <p class="alert alert-info">
-      <quintable-font-awesome-icon class="me-2" icon="info-circle" />
+      <quintable-font-awesome-icon class="me-2" icon="circle-info" />
       Use buttons to add/remove/move rows or Drag&Drop [<a
         target="_blank"
         href="https://github.com/Alfred-Skyblue/vue-draggable-plus"

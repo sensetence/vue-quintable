@@ -1,6 +1,13 @@
 <!-- eslint-disable vue/no-v-html -->
 <template>
-  <div class="table-wrapper quintable">
+  <div
+    class="table-wrapper quintable"
+    :style="
+      typeof currentRowsPerPage === 'number'
+        ? { '--quintable-page-size': currentRowsPerPage }
+        : null
+    "
+  >
     <div class="header slot slot-header quintable--header">
       <slot name="header"></slot>
     </div>
@@ -36,7 +43,11 @@
     <div class="slot slot-after-search quintable--after-search-container">
       <slot name="after-search-container"></slot>
     </div>
-    <div ref="height-wrapper" class="clearfix quintable--table-container">
+    <div
+      ref="height-wrapper"
+      class="clearfix quintable--table-container"
+      :class="{ 'quintable-fit-scroll': fitScroll }"
+    >
       <table
         v-if="!ajaxLoading"
         ref="table"
@@ -46,6 +57,7 @@
         <thead v-if="configFinal.headlines.length">
           <tr
             class="vue-quintable-header-row quintable--table-container--table--header-row"
+            :class="{ 'sort-icons-visible': configFinal.alwaysShowSortIcons }"
           >
             <th
               v-if="hasGeneratedRows && !configFinal.hideRowToggle"
@@ -110,28 +122,20 @@
                 /></span>
                 <span
                   v-if="configFinal.sorts[hIndex]"
-                  class="sorting-icon ms-2 quintable--table-container--table--header-row--th--sorting-icon"
+                  class="sorting-icon quintable--table-container--table--header-row--th--sorting-icon"
+                  :class="{ sorted: currentSortIndexes[hIndex] }"
                 >
+                  <template v-if="!currentSortIndexes[hIndex]">
+                    <quintable-font-awesome-icon icon="up-long" width-auto />
+                    <quintable-font-awesome-icon icon="down-long" width-auto />
+                  </template>
                   <quintable-font-awesome-icon
-                    v-if="!currentSortIndexes[hIndex]"
-                    icon="sort"
-                    class="text-primary"
-                  />
-                  <quintable-font-awesome-icon
-                    v-if="
-                      currentSortIndexes[hIndex] &&
+                    v-else
+                    :icon="
                       currentSortIndexes[hIndex].asc
+                        ? 'arrow-up-short-wide'
+                        : 'arrow-down-wide-short'
                     "
-                    icon="sort-amount-down-alt"
-                    class="text-primary"
-                  />
-                  <quintable-font-awesome-icon
-                    v-if="
-                      currentSortIndexes[hIndex] &&
-                      !currentSortIndexes[hIndex].asc
-                    "
-                    icon="sort-amount-down"
-                    class="text-primary"
                   />
                   <span
                     v-if="currentSortIndexes[hIndex]"
@@ -145,7 +149,7 @@
                       {{ currentSortIndexes[hIndex].order + 1 }}
                     </span>
                     <small v-else>
-                      <quintable-font-awesome-icon icon="times" />
+                      <quintable-font-awesome-icon icon="xmark" />
                     </small>
                   </span>
                 </span>
@@ -192,16 +196,12 @@
         <tbody
           class="quintable--table-container--table--tbody"
           @mouseleave="onMouseleaveTable"
+          @mouseover="onCellMouseover"
         >
           <template
             v-for="rIndex in visibleRowIndexes"
             :key="
-              'vue-quintable-' +
-              uuid +
-              '-row-' +
-              rIndex +
-              '-' +
-              essentialsKey
+              'vue-quintable-' + uuid + '-row-' + rIndex + '-' + essentialsKey
             "
           >
             <tr
@@ -413,7 +413,7 @@
                 @mouseenter="_hoverRow(rIndex, $event)"
                 @click="onRowClick($event, rIndex)"
               >
-                <td :colspan="configFinal.number + 1" class="ps-0 pe-0 pt-0">
+                <td :colspan="columnCount" class="ps-0 pe-0 pt-0">
                   <div
                     :class="{
                       [configFinal.hoverClass]: hoveredRow === rIndex,
@@ -493,28 +493,26 @@
                                   configFinal.sorts[cIndex] &&
                                   hoveredRow === rIndex
                                 "
-                                class="sorting-icon ms-2 cursor-pointer quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon"
+                                class="sorting-icon cursor-pointer quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon"
+                                :class="{ sorted: currentSortIndexes[cIndex] }"
                               >
+                                <template v-if="!currentSortIndexes[cIndex]">
+                                  <quintable-font-awesome-icon
+                                    icon="up-long"
+                                    width-auto
+                                  />
+                                  <quintable-font-awesome-icon
+                                    icon="down-long"
+                                    width-auto
+                                  />
+                                </template>
                                 <quintable-font-awesome-icon
-                                  v-if="!currentSortIndexes[cIndex]"
-                                  icon="sort"
-                                  class="text-primary"
-                                />
-                                <quintable-font-awesome-icon
-                                  v-if="
-                                    currentSortIndexes[cIndex] &&
+                                  v-else
+                                  :icon="
                                     currentSortIndexes[cIndex].asc
+                                      ? 'arrow-up-short-wide'
+                                      : 'arrow-down-wide-short'
                                   "
-                                  icon="sort-amount-down-alt"
-                                  class="text-primary"
-                                />
-                                <quintable-font-awesome-icon
-                                  v-if="
-                                    currentSortIndexes[cIndex] &&
-                                    !currentSortIndexes[cIndex].asc
-                                  "
-                                  icon="sort-amount-down"
-                                  class="text-primary"
                                 />
                                 <span
                                   v-if="currentSortIndexes[cIndex]"
@@ -528,7 +526,7 @@
                                     {{ currentSortIndexes[cIndex].order + 1 }}
                                   </span>
                                   <small v-else>
-                                    <quintable-font-awesome-icon icon="times" />
+                                    <quintable-font-awesome-icon icon="xmark" />
                                   </small>
                                 </span>
                               </span>
@@ -668,28 +666,26 @@
                                 configFinal.sorts[cIndex] &&
                                 hoveredRow === rIndex
                               "
-                              class="sorting-icon ms-2 cursor-pointer quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon"
+                              class="sorting-icon cursor-pointer quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon"
+                              :class="{ sorted: currentSortIndexes[cIndex] }"
                             >
+                              <template v-if="!currentSortIndexes[cIndex]">
+                                <quintable-font-awesome-icon
+                                  icon="up-long"
+                                  width-auto
+                                />
+                                <quintable-font-awesome-icon
+                                  icon="down-long"
+                                  width-auto
+                                />
+                              </template>
                               <quintable-font-awesome-icon
-                                v-if="!currentSortIndexes[cIndex]"
-                                icon="sort"
-                                class="text-primary"
-                              />
-                              <quintable-font-awesome-icon
-                                v-if="
-                                  currentSortIndexes[cIndex] &&
+                                v-else
+                                :icon="
                                   currentSortIndexes[cIndex].asc
+                                    ? 'arrow-up-short-wide'
+                                    : 'arrow-down-wide-short'
                                 "
-                                icon="sort-amount-down-alt"
-                                class="text-primary"
-                              />
-                              <quintable-font-awesome-icon
-                                v-if="
-                                  currentSortIndexes[cIndex] &&
-                                  !currentSortIndexes[cIndex].asc
-                                "
-                                icon="sort-amount-down"
-                                class="text-primary"
                               />
                               <span
                                 v-if="currentSortIndexes[cIndex]"
@@ -703,7 +699,7 @@
                                   {{ currentSortIndexes[cIndex].order + 1 }}
                                 </span>
                                 <small v-else>
-                                  <quintable-font-awesome-icon icon="times" />
+                                  <quintable-font-awesome-icon icon="xmark" />
                                 </small>
                               </span>
                             </span>
@@ -804,8 +800,94 @@
     </div>
 
     <div v-if="ajaxLoading" class="slot-loading slot quintable--loading">
-      <slot name="loading">
+      <slot name="loading" :hidden-breakpoints="hiddenBreakpoints">
+        <!-- Divs laid out as a table, never table markup: this stands in for the table while it loads, and a
+             `tbody tr` selector must not read its empty rows as data. -->
         <div
+          v-if="configFinal.skeletonLoading"
+          class="table quintable--skeleton"
+          role="presentation"
+          aria-hidden="true"
+        >
+          <!-- Groups as in thead/tbody: `.table > * > * > *` styles the cells, as in the loaded table. -->
+          <div class="quintable--skeleton--head">
+            <div
+              class="quintable--skeleton--row quintable--table-container--table--header-row"
+            >
+              <div
+                v-if="skeleton.toggle"
+                class="quintable--skeleton--cell quintable--table-container--table--header-row--placeholder-th"
+              ></div>
+              <div
+                v-if="
+                  configFinal.select && configFinal.selectPosition === 'pre'
+                "
+                class="quintable--skeleton--cell quintable--table-container--table--header-row--select-th"
+              ></div>
+              <template v-for="(headline, hIndex) in configFinal.headlines">
+                <div
+                  v-if="skeleton.columns[hIndex]"
+                  :key="'skeleton-headline-' + hIndex"
+                  class="quintable--skeleton--cell"
+                  :class="headerClass[hIndex]"
+                >
+                  <!-- The headline keeps its text, hidden under a bar, so the columns are as wide as loaded. -->
+                  <!-- eslint-disable-next-line vue/no-v-html -->
+                  <span
+                    class="quintable--skeleton--headline"
+                    v-html="showHeadlines[hIndex] ? headline : ''"
+                  ></span>
+                  <span
+                    v-if="configFinal.sorts[hIndex]"
+                    class="sorting-icon quintable--skeleton--sorting-icon"
+                  ></span>
+                </div>
+              </template>
+              <div
+                v-if="
+                  configFinal.select && configFinal.selectPosition === 'post'
+                "
+                class="quintable--skeleton--cell quintable--table-container--table--header-row--select-th"
+              ></div>
+            </div>
+          </div>
+          <div class="quintable--skeleton--body">
+            <div
+              v-for="row in skeleton.rows"
+              :key="'skeleton-row-' + row"
+              class="quintable--skeleton--row quintable--table-container--table--tbody--row"
+            >
+              <div
+                v-if="skeleton.toggle"
+                class="quintable--skeleton--cell quintable--table-container--table--tbody--row--toggle-td"
+              ></div>
+              <div
+                v-if="
+                  configFinal.select && configFinal.selectPosition === 'pre'
+                "
+                class="quintable--skeleton--cell quintable--table-container--table--tbody--row--select-td"
+              ></div>
+              <template v-for="(headline, hIndex) in configFinal.headlines">
+                <div
+                  v-if="skeleton.columns[hIndex]"
+                  :key="'skeleton-cell-' + hIndex"
+                  class="quintable--skeleton--cell quintable--table-container--table--tbody--row--cell"
+                  :class="configFinal.columnClasses[hIndex]"
+                >
+                  <span class="quintable--skeleton--bar"></span>
+                </div>
+              </template>
+              <div
+                v-if="
+                  configFinal.select && configFinal.selectPosition === 'post'
+                "
+                class="quintable--skeleton--cell quintable--table-container--table--tbody--row--select-td"
+              ></div>
+            </div>
+          </div>
+        </div>
+        <div
+          v-else
           class="loader-wrapper quintable--loading--loader-wrapper"
           :style="'height:' + loaderHeight + 'px;'"
         >
@@ -886,7 +968,7 @@
                   @click="gotoPage('first')"
                 >
                   <span class="page-link">
-                    <quintable-font-awesome-icon icon="angle-double-left" />
+                    <quintable-font-awesome-icon icon="angles-left" />
                   </span>
                 </li>
                 <li
@@ -945,7 +1027,7 @@
                   @click="gotoPage('last')"
                 >
                   <span class="page-link">
-                    <quintable-font-awesome-icon icon="angle-double-right" />
+                    <quintable-font-awesome-icon icon="angles-right" />
                   </span>
                 </li>
               </ul>
@@ -974,6 +1056,17 @@ import axios from "axios";
 import { getSharedBreakpoints } from "../../utils/shared-breakpoints";
 
 let _quintableIdCounter = 0;
+
+// autoFit: the breakpoints that collapse by the room in the table's container, largest first, never by window width.
+const FIT_ORDER = ["xxl", "xl", "lg"];
+
+// ignoreControlClicks: the elements whose click is their own, not the row's or the cell's.
+const CONTROL_SELECTOR =
+  "a, button, input, select, textarea, label, [role='button']";
+
+function sameList(a, b) {
+  return a.length === b.length && a.every((value, i) => value === b[i]);
+}
 
 // Cache localStorage availability once at module scope
 let _localStorageAvailable = null;
@@ -1027,6 +1120,10 @@ export { _resetLocalStorageCache };
 
 export default {
   name: "VueQuintable",
+  inject: {
+    // Config defaults for every table of the app: app.use(VueQuintable, { defaults: { ... } }).
+    quintableDefaults: { from: "vueQuintableDefaults", default: null },
+  },
   props: {
     rows: {
       type: Array,
@@ -1172,6 +1269,10 @@ export default {
       operatorFunctions: operatorFunctions,
       storedState: {},
       activeRow: null,
+      // autoFit: how many of FIT_ORDER are collapsed on top of the window's list, and that list without them.
+      fitLevel: 0,
+      windowHiddenBreakpoints: null,
+      fitScroll: false,
     };
   },
 
@@ -1204,14 +1305,15 @@ export default {
       if (!this.config) {
         return {};
       }
+      const config = { ...this.quintableDefaults, ...this.config };
 
       let pagination = false;
-      if (this.config.pagination === true) {
+      if (config.pagination === true) {
         pagination = 25;
-      } else if (this.config.pagination) {
+      } else if (config.pagination) {
         let i = 0;
         while (
-          this.paginationOptions[i] <= this.config.pagination &&
+          this.paginationOptions[i] <= config.pagination &&
           i < this.paginationOptions.length
         ) {
           i++;
@@ -1224,158 +1326,155 @@ export default {
 
       let numberOfVisibleRowsFillerWord = "of";
 
-      if (this.config.numberOfVisibleRowsFillerWord) {
-        numberOfVisibleRowsFillerWord =
-          this.config.numberOfVisibleRowsFillerWord;
+      if (config.numberOfVisibleRowsFillerWord) {
+        numberOfVisibleRowsFillerWord = config.numberOfVisibleRowsFillerWord;
       }
 
       let select = false;
-      if (this.config.select) {
+      if (config.select) {
         select = true;
       }
 
       let ajaxRequestDelay = 250;
-      if (this.config.ajaxRequestDelay) {
-        ajaxRequestDelay = this.config.ajaxRequestDelay;
+      if (config.ajaxRequestDelay) {
+        ajaxRequestDelay = config.ajaxRequestDelay;
       }
 
       let hoverClass = "bg-muted";
-      if (this.config.hoverClass === false) {
+      if (config.hoverClass === false) {
         hoverClass = "";
-      } else if (this.config.hoverClass && this.config.hoverClass !== true) {
-        hoverClass = this.config.hoverClass;
+      } else if (config.hoverClass && config.hoverClass !== true) {
+        hoverClass = config.hoverClass;
       }
 
       let activeClass = "bg-muted";
-      if (this.config.activeClass === false) {
+      if (config.activeClass === false) {
         activeClass = "";
-      } else if (this.config.activeClass && this.config.activeClass !== true) {
-        activeClass = this.config.activeClass;
+      } else if (config.activeClass && config.activeClass !== true) {
+        activeClass = config.activeClass;
       }
 
       let multiSort = false;
-      if (this.config.multiSort) {
+      if (config.multiSort) {
         multiSort = true;
       }
 
       let pageSort = false;
-      if (this.config.pageSort) {
+      if (config.pageSort) {
         pageSort = true;
       }
 
       let multiSortSelect = false;
-      if (this.config.multiSortSelect) {
+      if (config.multiSortSelect) {
         multiSortSelect = true;
       }
 
       let pageSortSelect = false;
-      if (this.config.pageSortSelect) {
+      if (config.pageSortSelect) {
         pageSortSelect = true;
       }
 
       let ajaxUrl = false;
-      if (this.config.ajaxUrl) {
-        ajaxUrl = this.config.ajaxUrl;
+      if (config.ajaxUrl) {
+        ajaxUrl = config.ajaxUrl;
       }
 
       let selectPosition = "post";
-      if (["pre", "post"].includes(this.config.selectPosition)) {
-        selectPosition = this.config.selectPosition;
+      if (["pre", "post"].includes(config.selectPosition)) {
+        selectPosition = config.selectPosition;
       }
 
       let expandedAll = false;
-      if (this.config.expandedAll) {
+      if (config.expandedAll) {
         expandedAll = true;
       }
 
       let useFuzzySearch = false;
-      if (this.config.useFuzzySearch) {
+      if (config.useFuzzySearch) {
         useFuzzySearch = true;
       }
       let prettySelect = false;
-      if (this.config.prettySelect) {
+      if (config.prettySelect) {
         prettySelect = true;
       }
 
       let rowsSelect = false;
-      if (this.config.rowsSelect) {
+      if (config.rowsSelect) {
         rowsSelect = true;
       }
 
       let keepSelect = false;
-      if (this.config.keepSelect) {
+      if (config.keepSelect) {
         keepSelect = true;
       }
 
       let disallowAllOption = false;
-      if (this.config.disallowAllOption) {
+      if (config.disallowAllOption) {
         disallowAllOption = true;
       }
 
       let hideEmptyColumns = false;
-      if (this.config.hideEmptyColumns) {
+      if (config.hideEmptyColumns) {
         hideEmptyColumns = true;
       }
 
       let ignoreSortEmptyColumns = "none";
-      if (
-        ["none", "active", "all"].includes(this.config.ignoreSortEmptyColumns)
-      ) {
-        ignoreSortEmptyColumns = this.config.ignoreSortEmptyColumns;
+      if (["none", "active", "all"].includes(config.ignoreSortEmptyColumns)) {
+        ignoreSortEmptyColumns = config.ignoreSortEmptyColumns;
       }
 
       let search = false;
-      if (this.config.search) {
+      if (config.search) {
         search = true;
       }
 
       let searchLength = 1;
-      if (this.config.searchLength) {
-        searchLength = this.config.searchLength;
+      if (config.searchLength) {
+        searchLength = config.searchLength;
       }
 
       let searchPlaceholder = "Search...";
-      if (this.config.searchPlaceholder) {
-        searchPlaceholder = this.config.searchPlaceholder;
+      if (config.searchPlaceholder) {
+        searchPlaceholder = config.searchPlaceholder;
       }
 
       let multiSortPlaceholder = "Multiple sort";
-      if (this.config.multiSortPlaceholder) {
-        multiSortPlaceholder = this.config.multiSortPlaceholder;
+      if (config.multiSortPlaceholder) {
+        multiSortPlaceholder = config.multiSortPlaceholder;
       }
 
       let pageSortPlaceholder = "Page sort";
-      if (this.config.pageSortPlaceholder) {
-        pageSortPlaceholder = this.config.pageSortPlaceholder;
+      if (config.pageSortPlaceholder) {
+        pageSortPlaceholder = config.pageSortPlaceholder;
       }
 
       let filterRelation = "AND";
-      if (["AND", "OR"].includes(this.config.filterRelation)) {
-        filterRelation = this.config.filterRelation;
+      if (["AND", "OR"].includes(config.filterRelation)) {
+        filterRelation = config.filterRelation;
       }
 
       let filterGroupRelation = "AND";
-      if (["AND", "OR"].includes(this.config.filterGroupRelation)) {
-        filterGroupRelation = this.config.filterGroupRelation;
+      if (["AND", "OR"].includes(config.filterGroupRelation)) {
+        filterGroupRelation = config.filterGroupRelation;
       }
 
       let rowsPlaceholder = "Rows per page:";
-      if (this.config.rowsPlaceholder) {
-        rowsPlaceholder = this.config.rowsPlaceholder;
+      if (config.rowsPlaceholder) {
+        rowsPlaceholder = config.rowsPlaceholder;
       }
 
       let emptyPlaceholder = "No rows...";
-      if (this.config.emptyPlaceholder) {
-        emptyPlaceholder = this.config.emptyPlaceholder;
+      if (config.emptyPlaceholder) {
+        emptyPlaceholder = config.emptyPlaceholder;
       }
 
       let selectAll = false;
-      if (this.config.selectAll) {
+      if (config.selectAll) {
         selectAll = true;
       }
 
       let selectAllRows = false;
-      if (this.config.selectAllRows) {
+      if (config.selectAllRows) {
         selectAllRows = true;
       }
 
@@ -1387,11 +1486,11 @@ export default {
       }
 
       let storeState = false;
-      if (this.config.storeState) {
+      if (config.storeState) {
         storeState = true;
       }
 
-      if (!this.identifier && this.config.storeState) {
+      if (!this.identifier && config.storeState) {
         console.warn(
           "Option storeState was deactivated automatically because table identifier is not set!",
         );
@@ -1406,64 +1505,64 @@ export default {
       }
 
       let defaultSelected = false;
-      if (this.config.defaultSelected) {
+      if (config.defaultSelected) {
         defaultSelected = true;
       }
 
       let hideRowToggle = false;
-      if (this.config.hideRowToggle) {
+      if (config.hideRowToggle) {
         hideRowToggle = true;
       }
 
       let enableRowTabIndex = false;
-      if (this.config.enableRowTabIndex) {
+      if (config.enableRowTabIndex) {
         enableRowTabIndex = true;
       }
 
       let expandedRowIcon = "chevron-up";
       if (
-        this.config.expandedRowIcon &&
-        typeof this.config.expandedRowIcon === "string" &&
+        config.expandedRowIcon &&
+        typeof config.expandedRowIcon === "string" &&
         ["chevron-up", "minus", "caret-up", "eye-slash"].includes(
-          this.config.expandedRowIcon.toLowerCase(),
+          config.expandedRowIcon.toLowerCase(),
         )
       ) {
-        expandedRowIcon = this.config.expandedRowIcon.toLowerCase();
+        expandedRowIcon = config.expandedRowIcon.toLowerCase();
       }
 
       let collapsedRowIcon = "chevron-down";
       if (
-        this.config.collapsedRowIcon &&
-        typeof this.config.collapsedRowIcon === "string" &&
+        config.collapsedRowIcon &&
+        typeof config.collapsedRowIcon === "string" &&
         ["chevron-down", "plus", "caret-down", "eye"].includes(
-          this.config.collapsedRowIcon.toLowerCase(),
+          config.collapsedRowIcon.toLowerCase(),
         )
       ) {
-        collapsedRowIcon = this.config.collapsedRowIcon.toLowerCase();
+        collapsedRowIcon = config.collapsedRowIcon.toLowerCase();
       }
 
       let pageRange = 5;
-      if (this.config.pageRange) {
-        pageRange = this.config.pageRange;
+      if (config.pageRange) {
+        pageRange = config.pageRange;
       }
 
       let searchClass = "col-12";
-      if (this.config.searchClass) {
-        searchClass = this.config.searchClass;
+      if (config.searchClass) {
+        searchClass = config.searchClass;
       }
 
       let searchContainerClass = "row";
-      if (this.config.searchContainerClass) {
-        searchContainerClass = this.config.searchContainerClass;
+      if (config.searchContainerClass) {
+        searchContainerClass = config.searchContainerClass;
       }
 
       let requestMethod = "GET";
       if (
-        this.config.requestMethod &&
-        typeof this.config.requestMethod === "string" &&
-        ["POST", "GET"].includes(this.config.requestMethod.toUpperCase())
+        config.requestMethod &&
+        typeof config.requestMethod === "string" &&
+        ["POST", "GET"].includes(config.requestMethod.toUpperCase())
       ) {
-        requestMethod = this.config.requestMethod.toUpperCase();
+        requestMethod = config.requestMethod.toUpperCase();
       }
 
       let number = 0;
@@ -1477,14 +1576,14 @@ export default {
       let ignoreEmpty = [];
 
       let columns = null;
-      if (this.config.columns) {
-        number = this.config.columns.length;
+      if (config.columns) {
+        number = config.columns.length;
 
-        for (let i = 0; i < this.config.columns.length; i++) {
+        for (let i = 0; i < config.columns.length; i++) {
           columnClasses[i] = "";
-          if (this.config.columns[i] && this.config.columns[i].headline) {
-            headlines[i] = this.config.columns[i].headline;
-            columnClasses[i] += this.config.columns[i].headline
+          if (config.columns[i] && config.columns[i].headline) {
+            headlines[i] = config.columns[i].headline;
+            columnClasses[i] += config.columns[i].headline
               .replace(/([a-z])([A-Z])/g, "$1-$2")
               .replace(/\s+/g, "-")
               .toLowerCase();
@@ -1494,26 +1593,25 @@ export default {
 
           columnClasses[i] += " column-" + (i + 1);
 
-          if (this.config.columns[i].classes) {
-            columnClasses[i] += " " + this.config.columns[i].classes;
+          if (config.columns[i].classes) {
+            columnClasses[i] += " " + config.columns[i].classes;
           }
 
-          if (this.config.columns[i] && this.config.columns[i].breakpoint) {
-            breakpoints[i] = this.config.columns[i].breakpoint;
+          if (config.columns[i] && config.columns[i].breakpoint) {
+            breakpoints[i] = config.columns[i].breakpoint;
           } else {
             breakpoints[i] = "";
           }
 
-          if (this.config.columns[i] && this.config.columns[i].sort) {
+          if (config.columns[i] && config.columns[i].sort) {
             if (
-              this.config.columns[i].firstSortDirection &&
-              typeof this.config.columns[i].firstSortDirection === "string" &&
+              config.columns[i].firstSortDirection &&
+              typeof config.columns[i].firstSortDirection === "string" &&
               ["DESC", "ASC"].includes(
-                this.config.columns[i].firstSortDirection.toUpperCase(),
+                config.columns[i].firstSortDirection.toUpperCase(),
               )
             ) {
-              sorts[i] =
-                this.config.columns[i].firstSortDirection.toUpperCase();
+              sorts[i] = config.columns[i].firstSortDirection.toUpperCase();
             } else {
               sorts[i] = true;
             }
@@ -1521,32 +1619,32 @@ export default {
             sorts[i] = false;
           }
 
-          if (this.config.columns[i] && this.config.columns[i].ignoreEmpty) {
+          if (config.columns[i] && config.columns[i].ignoreEmpty) {
             ignoreEmpty[i] = true;
           } else {
             ignoreEmpty[i] = false;
           }
 
-          if (this.config.columns[i] && this.config.columns[i].sticky) {
+          if (config.columns[i] && config.columns[i].sticky) {
             stickyCols[i] = true;
           } else {
             stickyCols[i] = false;
           }
 
-          if (this.config.columns[i] && this.config.columns[i].hidden) {
+          if (config.columns[i] && config.columns[i].hidden) {
             hiddenCols[i] = true;
           } else {
             hiddenCols[i] = false;
           }
 
-          if (this.config.columns[i] && this.config.columns[i].align) {
-            alignments[i] = this.config.columns[i].align;
+          if (config.columns[i] && config.columns[i].align) {
+            alignments[i] = config.columns[i].align;
           } else {
             alignments[i] = false;
           }
         }
 
-        columns = this.config.columns;
+        columns = config.columns;
       }
 
       return Object.freeze({
@@ -1601,7 +1699,54 @@ export default {
         requestMethod: requestMethod,
         storeState: storeState,
         ajaxRequestDelay: ajaxRequestDelay,
+        autoFit: !!config.autoFit,
+        cellTitles: !!config.cellTitles,
+        skeletonLoading: !!config.skeletonLoading,
+        ignoreControlClicks: !!config.ignoreControlClicks,
+        alwaysShowSortIcons: !!config.alwaysShowSortIcons,
+        reloadOn:
+          typeof config.reloadOn === "function" ? config.reloadOn : null,
       });
+    },
+
+    // The table's column count, which is the header's cell count: a row's details span exactly these.
+    columnCount() {
+      return Math.max(
+        1,
+        (this.hasGeneratedRows && !this.configFinal.hideRowToggle ? 1 : 0) +
+          (this.configFinal.select ? 1 : 0) +
+          this.cellVisible.filter(Boolean).length,
+      );
+    },
+
+    // skeletonLoading: the columns, toggle and row count the loading table stands in for. No empty-column check:
+    // while rows load there are none to check.
+    skeleton() {
+      const cols = this.configFinal.columns;
+      const shown = cols.map(
+        (col, j) => !!col && !this.configFinal.hiddenCols[j],
+      );
+      return {
+        columns: shown.map(
+          (show, j) =>
+            show &&
+            !this._colBreakpointMatch[j] &&
+            !this.configFinal.stickyCols[j],
+        ),
+        toggle:
+          !this.configFinal.hideRowToggle &&
+          shown.some(
+            (show, j) =>
+              show &&
+              this._colBreakpointMatch[j] &&
+              !cols[j].sticky &&
+              !cols[j].alwaysExpanded,
+          ),
+        rows:
+          typeof this.currentRowsPerPage === "number"
+            ? this.currentRowsPerPage
+            : 10,
+      };
     },
 
     // Pre-compute per-column whether it matches any hidden breakpoint
@@ -1663,10 +1808,7 @@ export default {
      * @returns {Array} a boolean array which represents all indexes of the rows
      */
     visibleRows() {
-      if (
-        !this.configFinal.ajaxUrl &&
-        this.currentRowsPerPage !== "All"
-      ) {
+      if (!this.configFinal.ajaxUrl && this.currentRowsPerPage !== "All") {
         let visible = new Array(this.rowsFinal.length).fill(false);
 
         let onlyVisibleSortedRows = {};
@@ -2526,6 +2668,14 @@ export default {
   },
 
   watch: {
+    // autoFit: new rows (page, sort, filter, search) may be narrower than the ones a fit level was raised for.
+    visibleRowIndexes() {
+      if (this.windowHiddenBreakpoints && this.fitLevel > 0) {
+        this.fitLevel = 0;
+        this._applyFitLevel();
+        this.$nextTick(this._fitToContainer);
+      }
+    },
     rowsFinal: {
       handler(val) {
         if (!this.verbose) return;
@@ -3127,13 +3277,44 @@ export default {
       this.checkAll(true);
     }
 
+    // autoFit: refit when the container or the table changes size; the table is observed anew after each render.
+    if (this.configFinal.autoFit && typeof ResizeObserver !== "undefined") {
+      this._fitObserver = new ResizeObserver(() => this._scheduleFit());
+      this._fitObserver.observe(this.$refs["height-wrapper"]);
+      this._observeFitTable();
+    }
+
     // Subscribe to shared breakpoint detector
     this._sharedBP = getSharedBreakpoints();
     this._sharedBP.subscribe(this._onBreakpointChange);
+
+    if (this.configFinal.reloadOn) {
+      this._offReload = this.configFinal.reloadOn(() => {
+        if (this.configFinal.ajaxUrl) {
+          this.loadViaAjax(false, true, "RELOAD");
+        }
+      });
+    }
+  },
+  updated() {
+    // autoFit: a new page or sort can bring longer values that widen the table without resizing anything observed.
+    if (this.configFinal.autoFit) {
+      this._observeFitTable();
+      this._scheduleFit();
+    }
   },
   beforeUnmount() {
     if (this._sharedBP) {
       this._sharedBP.unsubscribe(this._onBreakpointChange);
+    }
+    if (this._fitObserver) {
+      this._fitObserver.disconnect();
+    }
+    if (this._fitFrame) {
+      cancelAnimationFrame(this._fitFrame);
+    }
+    if (typeof this._offReload === "function") {
+      this._offReload();
     }
     if (this.configFinal.enableRowTabIndex) {
       document.removeEventListener("keydown", this.checkKey);
@@ -3181,17 +3362,11 @@ export default {
           const cell = cells[i];
           if (!cell) return false;
 
-          if (
-            typeof cell.isEmpty === "boolean" &&
-            cell.isEmpty === true
-          ) {
+          if (typeof cell.isEmpty === "boolean" && cell.isEmpty === true) {
             return false;
           }
 
-          if (
-            typeof cell.isEmpty === "boolean" &&
-            cell.isEmpty === false
-          ) {
+          if (typeof cell.isEmpty === "boolean" && cell.isEmpty === false) {
             return true;
           }
 
@@ -3302,6 +3477,64 @@ export default {
      * Check if a parent with certain class exists
      *
      */
+    /**
+     * ignoreControlClicks: a click on a link, button or form field inside the row or cell is the control's own, so
+     * the row and the cell emit nothing and leave the event alone. A disabled control does nothing of its own: a
+     * click on it stays the row's.
+     */
+    _isControlClick(e) {
+      if (
+        !this.configFinal.ignoreControlClicks ||
+        !(e.target instanceof Element) ||
+        !(e.currentTarget instanceof Element)
+      ) {
+        return false;
+      }
+      const element = e.target.closest(CONTROL_SELECTOR);
+      if (!element || !e.currentTarget.contains(element)) {
+        return false;
+      }
+      const control =
+        element instanceof HTMLLabelElement ? element.control : element;
+      return !control?.disabled;
+    },
+
+    /**
+     * cellTitles: an element in a body cell that cuts its text with `text-overflow: ellipsis` shows the whole text
+     * as its title while the text is cut. An own title, or a tooltip on the cell, wins. Hover only: touch screens
+     * get no title.
+     */
+    onCellMouseover(event) {
+      if (!this.configFinal.cellTitles || !(event.target instanceof Element)) {
+        return;
+      }
+      const cell = event.target.closest("td");
+      if (
+        !cell ||
+        cell.hasAttribute("title") ||
+        cell.hasAttribute("aria-describedby")
+      ) {
+        return;
+      }
+      let element = event.target;
+      while (getComputedStyle(element).textOverflow !== "ellipsis") {
+        if (element === cell) {
+          return;
+        }
+        element = element.parentElement;
+      }
+      if (element.hasAttribute("title") && !element.dataset.quintableTitle) {
+        return;
+      }
+      if (element.scrollWidth > element.clientWidth) {
+        element.title = element.textContent.trim();
+        element.dataset.quintableTitle = "1";
+      } else if (element.dataset.quintableTitle) {
+        element.removeAttribute("title");
+        delete element.dataset.quintableTitle;
+      }
+    },
+
     hasSomeParentTheClass(element, className) {
       if (
         element instanceof HTMLElement &&
@@ -3341,6 +3574,9 @@ export default {
      * @param rowIndex Index of clicked row
      */
     onRowAuxClick(e, rowIndex) {
+      if (this._isControlClick(e)) {
+        return;
+      }
       if (e.button === 1) {
         const i = parseInt(rowIndex);
         this.$emit(
@@ -3359,6 +3595,9 @@ export default {
      * @param e Click Event
      */
     onRowMousedown(e) {
+      if (this._isControlClick(e)) {
+        return;
+      }
       if (e.which === 2) {
         e.preventDefault();
       }
@@ -3370,6 +3609,9 @@ export default {
      * @param rowIndex Index of clicked row
      */
     onRowClick(e, rowIndex) {
+      if (this._isControlClick(e)) {
+        return;
+      }
       if ((e.target || {}).type === "checkbox") {
         return;
       } else if (
@@ -3432,6 +3674,9 @@ export default {
      * @param cell
      */
     onCellClick(e, cell) {
+      if (this._isControlClick(e)) {
+        return;
+      }
       this.$emit("click:cell", cell, "click:cell", e.target, e);
     },
 
@@ -3441,6 +3686,9 @@ export default {
      * @param cell
      */
     onCellAuxClick(e, cell) {
+      if (this._isControlClick(e)) {
+        return;
+      }
       if (e.button === 1) {
         this.$emit("auxclick:cell", cell, "auxclick:cell", e.target, e);
       }
@@ -3452,6 +3700,9 @@ export default {
      * @param e Click Event
      */
     onCellMousedown(e) {
+      if (this._isControlClick(e)) {
+        return;
+      }
       if (e.which === 2) {
         e.preventDefault();
       }
@@ -3552,8 +3803,9 @@ export default {
           ) {
             this.selected[this.sortedIndexes[index]] = value;
             counter++;
-          } else if (!this.rowsFinal[this.sortedIndexes[index]].disableSelect) {
-            this.selected[this.sortedIndexes[index]] = value;
+          } else {
+            // A row outside the selection scope (another page, filtered out, disableSelect) is deselected, as in 2.x.
+            this.selected[this.sortedIndexes[index]] = false;
           }
         }
       }
@@ -4348,12 +4600,94 @@ export default {
      * Callback from shared breakpoint detector
      */
     _onBreakpointChange(hidden) {
-      if (
-        this.hiddenBreakpoints.length !== hidden.length ||
-        this.hiddenBreakpoints.some((bp, i) => bp !== hidden[i])
-      ) {
+      if (this.configFinal.autoFit) {
+        this.windowHiddenBreakpoints = hidden.filter(
+          (bp) => !FIT_ORDER.includes(bp),
+        );
+        this.fitLevel = 0;
+        this._applyFitLevel();
+        this._scheduleFit();
+        return;
+      }
+      if (!sameList(this.hiddenBreakpoints, hidden)) {
         this.hiddenBreakpoints = hidden;
       }
+    },
+
+    /**
+     * autoFit: the window's list (phones, tablets, `all`) plus the `fitLevel` largest of FIT_ORDER.
+     */
+    _applyFitLevel() {
+      const next = [
+        ...this.windowHiddenBreakpoints,
+        ...FIT_ORDER.slice(0, this.fitLevel),
+      ];
+      if (!sameList(this.hiddenBreakpoints, next)) {
+        this.hiddenBreakpoints = next;
+      }
+    },
+
+    _observeFitTable() {
+      const table = this.$refs.table;
+      if (this._fitObserver && table && table !== this._fitTable) {
+        if (this._fitTable) {
+          this._fitObserver.unobserve(this._fitTable);
+        }
+        this._fitObserver.observe(table);
+        this._fitTable = table;
+      }
+    },
+
+    _scheduleFit() {
+      if (typeof requestAnimationFrame === "undefined") {
+        this._fitToContainer();
+        return;
+      }
+      if (this._fitFrame) {
+        cancelAnimationFrame(this._fitFrame);
+      }
+      this._fitFrame = requestAnimationFrame(() => {
+        this._fitFrame = null;
+        this._fitToContainer();
+      });
+    },
+
+    /**
+     * autoFit: collapses FIT_ORDER one level at a time while the table overflows its container, all in one frame
+     * before the next paint. A container that grew starts again from the window's list. Whatever still overflows
+     * after the last level scrolls inside the container (`quintable-fit-scroll`).
+     */
+    _fitToContainer() {
+      const container = this.$refs["height-wrapper"];
+      const table = this.$refs.table;
+      if (!container || !table || !this.windowHiddenBreakpoints) {
+        return;
+      }
+
+      const width = container.clientWidth;
+      const grew = this._fitWidth !== undefined && width > this._fitWidth;
+      this._fitWidth = width;
+      if (grew && this.fitLevel > 0) {
+        this.fitScroll = false;
+        this.fitLevel = 0;
+        this._applyFitLevel();
+        this.$nextTick(this._fitToContainer);
+        return;
+      }
+
+      if (width === 0 || table.scrollWidth <= width + 1) {
+        this.fitScroll = false;
+        return;
+      }
+      if (this.fitLevel >= FIT_ORDER.length) {
+        this.fitScroll = true;
+        return;
+      }
+
+      // A level without columns of its own does not resize the table, so nothing observed fires: check again.
+      this.fitLevel += 1;
+      this._applyFitLevel();
+      this.$nextTick(this._fitToContainer);
     },
 
     /**
@@ -4417,6 +4751,97 @@ export default {
 </script>
 
 <style scoped>
+/* autoFit: what still overflows after the last fit level scrolls inside the container. Only then: a scroll box
+   clips anything absolutely positioned in it, e.g. a dropdown opened in a cell. */
+.quintable--table-container.quintable-fit-scroll {
+  overflow-x: auto;
+}
+
+/* skeletonLoading: divs laid out as a table, so padding, borders and column widths come from the same `.table`
+   styles the loaded table gets. */
+.quintable--skeleton {
+  display: table;
+  border-collapse: collapse;
+}
+/* What Bootstrap's reboot gives thead, tbody, tr, td and th: without it the `.table` cell border has no style and
+   each row is 1px lower than loaded. `:where()` keeps it below the `.table` cell rule that sets the width. */
+:where(
+  .quintable--skeleton--head,
+  .quintable--skeleton--body,
+  .quintable--skeleton--row,
+  .quintable--skeleton--cell
+) {
+  border: 0 solid;
+  border-color: inherit;
+}
+.quintable--skeleton--head {
+  display: table-header-group;
+  font-weight: bold; /* as a th, so the hidden headlines are as wide as loaded */
+}
+.quintable--skeleton--body {
+  display: table-row-group;
+}
+.quintable--skeleton--row {
+  display: table-row;
+}
+.quintable--skeleton--cell {
+  display: table-cell;
+  vertical-align: top;
+}
+.quintable--skeleton--headline {
+  position: relative;
+  display: inline-block;
+  color: transparent;
+}
+.quintable--skeleton--headline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(50% - 4px);
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.15);
+}
+.quintable--skeleton--sorting-icon {
+  display: inline-block;
+  width: 1em; /* two arrows at 0.8em */
+}
+/* A bar 8px high whose margins keep the 1.5em line of the text it stands for, so rows are as high as loaded. */
+.quintable--skeleton--bar {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  width: 85%;
+  height: 8px;
+  margin: calc((1.5em - 8px) / 2) 0;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.08);
+}
+.quintable--skeleton--bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: quintable-shimmer 1.5s infinite linear;
+}
+@media (prefers-reduced-motion: reduce) {
+  .quintable--skeleton--bar::after {
+    animation: none;
+  }
+}
+@keyframes quintable-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
 table.generated-table td {
   vertical-align: top;
 }
@@ -4486,29 +4911,68 @@ table.generated-table td {
   border-top: none;
 }
 
+/* Sort arrows stand in the text flow after a sortable heading. Hidden at rest, faint while the header row is hovered
+   (always with alwaysShowSortIcons, and on touch screens, which have no hover), in full while the heading is hovered
+   or sorted. A sorted one shows a single icon of its direction and the "x" that removes the sort. Neither hover nor
+   sorting widens a heading, so no column moves. The icons take the heading's colour. */
 .sort-header {
   cursor: pointer;
-  position: relative;
 }
 
-.sort-header:hover {
-  padding-right: 20px !important;
-}
-
-.sort-header.active {
-  padding-right: 45px !important;
-}
-
-.sort-header .sorting-icon {
-  position: absolute;
-  right: 5px;
+.sorting-icon {
+  margin-left: 0.25rem;
+  white-space: nowrap;
   opacity: 0;
-  transition: opacity 0.25s ease-in-out;
+  transition: opacity 0.15s ease-out;
 }
 
-.sort-header.active .sorting-icon,
-.sort-header:hover .sorting-icon {
+/* Faint. :where() adds no weight, so the full-opacity rules below win. A row's details render their icons only while
+   the row is hovered, so those are faint whenever they show. Child combinators: a table nested in the details keeps
+   its own setting. */
+:where(
+    .vue-quintable-header-row:hover > th,
+    .sort-icons-visible > th,
+    .generated-cell-headline,
+    .sticky-cell-headline
+  )
+  > .sorting-icon {
+  opacity: 0.4;
+}
+
+@media (hover: none) {
+  .sorting-icon {
+    opacity: 0.4;
+  }
+}
+
+/* The icons sit a size below the heading's text, as fine as the arrows of a sort control should be. */
+.sorting-icon > svg {
+  font-size: 0.8em;
+}
+
+.sort-header:hover .sorting-icon,
+.generated-cell-headline:hover .sorting-icon,
+.sticky-cell-headline:hover .sorting-icon,
+.sorting-icon.sorted {
   opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sorting-icon {
+    transition: none;
+  }
+}
+
+/* A right-aligned heading has its arrows before its text, so the text ends where its column's values do. */
+.sort-header:is(.text-end, .text-right) {
+  direction: rtl;
+}
+.sort-header:is(.text-end, .text-right) > * {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.sort-header:is(.text-end, .text-right) > .sorting-icon {
+  margin: 0 0.25rem 0 0;
 }
 
 .ajax-loader {
