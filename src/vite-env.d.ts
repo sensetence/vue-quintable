@@ -7,3 +7,6 @@ declare module '*.vue' {
 }
 
 
+
+// Prism plugins register themselves on Prism and export nothing.
+declare module 'prismjs/plugins/*'

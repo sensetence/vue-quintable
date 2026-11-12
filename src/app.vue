@@ -33,33 +33,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, shallowRef, watch, type ShallowRef, type Component } from "vue";
+import {
+  ref,
+  shallowRef,
+  watch,
+  defineAsyncComponent,
+  type ShallowRef,
+  type Component,
+} from "vue";
 import type { SelectItem } from "./types/form";
 
-import BasicExample from "./examples/basic-example.vue";
-import ComputedRowsExample from "./examples/computed-rows-example.vue";
-import PaginationExample from "./examples/pagination-example.vue";
-import SortExample from "./examples/sort-example.vue";
-import SelectExample from "./examples/select-example.vue";
-import CellFormatterExample from "./examples/cell-formatter-example.vue";
-import BreakpointsExample from "./examples/breakpoints-example.vue";
-import BreakpointsAdvancedExample from "./examples/breakpoints-advanced-example.vue";
-import ContainerFitExample from "./examples/container-fit-example.vue";
-import TooltipsExample from "./examples/tooltips-example.vue";
-import AjaxExample from "./examples/ajax-example.vue";
-import AjaxSelectExample from "./examples/ajax-select-example.vue";
-import AjaxLoadedExample from "./examples/ajax-loaded-example.vue";
-import AjaxSkeletonExample from "./examples/ajax-skeleton-example.vue";
-import EventsExample from "./examples/events-example.vue";
-import SlotsExample from "./examples/slots-example.vue";
-import VueBindedExample from "./examples/vue-binded-example.vue";
-import FilterExample from "./examples/filter-example.vue";
-import ComponentExample from "./examples/component-example.vue";
-import HideShowExample from "./examples/hide-show-example.vue";
-import AddRemoveExample from "./examples/add-remove-example.vue";
-import NestedExample from "./examples/nested-example.vue";
-import StoreStateExample from "./examples/store-state-example.vue";
-import AjaxStoreStateExample from "./examples/ajax-store-state-example.vue";
+// Each example is its own chunk, loaded when selected.
+const modules = import.meta.glob<Component>("./examples/*.vue", {
+  import: "default",
+});
 
 // example navigation
 type SelectItemWithComponent = SelectItem & {
@@ -67,127 +54,37 @@ type SelectItemWithComponent = SelectItem & {
 };
 
 const examples: SelectItemWithComponent[] = [
-  {
-    value: "basic-example",
-    label: "Basic Example",
-    component: shallowRef(BasicExample),
-  },
-  {
-    value: "computed-rows-example",
-    label: "Computed Rows Example",
-    component: shallowRef(ComputedRowsExample),
-  },
-  {
-    value: "pagination-example",
-    label: "Pagination Example",
-    component: shallowRef(PaginationExample),
-  },
-  {
-    value: "sort-example",
-    label: "Sort Example",
-    component: shallowRef(SortExample),
-  },
-  {
-    value: "select-example",
-    label: "Select Example",
-    component: shallowRef(SelectExample),
-  },
-  {
-    value: "cell-formatter-example",
-    label: "Cell Formatter Example",
-    component: shallowRef(CellFormatterExample),
-  },
-  {
-    value: "breakpoints-example",
-    label: "Breakpoints Example",
-    component: shallowRef(BreakpointsExample),
-  },
-  {
-    value: "breakpoints-advanced-example",
-    label: "Breakpoints Advanced Example",
-    component: shallowRef(BreakpointsAdvancedExample),
-  },
-  {
-    value: "container-fit-example",
-    label: "Container Fit Example",
-    component: shallowRef(ContainerFitExample),
-  },
-  {
-    value: "tooltips-example",
-    label: "Tooltips Example",
-    component: shallowRef(TooltipsExample),
-  },
-  {
-    value: "ajax-example",
-    label: "Ajax Example",
-    component: shallowRef(AjaxExample),
-  },
-  {
-    value: "ajax-select-example",
-    label: "Ajax + Select Example",
-    component: shallowRef(AjaxSelectExample),
-  },
-  {
-    value: "ajax-loaded-example",
-    label: "Ajax Loaded Example",
-    component: shallowRef(AjaxLoadedExample),
-  },
-  {
-    value: "ajax-skeleton-example",
-    label: "Ajax Skeleton & Reload Example",
-    component: shallowRef(AjaxSkeletonExample),
-  },
-  {
-    value: "events-example",
-    label: "Events Example",
-    component: shallowRef(EventsExample),
-  },
-  {
-    value: "slots-example",
-    label: "Slots Example",
-    component: shallowRef(SlotsExample),
-  },
-  {
-    value: "vue-binded-example",
-    label: "Vue-binded Example",
-    component: shallowRef(VueBindedExample),
-  },
-  {
-    value: "filter-example",
-    label: "Filter Example",
-    component: shallowRef(FilterExample),
-  },
-  {
-    value: "component-example",
-    label: "Component Example",
-    component: shallowRef(ComponentExample),
-  },
-  {
-    value: "hide-show-example",
-    label: "Hide/Show Example",
-    component: shallowRef(HideShowExample),
-  },
-  {
-    value: "add-remove-example",
-    label: "Add/Remove/Move Example",
-    component: shallowRef(AddRemoveExample),
-  },
-  {
-    value: "nested-example",
-    label: "Nested Example",
-    component: shallowRef(NestedExample),
-  },
-  {
-    value: "store-state-example",
-    label: "Store State Example",
-    component: shallowRef(StoreStateExample),
-  },
-  {
-    value: "ajax-store-state-example",
-    label: "Ajax Store State",
-    component: shallowRef(AjaxStoreStateExample),
-  },
-];
+  ["basic-example", "Basic Example"],
+  ["computed-rows-example", "Computed Rows Example"],
+  ["pagination-example", "Pagination Example"],
+  ["sort-example", "Sort Example"],
+  ["select-example", "Select Example"],
+  ["cell-formatter-example", "Cell Formatter Example"],
+  ["breakpoints-example", "Breakpoints Example"],
+  ["breakpoints-advanced-example", "Breakpoints Advanced Example"],
+  ["container-fit-example", "Container Fit Example"],
+  ["tooltips-example", "Tooltips Example"],
+  ["ajax-example", "Ajax Example"],
+  ["ajax-select-example", "Ajax + Select Example"],
+  ["ajax-loaded-example", "Ajax Loaded Example"],
+  ["ajax-skeleton-example", "Ajax Skeleton & Reload Example"],
+  ["events-example", "Events Example"],
+  ["slots-example", "Slots Example"],
+  ["vue-binded-example", "Vue-binded Example"],
+  ["filter-example", "Filter Example"],
+  ["component-example", "Component Example"],
+  ["hide-show-example", "Hide/Show Example"],
+  ["add-remove-example", "Add/Remove/Move Example"],
+  ["nested-example", "Nested Example"],
+  ["store-state-example", "Store State Example"],
+  ["ajax-store-state-example", "Ajax Store State"],
+].map(([value, label]) => ({
+  value,
+  label,
+  component: shallowRef(
+    defineAsyncComponent(modules[`./examples/${value}.vue`]),
+  ),
+}));
 
 // load example from URL parameters
 let urlParams = new URLSearchParams(window.location.search);

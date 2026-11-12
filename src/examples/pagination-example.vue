@@ -29,9 +29,11 @@ const config = {
     },
     {
       headline: "Age",
+      sort: true,
     },
     {
       headline: "Birth Place",
+      breakpoint: "md",
     },
     {
       headline: "Job",
@@ -40,10 +42,11 @@ const config = {
   pagination: 5,
   pageRange: 3,
   rowsSelect: true,
+  disallowAllOption: false,
 };
 
 const rows = computed(() => {
-  let count = 250;
+  let count = 2000;
   const rows = [];
 
   const chance = new Chance();

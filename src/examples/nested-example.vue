@@ -17,6 +17,11 @@
                 innerCell.value
               }}</strong>
             </template>
+            <template #generated-cell-complete="{ cell: innerCell }">
+              <strong v-if="innerCell.type === 'strong'">{{
+                innerCell.value
+              }}</strong>
+            </template>
           </vue-quintable>
         </div>
       </template>
