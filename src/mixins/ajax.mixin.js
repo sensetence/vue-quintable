@@ -13,6 +13,11 @@ export default {
     },
   },
   methods: {
+    // error slot: loads the current page again.
+    _reloadPage() {
+      this.loadViaAjax(false, true, "RELOAD");
+    },
+
     _wrapperHeight() {
       const wrapper = this.$refs["height-wrapper"];
       return wrapper ? wrapper.clientHeight : 0;
@@ -73,6 +78,7 @@ export default {
       this.loaderHeight = this._wrapperHeight();
 
       this.fetching = true;
+      this.ajaxError = null;
 
       const params = {
         search: query,
@@ -142,6 +148,7 @@ export default {
             console.log("Request canceled", error.message);
           } else {
             this.fetching = false;
+            this.ajaxError = error;
             console.error(error);
             this.$emit("ajax:error", error, "ajax:error");
           }

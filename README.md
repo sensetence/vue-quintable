@@ -453,6 +453,23 @@ Enable `config.select` and bind the selection with `v-model:selected-rows`. The 
 | `no-results`             | – | Placeholder if no rows match. |
 | `loading`                | `{ hiddenBreakpoints }` | Custom loader. `hiddenBreakpoints` lists the breakpoints whose columns are folded right now, for a loader in the table's shape. |
 | `footer`                 | – | Content below the table. |
+| `headline`               | `{ column, index, headline }` | Content of a column heading, in the header and in a row's details. |
+| `sort-icon`              | `{ column, index, direction }` | Replaces the sort arrows of a sortable heading. `direction` is `"asc"`, `"desc"` or `null`. The control that removes a sort stays. |
+| `toggle-icon`            | `{ row, index, expanded }` | Replaces the expand/collapse icon of a row. |
+| `select-checkbox`        | `{ row, index, checked, disabled, toggle }` | Replaces a row's checkbox. `toggle()` flips it, `toggle(true)` / `toggle(false)` sets it. |
+| `select-all-checkbox`    | `{ checked, indeterminate, toggle }` | Replaces the "select all" checkbox. |
+| `row-prepend`            | `{ row, index }` | An extra cell at the start of every row, e.g. for actions. A click in it is a row click, as in any cell; see `ignoreControlClicks`. |
+| `row-append`             | `{ row, index }` | An extra cell at the end of every row. |
+| `header-prepend`         | – | Heading of the `row-prepend` column. |
+| `header-append`          | – | Heading of the `row-append` column. |
+| `details`                | `{ row, index, cells, hovered }` | Replaces a row's details (its hidden and sticky columns). `cells` lists what they show now: `{ cell, index, headline, sticky }`. |
+| `empty`                  | – | Shown instead of `no-results` while the table has no rows at all. With `ajaxUrl`: the server reports none and no search or filter is set. |
+| `error`                  | `{ error, reload }` | Shown when loading rows via AJAX fails. `reload()` loads the current page again. |
+| `pagination`             | `{ page, pages, setPage }` | Replaces the page navigation. `setPage` takes a page number or `"first"`, `"prev"`, `"next"`, `"last"`. |
+| `pagination-icon`        | `{ type }` | Replaces the arrows of the page navigation. `type` is `"first"`, `"prev"`, `"next"` or `"last"`. |
+| `rows-info`              | `{ first, last, total }` | Replaces the text "1-10 of 50". |
+| `rows-per-page`          | `{ value, options, setRowsPerPage, placeholder }` | Replaces the rows per page select. |
+| `sort-switches`          | `{ multiSort, pageSort, setMultiSort, setPageSort }` | Replaces the multiple sort and page sort switches. |
 
 `cell-complete`, `generated-cell-complete` and `sticky-cell-complete` are deprecated aliases.
 
@@ -474,6 +491,22 @@ Enable `config.select` and bind the selection with `v-model:selected-rows`. The 
 
   <template #search="{ value, setSearchQuery }">
     <input :value="value" class="form-control" @input="setSearchQuery($event.target.value)" />
+  </template>
+
+  <!-- own icons -->
+  <template #sort-icon="{ direction }">
+    {{ direction === "asc" ? "▲" : direction === "desc" ? "▼" : "↕" }}
+  </template>
+  <template #toggle-icon="{ expanded }">{{ expanded ? "Less" : "More" }}</template>
+
+  <!-- an actions column -->
+  <template #header-append>Actions</template>
+  <template #row-append="{ row }">
+    <button class="btn btn-sm btn-outline-primary" @click.stop="edit(row)">Edit</button>
+  </template>
+
+  <template #error="{ error, reload }">
+    {{ error.message }} <button class="btn btn-link" @click="reload()">Try again</button>
   </template>
 </vue-quintable>
 ```

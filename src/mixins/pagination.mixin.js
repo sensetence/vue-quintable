@@ -114,6 +114,19 @@ export default {
       return !this.numberOfVisibleRows;
     },
 
+    // empty slot: the table has no rows at all, not just none that pass search and filters. With ajaxUrl: the
+    // server reports none while no search or filter is set.
+    _hasNoRowsAtAll() {
+      if (this.configFinal.ajaxUrl) {
+        return (
+          !this.ajaxAll &&
+          !this.query &&
+          !Object.keys(this.filtersFinal || {}).length
+        );
+      }
+      return !this.rowsFinal.length;
+    },
+
     /**
      * Calculates the first visible row for displaying
      *

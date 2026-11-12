@@ -139,6 +139,12 @@ export default {
       this.sort();
     },
 
+    // sort-icon slot: "asc", "desc" or null for an unsorted column.
+    _sortDirection(index) {
+      const sort = this.currentSortIndexes[index];
+      return sort ? (sort.asc ? "asc" : "desc") : null;
+    },
+
     /**
      * The actual sorting process. Sort by sorting value or the inner text/html of the cells
      *

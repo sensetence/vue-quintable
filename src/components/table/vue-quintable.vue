@@ -70,8 +70,15 @@
               class="select-th pre quintable--table-container--table--header-row--select-th quintable--table-container--table--header-row--select-th--pre"
             >
               <template v-if="configFinal.selectAll && !noRows">
+                <slot
+                  v-if="$slots['select-all-checkbox']"
+                  name="select-all-checkbox"
+                  :checked="!!allSelectedProperty"
+                  :indeterminate="someSelected && !allSelectedProperty"
+                  :toggle="_toggleSelectAll"
+                ></slot>
                 <quintable-p-check
-                  v-if="configFinal.prettySelect"
+                  v-else-if="configFinal.prettySelect"
                   v-model="allSelectedProperty"
                   name="check"
                   class="p-icon p-smooth"
@@ -101,6 +108,12 @@
                 </label>
               </template>
             </th>
+            <th
+              v-if="$slots['row-prepend']"
+              class="row-prepend-th quintable--table-container--table--header-row--prepend-th"
+            >
+              <slot name="header-prepend"></slot>
+            </th>
             <template v-for="(headline, hIndex) in configFinal.headlines">
               <th
                 v-if="cellVisible[hIndex]"
@@ -111,7 +124,17 @@
               >
                 <!-- eslint-disable-next-line vue/no-v-html -->
                 <span
-                  v-if="showHeadlines[hIndex]"
+                  v-if="showHeadlines[hIndex] && $slots.headline"
+                  class="headline quintable--table-container--table--header-row--th--headline"
+                  ><slot
+                    name="headline"
+                    :column="configFinal.columns[hIndex]"
+                    :index="hIndex"
+                    :headline="headline"
+                  ></slot
+                ></span>
+                <span
+                  v-else-if="showHeadlines[hIndex]"
                   class="headline quintable--table-container--table--header-row--th--headline"
                   v-html="headline"
                 ></span>
@@ -125,7 +148,14 @@
                   class="sorting-icon quintable--table-container--table--header-row--th--sorting-icon"
                   :class="{ sorted: currentSortIndexes[hIndex] }"
                 >
-                  <template v-if="!currentSortIndexes[hIndex]">
+                  <slot
+                    v-if="$slots['sort-icon']"
+                    name="sort-icon"
+                    :column="configFinal.columns[hIndex]"
+                    :index="hIndex"
+                    :direction="_sortDirection(hIndex)"
+                  ></slot>
+                  <template v-else-if="!currentSortIndexes[hIndex]">
                     <quintable-font-awesome-icon icon="up-long" width-auto />
                     <quintable-font-awesome-icon icon="down-long" width-auto />
                   </template>
@@ -156,12 +186,25 @@
               </th>
             </template>
             <th
+              v-if="$slots['row-append']"
+              class="row-append-th quintable--table-container--table--header-row--append-th"
+            >
+              <slot name="header-append"></slot>
+            </th>
+            <th
               v-if="configFinal.select && configFinal.selectPosition === 'post'"
               class="select-th post quintable--table-container--table--header-row--select-th quintable--table-container--table--header-row--select-th--post"
             >
               <template v-if="configFinal.selectAll && !noRows">
+                <slot
+                  v-if="$slots['select-all-checkbox']"
+                  name="select-all-checkbox"
+                  :checked="!!allSelectedProperty"
+                  :indeterminate="someSelected && !allSelectedProperty"
+                  :toggle="_toggleSelectAll"
+                ></slot>
                 <quintable-p-check
-                  v-if="configFinal.prettySelect"
+                  v-else-if="configFinal.prettySelect"
                   v-model="allSelectedProperty"
                   name="check"
                   class="p-icon p-smooth"
@@ -228,7 +271,14 @@
                 class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td"
               >
                 <span v-if="hiddenColumns[rIndex] > 0">
-                  <span v-if="!openRows[rIndex]"
+                  <slot
+                    v-if="$slots['toggle-icon']"
+                    name="toggle-icon"
+                    :row="rowsFinal[rIndex]"
+                    :index="rIndex"
+                    :expanded="!!openRows[rIndex]"
+                  ></slot>
+                  <span v-else-if="!openRows[rIndex]"
                     ><quintable-font-awesome-icon
                       fixed-width
                       :icon="configFinal.collapsedRowIcon"
@@ -255,8 +305,17 @@
                     rowsFinal[rIndex].showDisabledSelect
                   "
                 >
+                  <slot
+                    v-if="$slots['select-checkbox']"
+                    name="select-checkbox"
+                    :row="rowsFinal[rIndex]"
+                    :index="rIndex"
+                    :checked="!!selected[rIndex]"
+                    :disabled="!!rowsFinal[rIndex].disableSelect"
+                    :toggle="(value) => _toggleSelect(rIndex, value)"
+                  ></slot>
                   <quintable-p-check
-                    v-if="configFinal.prettySelect"
+                    v-else-if="configFinal.prettySelect"
                     v-model="selected[rIndex]"
                     name="check"
                     class="p-icon"
@@ -283,6 +342,16 @@
                 </template>
               </td>
 
+              <td
+                v-if="$slots['row-prepend']"
+                class="row-prepend-td quintable--table-container--table--tbody--row--prepend-td"
+              >
+                <slot
+                  name="row-prepend"
+                  :row="rowsFinal[rIndex]"
+                  :index="rIndex"
+                ></slot>
+              </td>
               <template v-for="(rc, cIndex) in _renderRows[rIndex]">
                 <td
                   v-if="rc.vis"
@@ -353,6 +422,16 @@
                   </div>
                 </td>
               </template>
+              <td
+                v-if="$slots['row-append']"
+                class="row-append-td quintable--table-container--table--tbody--row--append-td"
+              >
+                <slot
+                  name="row-append"
+                  :row="rowsFinal[rIndex]"
+                  :index="rIndex"
+                ></slot>
+              </td>
 
               <td
                 v-if="
@@ -367,8 +446,17 @@
                     rowsFinal[rIndex].showDisabledSelect
                   "
                 >
+                  <slot
+                    v-if="$slots['select-checkbox']"
+                    name="select-checkbox"
+                    :row="rowsFinal[rIndex]"
+                    :index="rIndex"
+                    :checked="!!selected[rIndex]"
+                    :disabled="!!rowsFinal[rIndex].disableSelect"
+                    :toggle="(value) => _toggleSelect(rIndex, value)"
+                  ></slot>
                   <quintable-p-check
-                    v-if="configFinal.prettySelect"
+                    v-else-if="configFinal.prettySelect"
                     v-model="selected[rIndex]"
                     name="check"
                     class="p-icon"
@@ -426,9 +514,29 @@
                 @mouseenter="_hoverRow(rIndex, $event)"
                 @click="onRowClick($event, rIndex)"
               >
-                <td :colspan="columnCount" class="ps-0 pe-0 pt-0">
+                <td
+                  :colspan="
+                    columnCount +
+                    ($slots['row-prepend'] ? 1 : 0) +
+                    ($slots['row-append'] ? 1 : 0)
+                  "
+                  class="ps-0 pe-0 pt-0"
+                >
                   <quintable-details-box v-slot="{ hovered }" :row="rIndex">
+                    <div
+                      v-if="$slots.details"
+                      class="generated-details quintable--table-container--table--tbody--generated-row--generated-details"
+                    >
+                      <slot
+                        name="details"
+                        :row="rowsFinal[rIndex]"
+                        :index="rIndex"
+                        :cells="_detailsSlotCells(rIndex)"
+                        :hovered="hovered"
+                      ></slot>
+                    </div>
                     <table
+                      v-else
                       class="mb-2 generated-table quintable--table-container--table--tbody--generated-row--generated-table"
                     >
                       <tbody>
@@ -451,7 +559,14 @@
                                 class="toggle-cell invisible"
                               >
                                 <span v-if="hiddenColumns[rIndex] > 0">
-                                  <span v-if="!openRows[rIndex]"
+                                  <slot
+                                    v-if="$slots['toggle-icon']"
+                                    name="toggle-icon"
+                                    :row="rowsFinal[rIndex]"
+                                    :index="rIndex"
+                                    :expanded="!!openRows[rIndex]"
+                                  ></slot>
+                                  <span v-else-if="!openRows[rIndex]"
                                     ><quintable-font-awesome-icon
                                       fixed-width
                                       :icon="configFinal.collapsedRowIcon"
@@ -478,7 +593,18 @@
                                 @click.stop="setSortColumn(rc.cIndex)"
                               >
                                 <strong
-                                  v-if="showHeadlines[rc.cIndex]"
+                                  v-if="
+                                    showHeadlines[rc.cIndex] && $slots.headline
+                                  "
+                                  ><slot
+                                    name="headline"
+                                    :column="configFinal.columns[rc.cIndex]"
+                                    :index="Number(rc.cIndex)"
+                                    :headline="configFinal.headlines[rc.cIndex]"
+                                  ></slot
+                                ></strong>
+                                <strong
+                                  v-else-if="showHeadlines[rc.cIndex]"
                                   v-html="configFinal.headlines[rc.cIndex]"
                                 >
                                 </strong>
@@ -491,8 +617,15 @@
                                     sorted: currentSortIndexes[rc.cIndex],
                                   }"
                                 >
+                                  <slot
+                                    v-if="$slots['sort-icon']"
+                                    name="sort-icon"
+                                    :column="configFinal.columns[rc.cIndex]"
+                                    :index="Number(rc.cIndex)"
+                                    :direction="_sortDirection(rc.cIndex)"
+                                  ></slot>
                                   <template
-                                    v-if="!currentSortIndexes[rc.cIndex]"
+                                    v-else-if="!currentSortIndexes[rc.cIndex]"
                                   >
                                     <quintable-font-awesome-icon
                                       icon="up-long"
@@ -625,8 +758,21 @@
         </tbody>
       </table>
 
-      <template v-if="noRows && !ajaxLoading">
+      <div
+        v-if="ajaxError && !ajaxLoading && $slots.error"
+        class="clearfix slot-error slot quintable--table-container--error"
+      >
+        <slot name="error" :error="ajaxError" :reload="_reloadPage"></slot>
+      </div>
+      <template v-else-if="noRows && !ajaxLoading">
         <div
+          v-if="$slots.empty && _hasNoRowsAtAll"
+          class="clearfix slot-empty slot quintable--table-container--empty"
+        >
+          <slot name="empty"></slot>
+        </div>
+        <div
+          v-else
           class="clearfix slot-no-results slot quintable--table-container--no-results"
         >
           <slot name="no-results">
@@ -666,6 +812,10 @@
                 "
                 class="quintable--skeleton--cell quintable--table-container--table--header-row--select-th"
               ></div>
+              <div
+                v-if="$slots['row-prepend']"
+                class="quintable--skeleton--cell quintable--table-container--table--header-row--prepend-th"
+              ></div>
               <template v-for="(headline, hIndex) in configFinal.headlines">
                 <div
                   v-if="skeleton.columns[hIndex]"
@@ -676,6 +826,17 @@
                   <!-- The headline keeps its text, hidden under a bar, so the columns are as wide as loaded. -->
                   <!-- eslint-disable-next-line vue/no-v-html -->
                   <span
+                    v-if="showHeadlines[hIndex] && $slots.headline"
+                    class="quintable--skeleton--headline"
+                    ><slot
+                      name="headline"
+                      :column="configFinal.columns[hIndex]"
+                      :index="hIndex"
+                      :headline="headline"
+                    ></slot
+                  ></span>
+                  <span
+                    v-else
                     class="quintable--skeleton--headline"
                     v-html="showHeadlines[hIndex] ? headline : ''"
                   ></span>
@@ -685,6 +846,10 @@
                   ></span>
                 </div>
               </template>
+              <div
+                v-if="$slots['row-append']"
+                class="quintable--skeleton--cell quintable--table-container--table--header-row--append-th"
+              ></div>
               <div
                 v-if="
                   configFinal.select && configFinal.selectPosition === 'post'
@@ -709,6 +874,10 @@
                 "
                 class="quintable--skeleton--cell quintable--table-container--table--tbody--row--select-td"
               ></div>
+              <div
+                v-if="$slots['row-prepend']"
+                class="quintable--skeleton--cell quintable--table-container--table--tbody--row--prepend-td"
+              ></div>
               <template v-for="(headline, hIndex) in configFinal.headlines">
                 <div
                   v-if="skeleton.columns[hIndex]"
@@ -719,6 +888,10 @@
                   <span class="quintable--skeleton--bar"></span>
                 </div>
               </template>
+              <div
+                v-if="$slots['row-append']"
+                class="quintable--skeleton--cell quintable--table-container--table--tbody--row--append-td"
+              ></div>
               <div
                 v-if="
                   configFinal.select && configFinal.selectPosition === 'post'
@@ -757,20 +930,30 @@
               }`.trim()
             "
           >
-            <quintable-p-check
-              v-if="configFinal.multiSortSelect"
-              v-model="multiSort"
-              class="p-switch quintable--table-footer-container--sort-container--sort-select--multi-sort-select"
-              value="true"
-              >{{ configFinal.multiSortPlaceholder }}
-            </quintable-p-check>
-            <quintable-p-check
-              v-if="configFinal.pageSortSelect"
-              v-model="pageSort"
-              class="p-switch quintable--table-footer-container--sort-container--sort-select--page-sort-select"
-              value="true"
-              >{{ configFinal.pageSortPlaceholder }}
-            </quintable-p-check>
+            <slot
+              v-if="$slots['sort-switches']"
+              name="sort-switches"
+              :multi-sort="multiSort"
+              :page-sort="pageSort"
+              :set-multi-sort="(value) => (multiSort = value)"
+              :set-page-sort="(value) => (pageSort = value)"
+            ></slot>
+            <template v-else>
+              <quintable-p-check
+                v-if="configFinal.multiSortSelect"
+                v-model="multiSort"
+                class="p-switch quintable--table-footer-container--sort-container--sort-select--multi-sort-select"
+                value="true"
+                >{{ configFinal.multiSortPlaceholder }}
+              </quintable-p-check>
+              <quintable-p-check
+                v-if="configFinal.pageSortSelect"
+                v-model="pageSort"
+                class="p-switch quintable--table-footer-container--sort-container--sort-select--page-sort-select"
+                value="true"
+                >{{ configFinal.pageSortPlaceholder }}
+              </quintable-p-check>
+            </template>
           </div>
         </div>
         <div
@@ -784,19 +967,43 @@
               v-if="configFinal.rowsSelect"
               class="mb-2 d-inline-block me-3 align-middle quintable--table-footer-container--pagination-wrapper--pagination-container--rows-select"
             >
-              <span
-                class="d-inline-block align-middle me-2 quintable--table-footer-container--pagination-wrapper--pagination-container--rows-select--placeholder"
-                v-html="configFinal.rowsPlaceholder"
-              ></span>
-              <quintable-v-select
-                v-model="currentRowsPerPageProperty"
-                class="d-inline-block align-middle quintable--table-footer-container--pagination-wrapper--pagination-container--rows-select--select"
+              <slot
+                v-if="$slots['rows-per-page']"
+                name="rows-per-page"
+                :value="currentRowsPerPageProperty"
                 :options="paginationOptionsFilled"
-                :clearable="false"
-              />
+                :set-rows-per-page="
+                  (value) => (currentRowsPerPageProperty = value)
+                "
+                :placeholder="configFinal.rowsPlaceholder"
+              ></slot>
+              <template v-else>
+                <span
+                  class="d-inline-block align-middle me-2 quintable--table-footer-container--pagination-wrapper--pagination-container--rows-select--placeholder"
+                  v-html="configFinal.rowsPlaceholder"
+                ></span>
+                <quintable-v-select
+                  v-model="currentRowsPerPageProperty"
+                  class="d-inline-block align-middle quintable--table-footer-container--pagination-wrapper--pagination-container--rows-select--select"
+                  :options="paginationOptionsFilled"
+                  :clearable="false"
+                />
+              </template>
             </div>
+            <slot
+              v-if="
+                $slots.pagination &&
+                configFinal &&
+                configFinal.pagination &&
+                pages > 1
+              "
+              name="pagination"
+              :page="currentPage"
+              :pages="pages"
+              :set-page="gotoPage"
+            ></slot>
             <nav
-              v-if="configFinal && configFinal.pagination && pages > 1"
+              v-else-if="configFinal && configFinal.pagination && pages > 1"
               class="d-inline-block align-middle mb-2 quintable--table-footer-container--pagination-wrapper--pagination-container--nav"
               :class="{ 'me-3': numberOfVisibleRows, disabled: ajaxLoading }"
             >
@@ -810,7 +1017,12 @@
                   @click="gotoPage('first')"
                 >
                   <span class="page-link">
-                    <quintable-font-awesome-icon icon="angles-left" />
+                    <slot
+                      v-if="$slots['pagination-icon']"
+                      name="pagination-icon"
+                      type="first"
+                    ></slot>
+                    <quintable-font-awesome-icon v-else icon="angles-left" />
                   </span>
                 </li>
                 <li
@@ -819,7 +1031,12 @@
                   @click="gotoPage('prev')"
                 >
                   <span class="page-link">
-                    <quintable-font-awesome-icon icon="angle-left" />
+                    <slot
+                      v-if="$slots['pagination-icon']"
+                      name="pagination-icon"
+                      type="prev"
+                    ></slot>
+                    <quintable-font-awesome-icon v-else icon="angle-left" />
                   </span>
                 </li>
                 <li
@@ -859,7 +1076,12 @@
                   @click="gotoPage('next')"
                 >
                   <span class="page-link">
-                    <quintable-font-awesome-icon icon="angle-right" />
+                    <slot
+                      v-if="$slots['pagination-icon']"
+                      name="pagination-icon"
+                      type="next"
+                    ></slot>
+                    <quintable-font-awesome-icon v-else icon="angle-right" />
                   </span>
                 </li>
                 <li
@@ -869,7 +1091,12 @@
                   @click="gotoPage('last')"
                 >
                   <span class="page-link">
-                    <quintable-font-awesome-icon icon="angles-right" />
+                    <slot
+                      v-if="$slots['pagination-icon']"
+                      name="pagination-icon"
+                      type="last"
+                    ></slot>
+                    <quintable-font-awesome-icon v-else icon="angles-right" />
                   </span>
                 </li>
               </ul>
@@ -878,9 +1105,18 @@
             <span
               v-if="numberOfVisibleRows"
               class="d-inline-block align-middle mb-2 quintable--table-footer-container--pagination-wrapper--pagination-container--visible-rows"
-              >{{ firstVisibleRow }}-{{ lastVisibleRow }}
-              {{ configFinal.numberOfVisibleRowsFillerWord }}
-              {{ numberOfVisibleRows }}</span
+              ><slot
+                v-if="$slots['rows-info']"
+                name="rows-info"
+                :first="firstVisibleRow"
+                :last="lastVisibleRow"
+                :total="numberOfVisibleRows"
+              ></slot
+              ><template v-else
+                >{{ firstVisibleRow }}-{{ lastVisibleRow }}
+                {{ configFinal.numberOfVisibleRowsFillerWord }}
+                {{ numberOfVisibleRows }}</template
+              ></span
             >
           </div>
         </div>
@@ -1132,6 +1368,8 @@ export default {
       ajaxRows: [],
       ajaxPages: 0,
       ajaxAll: 0,
+      // The last failed AJAX request's error (error slot), null once a request starts.
+      ajaxError: null,
       customRowsPerPage: null,
       customMultiSort: null,
       customPageSort: null,
@@ -2198,6 +2436,26 @@ export default {
      *
      */
     valueToString,
+
+    // details slot: the cells a row's details show now, its hidden columns' while it is open, then its sticky ones.
+    _detailsSlotCells(rIndex) {
+      const cells = [];
+      for (const part of this._detailCells[rIndex] || []) {
+        if (!part.open) {
+          continue;
+        }
+        for (const rc of part.cells) {
+          const index = Number(rc.cIndex);
+          cells.push({
+            cell: rc.cell,
+            index,
+            headline: this.configFinal.headlines[index],
+            sticky: part.kind === "sticky",
+          });
+        }
+      }
+      return cells;
+    },
 
     /**
      * checks if the passed cell is empty for one or all rows

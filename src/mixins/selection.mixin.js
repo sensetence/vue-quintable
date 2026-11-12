@@ -103,6 +103,24 @@ export default {
       this.allSelectedProperty = !tmp.includes(false);
     },
 
+    // select-checkbox slot: sets a row's checkbox (or flips it without a value), as a click on the checkbox does.
+    _toggleSelect(index, value) {
+      if (this.rowsFinal[index].disableSelect) {
+        return;
+      }
+      const checked =
+        typeof value === "boolean" ? value : !this.selected[index];
+      this.selected[index] = checked;
+      this.checkListener(checked, index);
+    },
+
+    // select-all-checkbox slot: sets "select all" (or flips it without a value), as a click on its checkbox does.
+    _toggleSelectAll(value) {
+      this.allSelectedProperty =
+        typeof value === "boolean" ? value : !this.allSelectedProperty;
+      this.checkAll();
+    },
+
     /**
      * Clear all row selections
      *

@@ -182,7 +182,12 @@ export default {
       if (
         this._isControlClick(e) ||
         (e.target || {}).type === "checkbox" ||
-        (inPath((node) => node.classList.contains("generated-table")) &&
+        // A click in a row's details (the default table or the details slot) is not a click on the row.
+        (inPath(
+          (node) =>
+            node.classList.contains("generated-table") ||
+            node.classList.contains("generated-details"),
+        ) &&
           !this.nested)
       ) {
         return;
