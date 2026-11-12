@@ -42,7 +42,7 @@ Startet die Demo mit allen Beispielen aus `src/examples` (Einstieg `src/app.vue`
 ```shell
 yarn test           # Unit-Tests (vitest, tests/)
 yarn test:watch     # vitest im Watch-Modus
-yarn test:e2e       # Playwright (e2e/), startet den Dev-Server selbst
+yarn test:e2e       # Playwright (e2e/), startet den Dev-Server selbst (oder nutzt den laufenden)
 npx eslint          # Lint
 make format         # prettier über src/ (v3)
 make lint           # format + eslint (v3)
@@ -65,7 +65,6 @@ v2 hat dafür statt Make-Targets `run-eslint.sh`, `run-build.sh`, `run-pack.sh`,
 Die Demo unter https://sensetence.com/vue-quintable-demo/ wird von Hand hochgeladen:
 
 1. Im Branch der Linie, die online gehen soll: `yarn build`.
-   Auf v3 bricht `yarn build` derzeit in `vue-tsc` ab (siehe [Stolpersteine](#stolpersteine)). Bis das behoben ist, ohne Typprüfung bauen: `npx vite build --config vite.build.config.ts`.
 2. Den **Inhalt** von `built/` per FTP in das Verzeichnis der Demo hochladen. Die Asset-Pfade sind relativ (`base: ""`), der Unterordner funktioniert also ohne Anpassung.
 3. Erst die Assets hochladen, `index.html` zuletzt. Sonst verweist die Seite während des Uploads auf Dateien, die noch fehlen.
 4. Die Asset-Dateinamen enthalten Hashes, alte Dateien bleiben deshalb liegen. Ab und zu aufräumen.
@@ -127,9 +126,9 @@ Ein Fix, der v2 und v3 betrifft, kommt in beide Branches, z. B. `fix: drop resto
 
 | | v3 | v2 |
 |-|----|----|
-| Komponente | `src/components/table/vue-quintable.vue` (eine Datei) | `src/components/VueQuintable.vue` + `src/mixins/*.mixin.js` |
+| Komponente | `src/components/table/vue-quintable.vue` + `src/mixins/*.mixin.js` (gleiche Namen wie v2) + `config.ts`, `filter.ts`, `sort.ts`, `tooltip.ts`, `helpers.ts` neben der Komponente | `src/components/VueQuintable.vue` + `src/mixins/*.mixin.js` |
 
-Also meist von Hand portieren und in beiden Linien je ein Release machen.
+Also meist von Hand portieren und in beiden Linien je ein Release machen. Die Mixins tragen in v3 dieselben Namen wie in v2, enthalten in v3 aber nur `computed` und `methods`: Watcher und Lifecycle-Hooks stehen in v3 in `vue-quintable.vue`, weil Vue Watcher aus Mixins zuerst anlegt und ihre Reihenfolge die Reihenfolge der Events bestimmt.
 
 ## Wenn ein Release schiefgeht
 
@@ -146,6 +145,5 @@ Also meist von Hand portieren und in beiden Linien je ein Release machen.
 
 - **`dist/` vergessen:** Code-Änderungen landen erst nach `yarn prod` im Paket. Vor jedem Publish bauen, sonst geht der alte Build raus.
 - **Font Awesome (v3):** `@fortawesome/fontawesome-svg-core` und `@fortawesome/free-solid-svg-icons` sind Peer-Dependencies (`^6.7.2 || ^7`) und im Build als external gesetzt (`vite.pack.config.ts`). So teilen sich App und Tabelle dieselbe Icon-Library. Neue Laufzeit-Abhängigkeiten in `dependencies` werden automatisch external.
-- **E2E auf v3:** `playwright.config.js` erwartet `https://localhost:5173`, der v3-Dev-Server läuft aber auf `http`. `yarn test:e2e` wartet dann vergeblich auf den Server (URL anpassen oder SSL im Dev-Server aktivieren).
-- **`yarn build` auf v3** bricht in `vue-tsc` ab (Typfehler in `vite.pack.config.ts`). Der Library-Build (`yarn prod`) ist davon nicht betroffen.
+- **E2E-Snapshots (v3):** `e2e/visual-regression.spec.js` vergleicht Screenshots jedes Demo-Beispiels, `e2e/behavior.spec.js` das DOM nach festen Klicks (Sortieren, Blättern, Suchen, Auswählen, Aufklappen). Zufallsdaten sind geseedet, der AJAX-Server ist durch `e2e/fixtures.js` ersetzt. Ändert sich die Ausgabe gewollt: `yarn test:e2e --update-snapshots` und die neuen Snapshots prüfen. Die Snapshots sind pro Plattform (`-chromium-linux`).
 - **`*.tgz`** aus `yarn pack`/`npm pack` nicht committen.

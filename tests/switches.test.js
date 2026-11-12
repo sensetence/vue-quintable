@@ -423,3 +423,28 @@ describe("page size", () => {
     w.unmount();
   });
 });
+
+describe("expandedAll at runtime", () => {
+  it("opens and closes every row's details when the config changes", async () => {
+    const columns = [{ headline: "A" }, { headline: "B", breakpoint: "all" }];
+    const w = createTable({
+      mountFn: "mount",
+      config: { columns },
+      rows: [
+        [{ text: "a" }, { text: "1" }],
+        [{ text: "b" }, { text: "2" }],
+      ],
+    });
+    await nextTick();
+    expect(w.findAll(".generated-row")).toHaveLength(0);
+    await w.setProps({ config: { columns, expandedAll: true } });
+    await nextTick();
+    expect({ ...w.vm.openRows }).toEqual({ 0: true, 1: true });
+    expect(w.findAll(".generated-row")).toHaveLength(2);
+    await w.setProps({ config: { columns, expandedAll: false } });
+    await nextTick();
+    expect({ ...w.vm.openRows }).toEqual({ 0: false, 1: false });
+    expect(w.findAll(".generated-row")).toHaveLength(0);
+    w.unmount();
+  });
+});

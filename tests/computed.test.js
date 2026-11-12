@@ -721,3 +721,26 @@ describe("Computed property branches", () => {
     w.unmount();
   });
 });
+
+describe("emptyColumns", () => {
+  it("hides an empty sorted column again once its sort is removed", async () => {
+    const w = createTable({
+      config: {
+        columns: [{ headline: "A", sort: true }],
+        search: true,
+        hideEmptyColumns: true,
+        ignoreSortEmptyColumns: "active",
+      },
+      rows: [[{ text: "x" }], [{ text: "y" }]],
+    });
+    w.vm.query = "no match";
+    await w.vm.$nextTick();
+    expect(w.vm.emptyColumns[0]).toBe(true);
+    w.vm.setSortColumn(0);
+    await w.vm.$nextTick();
+    expect(w.vm.emptyColumns[0]).toBe(false);
+    w.vm.removeSort(0);
+    await w.vm.$nextTick();
+    expect(w.vm.emptyColumns[0]).toBe(true);
+  });
+});

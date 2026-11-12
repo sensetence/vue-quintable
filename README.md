@@ -47,6 +47,7 @@
 - [Events](#events)
 - [AJAX / server-side data](#ajax--server-side-data)
 - [Persisting table state](#persisting-table-state)
+- [Reusing rows](#reusing-rows)
 - [Good to know](#good-to-know)
 - [Development](#development)
 
@@ -188,8 +189,9 @@ More examples live in [`src/examples`](src/examples) and can be started with `ya
 | `cellTitles`                    | Boolean                       | `false`            | An element in a cell that cuts its text with `text-overflow: ellipsis` shows the whole text as its `title` on hover. An own `title` or a cell tooltip wins. |
 | `skeletonLoading`               | Boolean                       | `false`            | While loading, show grey bars in the shape of the table (visible columns, one page of rows) instead of the spinner. |
 | `ignoreControlClicks`           | Boolean                       | `false`            | A click on a link, button or form field in a row is that control's own: no `click:row`, `click:cell` or `auxclick:*` event. A click on a disabled control stays the row's. |
+| `reuseRows`                     | Boolean                       | `false`            | Update rows in place on sort, page change and filter instead of re-creating them. Faster for large pages; read [Reusing rows](#reusing-rows) before you turn it on. |
 | **Pagination**                  |                               |                    |             |
-| `pagination`                    | Number \| Boolean             | `false`            | Rows per page. `true` means 25. Other values snap down to one of 1–10, 15, 20, 25, 30, 50, 100. |
+| `pagination`                    | Number \| Boolean             | `false`            | Rows per page. `true` means 25. Other values snap down to one of 1–10, 15, 20, 25, 30, 50, 100, 250, 500, 1000. |
 | `pageRange`                     | Number                        | `5`                | Number of page links shown. |
 | `rowsSelect`                    | Boolean                       | `false`            | Let the user choose the rows per page. |
 | `disallowAllOption`             | Boolean                       | `false`            | Hide the "All" option in the rows per page select. |
@@ -576,11 +578,26 @@ With `config.storeState` and an `identifier`, filters, search query, page, rows 
 />
 ```
 
+## Reusing rows
+
+By default, every sort, page change, search and filter re-creates the rows it shows: Vue removes their `<tr>` and `<td>` elements with all event listeners and builds them anew. With `reuseRows: true` the table keeps one row element per position and only swaps its text, classes and ids.
+
+**What for:** large pages of plain data, for example `pagination: false` or the "All" option of the rows-per-page select with hundreds or thousands of rows. Measured in Chromium, sorting 1000 visible rows takes about 70–85 ms instead of 120–275 ms, 2000 rows about 180–255 ms instead of 320–365 ms. With 100 rows per page or fewer there is no noticeable difference, so leave it off there.
+
+**When not to use it:** a row element no longer belongs to one row of data, it belongs to a position. That matters in three cases:
+
+- **Components and slots with their own state** (`component` cells, cell slots with inputs, checkboxes, open menus): after a sort they keep that state but show the row now in their position. Without the switch they start fresh with their row.
+- **Focus and open tooltips** stay on the element, so they end up at another row after a sort.
+- **Hover:** after a sort, page change, search or filter the hover disappears until the mouse enters a row again. Without the switch it stays when the hovered row is still shown.
+
+Row details (expanded rows, sticky and `alwaysExpanded` columns) are re-created as before. Events, emitted data and the rendered HTML are the same with and without the switch.
+
 ## Good to know
 
 - Clicks on links don't toggle the row. Add the class `prevent-toggle` to any element to prevent toggling, too.
 - Sortable headings show two arrows after their text: faint while the header row is hovered (or always, see `alwaysShowSortIcons`), in full while the heading is hovered. A sorted heading shows one icon of its direction. A right-aligned heading (`text-end` / `text-right`) has them before its text. The icons take the heading's colour.
 - The root element carries the rows per page as the CSS variable `--quintable-page-size`, e.g. to keep a page's height while the next one loads.
+- A row and its details hover together, in one tint; a table nested in the details sits on it, so its hovered row is one step darker. The active row (`enableRowTabIndex`) and its details get `activeClass`; with the default `activeClass` also `row-active` / `parent-row-active`, which show an accent with a leading edge. With the default classes the colours come from Bootstrap's theme (dark mode included) and can be changed with the CSS variables `--quintable-row-hover-bg`, `--quintable-row-active-bg` and `--quintable-row-active-edge` (set them on `.quintable` or any ancestor).
 - "Select all" selects only the rows in its scope (the visible page, or with `selectAllRows` all pages) that pass search and filters; every other row is deselected, as in 2.x.
 - `v-model:selected-rows` replaces Vue 2's `v-model`; plain `v-model` is not supported.
 - Set `:nested="true"` on tables inside another table's slot.

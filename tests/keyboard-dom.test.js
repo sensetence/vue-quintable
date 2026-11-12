@@ -107,6 +107,122 @@ describe("DOM event handlers", () => {
     w.unmount();
   });
 
+  it("hovers a row and its details together, whichever the mouse is on", async () => {
+    const w = createTable({
+      mountFn: "mount",
+      config: {
+        columns: [{ headline: "A" }, { headline: "B", breakpoint: "all" }],
+        expandedAll: true,
+      },
+      rows: [
+        [{ text: "a" }, { text: "1" }],
+        [{ text: "b" }, { text: "2" }],
+      ],
+    });
+    await w.vm.$nextTick();
+    const rows = w.findAll("tr.vue-quintable-row");
+    const details = w.findAll("tr.generated-row");
+    const hovered = () =>
+      [rows[0], details[0], rows[1], details[1]].map((r) =>
+        r.classes().includes("bg-muted"),
+      );
+
+    await rows[0].trigger("mouseenter");
+    expect(hovered()).toEqual([true, true, false, false]);
+    await details[0].trigger("mouseenter");
+    expect(hovered()).toEqual([true, true, false, false]);
+    await details[1].trigger("mouseenter");
+    expect(hovered()).toEqual([false, false, true, true]);
+    await w.find("tbody").trigger("mouseleave");
+    expect(hovered()).toEqual([false, false, false, false]);
+    w.unmount();
+  });
+
+  it("marks the active row and its details, and moves the mark with the arrow keys", async () => {
+    const mountActive = (activeClass) =>
+      createTable({
+        mountFn: "mount",
+        config: {
+          // A sticky column: details that are always there (a click on the row does not collapse them).
+          columns: [{ headline: "A" }, { headline: "B", sticky: true }],
+          enableRowTabIndex: true,
+          ...(activeClass === undefined ? {} : { activeClass }),
+        },
+        rows: [
+          [{ text: "a" }, { text: "1" }],
+          [{ text: "b" }, { text: "2" }],
+        ],
+      });
+    const marks = (w) =>
+      w.findAll("table.vue-quintable > tbody > tr").map((tr) =>
+        tr
+          .classes()
+          .filter((c) =>
+            ["bg-muted", "row-active", "parent-row-active"].includes(c),
+          )
+          .join(" "),
+      );
+
+    const w = mountActive();
+    await w.vm.$nextTick();
+    await w.find("tr.vue-quintable-row td.vue-quintable-cell").trigger("click");
+    expect(marks(w)).toEqual([
+      "bg-muted row-active",
+      "bg-muted parent-row-active",
+      "",
+      "",
+    ]);
+    document.dispatchEvent(new KeyboardEvent("keydown", { keyCode: 40 }));
+    await w.vm.$nextTick();
+    expect(marks(w)).toEqual([
+      "",
+      "",
+      "bg-muted row-active",
+      "bg-muted parent-row-active",
+    ]);
+    w.unmount();
+
+    const off = mountActive(false);
+    await off.vm.$nextTick();
+    await off
+      .find("tr.vue-quintable-row td.vue-quintable-cell")
+      .trigger("click");
+    expect(off.vm.activeRow).toBe(0);
+    expect(marks(off)).toEqual(["", "", "", ""]);
+    off.unmount();
+  });
+
+  it("paints class settings with several classes, a custom active class without the built-in look, and keeps a row's own classes", async () => {
+    const w = createTable({
+      mountFn: "mount",
+      config: {
+        columns: [{ headline: "A" }, { headline: "B" }],
+        enableRowTabIndex: true,
+        activeClass: "foo bar",
+        hoverClass: "hov x",
+      },
+      rows: [
+        { cells: [{ text: "a" }, { text: "1" }], classes: "x" },
+        { cells: [{ text: "b" }, { text: "2" }] },
+        { cells: [{ text: "c" }, { text: "3" }] },
+      ],
+    });
+    await w.vm.$nextTick();
+    const trs = w.findAll("table.vue-quintable > tbody > tr");
+    await trs[1].find("td.vue-quintable-cell").trigger("click");
+    for (const i of [0, 2, 0, 1]) {
+      await trs[i].trigger("mouseenter");
+    }
+    const mine = (tr) =>
+      tr
+        .classes()
+        .filter((c) => ["x", "hov", "foo", "bar", "row-active"].includes(c))
+        .sort()
+        .join(" ");
+    expect(trs.map(mine)).toEqual(["x", "bar foo hov x", ""]);
+    w.unmount();
+  });
+
   it("onMouseleaveTable resets hoveredRow", () => {
     const w = createTable({
       config: { columns: [{ headline: "A" }, { headline: "B" }] },

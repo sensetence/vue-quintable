@@ -1,5 +1,7 @@
-import { describe, it, expect } from "vitest"
-import { nextTick } from "vue";;
+import { describe, it, expect } from "vitest";
+import { h, nextTick } from "vue";
+import { mount } from "@vue/test-utils";
+import VueQuintable from "../src/components/table/vue-quintable.vue";
 import {
   createTable,
   generateRows,
@@ -312,4 +314,71 @@ describe("Events", () => {
       expect(wrapper.emitted("input")).toBeTruthy();
     });
   });
+});
+
+describe("clicks inside a row's details", () => {
+  // A nested table re-renders between the listeners of one click and can detach the clicked element (its toggle
+  // icon) before the click reaches this table's row.
+  it("are no row clicks even if the clicked element is gone by then", async () => {
+    const w = mount(VueQuintable, {
+      props: {
+        config: {
+          columns: [{ headline: "A" }, { headline: "B", breakpoint: "all" }],
+          expandedAll: true,
+        },
+        rows: [[{ text: "a" }, { text: "b" }]],
+      },
+      slots: {
+        "generated-cell-content": () =>
+          h("span", { class: "gone", onClick: (e) => e.target.remove() }, "x"),
+      },
+    });
+    await nextTick();
+    await w.find("span.gone").trigger("click");
+    expect(w.vm.openRows[0]).toBe(true);
+    expect(w.emitted("collapse:row")).toBeUndefined();
+    w.unmount();
+  });
+});
+
+describe("clicks inside a cell's shadow DOM", () => {
+  if (!customElements.get("x-shadow-btn")) {
+    customElements.define(
+      "x-shadow-btn",
+      class extends HTMLElement {
+        constructor() {
+          super();
+          this.attachShadow({ mode: "open" }).innerHTML =
+            "<button>b</button><a href='#'>l</a>";
+        }
+      },
+    );
+  }
+  for (const ignoreControlClicks of [false, true]) {
+    it(`count as clicks on the host (ignoreControlClicks: ${ignoreControlClicks})`, async () => {
+      const w = createTable({
+        mountFn: "mount",
+        attachTo: document.body,
+        config: {
+          columns: [{ headline: "A" }, { headline: "B", breakpoint: "all" }],
+          ignoreControlClicks,
+        },
+        rows: [[{ html: "<x-shadow-btn></x-shadow-btn>" }, { text: "b" }]],
+      });
+      await nextTick();
+      const shadow = w.find("x-shadow-btn").element.shadowRoot;
+      for (const sel of ["button", "a"]) {
+        shadow
+          .querySelector(sel)
+          .dispatchEvent(
+            new MouseEvent("click", { bubbles: true, composed: true }),
+          );
+        await nextTick();
+      }
+      expect(w.emitted("click:row")).toHaveLength(2);
+      expect(w.emitted("click:cell")).toHaveLength(2);
+      expect(w.emitted("expand:row")).toHaveLength(2);
+      w.unmount();
+    });
+  }
 });

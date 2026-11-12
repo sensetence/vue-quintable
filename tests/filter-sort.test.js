@@ -695,3 +695,32 @@ describe("Sort edge cases", () => {
     w.unmount();
   });
 });
+
+describe("rows with refs in them", () => {
+  // Vue unwraps refs in reactive rows when the table reads through the proxy; raw reads would see the ref objects.
+  it("sort and select by the refs' values", async () => {
+    const { mount } = await import("@vue/test-utils");
+    const { reactive, ref, nextTick } = await import("vue");
+    const { default: VueQuintable } = await import(
+      "../src/components/table/vue-quintable.vue"
+    );
+    const rows = reactive([
+      { cells: [{ text: ref("b") }], disableSelect: ref(false) },
+      { cells: [{ text: ref("a") }], disableSelect: ref(true) },
+      { cells: [{ text: ref("c") }], disableSelect: ref(false) },
+    ]);
+    const w = mount(VueQuintable, {
+      props: {
+        config: { columns: [{ headline: "A", sort: true }], select: true },
+        rows,
+      },
+    });
+    w.vm.setSortColumn(0);
+    await nextTick();
+    expect(w.vm.visibleRowIndexes).toEqual([1, 0, 2]);
+    w.vm.allSelectedProperty = true;
+    w.vm.checkAll();
+    expect({ ...w.vm.selected }).toEqual({ 0: true, 1: false, 2: true });
+    w.unmount();
+  });
+});
