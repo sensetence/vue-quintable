@@ -7893,7 +7893,7 @@
 </div>
 </td>
 </tr>
-<tr data-v="" id="vue-quintable-qt-row-3" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row bg-muted" style="cursor: pointer;">
+<tr data-v="" id="vue-quintable-qt-row-3" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
 <td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
 <span data-v="">
 <span data-v="">
@@ -7911,7 +7911,7 @@
 <div class="btn btn-sm btn-info">44</div>
 </td>
 </tr>
-<tr data-v="" class="generated-row quintable--table-container--table--tbody--generated-row parent-row-collapsed bg-muted">
+<tr data-v="" class="generated-row quintable--table-container--table--tbody--generated-row parent-row-collapsed">
 <td data-v="" colspan="3" class="ps-0 pe-0 pt-0">
 <div data-v="" class="">
 <table data-v="" class="mb-2 generated-table quintable--table-container--table--tbody--generated-row--generated-table">

@@ -25,6 +25,15 @@ export const EXAMPLES = [
   "nested-example",
   "store-state-example",
   "ajax-store-state-example",
+  "large-data-example",
+  "custom-sort-example",
+  "select-options-example",
+  "row-details-example",
+  "row-states-example",
+  "ajax-error-example",
+  "texts-example",
+  "search-example",
+  "filter-groups-example",
 ];
 
 export const VIEWPORTS = {
@@ -100,6 +109,10 @@ export async function prepare(page) {
   });
   await page.route("**/vue-quintable-demo/data.php**", (route) =>
     route.fulfill({ json: serverResponse(route.request()) }),
+  );
+  // the ajax error example's unreachable server
+  await page.route("**/quintable-demo.invalid/**", (route) =>
+    route.abort("namenotresolved"),
   );
   const dialogs = [];
   page.on("dialog", (dialog) => {

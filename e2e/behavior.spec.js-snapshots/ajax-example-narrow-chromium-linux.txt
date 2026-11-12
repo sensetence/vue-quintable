@@ -1479,7 +1479,7 @@
 <div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Hana 31</div>
 </td>
 </tr>
-<tr data-v="" id="vue-quintable-qt-row-3" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row bg-muted" style="cursor: pointer;">
+<tr data-v="" id="vue-quintable-qt-row-3" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
 <td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
 <span data-v="">
 <span data-v="">
@@ -1686,7 +1686,7 @@
 <div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Hana 31</div>
 </td>
 </tr>
-<tr data-v="" id="vue-quintable-qt-row-3" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row bg-muted" style="cursor: pointer;">
+<tr data-v="" id="vue-quintable-qt-row-3" class="row-collapsed vue-quintable-row quintable--table-container--table--tbody--row" style="cursor: pointer;">
 <td data-v="" class="toggle toggle-td toggle-cell quintable--table-container--table--tbody--row--toggle-td">
 <span data-v="">
 <span data-v="">

@@ -281,6 +281,7 @@ Use exactly one of `text`, `html` or `component`.
 | `align`     | `"start"` \| `"end"` \| `"center"` | Text alignment. Overrides column and row `align`. |
 | `tooltip`   | String           | Tooltip shown on hover over the cell. |
 | `sortValue` | String \| Number | Value used for sorting instead of the content, e.g. for formatted or HTML cells. |
+| `computeSortValue` | Function | `(sortIndexes) => value`: the value to sort by, computed on each sort. Gets the active sorts by column index (`{ asc, order }`), e.g. to keep empty cells last in both directions. Wins over `sortValue`. |
 | `isEmpty`   | Boolean          | Mark a cell as empty (for `hideEmptyColumns`), e.g. when its content comes from a slot. Overrides `text` and `html`. |
 
 Any other property is passed through and available in [slots](#slots) as `cell.yourProperty`.

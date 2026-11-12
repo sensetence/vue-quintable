@@ -5321,7 +5321,7 @@
 </div>
 </td>
 </tr>
-<tr data-v="" id="vue-quintable-qt-row-4" class="vue-quintable-row quintable--table-container--table--tbody--row bg-muted" style="">
+<tr data-v="" id="vue-quintable-qt-row-4" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
 <td data-v="" id="vue-quintable-qt-cell-4-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
 <div class="btn btn-sm btn-info">Fred Davidson</div>
 </td>
@@ -5332,7 +5332,7 @@
 <div class="btn btn-sm btn-info">Podiatrist</div>
 </td>
 </tr>
-<tr data-v="" class="generated-row quintable--table-container--table--tbody--generated-row bg-muted">
+<tr data-v="" class="generated-row quintable--table-container--table--tbody--generated-row">
 <td data-v="" colspan="3" class="ps-0 pe-0 pt-0">
 <div data-v="" class="">
 <table data-v="" class="mb-2 generated-table quintable--table-container--table--tbody--generated-row--generated-table">

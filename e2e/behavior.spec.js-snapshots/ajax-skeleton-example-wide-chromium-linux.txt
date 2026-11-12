@@ -2009,7 +2009,7 @@
 <div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Lima</div>
 </td>
 </tr>
-<tr data-v="" id="vue-quintable-qt-row-2" class="vue-quintable-row quintable--table-container--table--tbody--row bg-muted" style="">
+<tr data-v="" id="vue-quintable-qt-row-2" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
 <td data-v="" id="vue-quintable-qt-cell-2-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
 <div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Cleo 10</div>
 </td>
@@ -2254,7 +2254,7 @@
 <div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Lima</div>
 </td>
 </tr>
-<tr data-v="" id="vue-quintable-qt-row-2" class="vue-quintable-row quintable--table-container--table--tbody--row bg-muted" style="">
+<tr data-v="" id="vue-quintable-qt-row-2" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
 <td data-v="" id="vue-quintable-qt-cell-2-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1">
 <div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Cleo 10</div>
 </td>

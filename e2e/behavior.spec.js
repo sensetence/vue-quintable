@@ -16,6 +16,7 @@ function normalize(html) {
     .replace(/qt-\d+-\d+/g, "qt") // per-instance uuid with a timestamp
     .replace(/data-v-[0-9a-f]+/g, "data-v")
     .replace(/popper_[a-z0-9_]+/gi, "popper")
+    .replace(/(class="render-time[^"]*"[^>]*>)[^<]*/g, "$1") // a measured time
     .replace(/\s+/g, " ")
     .replace(/></g, ">\n<");
 }
@@ -77,7 +78,13 @@ for (const [viewport, size] of Object.entries(VIEWPORTS)) {
       const search = table.locator(
         ".quintable--search-container input[type=search]",
       );
-      if (await ifPresent(search, (l) => l.fill("e"))) {
+      // The pointer goes to the search field first: left over the table, the row under it would depend on how the
+      // page scrolls while the rows change.
+      const typeInSearch = async (l) => {
+        await l.hover();
+        await l.fill("e");
+      };
+      if (await ifPresent(search, typeInSearch)) {
         await record("search 'e'");
         await search.first().fill("");
         await record("clear the search");

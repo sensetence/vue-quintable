@@ -1,0 +1,785 @@
+### initial | dialogs: []
+<div data-v="" class="content">
+<p class="alert alert-info">
+<svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
+</path>
+</svg>Find a flat. Two filter groups decide which flats show: the outdoor space (any of the ticked ones, <code>OR</code>) and the size and rent (both, <code>AND</code>). <code>filterGroupRelation</code> joins the two groups.</p>
+<div class="row g-3 mb-3">
+<fieldset class="col-md-4">
+<legend class="fs-6 mb-2">Outdoor space</legend>
+<div class="form-check">
+<input id="outdoor-balcony" class="form-check-input" type="checkbox" value="balcony">
+<label class="form-check-label text-capitalize" for="outdoor-balcony">balcony</label>
+</div>
+<div class="form-check">
+<input id="outdoor-garden" class="form-check-input" type="checkbox" value="garden">
+<label class="form-check-label text-capitalize" for="outdoor-garden">garden</label>
+</div>
+<div class="form-check">
+<input id="outdoor-terrace" class="form-check-input" type="checkbox" value="terrace">
+<label class="form-check-label text-capitalize" for="outdoor-terrace">terrace</label>
+</div>
+</fieldset>
+<div class="col-md-4">
+<label class="form-label" for="min-rooms">At least 2 rooms</label>
+<input id="min-rooms" class="form-range" type="range" min="1" max="5">
+<label class="form-label" for="max-rent">At most €1500 rent</label>
+<input id="max-rent" class="form-range" type="range" min="600" max="2400" step="100">
+</div>
+<fieldset class="col-md-4">
+<legend class="fs-6 mb-2">The groups must</legend>
+<div class="form-check">
+<input id="relation-and" class="form-check-input" type="radio" value="AND">
+<label class="form-check-label" for="relation-and">both match (AND)</label>
+</div>
+<div class="form-check">
+<input id="relation-or" class="form-check-input" type="radio" value="OR">
+<label class="form-check-label" for="relation-or">either match (OR)</label>
+</div>
+</fieldset>
+</div>
+<p class="mb-2" aria-live="polite"> Showing flats with <strong>(balcony or garden) AND (2+ rooms and €1500 or less)</strong>: 3 of 8. </p>
+<div data-v="" class="table-wrapper quintable">
+<div data-v="" class="header slot slot-header quintable--header">
+</div>
+<div data-v="" class="slot slot-after-search quintable--after-search-container">
+</div>
+<div data-v="" class="clearfix quintable--table-container">
+<table data-v="" class="vue-quintable table quintable--table-container--table">
+<thead data-v="">
+<tr data-v="" class="vue-quintable-header-row quintable--table-container--table--header-row">
+<th data-v="" class="quintable--table-container--table--header-row--th flat column-1">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Flat</span>
+</th>
+<th data-v="" class="text-end quintable--table-container--table--header-row--th rooms column-2">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Rooms</span>
+</th>
+<th data-v="" class="text-end quintable--table-container--table--header-row--th rent column-3">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Rent</span>
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th outdoor-space column-4">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Outdoor space</span>
+</th>
+</tr>
+</thead>
+<tbody data-v="" class="quintable--table-container--table--tbody">
+<tr data-v="" id="vue-quintable-qt-row-0" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
+<td data-v="" id="vue-quintable-qt-cell-0-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell flat column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Altbau near the park</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rooms column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">3</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rent column-3">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">€1450</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell outdoor-space column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">balcony</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-5" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
+<td data-v="" id="vue-quintable-qt-cell-5-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell flat column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Top floor with view</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rooms column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">2</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rent column-3">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">€1250</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell outdoor-space column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">balcony, terrace</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-7" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
+<td data-v="" id="vue-quintable-qt-cell-7-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell flat column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Corner flat on the square</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rooms column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">2</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rent column-3">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">€980</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell outdoor-space column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">balcony</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div data-v="" class="clearfix quintable--table-footer-container">
+<div data-v="" class="row">
+<div data-v="" class="col-lg-4 quintable--table-footer-container--sort-container">
+</div>
+<div data-v="" class="col-lg-8 quintable--table-footer-container--pagination-wrapper">
+</div>
+</div>
+</div>
+<div data-v="" class="footer slot slot-footer quintable--footer">
+</div>
+</div>
+<button class="btn btn-secondary mt-3">
+<svg class="svg-inline--fa fa-chevron-down" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+<span class="ms-2">Show Code </span>
+</button>
+</div>
+
+### tick intervals | dialogs: []
+<div data-v="" class="content">
+<p class="alert alert-info">
+<svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
+</path>
+</svg>Find a flat. Two filter groups decide which flats show: the outdoor space (any of the ticked ones, <code>OR</code>) and the size and rent (both, <code>AND</code>). <code>filterGroupRelation</code> joins the two groups.</p>
+<div class="row g-3 mb-3">
+<fieldset class="col-md-4">
+<legend class="fs-6 mb-2">Outdoor space</legend>
+<div class="form-check">
+<input id="outdoor-balcony" class="form-check-input" type="checkbox" value="balcony">
+<label class="form-check-label text-capitalize" for="outdoor-balcony">balcony</label>
+</div>
+<div class="form-check">
+<input id="outdoor-garden" class="form-check-input" type="checkbox" value="garden">
+<label class="form-check-label text-capitalize" for="outdoor-garden">garden</label>
+</div>
+<div class="form-check">
+<input id="outdoor-terrace" class="form-check-input" type="checkbox" value="terrace">
+<label class="form-check-label text-capitalize" for="outdoor-terrace">terrace</label>
+</div>
+</fieldset>
+<div class="col-md-4">
+<label class="form-label" for="min-rooms">At least 2 rooms</label>
+<input id="min-rooms" class="form-range" type="range" min="1" max="5">
+<label class="form-label" for="max-rent">At most €1500 rent</label>
+<input id="max-rent" class="form-range" type="range" min="600" max="2400" step="100">
+</div>
+<fieldset class="col-md-4">
+<legend class="fs-6 mb-2">The groups must</legend>
+<div class="form-check">
+<input id="relation-and" class="form-check-input" type="radio" value="AND">
+<label class="form-check-label" for="relation-and">both match (AND)</label>
+</div>
+<div class="form-check">
+<input id="relation-or" class="form-check-input" type="radio" value="OR">
+<label class="form-check-label" for="relation-or">either match (OR)</label>
+</div>
+</fieldset>
+</div>
+<p class="mb-2" aria-live="polite"> Showing flats with <strong>(balcony or garden) AND (2+ rooms and €1500 or less)</strong>: 3 of 8. </p>
+<div data-v="" class="table-wrapper quintable">
+<div data-v="" class="header slot slot-header quintable--header">
+</div>
+<div data-v="" class="slot slot-after-search quintable--after-search-container">
+</div>
+<div data-v="" class="clearfix quintable--table-container">
+<table data-v="" class="vue-quintable table quintable--table-container--table">
+<thead data-v="">
+<tr data-v="" class="vue-quintable-header-row quintable--table-container--table--header-row">
+<th data-v="" class="quintable--table-container--table--header-row--th flat column-1">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Flat</span>
+</th>
+<th data-v="" class="text-end quintable--table-container--table--header-row--th rooms column-2">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Rooms</span>
+</th>
+<th data-v="" class="text-end quintable--table-container--table--header-row--th rent column-3">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Rent</span>
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th outdoor-space column-4">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Outdoor space</span>
+</th>
+</tr>
+</thead>
+<tbody data-v="" class="quintable--table-container--table--tbody">
+<tr data-v="" id="vue-quintable-qt-row-0" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
+<td data-v="" id="vue-quintable-qt-cell-0-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell flat column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Altbau near the park</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rooms column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">3</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rent column-3">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">€1450</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell outdoor-space column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">balcony</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-5" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
+<td data-v="" id="vue-quintable-qt-cell-5-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell flat column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Top floor with view</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rooms column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">2</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rent column-3">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">€1250</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell outdoor-space column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">balcony, terrace</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-7" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
+<td data-v="" id="vue-quintable-qt-cell-7-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell flat column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Corner flat on the square</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rooms column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">2</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rent column-3">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">€980</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell outdoor-space column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">balcony</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div data-v="" class="clearfix quintable--table-footer-container">
+<div data-v="" class="row">
+<div data-v="" class="col-lg-4 quintable--table-footer-container--sort-container">
+</div>
+<div data-v="" class="col-lg-8 quintable--table-footer-container--pagination-wrapper">
+</div>
+</div>
+</div>
+<div data-v="" class="footer slot slot-footer quintable--footer">
+</div>
+</div>
+<button class="btn btn-secondary mt-3">
+<svg class="svg-inline--fa fa-chevron-down" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+<span class="ms-2">Show Code </span>
+</button>
+</div>
+
+### tick intervals again | dialogs: []
+<div data-v="" class="content">
+<p class="alert alert-info">
+<svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
+</path>
+</svg>Find a flat. Two filter groups decide which flats show: the outdoor space (any of the ticked ones, <code>OR</code>) and the size and rent (both, <code>AND</code>). <code>filterGroupRelation</code> joins the two groups.</p>
+<div class="row g-3 mb-3">
+<fieldset class="col-md-4">
+<legend class="fs-6 mb-2">Outdoor space</legend>
+<div class="form-check">
+<input id="outdoor-balcony" class="form-check-input" type="checkbox" value="balcony">
+<label class="form-check-label text-capitalize" for="outdoor-balcony">balcony</label>
+</div>
+<div class="form-check">
+<input id="outdoor-garden" class="form-check-input" type="checkbox" value="garden">
+<label class="form-check-label text-capitalize" for="outdoor-garden">garden</label>
+</div>
+<div class="form-check">
+<input id="outdoor-terrace" class="form-check-input" type="checkbox" value="terrace">
+<label class="form-check-label text-capitalize" for="outdoor-terrace">terrace</label>
+</div>
+</fieldset>
+<div class="col-md-4">
+<label class="form-label" for="min-rooms">At least 2 rooms</label>
+<input id="min-rooms" class="form-range" type="range" min="1" max="5">
+<label class="form-label" for="max-rent">At most €1500 rent</label>
+<input id="max-rent" class="form-range" type="range" min="600" max="2400" step="100">
+</div>
+<fieldset class="col-md-4">
+<legend class="fs-6 mb-2">The groups must</legend>
+<div class="form-check">
+<input id="relation-and" class="form-check-input" type="radio" value="AND">
+<label class="form-check-label" for="relation-and">both match (AND)</label>
+</div>
+<div class="form-check">
+<input id="relation-or" class="form-check-input" type="radio" value="OR">
+<label class="form-check-label" for="relation-or">either match (OR)</label>
+</div>
+</fieldset>
+</div>
+<p class="mb-2" aria-live="polite"> Showing flats with <strong>(balcony or garden) AND (2+ rooms and €1500 or less)</strong>: 3 of 8. </p>
+<div data-v="" class="table-wrapper quintable">
+<div data-v="" class="header slot slot-header quintable--header">
+</div>
+<div data-v="" class="slot slot-after-search quintable--after-search-container">
+</div>
+<div data-v="" class="clearfix quintable--table-container">
+<table data-v="" class="vue-quintable table quintable--table-container--table">
+<thead data-v="">
+<tr data-v="" class="vue-quintable-header-row quintable--table-container--table--header-row">
+<th data-v="" class="quintable--table-container--table--header-row--th flat column-1">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Flat</span>
+</th>
+<th data-v="" class="text-end quintable--table-container--table--header-row--th rooms column-2">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Rooms</span>
+</th>
+<th data-v="" class="text-end quintable--table-container--table--header-row--th rent column-3">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Rent</span>
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th outdoor-space column-4">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Outdoor space</span>
+</th>
+</tr>
+</thead>
+<tbody data-v="" class="quintable--table-container--table--tbody">
+<tr data-v="" id="vue-quintable-qt-row-0" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
+<td data-v="" id="vue-quintable-qt-cell-0-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell flat column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Altbau near the park</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rooms column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">3</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rent column-3">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">€1450</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell outdoor-space column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">balcony</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-5" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
+<td data-v="" id="vue-quintable-qt-cell-5-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell flat column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Top floor with view</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rooms column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">2</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rent column-3">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">€1250</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell outdoor-space column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">balcony, terrace</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-7" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
+<td data-v="" id="vue-quintable-qt-cell-7-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell flat column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Corner flat on the square</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rooms column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">2</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rent column-3">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">€980</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell outdoor-space column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">balcony</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div data-v="" class="clearfix quintable--table-footer-container">
+<div data-v="" class="row">
+<div data-v="" class="col-lg-4 quintable--table-footer-container--sort-container">
+</div>
+<div data-v="" class="col-lg-8 quintable--table-footer-container--pagination-wrapper">
+</div>
+</div>
+</div>
+<div data-v="" class="footer slot slot-footer quintable--footer">
+</div>
+</div>
+<button class="btn btn-secondary mt-3">
+<svg class="svg-inline--fa fa-chevron-down" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+<span class="ms-2">Show Code </span>
+</button>
+</div>
+
+### click the first row | dialogs: []
+<div data-v="" class="content">
+<p class="alert alert-info">
+<svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
+</path>
+</svg>Find a flat. Two filter groups decide which flats show: the outdoor space (any of the ticked ones, <code>OR</code>) and the size and rent (both, <code>AND</code>). <code>filterGroupRelation</code> joins the two groups.</p>
+<div class="row g-3 mb-3">
+<fieldset class="col-md-4">
+<legend class="fs-6 mb-2">Outdoor space</legend>
+<div class="form-check">
+<input id="outdoor-balcony" class="form-check-input" type="checkbox" value="balcony">
+<label class="form-check-label text-capitalize" for="outdoor-balcony">balcony</label>
+</div>
+<div class="form-check">
+<input id="outdoor-garden" class="form-check-input" type="checkbox" value="garden">
+<label class="form-check-label text-capitalize" for="outdoor-garden">garden</label>
+</div>
+<div class="form-check">
+<input id="outdoor-terrace" class="form-check-input" type="checkbox" value="terrace">
+<label class="form-check-label text-capitalize" for="outdoor-terrace">terrace</label>
+</div>
+</fieldset>
+<div class="col-md-4">
+<label class="form-label" for="min-rooms">At least 2 rooms</label>
+<input id="min-rooms" class="form-range" type="range" min="1" max="5">
+<label class="form-label" for="max-rent">At most €1500 rent</label>
+<input id="max-rent" class="form-range" type="range" min="600" max="2400" step="100">
+</div>
+<fieldset class="col-md-4">
+<legend class="fs-6 mb-2">The groups must</legend>
+<div class="form-check">
+<input id="relation-and" class="form-check-input" type="radio" value="AND">
+<label class="form-check-label" for="relation-and">both match (AND)</label>
+</div>
+<div class="form-check">
+<input id="relation-or" class="form-check-input" type="radio" value="OR">
+<label class="form-check-label" for="relation-or">either match (OR)</label>
+</div>
+</fieldset>
+</div>
+<p class="mb-2" aria-live="polite"> Showing flats with <strong>(balcony or garden) AND (2+ rooms and €1500 or less)</strong>: 3 of 8. </p>
+<div data-v="" class="table-wrapper quintable">
+<div data-v="" class="header slot slot-header quintable--header">
+</div>
+<div data-v="" class="slot slot-after-search quintable--after-search-container">
+</div>
+<div data-v="" class="clearfix quintable--table-container">
+<table data-v="" class="vue-quintable table quintable--table-container--table">
+<thead data-v="">
+<tr data-v="" class="vue-quintable-header-row quintable--table-container--table--header-row">
+<th data-v="" class="quintable--table-container--table--header-row--th flat column-1">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Flat</span>
+</th>
+<th data-v="" class="text-end quintable--table-container--table--header-row--th rooms column-2">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Rooms</span>
+</th>
+<th data-v="" class="text-end quintable--table-container--table--header-row--th rent column-3">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Rent</span>
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th outdoor-space column-4">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Outdoor space</span>
+</th>
+</tr>
+</thead>
+<tbody data-v="" class="quintable--table-container--table--tbody">
+<tr data-v="" id="vue-quintable-qt-row-0" class="vue-quintable-row quintable--table-container--table--tbody--row bg-muted" style="">
+<td data-v="" id="vue-quintable-qt-cell-0-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell flat column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Altbau near the park</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rooms column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">3</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rent column-3">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">€1450</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell outdoor-space column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">balcony</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-5" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
+<td data-v="" id="vue-quintable-qt-cell-5-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell flat column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Top floor with view</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rooms column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">2</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rent column-3">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">€1250</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell outdoor-space column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">balcony, terrace</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-7" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
+<td data-v="" id="vue-quintable-qt-cell-7-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell flat column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Corner flat on the square</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rooms column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">2</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rent column-3">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">€980</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell outdoor-space column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">balcony</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div data-v="" class="clearfix quintable--table-footer-container">
+<div data-v="" class="row">
+<div data-v="" class="col-lg-4 quintable--table-footer-container--sort-container">
+</div>
+<div data-v="" class="col-lg-8 quintable--table-footer-container--pagination-wrapper">
+</div>
+</div>
+</div>
+<div data-v="" class="footer slot slot-footer quintable--footer">
+</div>
+</div>
+<button class="btn btn-secondary mt-3">
+<svg class="svg-inline--fa fa-chevron-down" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+<span class="ms-2">Show Code </span>
+</button>
+</div>
+
+### click the first row again | dialogs: []
+<div data-v="" class="content">
+<p class="alert alert-info">
+<svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
+</path>
+</svg>Find a flat. Two filter groups decide which flats show: the outdoor space (any of the ticked ones, <code>OR</code>) and the size and rent (both, <code>AND</code>). <code>filterGroupRelation</code> joins the two groups.</p>
+<div class="row g-3 mb-3">
+<fieldset class="col-md-4">
+<legend class="fs-6 mb-2">Outdoor space</legend>
+<div class="form-check">
+<input id="outdoor-balcony" class="form-check-input" type="checkbox" value="balcony">
+<label class="form-check-label text-capitalize" for="outdoor-balcony">balcony</label>
+</div>
+<div class="form-check">
+<input id="outdoor-garden" class="form-check-input" type="checkbox" value="garden">
+<label class="form-check-label text-capitalize" for="outdoor-garden">garden</label>
+</div>
+<div class="form-check">
+<input id="outdoor-terrace" class="form-check-input" type="checkbox" value="terrace">
+<label class="form-check-label text-capitalize" for="outdoor-terrace">terrace</label>
+</div>
+</fieldset>
+<div class="col-md-4">
+<label class="form-label" for="min-rooms">At least 2 rooms</label>
+<input id="min-rooms" class="form-range" type="range" min="1" max="5">
+<label class="form-label" for="max-rent">At most €1500 rent</label>
+<input id="max-rent" class="form-range" type="range" min="600" max="2400" step="100">
+</div>
+<fieldset class="col-md-4">
+<legend class="fs-6 mb-2">The groups must</legend>
+<div class="form-check">
+<input id="relation-and" class="form-check-input" type="radio" value="AND">
+<label class="form-check-label" for="relation-and">both match (AND)</label>
+</div>
+<div class="form-check">
+<input id="relation-or" class="form-check-input" type="radio" value="OR">
+<label class="form-check-label" for="relation-or">either match (OR)</label>
+</div>
+</fieldset>
+</div>
+<p class="mb-2" aria-live="polite"> Showing flats with <strong>(balcony or garden) AND (2+ rooms and €1500 or less)</strong>: 3 of 8. </p>
+<div data-v="" class="table-wrapper quintable">
+<div data-v="" class="header slot slot-header quintable--header">
+</div>
+<div data-v="" class="slot slot-after-search quintable--after-search-container">
+</div>
+<div data-v="" class="clearfix quintable--table-container">
+<table data-v="" class="vue-quintable table quintable--table-container--table">
+<thead data-v="">
+<tr data-v="" class="vue-quintable-header-row quintable--table-container--table--header-row">
+<th data-v="" class="quintable--table-container--table--header-row--th flat column-1">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Flat</span>
+</th>
+<th data-v="" class="text-end quintable--table-container--table--header-row--th rooms column-2">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Rooms</span>
+</th>
+<th data-v="" class="text-end quintable--table-container--table--header-row--th rent column-3">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Rent</span>
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th outdoor-space column-4">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Outdoor space</span>
+</th>
+</tr>
+</thead>
+<tbody data-v="" class="quintable--table-container--table--tbody">
+<tr data-v="" id="vue-quintable-qt-row-0" class="vue-quintable-row quintable--table-container--table--tbody--row bg-muted" style="">
+<td data-v="" id="vue-quintable-qt-cell-0-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell flat column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Altbau near the park</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rooms column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">3</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rent column-3">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">€1450</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell outdoor-space column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">balcony</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-5" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
+<td data-v="" id="vue-quintable-qt-cell-5-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell flat column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Top floor with view</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rooms column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">2</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rent column-3">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">€1250</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell outdoor-space column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">balcony, terrace</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-7" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
+<td data-v="" id="vue-quintable-qt-cell-7-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell flat column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Corner flat on the square</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rooms column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">2</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rent column-3">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">€980</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell outdoor-space column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">balcony</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div data-v="" class="clearfix quintable--table-footer-container">
+<div data-v="" class="row">
+<div data-v="" class="col-lg-4 quintable--table-footer-container--sort-container">
+</div>
+<div data-v="" class="col-lg-8 quintable--table-footer-container--pagination-wrapper">
+</div>
+</div>
+</div>
+<div data-v="" class="footer slot slot-footer quintable--footer">
+</div>
+</div>
+<button class="btn btn-secondary mt-3">
+<svg class="svg-inline--fa fa-chevron-down" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+<span class="ms-2">Show Code </span>
+</button>
+</div>
+
+### hover the second row | dialogs: []
+<div data-v="" class="content">
+<p class="alert alert-info">
+<svg class="svg-inline--fa fa-circle-info me-2" data-prefix="fas" data-icon="circle-info" role="img" viewBox="0 0 512 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z">
+</path>
+</svg>Find a flat. Two filter groups decide which flats show: the outdoor space (any of the ticked ones, <code>OR</code>) and the size and rent (both, <code>AND</code>). <code>filterGroupRelation</code> joins the two groups.</p>
+<div class="row g-3 mb-3">
+<fieldset class="col-md-4">
+<legend class="fs-6 mb-2">Outdoor space</legend>
+<div class="form-check">
+<input id="outdoor-balcony" class="form-check-input" type="checkbox" value="balcony">
+<label class="form-check-label text-capitalize" for="outdoor-balcony">balcony</label>
+</div>
+<div class="form-check">
+<input id="outdoor-garden" class="form-check-input" type="checkbox" value="garden">
+<label class="form-check-label text-capitalize" for="outdoor-garden">garden</label>
+</div>
+<div class="form-check">
+<input id="outdoor-terrace" class="form-check-input" type="checkbox" value="terrace">
+<label class="form-check-label text-capitalize" for="outdoor-terrace">terrace</label>
+</div>
+</fieldset>
+<div class="col-md-4">
+<label class="form-label" for="min-rooms">At least 2 rooms</label>
+<input id="min-rooms" class="form-range" type="range" min="1" max="5">
+<label class="form-label" for="max-rent">At most €1500 rent</label>
+<input id="max-rent" class="form-range" type="range" min="600" max="2400" step="100">
+</div>
+<fieldset class="col-md-4">
+<legend class="fs-6 mb-2">The groups must</legend>
+<div class="form-check">
+<input id="relation-and" class="form-check-input" type="radio" value="AND">
+<label class="form-check-label" for="relation-and">both match (AND)</label>
+</div>
+<div class="form-check">
+<input id="relation-or" class="form-check-input" type="radio" value="OR">
+<label class="form-check-label" for="relation-or">either match (OR)</label>
+</div>
+</fieldset>
+</div>
+<p class="mb-2" aria-live="polite"> Showing flats with <strong>(balcony or garden) AND (2+ rooms and €1500 or less)</strong>: 3 of 8. </p>
+<div data-v="" class="table-wrapper quintable">
+<div data-v="" class="header slot slot-header quintable--header">
+</div>
+<div data-v="" class="slot slot-after-search quintable--after-search-container">
+</div>
+<div data-v="" class="clearfix quintable--table-container">
+<table data-v="" class="vue-quintable table quintable--table-container--table">
+<thead data-v="">
+<tr data-v="" class="vue-quintable-header-row quintable--table-container--table--header-row">
+<th data-v="" class="quintable--table-container--table--header-row--th flat column-1">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Flat</span>
+</th>
+<th data-v="" class="text-end quintable--table-container--table--header-row--th rooms column-2">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Rooms</span>
+</th>
+<th data-v="" class="text-end quintable--table-container--table--header-row--th rent column-3">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Rent</span>
+</th>
+<th data-v="" class="quintable--table-container--table--header-row--th outdoor-space column-4">
+<span data-v="" class="headline quintable--table-container--table--header-row--th--headline">Outdoor space</span>
+</th>
+</tr>
+</thead>
+<tbody data-v="" class="quintable--table-container--table--tbody">
+<tr data-v="" id="vue-quintable-qt-row-0" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
+<td data-v="" id="vue-quintable-qt-cell-0-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell flat column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Altbau near the park</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rooms column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">3</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rent column-3">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">€1450</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-0-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell outdoor-space column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">balcony</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-5" class="vue-quintable-row quintable--table-container--table--tbody--row bg-muted" style="">
+<td data-v="" id="vue-quintable-qt-cell-5-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell flat column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Top floor with view</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rooms column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">2</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rent column-3">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">€1250</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-5-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell outdoor-space column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">balcony, terrace</div>
+</td>
+</tr>
+<tr data-v="" id="vue-quintable-qt-row-7" class="vue-quintable-row quintable--table-container--table--tbody--row" style="">
+<td data-v="" id="vue-quintable-qt-cell-7-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell flat column-1">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">Corner flat on the square</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-1" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rooms column-2">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">2</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-2" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell text-end rent column-3">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">€980</div>
+</td>
+<td data-v="" id="vue-quintable-qt-cell-7-3" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell outdoor-space column-4">
+<div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text">balcony</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div data-v="" class="clearfix quintable--table-footer-container">
+<div data-v="" class="row">
+<div data-v="" class="col-lg-4 quintable--table-footer-container--sort-container">
+</div>
+<div data-v="" class="col-lg-8 quintable--table-footer-container--pagination-wrapper">
+</div>
+</div>
+</div>
+<div data-v="" class="footer slot slot-footer quintable--footer">
+</div>
+</div>
+<button class="btn btn-secondary mt-3">
+<svg class="svg-inline--fa fa-chevron-down" data-prefix="fas" data-icon="chevron-down" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
+</path>
+</svg>
+<span class="ms-2">Show Code </span>
+</button>
+</div>
