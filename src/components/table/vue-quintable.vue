@@ -2781,6 +2781,10 @@ export default {
     if (this.configFinal.urlState) {
       this._readUrlState();
     }
+    // What the restored state refers to may be gone since it was saved (a column, a filter).
+    if (this.configFinal.storeState || this.configFinal.urlState) {
+      this._validateRestoredState();
+    }
 
     this.initLists();
 
@@ -2819,6 +2823,8 @@ export default {
     if (this.storedState["current-page"]) {
       this.$nextTick(() => {
         this.currentPage = this.storedState["current-page"];
+        // The page may be gone since (fewer rows): checked once the rows are there.
+        this._checkRestoredPage(this.currentPage);
       });
     }
     this.$nextTick(this.checkStoredSelectedRows);
@@ -3024,6 +3030,92 @@ export default {
       }
       this.openRows = {};
       this.sortedIndexes = {};
+    },
+
+    /**
+     * storeState / urlState: drops what a restored state refers to but the table no longer has: sorts on a column
+     * that is gone, no longer sortable or has another headline now (another column at its index), more sorts than
+     * one without multiSort, and column filters on a column without a filter (or with a filter of another kind).
+     * The stored state is written back without them. A page beyond the last is checked once the rows are known
+     * (_checkRestoredPage).
+     */
+    _validateRestoredState() {
+      const store = (name, value) => {
+        if (!this.configFinal.storeState) {
+          return;
+        }
+        const key = `vue-quintable-${this.identifier}-${name}`;
+        if (value === null) {
+          localStorage.removeItem(key);
+        } else {
+          localStorage.setItem(key, JSON.stringify(value));
+        }
+      };
+
+      const sorts = this.storedState["sort-indexes"];
+      if (sorts) {
+        let valid = Object.values(sorts)
+          .filter((sort) => {
+            const index = parseInt(sort.index);
+            return (
+              !!this.configFinal.sorts[index] &&
+              (sort.headline === undefined ||
+                sort.headline === this.configFinal.headlines[index])
+            );
+          })
+          .sort((a, b) => a.order - b.order);
+        if (!this.configFinal.multiSort) {
+          valid = valid.slice(0, 1);
+        }
+        if (valid.length !== Object.keys(sorts).length) {
+          const next = {};
+          valid.forEach((sort, order) => {
+            next[parseInt(sort.index)] = { ...sort, order };
+          });
+          if (valid.length) {
+            this.storedState["sort-indexes"] = next;
+          } else {
+            delete this.storedState["sort-indexes"];
+          }
+          store("sort-indexes", valid.length ? next : null);
+        }
+      }
+
+      const filters = this.columnFilterValues;
+      const kept = Object.entries(filters).filter(([index, value]) => {
+        const type = this.configFinal.filterTypes[index];
+        const range = typeof value === "object" && value !== null;
+        return !!type && (type === "range") === range;
+      });
+      if (kept.length !== Object.keys(filters).length) {
+        this.columnFilterValues = Object.fromEntries(kept);
+        store("column-filters", kept.length ? this.columnFilterValues : null);
+      }
+    },
+
+    /**
+     * storeState / urlState: a restored page beyond the last (there are fewer rows now) shows the first page. Local
+     * rows are checked at once (rows that arrive later start on the first page anyway, as new rows always do); AJAX
+     * rows when the server answers for that page (see loadViaAjax).
+     */
+    _checkRestoredPage(page) {
+      if (this.configFinal.ajaxUrl) {
+        this._restoredPage = page;
+      } else if (this.numberOfVisibleRows && this.currentPage > this.pages) {
+        this._dropRestoredPage();
+      }
+    },
+
+    // The restored page is gone: the first page, and the stored state says so.
+    _dropRestoredPage() {
+      delete this.storedState["current-page"];
+      if (this.configFinal.storeState) {
+        localStorage.setItem(
+          `vue-quintable-${this.identifier}-current-page`,
+          1,
+        );
+      }
+      this.currentPage = 1;
     },
 
     // storeState: reads the table's saved filters, search, page size, selection, page and sort.

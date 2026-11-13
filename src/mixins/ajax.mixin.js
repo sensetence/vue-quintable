@@ -145,6 +145,23 @@ export default {
             throw "Response data has to contain all property. Please see Readme.md for details";
           }
 
+          // storeState / urlState: the restored page is beyond the last now (fewer rows): the first page instead.
+          if (
+            this._restoredPage !== undefined &&
+            params.page === this._restoredPage
+          ) {
+            this._restoredPage = undefined;
+            const perPage = this.currentRowsPerPage;
+            const pages =
+              perPage === "All"
+                ? 1
+                : Math.max(1, Math.ceil(response.data.all / perPage));
+            if (params.page > pages) {
+              this._dropRestoredPage(); // its watcher loads the first page
+              return;
+            }
+          }
+
           this.ajaxAll = response.data.all;
           this.ajaxPages = Math.max(
             1,

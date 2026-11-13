@@ -767,6 +767,14 @@ With `config.storeState` and an `identifier`, filters, search query, page, rows 
 />
 ```
 
+**When the data changed since:** a restored state may refer to what is gone. The table checks it against the current config and data, here and for [state in the address](#state-in-the-address):
+
+- A sort on a column that is gone, no longer sortable, or has another headline now (another column at that index) is dropped; without `multiSort` only the first sort is kept.
+- A column filter on a column without a filter, or with a filter of another kind, is dropped.
+- A page beyond the last shows the first page. Local rows are checked at once, AJAX rows when the server answers for that page: the table then loads the first page. Rows that arrive later start on the first page anyway, as new rows always do.
+
+The stored state is written back without what was dropped.
+
 ## Reusing rows
 
 By default, every sort, page change, search and filter re-creates the rows it shows: Vue removes their `<tr>` and `<td>` elements with all event listeners and builds them anew. With `reuseRows: true` the table keeps one row element per position and only swaps its text, classes and ids.
@@ -838,7 +846,7 @@ Keyboard focus is visible on all of them. Without the option the table's HTML is
 
 ## State in the address
 
-With `urlState: true` the table keeps page, sort, search, rows per page and column filters in the page's address, so a link opens the same view. The parameters start with the table's `identifier` (or `qt`), e.g. `?orders-page=2&orders-sort=1:desc`. Values at their default are left out, other parameters stay, and no history entries are added. The address wins over `storeState`.
+With `urlState: true` the table keeps page, sort, search, rows per page and column filters in the page's address, so a link opens the same view. The parameters start with the table's `identifier` (or `qt`), e.g. `?orders-page=2&orders-sort=1:desc`. Values at their default are left out, other parameters stay, and no history entries are added. The address wins over `storeState`. A link to a sort, column filter or page that no longer exists falls back as described in [Persisting table state](#persisting-table-state).
 
 ## Methods
 
