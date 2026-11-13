@@ -13,6 +13,12 @@ export default {
     },
   },
   methods: {
+    // ajaxHeaders: the request's own headers, or null without the option.
+    _ajaxHeaders(params) {
+      const headers = this.configFinal.ajaxHeaders;
+      return typeof headers === "function" ? headers(params) : headers;
+    },
+
     // error slot: loads the current page again.
     _reloadPage() {
       this.loadViaAjax(false, true, "RELOAD");
@@ -103,16 +109,30 @@ export default {
       this.cancelSource = this.axiosFinal.CancelToken.source();
 
       const method = this.configFinal.requestMethod;
-      this.axiosFinal
-        .request(this.configFinal.ajaxUrl, {
+      const request = (headers) =>
+        this.axiosFinal.request(this.configFinal.ajaxUrl, {
           method,
           params: method === "GET" ? params : null,
           data: method === "POST" ? params : null,
           cancelToken: this.cancelSource.token,
           headers: {
             "Content-Type": "application/json",
+            ...headers,
           },
-        })
+        });
+      // ajaxHeaders: a function may return its headers as a promise (e.g. a token it fetches first); a function that
+      // throws fails the request like the server would.
+      let pending;
+      try {
+        const headers = this._ajaxHeaders(params);
+        pending =
+          headers && typeof headers.then === "function"
+            ? headers.then(request)
+            : request(headers);
+      } catch (error) {
+        pending = Promise.reject(error);
+      }
+      pending
         .then((response) => {
           if (
             !response.data.rows ||

@@ -400,3 +400,88 @@ describe("virtualScroll", () => {
     w.unmount();
   });
 });
+
+describe("ajaxHeaders", () => {
+  function ajaxTable(config) {
+    const request = vi
+      .fn()
+      .mockResolvedValue({ data: { rows: [[{ text: "A" }]], all: 1 } });
+    const axios = {
+      request,
+      CancelToken: { source: () => ({ token: "t", cancel: vi.fn() }) },
+      isCancel: () => false,
+    };
+    const w = createTable({
+      mountFn: "mount",
+      config: {
+        columns: [{ headline: "Name" }],
+        ajaxUrl: "http://test.local/api",
+        ...config,
+      },
+      rows: [],
+      props: { axios },
+    });
+    return { w, request };
+  }
+
+  it("sends only the JSON content type without the option", async () => {
+    const { w, request } = ajaxTable({});
+    await vi.waitFor(() => expect(request).toHaveBeenCalled());
+    expect(request.mock.calls[0][1].headers).toEqual({
+      "Content-Type": "application/json",
+    });
+    w.unmount();
+  });
+
+  it("adds an object's headers, which may replace the content type", async () => {
+    const { w, request } = ajaxTable({
+      ajaxHeaders: {
+        Authorization: "Bearer abc",
+        "Content-Type": "text/plain",
+      },
+    });
+    await vi.waitFor(() => expect(request).toHaveBeenCalled());
+    expect(request.mock.calls[0][1].headers).toEqual({
+      "Content-Type": "text/plain",
+      Authorization: "Bearer abc",
+    });
+    w.unmount();
+  });
+
+  it("calls a function with the request's parameters before each request", async () => {
+    const ajaxHeaders = vi.fn((params) => ({ "X-Page": String(params.page) }));
+    const { w, request } = ajaxTable({ ajaxHeaders, pagination: 1 });
+    await vi.waitFor(() => expect(request).toHaveBeenCalledTimes(1));
+    expect(ajaxHeaders.mock.calls[0][0]).toMatchObject({ page: 1, search: "" });
+    expect(request.mock.calls[0][1].headers["X-Page"]).toBe("1");
+    w.vm._reloadPage();
+    await vi.waitFor(() => expect(request).toHaveBeenCalledTimes(2));
+    expect(ajaxHeaders).toHaveBeenCalledTimes(2);
+    w.unmount();
+  });
+
+  it("waits for headers a function returns as a promise", async () => {
+    const { w, request } = ajaxTable({
+      ajaxHeaders: () => Promise.resolve({ Authorization: "Bearer later" }),
+    });
+    await vi.waitFor(() => expect(request).toHaveBeenCalled());
+    expect(request.mock.calls[0][1].headers.Authorization).toBe("Bearer later");
+    await vi.waitFor(() => expect(w.text()).toContain("A"));
+    w.unmount();
+  });
+
+  it("fails the request like the server would when the function throws", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const { w, request } = ajaxTable({
+      ajaxHeaders: () => {
+        throw new Error("no token");
+      },
+    });
+    await vi.waitFor(() => expect(w.emitted("ajax:error")).toBeTruthy());
+    expect(w.emitted("ajax:error")[0][0].message).toBe("no token");
+    expect(request).not.toHaveBeenCalled();
+    expect(w.vm.fetching).toBe(false);
+    errorSpy.mockRestore();
+    w.unmount();
+  });
+});

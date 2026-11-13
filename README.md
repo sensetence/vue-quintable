@@ -259,6 +259,7 @@ What an option needs, and what it does not work with, is listed in [Option combi
 | `requestMethod`                 | `"GET"` \| `"POST"`           | `"GET"`            | HTTP method of AJAX requests. |
 | `ajaxRequestDelay`              | Number                        | `250`              | Debounce for AJAX search requests in milliseconds. |
 | `reloadOn`                      | Function                      | –                  | `(reload) => unsubscribe`: called once on mount with a function that re-fetches the current page; call it on your own signal (e.g. a router visit). The returned function is called on unmount. Only for tables with `ajaxUrl`. |
+| `ajaxHeaders`                   | Object \| Function            | –                  | Headers of every AJAX request, e.g. `{ Authorization: "Bearer …" }`, added to `Content-Type: application/json` (and able to replace it). A function is called before each request with its parameters and returns the headers, or a promise of them. See [Headers](#headers). |
 | **Accessibility**               |                               |                    |             |
 | `accessible`                    | Boolean                       | `false`            | Keyboard and screen reader support, see [Accessibility](#accessibility). |
 | `selectRowLabel`                | String                        | `"Select row"`     | Accessible name of a row's checkbox, followed by the row's number. |
@@ -422,6 +423,7 @@ const rows = [
 | `ajaxUrl` | – | The `rows` prop (ignored), `selectAllRows`, `useFuzzySearch`, `searchDebounce`, `defaultSelected` | `requestMethod`, `ajaxRequestDelay`, `reloadOn`, `skeletonLoading` |
 | `requestMethod`, `ajaxRequestDelay` | `ajaxUrl` | – | – |
 | `reloadOn` | `ajaxUrl` | – | – |
+| `ajaxHeaders` | `ajaxUrl` | Headers other than the CORS-safe ones need the server's `Access-Control-Allow-Headers` when it runs on another origin. | The plugin's `defaults` (headers for every table), the `axios` prop (interceptors for more) |
 | **State** | | | |
 | `storeState` | The `identifier` prop and local storage (otherwise switched off with a warning) | `urlState` wins where both hold a value. | `columnPicker`, `resizableColumns`, `columnFilters` (stored too) |
 | `urlState` | – (an `identifier` is recommended) | Two tables on one page without `identifier` share their parameters. | `storeState` |
@@ -734,6 +736,23 @@ The server responds with:
 ```
 
 Change the `updated` prop (e.g. to `new Date()`) to reload the current page.
+
+### Headers
+
+`ajaxHeaders` adds headers to every request, for example a token or a tenant. A function is called before each request with the parameters above, so it can return a fresh token; it may return a promise. A function that throws (or a promise that rejects) fails the request: the table emits `ajax:error` and shows the `error` slot.
+
+```js
+const config = {
+  columns,
+  ajaxUrl: "https://your.server.url/api/endpoint",
+  ajaxHeaders: () => ({ Authorization: `Bearer ${auth.token}` }),
+};
+
+// or for every table of the app:
+app.use(VueQuintable, { defaults: { ajaxHeaders: { "X-Tenant": "acme" } } });
+```
+
+The server must allow such headers in `Access-Control-Allow-Headers` when it runs on another origin. For more than headers (retries, a refreshed token on 401), pass a configured axios instance with interceptors as the `axios` prop.
 
 ## Persisting table state
 

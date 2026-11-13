@@ -179,6 +179,12 @@ export interface QuintableConfig {
   requestMethod?: "GET" | "POST";
   ajaxRequestDelay?: number;
   reloadOn?: (reload: () => void) => (() => void) | void;
+  /** Headers of every AJAX request, or a function returning them (a promise is awaited) before each request. */
+  ajaxHeaders?:
+    | Record<string, string>
+    | ((
+        params: QuintableAjaxParams,
+      ) => Record<string, string> | Promise<Record<string, string>>);
 
   // state
   storeState?: boolean;
@@ -209,8 +215,24 @@ export interface QuintableFilterGroup {
   items: ({ name: string } | QuintableFilterGroup)[];
 }
 
+/** The parameters of an AJAX request (query parameters for GET, JSON body for POST). */
+export interface QuintableAjaxParams {
+  search: string;
+  filters: Record<string, QuintableFilter>;
+  perPage: number | "All";
+  page: number;
+  columnFilters?: Record<number, ColumnFilterValue>;
+  hiddenColumns: boolean[];
+  sort: {
+    indexes: SortIndexes;
+    columns: Record<number, QuintableColumn>;
+  } | null;
+}
+
 /** columnFilters: a text, a select value, or a range. */
-export type ColumnFilterValue = string | { min?: string | number; max?: string | number };
+export type ColumnFilterValue =
+  | string
+  | { min?: string | number; max?: string | number };
 
 export interface QuintableProps {
   config: QuintableConfig;
@@ -251,11 +273,18 @@ export type QuintableEvents = {
   "click:cell": CellEvent;
   "auxclick:cell": CellEvent;
   "hover:row": (row: QuintableRow, name: string) => void;
-  "active:row": (row: QuintableRow | undefined, name: string, index: number) => void;
+  "active:row": (
+    row: QuintableRow | undefined,
+    name: string,
+    index: number,
+  ) => void;
   "expand:row": (row: QuintableRow, name: string, index: number) => void;
   "collapse:row": (row: QuintableRow, name: string, index: number) => void;
   "update:selected-rows": (rows: QuintableRow[]) => void;
-  "update:filters": (filters: Record<string, QuintableFilter>, name: string) => void;
+  "update:filters": (
+    filters: Record<string, QuintableFilter>,
+    name: string,
+  ) => void;
   "filtered:rows": (rows: boolean[], name: string) => void;
   "update:search": (query: string | null, name: string) => void;
   "update:sort": (sortIndexes: SortIndexes, name: string) => void;
@@ -325,7 +354,12 @@ export interface QuintableSlots {
     row: QuintableRow;
     index: number;
     hovered: boolean;
-    cells: { cell: QuintableCell; index: number; headline: string; sticky: boolean }[];
+    cells: {
+      cell: QuintableCell;
+      index: number;
+      headline: string;
+      sticky: boolean;
+    }[];
   }>;
   pagination?: Slot<{
     page: number;

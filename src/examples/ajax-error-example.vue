@@ -97,7 +97,7 @@ const config = computed(() => ({
   pagination: 5,
   search: true,
   // wait this long after the last key press before the search request
-  ajaxRequestDelay: 500,
+  ajaxRequestDelay: 300,
   ajaxUrl: url.value,
   requestMethod: "POST",
 }));

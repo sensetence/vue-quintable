@@ -261,6 +261,13 @@ export function normalizeConfig(
   final.reloadOn =
     typeof config.reloadOn === "function" ? config.reloadOn : null;
 
+  // ajaxHeaders: an object, or a function called before each request with its parameters.
+  final.ajaxHeaders =
+    typeof config.ajaxHeaders === "function" ||
+    (config.ajaxHeaders && typeof config.ajaxHeaders === "object")
+      ? config.ajaxHeaders
+      : null;
+
   return Object.freeze({
     ...final,
     ...columnLists(config.columns || []),

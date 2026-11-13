@@ -55,5 +55,16 @@ function onRow(index: number) {
 // @ts-expect-error a pin is "start" or "end"
 const wrong: QuintableColumn = { pin: "middle" };
 
-void [install, wrong];
+const withHeaders: QuintableConfig = {
+  columns: [],
+  ajaxUrl: "/api",
+  ajaxHeaders: async (params) => ({ "X-Page": String(params.page) }),
+};
+const badHeaders: QuintableConfig = {
+  columns: [],
+  // @ts-expect-error header values are strings
+  ajaxHeaders: { "X-Page": 2 },
+};
+
+void [install, wrong, withHeaders, badHeaders];
 </script>
