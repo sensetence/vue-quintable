@@ -2428,7 +2428,7 @@
 <div class="list-group-item"> Event click:cell was fired with data: <div>{"text":"Catherine Fleming"}</div>
 <div class="mt-2">Target:&lt;td data-v="" id="vue-quintable-qt-cell-9-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1"&gt;&lt;div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text"&gt;Catherine Fleming&lt;/div&gt;&lt;/td&gt;</div>
 </div>
-<div class="list-group-item"> Event expand:row was fired with data: <div>[{"text":"Eva Little"},{"type":"prevent-toggle","value":63},{"text":"Ikzedur","classes":"prevent-toggle"},{"text":"Electrical Engineer"},{"type":"button","value":"Eva Little"}]</div>
+<div class="list-group-item"> Event expand:row was fired with data: <div>[{"text":"Catherine Fleming"},{"type":"prevent-toggle","value":50},{"text":"Kolhewoc","classes":"prevent-toggle"},{"text":"Industrial Designer"},{"type":"button","value":"Catherine Fleming"}]</div>
 </div>
 <div class="list-group-item bg-info text-white"> Event click:row was fired with data: <div>[{"text":"Catherine Fleming"},{"type":"prevent-toggle","value":50},{"text":"Kolhewoc","classes":"prevent-toggle"},{"text":"Industrial Designer"},{"type":"button","value":"Catherine Fleming"}]</div>
 <div class="mt-2">Target:&lt;td data-v="" id="vue-quintable-qt-cell-9-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1"&gt;&lt;div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text"&gt;Catherine Fleming&lt;/div&gt;&lt;/td&gt;</div>
@@ -2729,9 +2729,9 @@
 <div class="list-group-item"> Event click:cell was fired with data: <div>{"text":"Catherine Fleming"}</div>
 <div class="mt-2">Target:&lt;td data-v="" id="vue-quintable-qt-cell-9-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1"&gt;&lt;div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text"&gt;Catherine Fleming&lt;/div&gt;&lt;/td&gt;</div>
 </div>
-<div class="list-group-item"> Event collapse:row was fired with data: <div>[{"text":"Eva Little"},{"type":"prevent-toggle","value":63},{"text":"Ikzedur","classes":"prevent-toggle"},{"text":"Electrical Engineer"},{"type":"button","value":"Eva Little"}]</div>
+<div class="list-group-item"> Event collapse:row was fired with data: <div>[{"text":"Catherine Fleming"},{"type":"prevent-toggle","value":50},{"text":"Kolhewoc","classes":"prevent-toggle"},{"text":"Industrial Designer"},{"type":"button","value":"Catherine Fleming"}]</div>
 </div>
-<div class="list-group-item"> Event collapse:row was fired with data: <div>[{"text":"Eva Little"},{"type":"prevent-toggle","value":63},{"text":"Ikzedur","classes":"prevent-toggle"},{"text":"Electrical Engineer"},{"type":"button","value":"Eva Little"}]</div>
+<div class="list-group-item"> Event collapse:row was fired with data: <div>[{"text":"Catherine Fleming"},{"type":"prevent-toggle","value":50},{"text":"Kolhewoc","classes":"prevent-toggle"},{"text":"Industrial Designer"},{"type":"button","value":"Catherine Fleming"}]</div>
 </div>
 <div class="list-group-item bg-info text-white"> Event click:row was fired with data: <div>[{"text":"Catherine Fleming"},{"type":"prevent-toggle","value":50},{"text":"Kolhewoc","classes":"prevent-toggle"},{"text":"Industrial Designer"},{"type":"button","value":"Catherine Fleming"}]</div>
 <div class="mt-2">Target:&lt;td data-v="" id="vue-quintable-qt-cell-9-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1"&gt;&lt;div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text"&gt;Catherine Fleming&lt;/div&gt;&lt;/td&gt;</div>
@@ -3002,9 +3002,9 @@
 <div class="list-group-item"> Event click:cell was fired with data: <div>{"text":"Catherine Fleming"}</div>
 <div class="mt-2">Target:&lt;td data-v="" id="vue-quintable-qt-cell-9-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1"&gt;&lt;div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text"&gt;Catherine Fleming&lt;/div&gt;&lt;/td&gt;</div>
 </div>
-<div class="list-group-item"> Event collapse:row was fired with data: <div>[{"text":"Eva Little"},{"type":"prevent-toggle","value":63},{"text":"Ikzedur","classes":"prevent-toggle"},{"text":"Electrical Engineer"},{"type":"button","value":"Eva Little"}]</div>
+<div class="list-group-item"> Event collapse:row was fired with data: <div>[{"text":"Catherine Fleming"},{"type":"prevent-toggle","value":50},{"text":"Kolhewoc","classes":"prevent-toggle"},{"text":"Industrial Designer"},{"type":"button","value":"Catherine Fleming"}]</div>
 </div>
-<div class="list-group-item"> Event collapse:row was fired with data: <div>[{"text":"Eva Little"},{"type":"prevent-toggle","value":63},{"text":"Ikzedur","classes":"prevent-toggle"},{"text":"Electrical Engineer"},{"type":"button","value":"Eva Little"}]</div>
+<div class="list-group-item"> Event collapse:row was fired with data: <div>[{"text":"Catherine Fleming"},{"type":"prevent-toggle","value":50},{"text":"Kolhewoc","classes":"prevent-toggle"},{"text":"Industrial Designer"},{"type":"button","value":"Catherine Fleming"}]</div>
 </div>
 <div class="list-group-item"> Event click:row was fired with data: <div>[{"text":"Catherine Fleming"},{"type":"prevent-toggle","value":50},{"text":"Kolhewoc","classes":"prevent-toggle"},{"text":"Industrial Designer"},{"type":"button","value":"Catherine Fleming"}]</div>
 <div class="mt-2">Target:&lt;td data-v="" id="vue-quintable-qt-cell-9-0" class="vue-quintable-cell quintable--table-container--table--tbody--row--cell name column-1"&gt;&lt;div data-v="" class="cell-inner quintable--table-container--table--tbody--row--cell--inner-cell--text"&gt;Catherine Fleming&lt;/div&gt;&lt;/td&gt;</div>

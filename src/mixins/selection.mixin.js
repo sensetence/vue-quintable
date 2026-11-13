@@ -34,18 +34,17 @@ export default {
   methods: {
     // The rows a select-all covers that can be selected: the visible ones, or all rows with selectAllRows.
     _selectableCount() {
-      // The table's own sortedIndexes read raw (see setIfChanged); the rows through the proxy, which unwraps refs in them.
+      // The rows through the proxy, which unwraps refs in them.
       const rows = this.rowsFinal;
       if (this.configFinal.selectAllRows) {
         return rows.filter((x) => !x.disableSelect).length;
       }
-      // visibleRows read once, at the first selectable row (as before), not once per row.
-      const sortedIndexes = toRaw(this.sortedIndexes);
+      // visibleRows read once, at the first selectable row (as before), not once per row. It holds a flag per row
+      // index, like rows: a row counts if it can be selected and is shown (not the row at its position after a sort).
       let visible;
       return rows.filter(
         (x, index) =>
-          !x.disableSelect &&
-          (visible || (visible = this.visibleRows))[sortedIndexes[index]],
+          !x.disableSelect && (visible || (visible = this.visibleRows))[index],
       ).length;
     },
 

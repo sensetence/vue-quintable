@@ -28,6 +28,8 @@ export const operatorFunctions: Readonly<Record<string, Compare>> =
     },
     matches(regex, b) {
       if (!(regex instanceof RegExp) || typeof b !== "string") return false;
+      // A global or sticky RegExp keeps its position between test() calls: every row starts at the beginning.
+      regex.lastIndex = 0;
       return regex.test(b);
     },
   });

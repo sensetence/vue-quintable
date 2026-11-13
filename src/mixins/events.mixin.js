@@ -207,8 +207,9 @@ export default {
       const i = parseInt(rowIndex);
 
       if (this.hiddenColumns[index] && !isLink && !shouldPrevent) {
-        const row = this.rowsFinal[this.sortedIndexes[index]];
-        const position = this.sortedIndexes[index];
+        // rowIndex is the row's own index (not its position after a sort), as click:row hands it out.
+        const row = this.rowsFinal[i];
+        const position = i;
         if (!this.openRows[index]) {
           this.openRows[index] = true;
           this.$emit("expand:row", row, "expand:row", position);

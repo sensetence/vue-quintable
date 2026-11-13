@@ -2948,15 +2948,15 @@
 <tr data-v="" class="vue-quintable-header-row quintable--table-container--table--header-row">
 <th data-v="" class="select-th pre quintable--table-container--table--header-row--select-th quintable--table-container--table--header-row--select-th--pre">
 <div data-v="" data-v="" class="pretty p-icon p-smooth" p-checkbox="">
-<input data-v="" type="checkbox" name="check">
+<input data-v="" type="checkbox" name="check" checked="">
 <div data-v="" class="state">
 <span data-v="">
-</span>
-<span data-v="" class="p-1">
-<svg data-v="" class="svg-inline--fa fa-square text-success icon-check" data-prefix="fas" data-icon="square" role="img" viewBox="0 0 448 512" aria-hidden="true">
-<path class="" fill="currentColor" d="M64 32l320 0c35.3 0 64 28.7 64 64l0 320c0 35.3-28.7 64-64 64L64 480c-35.3 0-64-28.7-64-64L0 96C0 60.7 28.7 32 64 32z">
+<svg data-v="" class="svg-inline--fa fa-check text-success icon-check" data-prefix="fas" data-icon="check" role="img" viewBox="0 0 448 512" aria-hidden="true">
+<path class="" fill="currentColor" d="M434.8 70.1c14.3 10.4 17.5 30.4 7.1 44.7l-256 352c-5.5 7.6-14 12.3-23.4 13.1s-18.5-2.7-25.1-9.3l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l101.5 101.5 234-321.7c10.4-14.3 30.4-17.5 44.7-7.1z">
 </path>
 </svg>
+</span>
+<span data-v="" class="p-1">
 </span>
 <label data-v="">
 </label>

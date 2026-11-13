@@ -3120,13 +3120,34 @@ export default {
 
     // storeState: reads the table's saved filters, search, page size, selection, page and sort.
     _restoreState() {
-      const read = (name) =>
-        localStorage.getItem(`vue-quintable-${this.identifier}-${name}`);
+      const key = (name) => `vue-quintable-${this.identifier}-${name}`;
+      const read = (name) => localStorage.getItem(key(name));
+      // A stored object (or array), or null. A value that does not parse or has another shape is removed, so one
+      // broken entry cannot break the table on every load.
+      const readJson = (name, array = false) => {
+        const raw = read(name);
+        if (!raw) {
+          return null;
+        }
+        try {
+          const value = JSON.parse(raw);
+          if (
+            value &&
+            typeof value === "object" &&
+            Array.isArray(value) === array
+          ) {
+            return value;
+          }
+        } catch {
+          // removed below
+        }
+        localStorage.removeItem(key(name));
+        return null;
+      };
 
-      const filters = read("filters");
-      if (filters) {
+      const storedFilters = readJson("filters");
+      if (storedFilters) {
         // Filters set on the table but not saved keep their value.
-        const storedFilters = JSON.parse(filters);
         for (const key in this.filters) {
           if (
             Object.prototype.hasOwnProperty.call(this.filters, key) &&
@@ -3148,9 +3169,9 @@ export default {
         this.storedState["rows-per-page"] = parseInt(rowsPerPage);
       }
 
-      const selectedRows = read("selected-rows");
+      const selectedRows = readJson("selected-rows");
       if (selectedRows) {
-        this.storedState["selected-rows"] = JSON.parse(selectedRows);
+        this.storedState["selected-rows"] = selectedRows;
       }
 
       const page = read("current-page");
@@ -3158,31 +3179,31 @@ export default {
         this.storedState["current-page"] = parseInt(page);
       }
 
-      const sortIndexes = read("sort-indexes");
+      const sortIndexes = readJson("sort-indexes");
       if (sortIndexes) {
-        this.storedState["sort-indexes"] = JSON.parse(sortIndexes);
+        this.storedState["sort-indexes"] = sortIndexes;
       }
 
       const columnWidths = this.configFinal.resizableColumns
-        ? read("column-widths")
+        ? readJson("column-widths")
         : null;
       if (columnWidths) {
-        this.columnWidths = JSON.parse(columnWidths);
+        this.columnWidths = columnWidths;
       }
 
       const columnFilters = this.configFinal.columnFilters
-        ? read("column-filters")
+        ? readJson("column-filters")
         : null;
       if (columnFilters) {
-        this.columnFilterValues = JSON.parse(columnFilters);
+        this.columnFilterValues = columnFilters;
       }
 
       const hiddenColumns = this.configFinal.columnPicker
-        ? read("hidden-columns")
+        ? readJson("hidden-columns", true)
         : null;
       if (hiddenColumns) {
         this.userHiddenColumns = Object.fromEntries(
-          JSON.parse(hiddenColumns).map((index) => [index, true]),
+          hiddenColumns.map((index) => [index, true]),
         );
       }
     },
