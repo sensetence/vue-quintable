@@ -251,6 +251,8 @@ export interface QuintableProps {
   initialSearchTerm?: string;
   nested?: boolean;
   verbose?: boolean;
+  /** @deprecated Ignored, as in 2.x. Use v-model:selected-rows. */
+  value?: unknown[];
 }
 
 type RowEvent = (
@@ -281,6 +283,8 @@ export type QuintableEvents = {
   "expand:row": (row: QuintableRow, name: string, index: number) => void;
   "collapse:row": (row: QuintableRow, name: string, index: number) => void;
   "update:selected-rows": (rows: QuintableRow[]) => void;
+  /** @deprecated The selected rows, as update:selected-rows; kept from 2.x's v-model. */
+  input: (rows: QuintableRow[]) => void;
   "update:filters": (
     filters: Record<string, QuintableFilter>,
     name: string,

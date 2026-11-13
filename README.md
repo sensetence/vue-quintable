@@ -881,7 +881,7 @@ table.value?.setSearchQuery("Ada");
 - The root element carries the rows per page as the CSS variable `--quintable-page-size`, e.g. to keep a page's height while the next one loads.
 - A row and its details hover together, in one tint; a table nested in the details sits on it, so its hovered row is one step darker. The active row (`enableRowTabIndex`) and its details get `activeClass`; with the default `activeClass` also `row-active` / `parent-row-active`, which show an accent with a leading edge. With the default classes the colours come from Bootstrap's theme (dark mode included) and can be changed with the CSS variables `--quintable-row-hover-bg`, `--quintable-row-active-bg` and `--quintable-row-active-edge` (set them on `.quintable` or any ancestor).
 - "Select all" selects only the rows in its scope (the visible page, or with `selectAllRows` all pages) that pass search and filters; every other row is deselected, as in 2.x.
-- `v-model:selected-rows` replaces Vue 2's `v-model`; plain `v-model` is not supported.
+- `v-model:selected-rows` replaces Vue 2's `v-model`; plain `v-model` is not supported. Left from 2.x: the `input` event still carries the selected rows like `update:selected-rows` (deprecated), and the `value` prop is ignored, as it was in 2.x.
 - Set `:nested="true"` on tables inside another table's slot.
 - `html` cells and HTML returned by cell formatters are rendered unescaped. Never pass unsanitized user input.
 
