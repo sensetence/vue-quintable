@@ -9,6 +9,7 @@
     "prod-local": "vite build --config vite.pack.config.ts",
     "build": "vue-tsc -b && vite build --config vite.build.config.ts",
     "prod": "node ./pack.js",
+    "prepublishOnly": "vite build --config vite.pack.config.ts --emptyOutDir",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",

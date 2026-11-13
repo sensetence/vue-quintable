@@ -13,7 +13,8 @@ Wie man entwickelt, testet und Releases für v2 und v3 baut. Für Nutzer der Lib
 
 - `master` ist der Default-Branch auf GitHub, enthält aber **v2**.
 - Paket: [`@sensetence/vue-quintable`](https://www.npmjs.com/package/@sensetence/vue-quintable). Aktuelle Tags: `npm view @sensetence/vue-quintable dist-tags`.
-- `dist/` ist **eingecheckt** und wird so veröffentlicht. Ins npm-Paket kommen nur `dist/`, `package.json` und `README.md` (`files` in `package.json`).
+- `dist/` ist **eingecheckt** und wird so veröffentlicht. Ins npm-Paket kommen nur `dist/`, `types/index.d.ts`, `package.json` und `README.md` (`files` in `package.json`).
+- `npm publish` baut `dist/` vorher selbst neu (`prepublishOnly` in `package.json`). So kann kein veraltetes `dist/` ins Paket, auch wenn der Build-Schritt vergessen wurde. Danach `git status` prüfen: Ist `dist/` geändert, war der eingecheckte Stand alt und muss nachträglich committet werden.
 
 ## Voraussetzungen
 
