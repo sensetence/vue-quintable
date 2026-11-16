@@ -60,10 +60,10 @@ var te = (e, t, s) => new Promise((n, i) => {
   }, "return" in t && n("return"), i;
 }, Ot = (e, t, s) => (t = e[ue("asyncIterator")]) ? t.call(e) : (e = e[ue("iterator")](), t = {}, s = (n, i) => (i = e[n]) && (t[n] = (o) => new Promise((r, l, u) => (o = i.call(e, o), u = o.done, Promise.resolve(o.value).then((c) => r({ value: c, done: u }), l)))), s("next"), s("return"), t);
 import Ns from "floating-vue";
-import { library as Us } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon as Bs } from "@fortawesome/vue-fontawesome";
-import { faAngleLeft as Ms, faAngleRight as Vs, faAnglesLeft as Hs, faAnglesRight as Ds, faArrowDownWideShort as $s, faArrowUpShortWide as Is, faCaretDown as zs, faCaretUp as xs, faCheck as Ws, faChevronDown as Ks, faChevronUp as Qs, faCircleInfo as Gs, faCircleNotch as Js, faDownLong as Xs, faExpand as Zs, faEye as Ys, faEyeSlash as en, faMinus as tn, faPlus as sn, faSquare as nn, faUpDownLeftRight as on, faUpLong as rn, faXmark as ln } from "@fortawesome/free-solid-svg-icons";
-import { createElementBlock as h, openBlock as d, normalizeClass as k, createElementVNode as F, createCommentVNode as S, renderSlot as R, toRaw as Z, shallowReactive as an, resolveComponent as Oe, resolveDirective as cn, normalizeStyle as $, toDisplayString as _, Fragment as v, renderList as q, withDirectives as J, vModelText as un, createBlock as E, withCtx as ne, vModelCheckbox as _e, mergeProps as H, withModifiers as X, createVNode as N, resolveDynamicComponent as Ee, createTextVNode as ie, getCurrentInstance as dn, computed as _t, h as hn } from "vue";
+import { library as Ms } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon as Us } from "@fortawesome/vue-fontawesome";
+import { faAngleLeft as Bs, faAngleRight as Vs, faAnglesLeft as Hs, faAnglesRight as Ds, faArrowDownWideShort as $s, faArrowUpShortWide as Is, faCaretDown as zs, faCaretUp as xs, faCheck as Ws, faChevronDown as Ks, faChevronUp as Qs, faCircleInfo as Gs, faCircleNotch as Js, faDownLong as Xs, faExpand as Zs, faEye as Ys, faEyeSlash as en, faMinus as tn, faPlus as sn, faSquare as nn, faUpDownLeftRight as on, faUpLong as rn, faXmark as ln } from "@fortawesome/free-solid-svg-icons";
+import { createElementBlock as h, openBlock as d, normalizeClass as k, createElementVNode as F, createCommentVNode as S, renderSlot as R, toRaw as Z, shallowReactive as an, resolveComponent as Oe, resolveDirective as cn, normalizeStyle as $, toDisplayString as _, Fragment as C, renderList as q, withDirectives as J, vModelText as un, createBlock as E, withCtx as ne, vModelCheckbox as _e, mergeProps as H, withModifiers as X, createVNode as N, resolveDynamicComponent as Ee, createTextVNode as ie, getCurrentInstance as dn, computed as _t, h as hn } from "vue";
 import fn from "vue-select";
 import pn from "fuzzy.js";
 function gn(e) {
@@ -92,8 +92,8 @@ function gn(e) {
     }
   });
 }
-Us.add(
-  Ms,
+Ms.add(
+  Bs,
   Vs,
   Hs,
   Ds,
@@ -118,7 +118,7 @@ Us.add(
   ln
 );
 function mn(e) {
-  e.component("QuintableFontAwesomeIcon", Bs);
+  e.component("QuintableFontAwesomeIcon", Us);
 }
 const ht = (e, t) => {
   const s = e.__vccOpts || e;
@@ -512,9 +512,9 @@ function Rn(e, t, s, n, i, o) {
     ], 2)) : S("", !0)
   ], 2);
 }
-const Cn = /* @__PURE__ */ ht(kn, [["render", Rn]]);
-function vn(e) {
-  e.component("QuintablePCheck", Sn), e.component("QuintablePRadio", Cn), e.component("QuintableVSelect", fn);
+const vn = /* @__PURE__ */ ht(kn, [["render", Rn]]);
+function Cn(e) {
+  e.component("QuintablePCheck", Sn), e.component("QuintablePRadio", vn), e.component("QuintableVSelect", fn);
 }
 const Ae = {
   sm: "(min-width: 576px)",
@@ -846,7 +846,7 @@ function lt(e, t) {
     (n || !Object.prototype.hasOwnProperty.call(s, i) || !Object.is(s[i], o)) && (n = n || O({}, s), n[i] = o);
   return n;
 }
-function Un(e, t) {
+function Mn(e, t) {
   const s = e.toLowerCase();
   let n = s.indexOf(t);
   if (!t || n === -1)
@@ -864,7 +864,7 @@ function de(e, t, s, n, i) {
   const r = o == null ? void 0 : o[e];
   r && r(t, s, n, i);
 }
-function Bn(e, t) {
+function Un(e, t) {
   if (e === t)
     return !0;
   if (!e || !t || typeof e != "object" || typeof t != "object")
@@ -885,12 +885,12 @@ function Lt(e) {
     t._quintableTooltip && de(e, t, s, n, null);
   };
 }
-const Mn = {
+const Bn = {
   created: et("created"),
   beforeMount: et("beforeMount"),
   mounted: et("mounted"),
   updated(e, t, s, n) {
-    e._quintableTooltip ? Bn(t.value, t.oldValue) || de("updated", e, t, s, n) : os(t) && (e._quintableTooltip = !0, de("created", e, t, s, null), de("beforeMount", e, t, s, null), de("mounted", e, t, s, null));
+    e._quintableTooltip ? Un(t.value, t.oldValue) || de("updated", e, t, s, n) : os(t) && (e._quintableTooltip = !0, de("created", e, t, s, null), de("beforeMount", e, t, s, null), de("mounted", e, t, s, null));
   },
   beforeUnmount: Lt("beforeUnmount"),
   unmounted: Lt("unmounted")
@@ -905,14 +905,14 @@ const { toString: Vn } = Object.prototype, { getPrototypeOf: gt } = Object, { it
   return e[s] || (e[s] = s.slice(8, -1).toLowerCase());
 })(/* @__PURE__ */ Object.create(null)), x = (e) => (e = e.toLowerCase(), (t) => Ie(t) === e), ze = (e) => (t) => typeof t === e, { isArray: fe } = Array, he = ze("undefined");
 function we(e) {
-  return e !== null && !he(e) && e.constructor !== null && !he(e.constructor) && M(e.constructor.isBuffer) && e.constructor.isBuffer(e);
+  return e !== null && !he(e) && e.constructor !== null && !he(e.constructor) && B(e.constructor.isBuffer) && e.constructor.isBuffer(e);
 }
 const as = x("ArrayBuffer");
 function Hn(e) {
   let t;
   return typeof ArrayBuffer != "undefined" && ArrayBuffer.isView ? t = ArrayBuffer.isView(e) : t = e && e.buffer && as(e.buffer), t;
 }
-const Dn = ze("string"), M = ze("function"), cs = ze("number"), ye = (e) => e !== null && typeof e == "object", $n = (e) => e === !0 || e === !1, Ne = (e) => {
+const Dn = ze("string"), B = ze("function"), cs = ze("number"), ye = (e) => e !== null && typeof e == "object", $n = (e) => e === !0 || e === !1, Ne = (e) => {
   if (Ie(e) !== "object")
     return !1;
   const t = gt(e);
@@ -925,14 +925,14 @@ const Dn = ze("string"), M = ze("function"), cs = ze("number"), ye = (e) => e !=
   } catch (t) {
     return !1;
   }
-}, zn = x("Date"), xn = x("File"), Wn = (e) => !!(e && typeof e.uri != "undefined"), Kn = (e) => e && typeof e.getParts != "undefined", Qn = x("Blob"), Gn = x("FileList"), Jn = (e) => ye(e) && M(e.pipe);
+}, zn = x("Date"), xn = x("File"), Wn = (e) => !!(e && typeof e.uri != "undefined"), Kn = (e) => e && typeof e.getParts != "undefined", Qn = x("Blob"), Gn = x("FileList"), Jn = (e) => ye(e) && B(e.pipe);
 function Xn() {
   return typeof globalThis != "undefined" ? globalThis : typeof self != "undefined" ? self : typeof window != "undefined" ? window : typeof global != "undefined" ? global : {};
 }
 const jt = Xn(), Nt = typeof jt.FormData != "undefined" ? jt.FormData : void 0, Zn = (e) => {
   let t;
-  return e && (Nt && e instanceof Nt || M(e.append) && ((t = Ie(e)) === "formdata" || // detect form-data instance
-  t === "object" && M(e.toString) && e.toString() === "[object FormData]"));
+  return e && (Nt && e instanceof Nt || B(e.append) && ((t = Ie(e)) === "formdata" || // detect form-data instance
+  t === "object" && B(e.toString) && e.toString() === "[object FormData]"));
 }, Yn = x("URLSearchParams"), [ei, ti, si, ni] = [
   "ReadableStream",
   "Request",
@@ -981,7 +981,7 @@ function at() {
 const oi = (e, t, s, { allOwnKeys: n } = {}) => (Se(
   t,
   (i, o) => {
-    s && M(i) ? Object.defineProperty(e, o, {
+    s && B(i) ? Object.defineProperty(e, o, {
       value: rs(i, s),
       writable: !0,
       enumerable: !0,
@@ -1041,7 +1041,7 @@ const oi = (e, t, s, { allOwnKeys: n } = {}) => (Se(
   return n;
 }, pi = x("HTMLFormElement"), gi = (e) => e.toLowerCase().replace(/[-_\s]([a-z\d])(\w*)/g, function(s, n, i) {
   return n.toUpperCase() + i;
-}), Ut = (({ hasOwnProperty: e }) => (t, s) => e.call(t, s))(Object.prototype), mi = x("RegExp"), hs = (e, t) => {
+}), Mt = (({ hasOwnProperty: e }) => (t, s) => e.call(t, s))(Object.prototype), mi = x("RegExp"), hs = (e, t) => {
   const s = Object.getOwnPropertyDescriptors(e), n = {};
   Se(s, (i, o) => {
     let r;
@@ -1049,10 +1049,10 @@ const oi = (e, t, s, { allOwnKeys: n } = {}) => (Se(
   }), Object.defineProperties(e, n);
 }, bi = (e) => {
   hs(e, (t, s) => {
-    if (M(e) && ["arguments", "caller", "callee"].indexOf(s) !== -1)
+    if (B(e) && ["arguments", "caller", "callee"].indexOf(s) !== -1)
       return !1;
     const n = e[s];
-    if (M(n)) {
+    if (B(n)) {
       if (t.enumerable = !1, "writable" in t) {
         t.writable = !1;
         return;
@@ -1072,7 +1072,7 @@ const oi = (e, t, s, { allOwnKeys: n } = {}) => (Se(
 }, yi = () => {
 }, Si = (e, t) => e != null && Number.isFinite(e = +e) ? e : t;
 function ki(e) {
-  return !!(e && M(e.append) && e[ls] === "FormData" && e[$e]);
+  return !!(e && B(e.append) && e[ls] === "FormData" && e[$e]);
 }
 const Fi = (e) => {
   const t = new Array(10), s = (n, i) => {
@@ -1093,7 +1093,7 @@ const Fi = (e) => {
     return n;
   };
   return s(e, 0);
-}, Ri = x("AsyncFunction"), Ci = (e) => e && (ye(e) || M(e)) && M(e.then) && M(e.catch), fs = ((e, t) => e ? setImmediate : t ? ((s, n) => (re.addEventListener(
+}, Ri = x("AsyncFunction"), vi = (e) => e && (ye(e) || B(e)) && B(e.then) && B(e.catch), fs = ((e, t) => e ? setImmediate : t ? ((s, n) => (re.addEventListener(
   "message",
   ({ source: i, data: o }) => {
     i === re && o === s && n.length && n.shift()();
@@ -1101,7 +1101,7 @@ const Fi = (e) => {
   !1
 ), (i) => {
   n.push(i), re.postMessage(s, "*");
-}))(`axios@${Math.random()}`, []) : (s) => setTimeout(s))(typeof setImmediate == "function", M(re.postMessage)), vi = typeof queueMicrotask != "undefined" ? queueMicrotask.bind(re) : typeof process != "undefined" && process.nextTick || fs, Pi = (e) => e != null && M(e[$e]), m = {
+}))(`axios@${Math.random()}`, []) : (s) => setTimeout(s))(typeof setImmediate == "function", B(re.postMessage)), Ci = typeof queueMicrotask != "undefined" ? queueMicrotask.bind(re) : typeof process != "undefined" && process.nextTick || fs, Pi = (e) => e != null && B(e[$e]), m = {
   isArray: fe,
   isArrayBuffer: as,
   isBuffer: we,
@@ -1124,7 +1124,7 @@ const Fi = (e) => {
   isReactNative: Kn,
   isBlob: Qn,
   isRegExp: mi,
-  isFunction: M,
+  isFunction: B,
   isStream: Jn,
   isURLSearchParams: Yn,
   isTypedArray: di,
@@ -1143,8 +1143,8 @@ const Fi = (e) => {
   forEachEntry: hi,
   matchAll: fi,
   isHTMLForm: pi,
-  hasOwnProperty: Ut,
-  hasOwnProp: Ut,
+  hasOwnProperty: Mt,
+  hasOwnProp: Mt,
   // an alias to avoid ESLint no-prototype-builtins detection
   reduceDescriptors: hs,
   freezeMethods: bi,
@@ -1158,12 +1158,12 @@ const Fi = (e) => {
   isSpecCompliantForm: ki,
   toJSONObject: Fi,
   isAsyncFn: Ri,
-  isThenable: Ci,
+  isThenable: vi,
   setImmediate: fs,
-  asap: vi,
+  asap: Ci,
   isIterable: Pi
 };
-let C = class ps extends Error {
+let v = class ps extends Error {
   static from(t, s, n, i, o, r) {
     const l = new ps(t.message, s || t.code, n, i, o);
     return l.cause = t, l.name = t.name, t.status != null && l.status == null && (l.status = t.status), r && Object.assign(l, r), l;
@@ -1207,18 +1207,18 @@ let C = class ps extends Error {
     };
   }
 };
-C.ERR_BAD_OPTION_VALUE = "ERR_BAD_OPTION_VALUE";
-C.ERR_BAD_OPTION = "ERR_BAD_OPTION";
-C.ECONNABORTED = "ECONNABORTED";
-C.ETIMEDOUT = "ETIMEDOUT";
-C.ERR_NETWORK = "ERR_NETWORK";
-C.ERR_FR_TOO_MANY_REDIRECTS = "ERR_FR_TOO_MANY_REDIRECTS";
-C.ERR_DEPRECATED = "ERR_DEPRECATED";
-C.ERR_BAD_RESPONSE = "ERR_BAD_RESPONSE";
-C.ERR_BAD_REQUEST = "ERR_BAD_REQUEST";
-C.ERR_CANCELED = "ERR_CANCELED";
-C.ERR_NOT_SUPPORT = "ERR_NOT_SUPPORT";
-C.ERR_INVALID_URL = "ERR_INVALID_URL";
+v.ERR_BAD_OPTION_VALUE = "ERR_BAD_OPTION_VALUE";
+v.ERR_BAD_OPTION = "ERR_BAD_OPTION";
+v.ECONNABORTED = "ECONNABORTED";
+v.ETIMEDOUT = "ETIMEDOUT";
+v.ERR_NETWORK = "ERR_NETWORK";
+v.ERR_FR_TOO_MANY_REDIRECTS = "ERR_FR_TOO_MANY_REDIRECTS";
+v.ERR_DEPRECATED = "ERR_DEPRECATED";
+v.ERR_BAD_RESPONSE = "ERR_BAD_RESPONSE";
+v.ERR_BAD_REQUEST = "ERR_BAD_REQUEST";
+v.ERR_CANCELED = "ERR_CANCELED";
+v.ERR_NOT_SUPPORT = "ERR_NOT_SUPPORT";
+v.ERR_INVALID_URL = "ERR_INVALID_URL";
 const Oi = null;
 function ct(e) {
   return m.isPlainObject(e) || m.isArray(e);
@@ -1262,7 +1262,7 @@ function xe(e, t, s) {
     if (m.isBoolean(w))
       return w.toString();
     if (!u && m.isBlob(w))
-      throw new C("Blob is not supported. Use a Buffer instead.");
+      throw new v("Blob is not supported. Use a Buffer instead.");
     return m.isArrayBuffer(w) || m.isTypedArray(w) ? u && typeof Blob == "function" ? new Blob([w]) : Buffer.from(w) : w;
   }
   function g(w, b, y) {
@@ -1273,10 +1273,10 @@ function xe(e, t, s) {
       if (m.endsWith(b, "{}"))
         b = n ? b : b.slice(0, -2), w = JSON.stringify(w);
       else if (m.isArray(w) && _i(w) || (m.isFileList(w) || m.endsWith(b, "[]")) && (P = m.toArray(w)))
-        return b = gs(b), P.forEach(function(A, U) {
+        return b = gs(b), P.forEach(function(A, M) {
           !(m.isUndefined(A) || A === null) && t.append(
             // eslint-disable-next-line no-nested-ternary
-            r === !0 ? tt([b], U, o) : r === null ? b : b + "[]",
+            r === !0 ? tt([b], M, o) : r === null ? b : b + "[]",
             c(A)
           );
         }), !1;
@@ -1301,7 +1301,7 @@ function xe(e, t, s) {
     throw new TypeError("data must be an object");
   return f(e), t;
 }
-function Bt(e) {
+function Ut(e) {
   const t = {
     "!": "%21",
     "'": "%27",
@@ -1324,8 +1324,8 @@ ms.append = function(t, s) {
 };
 ms.toString = function(t) {
   const s = t ? function(n) {
-    return t.call(this, n, Bt);
-  } : Bt;
+    return t.call(this, n, Ut);
+  } : Ut;
   return this._pairs.map(function(i) {
     return s(i[0]) + "=" + s(i[1]);
   }, "").join("&");
@@ -1346,7 +1346,7 @@ function bs(e, t, s) {
   }
   return e;
 }
-class Mt {
+class Bt {
   constructor() {
     this.handlers = [];
   }
@@ -1414,15 +1414,15 @@ const bt = {
     Blob: Li
   },
   protocols: ["http", "https", "file", "blob", "url", "data"]
-}, wt = typeof window != "undefined" && typeof document != "undefined", ut = typeof navigator == "object" && navigator || void 0, Ni = wt && (!ut || ["ReactNative", "NativeScript", "NS"].indexOf(ut.product) < 0), Ui = typeof WorkerGlobalScope != "undefined" && // eslint-disable-next-line no-undef
-self instanceof WorkerGlobalScope && typeof self.importScripts == "function", Bi = wt && window.location.href || "http://localhost", Mi = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+}, wt = typeof window != "undefined" && typeof document != "undefined", ut = typeof navigator == "object" && navigator || void 0, Ni = wt && (!ut || ["ReactNative", "NativeScript", "NS"].indexOf(ut.product) < 0), Mi = typeof WorkerGlobalScope != "undefined" && // eslint-disable-next-line no-undef
+self instanceof WorkerGlobalScope && typeof self.importScripts == "function", Ui = wt && window.location.href || "http://localhost", Bi = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   hasBrowserEnv: wt,
   hasStandardBrowserEnv: Ni,
-  hasStandardBrowserWebWorkerEnv: Ui,
+  hasStandardBrowserWebWorkerEnv: Mi,
   navigator: ut,
-  origin: Bi
-}, Symbol.toStringTag, { value: "Module" })), L = O(O({}, Mi), ji);
+  origin: Ui
+}, Symbol.toStringTag, { value: "Module" })), L = O(O({}, Bi), ji);
 function Vi(e, t) {
   return xe(e, new L.classes.URLSearchParams(), O({
     visitor: function(s, n, i, o) {
@@ -1508,7 +1508,7 @@ const ke = {
           return JSON.parse(t, this.parseReviver);
         } catch (l) {
           if (r)
-            throw l.name === "SyntaxError" ? C.from(l, C.ERR_BAD_RESPONSE, this, null, this.response) : l;
+            throw l.name === "SyntaxError" ? v.from(l, v.ERR_BAD_RESPONSE, this, null, this.response) : l;
         }
       }
       return t;
@@ -1569,8 +1569,8 @@ const Ii = m.toObjectSet([
 function ge(e) {
   return e && String(e).trim().toLowerCase();
 }
-function Ue(e) {
-  return e === !1 || e == null ? e : m.isArray(e) ? e.map(Ue) : String(e);
+function Me(e) {
+  return e === !1 || e == null ? e : m.isArray(e) ? e.map(Me) : String(e);
 }
 function xi(e) {
   const t = /* @__PURE__ */ Object.create(null), s = /([^\s,;=]+)\s*(?:=\s*([^,;]+))?/g;
@@ -1615,7 +1615,7 @@ let V = class {
       if (!g)
         throw new Error("header name must be a non-empty string");
       const a = m.findKey(i, g);
-      (!a || i[a] === void 0 || c === !0 || c === void 0 && i[a] !== !1) && (i[a || u] = Ue(l));
+      (!a || i[a] === void 0 || c === !0 || c === void 0 && i[a] !== !1) && (i[a || u] = Me(l));
     }
     const r = (l, u) => m.forEach(l, (c, g) => o(c, g, u));
     if (m.isPlainObject(t) || t instanceof this.constructor)
@@ -1683,11 +1683,11 @@ let V = class {
     return m.forEach(this, (i, o) => {
       const r = m.findKey(n, o);
       if (r) {
-        s[r] = Ue(i), delete s[o];
+        s[r] = Me(i), delete s[o];
         return;
       }
       const l = t ? Ki(o) : String(o).trim();
-      l !== o && delete s[o], s[l] = Ue(i), n[l] = !0;
+      l !== o && delete s[o], s[l] = Me(i), n[l] = !0;
     }), this;
   }
   concat(...t) {
@@ -1758,7 +1758,7 @@ function nt(e, t) {
 function ys(e) {
   return !!(e && e.__CANCEL__);
 }
-let Fe = class extends C {
+let Fe = class extends v {
   /**
    * A `CanceledError` is an object that is thrown when an operation is canceled.
    *
@@ -1769,15 +1769,15 @@ let Fe = class extends C {
    * @returns {CanceledError} The created error.
    */
   constructor(t, s, n) {
-    super(t == null ? "canceled" : t, C.ERR_CANCELED, s, n), this.name = "CanceledError", this.__CANCEL__ = !0;
+    super(t == null ? "canceled" : t, v.ERR_CANCELED, s, n), this.name = "CanceledError", this.__CANCEL__ = !0;
   }
 };
 function Ss(e, t, s) {
   const n = s.config.validateStatus;
   !s.status || !n || n(s.status) ? e(s) : t(
-    new C(
+    new v(
       "Request failed with status code " + s.status,
-      [C.ERR_BAD_REQUEST, C.ERR_BAD_RESPONSE][Math.floor(s.status / 100) - 4],
+      [v.ERR_BAD_REQUEST, v.ERR_BAD_RESPONSE][Math.floor(s.status / 100) - 4],
       s.config,
       s.request,
       s
@@ -2017,32 +2017,32 @@ const Fs = (e) => {
     "onloadend" in y ? y.onloadend = P : y.onreadystatechange = function() {
       !y || y.readyState !== 4 || y.status === 0 && !(y.responseURL && y.responseURL.indexOf("file:") === 0) || setTimeout(P);
     }, y.onabort = function() {
-      y && (n(new C("Request aborted", C.ECONNABORTED, e, y)), y = null);
-    }, y.onerror = function(U) {
-      const z = U && U.message ? U.message : "Network Error", Y = new C(z, C.ERR_NETWORK, e, y);
-      Y.event = U || null, n(Y), y = null;
+      y && (n(new v("Request aborted", v.ECONNABORTED, e, y)), y = null);
+    }, y.onerror = function(M) {
+      const z = M && M.message ? M.message : "Network Error", Y = new v(z, v.ERR_NETWORK, e, y);
+      Y.event = M || null, n(Y), y = null;
     }, y.ontimeout = function() {
-      let U = i.timeout ? "timeout of " + i.timeout + "ms exceeded" : "timeout exceeded";
+      let M = i.timeout ? "timeout of " + i.timeout + "ms exceeded" : "timeout exceeded";
       const z = i.transitional || bt;
-      i.timeoutErrorMessage && (U = i.timeoutErrorMessage), n(
-        new C(
-          U,
-          z.clarifyTimeoutError ? C.ETIMEDOUT : C.ECONNABORTED,
+      i.timeoutErrorMessage && (M = i.timeoutErrorMessage), n(
+        new v(
+          M,
+          z.clarifyTimeoutError ? v.ETIMEDOUT : v.ECONNABORTED,
           e,
           y
         )
       ), y = null;
-    }, o === void 0 && r.setContentType(null), "setRequestHeader" in y && m.forEach(r.toJSON(), function(U, z) {
-      y.setRequestHeader(z, U);
+    }, o === void 0 && r.setContentType(null), "setRequestHeader" in y && m.forEach(r.toJSON(), function(M, z) {
+      y.setRequestHeader(z, M);
     }), m.isUndefined(i.withCredentials) || (y.withCredentials = !!i.withCredentials), l && l !== "json" && (y.responseType = i.responseType), c && ([p, w] = De(c, !0), y.addEventListener("progress", p)), u && y.upload && ([a, f] = De(u), y.upload.addEventListener("progress", a), y.upload.addEventListener("loadend", f)), (i.cancelToken || i.signal) && (g = (A) => {
       y && (n(!A || A.type ? new Fe(null, e, y) : A), y.abort(), y = null);
     }, i.cancelToken && i.cancelToken.subscribe(g), i.signal && (i.signal.aborted ? g() : i.signal.addEventListener("abort", g)));
     const j = Gi(i.url);
     if (j && L.protocols.indexOf(j) === -1) {
       n(
-        new C(
+        new v(
           "Unsupported protocol " + j + ":",
-          C.ERR_BAD_REQUEST,
+          v.ERR_BAD_REQUEST,
           e
         )
       );
@@ -2059,12 +2059,12 @@ const Fs = (e) => {
         i = !0, l();
         const g = c instanceof Error ? c : this.reason;
         n.abort(
-          g instanceof C ? g : new Fe(g instanceof Error ? g.message : g)
+          g instanceof v ? g : new Fe(g instanceof Error ? g.message : g)
         );
       }
     };
     let r = t && setTimeout(() => {
-      r = null, o(new C(`timeout of ${t}ms exceeded`, C.ETIMEDOUT));
+      r = null, o(new v(`timeout of ${t}ms exceeded`, v.ETIMEDOUT));
     }, t);
     const l = () => {
       e && (r && clearTimeout(r), r = null, e.forEach((c) => {
@@ -2194,9 +2194,9 @@ const Fs = (e) => {
       let P = b && b[w];
       if (P)
         return P.call(b);
-      throw new C(
+      throw new v(
         `Response type '${w}' is not supported`,
-        C.ERR_NOT_SUPPORT,
+        v.ERR_NOT_SUPPORT,
         y
       );
     });
@@ -2226,7 +2226,7 @@ const Fs = (e) => {
       data: P,
       signal: j,
       cancelToken: A,
-      timeout: U,
+      timeout: M,
       onDownloadProgress: z,
       onUploadProgress: Y,
       responseType: D,
@@ -2235,12 +2235,12 @@ const Fs = (e) => {
       fetchOptions: St
     } = Fs(w), kt = t || fetch;
     D = D ? (D + "").toLowerCase() : "text";
-    let Ce = io(
+    let ve = io(
       [j, A && A.toAbortSignal()],
-      U
+      M
     ), pe = null;
-    const ee = Ce && Ce.unsubscribe && (() => {
-      Ce.unsubscribe();
+    const ee = ve && ve.unsubscribe && (() => {
+      ve.unsubscribe();
     });
     let Ft;
     try {
@@ -2251,37 +2251,37 @@ const Fs = (e) => {
           duplex: "half"
         }), ce;
         if (m.isFormData(P) && (ce = Q.headers.get("content-type")) && Ke.setContentType(ce), Q.body) {
-          const [Qe, ve] = Ht(
+          const [Qe, Ce] = Ht(
             Ft,
             De(Dt(Y))
           );
-          P = It(Q.body, zt, Qe, ve);
+          P = It(Q.body, zt, Qe, Ce);
         }
       }
       m.isString(Re) || (Re = Re ? "include" : "omit");
-      const B = o && "credentials" in s.prototype, Rt = G(O({}, St), {
-        signal: Ce,
+      const U = o && "credentials" in s.prototype, Rt = G(O({}, St), {
+        signal: ve,
         method: y.toUpperCase(),
         headers: Ke.normalize().toJSON(),
         body: P,
         duplex: "half",
-        credentials: B ? Re : void 0
+        credentials: U ? Re : void 0
       });
       pe = o && new s(b, Rt);
       let K = yield o ? kt(pe, St) : kt(b, Rt);
-      const Ct = g && (D === "stream" || D === "response");
-      if (g && (z || Ct && ee)) {
+      const vt = g && (D === "stream" || D === "response");
+      if (g && (z || vt && ee)) {
         const Q = {};
-        ["status", "statusText", "headers"].forEach((vt) => {
-          Q[vt] = K[vt];
+        ["status", "statusText", "headers"].forEach((Ct) => {
+          Q[Ct] = K[Ct];
         });
-        const ce = m.toFiniteNumber(K.headers.get("content-length")), [Qe, ve] = z && Ht(
+        const ce = m.toFiniteNumber(K.headers.get("content-length")), [Qe, Ce] = z && Ht(
           ce,
           De(Dt(z), !0)
         ) || [];
         K = new n(
           It(K.body, zt, Qe, () => {
-            ve && ve(), ee && ee();
+            Ce && Ce(), ee && ee();
           }),
           Q
         );
@@ -2291,7 +2291,7 @@ const Fs = (e) => {
         K,
         w
       );
-      return !Ct && ee && ee(), yield new Promise((Q, ce) => {
+      return !vt && ee && ee(), yield new Promise((Q, ce) => {
         Ss(Q, ce, {
           data: _s,
           headers: V.from(K.headers),
@@ -2301,19 +2301,19 @@ const Fs = (e) => {
           request: pe
         });
       });
-    } catch (B) {
-      throw ee && ee(), B && B.name === "TypeError" && /Load failed|fetch/i.test(B.message) ? Object.assign(
-        new C(
+    } catch (U) {
+      throw ee && ee(), U && U.name === "TypeError" && /Load failed|fetch/i.test(U.message) ? Object.assign(
+        new v(
           "Network Error",
-          C.ERR_NETWORK,
+          v.ERR_NETWORK,
           w,
           pe,
-          B && B.response
+          U && U.response
         ),
         {
-          cause: B.cause || B
+          cause: U.cause || U
         }
-      ) : C.from(B, B && B.code, w, pe, B && B.response);
+      ) : v.from(U, U && U.code, w, pe, U && U.response);
     }
   });
 }, uo = /* @__PURE__ */ new Map(), Rs = (e) => {
@@ -2351,7 +2351,7 @@ function fo(e, t) {
     n = e[r];
     let l;
     if (i = n, !ho(n) && (i = yt[(l = String(n)).toLowerCase()], i === void 0))
-      throw new C(`Unknown adapter '${l}'`);
+      throw new v(`Unknown adapter '${l}'`);
     if (i && (m.isFunction(i) || (i = i.get(t))))
       break;
     o[l || "#" + r] = i;
@@ -2363,14 +2363,14 @@ function fo(e, t) {
     let l = s ? r.length > 1 ? `since :
 ` + r.map(Qt).join(`
 `) : " " + Qt(r[0]) : "as no adapter specified";
-    throw new C(
+    throw new v(
       "There is no suitable adapter to dispatch the request " + l,
       "ERR_NOT_SUPPORT"
     );
   }
   return i;
 }
-const Cs = {
+const vs = {
   /**
    * Resolve an adapter from a list of adapter names or functions.
    * @type {Function}
@@ -2387,7 +2387,7 @@ function it(e) {
     throw new Fe(null, e);
 }
 function Gt(e) {
-  return it(e), e.headers = V.from(e.headers), e.data = nt.call(e, e.transformRequest), ["post", "put", "patch"].indexOf(e.method) !== -1 && e.headers.setContentType("application/x-www-form-urlencoded", !1), Cs.getAdapter(e.adapter || ke.adapter, e)(e).then(
+  return it(e), e.headers = V.from(e.headers), e.data = nt.call(e, e.transformRequest), ["post", "put", "patch"].indexOf(e.method) !== -1 && e.headers.setContentType("application/x-www-form-urlencoded", !1), vs.getAdapter(e.adapter || ke.adapter, e)(e).then(
     function(n) {
       return it(e), n.data = nt.call(e, e.transformResponse, n), n.headers = V.from(n.headers), n;
     },
@@ -2400,7 +2400,7 @@ function Gt(e) {
     }
   );
 }
-const vs = "1.13.6", We = {};
+const Cs = "1.13.6", We = {};
 ["object", "boolean", "number", "function", "string", "symbol"].forEach((e, t) => {
   We[e] = function(n) {
     return typeof n === e || "a" + (t < 1 ? "n " : " ") + e;
@@ -2409,13 +2409,13 @@ const vs = "1.13.6", We = {};
 const Jt = {};
 We.transitional = function(t, s, n) {
   function i(o, r) {
-    return "[Axios v" + vs + "] Transitional option '" + o + "'" + r + (n ? ". " + n : "");
+    return "[Axios v" + Cs + "] Transitional option '" + o + "'" + r + (n ? ". " + n : "");
   }
   return (o, r, l) => {
     if (t === !1)
-      throw new C(
+      throw new v(
         i(r, " has been removed" + (s ? " in " + s : "")),
-        C.ERR_DEPRECATED
+        v.ERR_DEPRECATED
       );
     return s && !Jt[r] && (Jt[r] = !0, console.warn(
       i(
@@ -2430,7 +2430,7 @@ We.spelling = function(t) {
 };
 function po(e, t, s) {
   if (typeof e != "object")
-    throw new C("options must be an object", C.ERR_BAD_OPTION_VALUE);
+    throw new v("options must be an object", v.ERR_BAD_OPTION_VALUE);
   const n = Object.keys(e);
   let i = n.length;
   for (; i-- > 0; ) {
@@ -2438,25 +2438,25 @@ function po(e, t, s) {
     if (r) {
       const l = e[o], u = l === void 0 || r(l, o, e);
       if (u !== !0)
-        throw new C(
+        throw new v(
           "option " + o + " must be " + u,
-          C.ERR_BAD_OPTION_VALUE
+          v.ERR_BAD_OPTION_VALUE
         );
       continue;
     }
     if (s !== !0)
-      throw new C("Unknown option " + o, C.ERR_BAD_OPTION);
+      throw new v("Unknown option " + o, v.ERR_BAD_OPTION);
   }
 }
-const Be = {
+const Ue = {
   assertOptions: po,
   validators: We
-}, I = Be.validators;
+}, I = Ue.validators;
 let le = class {
   constructor(t) {
     this.defaults = t || {}, this.interceptors = {
-      request: new Mt(),
-      response: new Mt()
+      request: new Bt(),
+      response: new Bt()
     };
   }
   /**
@@ -2489,7 +2489,7 @@ let le = class {
   _request(t, s) {
     typeof t == "string" ? (s = s || {}, s.url = t) : s = t || {}, s = ae(this.defaults, s);
     const { transitional: n, paramsSerializer: i, headers: o } = s;
-    n !== void 0 && Be.assertOptions(
+    n !== void 0 && Ue.assertOptions(
       n,
       {
         silentJSONParsing: I.transitional(I.boolean),
@@ -2500,14 +2500,14 @@ let le = class {
       !1
     ), i != null && (m.isFunction(i) ? s.paramsSerializer = {
       serialize: i
-    } : Be.assertOptions(
+    } : Ue.assertOptions(
       i,
       {
         encode: I.function,
         serialize: I.function
       },
       !0
-    )), s.allowAbsoluteUrls !== void 0 || (this.defaults.allowAbsoluteUrls !== void 0 ? s.allowAbsoluteUrls = this.defaults.allowAbsoluteUrls : s.allowAbsoluteUrls = !0), Be.assertOptions(
+    )), s.allowAbsoluteUrls !== void 0 || (this.defaults.allowAbsoluteUrls !== void 0 ? s.allowAbsoluteUrls = this.defaults.allowAbsoluteUrls : s.allowAbsoluteUrls = !0), Ue.assertOptions(
       s,
       {
         baseUrl: I.spelling("baseURL"),
@@ -2759,9 +2759,9 @@ T.Axios = le;
 T.CanceledError = Fe;
 T.CancelToken = go;
 T.isCancel = ys;
-T.VERSION = vs;
+T.VERSION = Cs;
 T.toFormData = xe;
-T.AxiosError = C;
+T.AxiosError = v;
 T.Cancel = T.CanceledError;
 T.all = function(t) {
   return Promise.all(t);
@@ -2771,7 +2771,7 @@ T.isAxiosError = bo;
 T.mergeConfig = ae;
 T.AxiosHeaders = V;
 T.formToJSON = (e) => ws(m.isHTMLForm(e) ? new FormData(e) : e);
-T.getAdapter = Cs.getAdapter;
+T.getAdapter = vs.getAdapter;
 T.HttpStatusCode = dt;
 T.default = T;
 const {
@@ -3238,7 +3238,7 @@ const ko = {
       });
     }
   }
-}, Co = {
+}, vo = {
   computed: {
     /**
      * Calculates number of current rows per page. Special case: no user action in place
@@ -3368,7 +3368,7 @@ const ko = {
       } else e < 0 ? this.pageOffset = Math.max(t, -(this.pages - this.pageRange)) : this.pageOffset = 0;
     }
   }
-}, vo = {
+}, Co = {
   computed: {
     /**
      * Calculates the all selected flag. Special case: defaultSelected is set and no user action in place
@@ -3799,7 +3799,7 @@ const Eo = {
     }
   }
 };
-function Me(e) {
+function Be(e) {
   if (!e)
     return "";
   const t = e.html;
@@ -3808,7 +3808,7 @@ function Me(e) {
 function To(e) {
   if (!e)
     return NaN;
-  const t = e.sortValue !== void 0 && e.sortValue !== null ? e.sortValue : Me(e);
+  const t = e.sortValue !== void 0 && e.sortValue !== null ? e.sortValue : Be(e);
   return typeof t == "number" ? t : parseFloat(t);
 }
 const me = (e) => e != null && String(e).trim() !== "", rt = { column: 120, extra: 40 }, Zt = 40, Yt = {
@@ -3998,10 +3998,10 @@ const me = (e) => e != null && String(e).trim() !== "", rt = { column: 120, extr
           }
           if (r === "select") {
             const u = String(o);
-            return (c) => Me(c) === u;
+            return (c) => Be(c) === u;
           }
           const l = String(o).toLowerCase();
-          return (u) => Me(u).toLowerCase().includes(l);
+          return (u) => Be(u).toLowerCase().includes(l);
         }
       ), s = Object.keys(this.columnFilterValues).map(Number), n = this.rowsFinal;
       return e.map((i, o) => {
@@ -4032,7 +4032,7 @@ const me = (e) => e != null && String(e).trim() !== "", rt = { column: 120, extr
         }
         const i = /* @__PURE__ */ new Set();
         for (const o of t) {
-          const r = Me(W(o)[n]);
+          const r = Be(W(o)[n]);
           r !== "" && i.add(r);
         }
         e[n] = [...i].sort(
@@ -4174,7 +4174,7 @@ const me = (e) => e != null && String(e).trim() !== "", rt = { column: 120, extr
       t.href !== window.location.href && window.history.replaceState(window.history.state, "", t);
     }
   }
-}, es = 8, No = 40, Uo = {
+}, es = 8, No = 40, Mo = {
   computed: {
     // The rows to render: the window with virtualScroll, else all rows of the page (the same array).
     _renderedRowIndexes() {
@@ -4282,7 +4282,7 @@ const me = (e) => e != null && String(e).trim() !== "", rt = { column: 120, extr
     }
   }
 };
-let Bo = 0;
+let Uo = 0;
 function ts(e, t) {
   return {
     placement: t,
@@ -4290,7 +4290,7 @@ function ts(e, t) {
     trigger: e.tooltip ? "hover" : "manual"
   };
 }
-const Mo = "quintable--table-container--table--tbody--row--cell--inner-cell--", Le = "quintable--table-container--table--tbody--generated-row--generated-table";
+const Bo = "quintable--table-container--table--tbody--row--cell--inner-cell--", Le = "quintable--table-container--table--tbody--generated-row--generated-table";
 function ss(e, t, s, n) {
   let i = null, o, r;
   if (s) {
@@ -4301,7 +4301,7 @@ function ss(e, t, s, n) {
 }
 function ns(e, t) {
   if (t && e.kind === "text") {
-    const s = Un(String(e.value), t);
+    const s = Mn(String(e.value), t);
     s && (e.marks = s);
   }
   return e;
@@ -4329,19 +4329,19 @@ const Vo = ["generated", "sticky"].map((e) => ({
 }, Do = {
   name: "VueQuintable",
   components: { QuintableDetailsBox: Ho },
-  directives: { tooltip: Mn },
+  directives: { tooltip: Bn },
   mixins: [
     wo,
     ko,
     Fo,
     Ro,
-    Co,
     vo,
+    Co,
     Eo,
     Ao,
     Lo,
     jo,
-    Uo
+    Mo
   ],
   inject: {
     // Config defaults for every table of the app: app.use(VueQuintable, { defaults: { ... } }).
@@ -4465,6 +4465,8 @@ const Vo = ["generated", "sticky"].map((e) => ({
       // Part of every details row's key: a new value re-creates them (expand, collapse).
       generatedUpdatedKey: Date.now(),
       hoveredRow: null,
+      // A touch screen has no hover, so a row's details show their sort icons there all the time.
+      noHover: typeof window != "undefined" && typeof window.matchMedia == "function" && window.matchMedia("(hover: none)").matches,
       allSelectedCustom: null,
       selected: {},
       openRows: {},
@@ -4498,7 +4500,7 @@ const Vo = ["generated", "sticky"].map((e) => ({
       cancelSource: null,
       lastQuery: "",
       pageOffset: 0,
-      uuid: "qt-" + ++Bo + "-" + Date.now(),
+      uuid: "qt-" + ++Uo + "-" + Date.now(),
       loaderHeight: 0,
       defaultOperator: "equal",
       queryAjaxTimeout: null,
@@ -4765,7 +4767,7 @@ const Vo = ["generated", "sticky"].map((e) => ({
           }, j ? O({
             tooltip: ts(P, "left")
           }, ns(
-            ss(P, A, !!A, Mo),
+            ss(P, A, !!A, Bo),
             r
           )) : null));
         }
@@ -5247,7 +5249,7 @@ const Vo = ["generated", "sticky"].map((e) => ({
   key: 0,
   class: "quintable--virtual-spacer",
   "aria-hidden": "true"
-}, wr = ["colspan"], yr = ["id", "onClick", "onAuxclick", "onMouseenter"], Sr = { key: 1 }, kr = { key: 2 }, Fr = { key: 1 }, Rr = { key: 1 }, Cr = { key: 2 }, vr = {
+}, wr = ["colspan"], yr = ["id", "onClick", "onAuxclick", "onMouseenter"], Sr = { key: 1 }, kr = { key: 2 }, Fr = { key: 1 }, Rr = { key: 1 }, vr = { key: 2 }, Cr = {
   key: 2,
   class: "mb-0 mt-0"
 }, Pr = ["onUpdate:modelValue", "aria-label", "disabled", "onChange"], Or = ["id", "onClick", "onAuxclick"], _r = ["innerHTML"], Er = {
@@ -5259,13 +5261,13 @@ const Vo = ["generated", "sticky"].map((e) => ({
 }, qr = {
   key: 2,
   class: "mb-0 mt-0"
-}, Lr = ["onUpdate:modelValue", "aria-label", "disabled", "onChange"], jr = ["onMouseenter", "onClick"], Nr = ["colspan"], Ur = {
+}, Lr = ["onUpdate:modelValue", "aria-label", "disabled", "onChange"], jr = ["onMouseenter", "onClick"], Nr = ["colspan"], Mr = {
   key: 0,
   class: "generated-details quintable--table-container--table--tbody--generated-row--generated-details"
-}, Br = {
+}, Ur = {
   key: 1,
   class: "mb-2 generated-table quintable--table-container--table--tbody--generated-row--generated-table"
-}, Mr = ["id"], Vr = {
+}, Br = ["id"], Vr = {
   key: 0,
   class: "toggle-cell invisible"
 }, Hr = { key: 0 }, Dr = { key: 1 }, $r = { key: 2 }, Ir = ["onClick"], zr = { key: 0 }, xr = ["innerHTML"], Wr = {
@@ -5331,10 +5333,10 @@ const Vo = ["generated", "sticky"].map((e) => ({
 }, Rl = {
   key: 2,
   class: "quintable--skeleton--cell quintable--table-container--table--tbody--row--prepend-td"
-}, Cl = {
+}, vl = {
   key: 3,
   class: "quintable--skeleton--cell quintable--table-container--table--tbody--row--append-td"
-}, vl = {
+}, Cl = {
   key: 4,
   class: "quintable--skeleton--cell quintable--table-container--table--tbody--row--select-td"
 }, Pl = { class: "loader text-center py-4 quintable--loading--loader-wrapper--loader" }, Ol = { class: "clearfix quintable--table-footer-container" }, _l = { class: "row" }, El = { class: "col-lg-4 quintable--table-footer-container--sort-container" }, Al = { class: "col-lg-8 quintable--table-footer-container--pagination-wrapper" }, Tl = {
@@ -5343,11 +5345,11 @@ const Vo = ["generated", "sticky"].map((e) => ({
 }, ql = {
   key: 0,
   class: "mb-2 d-inline-block me-3 align-middle quintable--table-footer-container--pagination-wrapper--pagination-container--rows-select"
-}, Ll = ["innerHTML"], jl = ["aria-label"], Nl = ["onClick"], Ul = {
+}, Ll = ["innerHTML"], jl = ["aria-label"], Nl = ["onClick"], Ml = {
   key: 3,
   class: "d-inline-block align-middle mb-2 quintable--table-footer-container--pagination-wrapper--pagination-container--visible-rows"
-}, Bl = { class: "footer slot slot-footer quintable--footer" };
-function Ml(e, t, s, n, i, o) {
+}, Ul = { class: "footer slot slot-footer quintable--footer" };
+function Bl(e, t, s, n, i, o) {
   const r = Oe("quintable-font-awesome-icon"), l = Oe("quintable-p-check"), u = Oe("quintable-details-box"), c = Oe("quintable-v-select"), g = cn("tooltip");
   return d(), h("div", {
     class: "table-wrapper quintable",
@@ -5365,7 +5367,7 @@ function Ml(e, t, s, n, i, o) {
       }, [
         F("summary", zo, _(e.configFinal.columnPickerPlaceholder), 1),
         F("div", xo, [
-          (d(!0), h(v, null, q(e._pickerColumns, (a) => (d(), h("label", {
+          (d(!0), h(C, null, q(e._pickerColumns, (a) => (d(), h("label", {
             key: a.index,
             class: "dropdown-item d-flex align-items-center gap-2 mb-0"
           }, [
@@ -5451,7 +5453,7 @@ function Ml(e, t, s, n, i, o) {
               class: k(["select-th pre quintable--table-container--table--header-row--select-th quintable--table-container--table--header-row--select-th--pre", e._pin.selectPre && e._pin.selectPre.cls]),
               style: $(e._extraThStyle("selectPre"))
             }, [
-              e.configFinal.selectAll && !e.noRows ? (d(), h(v, { key: 0 }, [
+              e.configFinal.selectAll && !e.noRows ? (d(), h(C, { key: 0 }, [
                 e.$slots["select-all-checkbox"] ? R(e.$slots, "select-all-checkbox", {
                   key: 0,
                   checked: !!e.allSelectedProperty,
@@ -5502,7 +5504,7 @@ function Ml(e, t, s, n, i, o) {
             }, [
               R(e.$slots, "header-prepend", {}, void 0, !0)
             ], 6)) : S("", !0),
-            (d(!0), h(v, null, q(e.configFinal.headlines, (a, p) => (d(), h(v, null, [
+            (d(!0), h(C, null, q(e.configFinal.headlines, (a, p) => (d(), h(C, null, [
               o.cellVisible[p] ? (d(), h("th", H({
                 key: "headline-" + p,
                 class: [
@@ -5542,7 +5544,7 @@ function Ml(e, t, s, n, i, o) {
                   }, void 0, !0) : i.currentSortIndexes[p] ? (d(), E(r, {
                     key: 2,
                     icon: i.currentSortIndexes[p].asc ? "arrow-up-short-wide" : "arrow-down-wide-short"
-                  }, null, 8, ["icon"])) : (d(), h(v, { key: 1 }, [
+                  }, null, 8, ["icon"])) : (d(), h(C, { key: 1 }, [
                     N(r, {
                       icon: "up-long",
                       "width-auto": ""
@@ -5590,7 +5592,7 @@ function Ml(e, t, s, n, i, o) {
               class: k(["select-th post quintable--table-container--table--header-row--select-th quintable--table-container--table--header-row--select-th--post", e._pin.selectPost && e._pin.selectPost.cls]),
               style: $(e._extraThStyle("selectPost"))
             }, [
-              e.configFinal.selectAll && !e.noRows ? (d(), h(v, { key: 0 }, [
+              e.configFinal.selectAll && !e.noRows ? (d(), h(C, { key: 0 }, [
                 e.$slots["select-all-checkbox"] ? R(e.$slots, "select-all-checkbox", {
                   key: 0,
                   checked: !!e.allSelectedProperty,
@@ -5648,7 +5650,7 @@ function Ml(e, t, s, n, i, o) {
               key: 2,
               class: k(e._pin.prepend && e._pin.prepend.cls)
             }, null, 2)) : S("", !0),
-            (d(!0), h(v, null, q(e.configFinal.headlines, (a, p) => (d(), h(v, null, [
+            (d(!0), h(C, null, q(e.configFinal.headlines, (a, p) => (d(), h(C, null, [
               o.cellVisible[p] ? (d(), h("th", {
                 key: "filter-" + p,
                 class: k([
@@ -5672,12 +5674,12 @@ function Ml(e, t, s, n, i, o) {
                   onChange: (f) => e._onFilterInput(p, f)
                 }, [
                   F("option", fr, _(e.configFinal.columnFilterAllLabel), 1),
-                  (d(!0), h(v, null, q(e._columnFilterOptions[p], (f) => (d(), h("option", {
+                  (d(!0), h(C, null, q(e._columnFilterOptions[p], (f) => (d(), h("option", {
                     key: f,
                     value: f
                   }, _(f), 9, pr))), 128))
                 ], 40, hr)) : e.configFinal.filterTypes[p] === "range" ? (d(), h("div", gr, [
-                  (d(), h(v, null, q(["min", "max"], (f) => {
+                  (d(), h(C, null, q(["min", "max"], (f) => {
                     var w;
                     return F("input", {
                       key: f,
@@ -5714,7 +5716,7 @@ function Ml(e, t, s, n, i, o) {
               style: $({ height: i.virtualRange.top + "px" })
             }, null, 12, wr)
           ])) : S("", !0),
-          (d(!0), h(v, null, q(e._renderedRowIndexes, (a, p) => (d(), h(v, {
+          (d(!0), h(C, null, q(e._renderedRowIndexes, (a, p) => (d(), h(C, {
             key: e.configFinal.reuseRows ? p : `vue-quintable-${i.uuid}-row-${a}-${i.essentialsKey}`
           }, [
             J((d(), h("tr", {
@@ -5758,7 +5760,7 @@ function Ml(e, t, s, n, i, o) {
                     row: o.rowsFinal[a],
                     index: a,
                     expanded: !!i.openRows[a]
-                  }, void 0, !0) : i.openRows[a] ? (d(), h("span", Cr, [
+                  }, void 0, !0) : i.openRows[a] ? (d(), h("span", vr, [
                     N(r, {
                       "fixed-width": "",
                       icon: e.configFinal.expandedRowIcon
@@ -5778,7 +5780,7 @@ function Ml(e, t, s, n, i, o) {
                   e._pin.selectPre && e._pin.selectPre.cls
                 ]])
               }, [
-                !o.rowsFinal[a].disableSelect || o.rowsFinal[a].showDisabledSelect ? (d(), h(v, { key: 0 }, [
+                !o.rowsFinal[a].disableSelect || o.rowsFinal[a].showDisabledSelect ? (d(), h(C, { key: 0 }, [
                   e.$slots["select-checkbox"] ? R(e.$slots, "select-checkbox", {
                     key: 0,
                     row: o.rowsFinal[a],
@@ -5806,7 +5808,7 @@ function Ml(e, t, s, n, i, o) {
                       ])
                     ]),
                     _: 2
-                  }, 1032, ["modelValue", "onUpdate:modelValue", "aria-label", "disabled", "onChange"])) : (d(), h("label", vr, [
+                  }, 1032, ["modelValue", "onUpdate:modelValue", "aria-label", "disabled", "onChange"])) : (d(), h("label", Cr, [
                     J(F("input", {
                       "onUpdate:modelValue": (f) => i.selected[a] = f,
                       type: "checkbox",
@@ -5828,7 +5830,7 @@ function Ml(e, t, s, n, i, o) {
                   index: a
                 }, void 0, !0)
               ], 2)) : S("", !0),
-              (d(!0), h(v, null, q(o._renderRows[a], (f, w) => (d(), h(v, null, [
+              (d(!0), h(C, null, q(o._renderRows[a], (f, w) => (d(), h(C, null, [
                 f.vis ? J((d(), h("td", {
                   id: f.key,
                   key: e.configFinal.reuseRows ? w : f.key,
@@ -5857,8 +5859,8 @@ function Ml(e, t, s, n, i, o) {
                         key: 2,
                         class: k(["cell-inner", f.innerClass])
                       }, [
-                        (d(!0), h(v, null, q(f.marks, (b, y) => (d(), h(v, { key: y }, [
-                          b.mark ? (d(), h("mark", Er, _(b.text), 1)) : (d(), h(v, { key: 1 }, [
+                        (d(!0), h(C, null, q(f.marks, (b, y) => (d(), h(C, { key: y }, [
+                          b.mark ? (d(), h("mark", Er, _(b.text), 1)) : (d(), h(C, { key: 1 }, [
                             ie(_(b.text), 1)
                           ], 64))
                         ], 64))), 128))
@@ -5880,8 +5882,8 @@ function Ml(e, t, s, n, i, o) {
                     key: 3,
                     class: k(["cell-inner", f.innerClass])
                   }, [
-                    (d(!0), h(v, null, q(f.marks, (b, y) => (d(), h(v, { key: y }, [
-                      b.mark ? (d(), h("mark", Tr, _(b.text), 1)) : (d(), h(v, { key: 1 }, [
+                    (d(!0), h(C, null, q(f.marks, (b, y) => (d(), h(C, { key: y }, [
+                      b.mark ? (d(), h("mark", Tr, _(b.text), 1)) : (d(), h(C, { key: 1 }, [
                         ie(_(b.text), 1)
                       ], 64))
                     ], 64))), 128))
@@ -5909,7 +5911,7 @@ function Ml(e, t, s, n, i, o) {
                   e._pin.selectPost && e._pin.selectPost.cls
                 ]])
               }, [
-                !o.rowsFinal[a].disableSelect || o.rowsFinal[a].showDisabledSelect ? (d(), h(v, { key: 0 }, [
+                !o.rowsFinal[a].disableSelect || o.rowsFinal[a].showDisabledSelect ? (d(), h(C, { key: 0 }, [
                   e.$slots["select-checkbox"] ? R(e.$slots, "select-checkbox", {
                     key: 0,
                     row: o.rowsFinal[a],
@@ -5958,7 +5960,7 @@ function Ml(e, t, s, n, i, o) {
                 offset: 5
               }]
             ]),
-            (o.generatedRows[a] || o.stickyRows[a]) && o.visibleRows[a] ? (d(), h(v, { key: 0 }, [
+            (o.generatedRows[a] || o.stickyRows[a]) && o.visibleRows[a] ? (d(), h(C, { key: 0 }, [
               i.generatedUpdatedKey && i.openRows[a] && Object.keys(o.generatedRows[a]).length || Object.keys(o.stickyRows[a]).length ? (d(), h("tr", {
                 key: "generated-row-" + a + "-" + i.essentialsKey + "-" + i.generatedUpdatedKey,
                 ref_for: !0,
@@ -5976,19 +5978,19 @@ function Ml(e, t, s, n, i, o) {
                 }, [
                   N(u, { row: a }, {
                     default: ne(({ hovered: f }) => [
-                      e.$slots.details ? (d(), h("div", Ur, [
+                      e.$slots.details ? (d(), h("div", Mr, [
                         R(e.$slots, "details", {
                           row: o.rowsFinal[a],
                           index: a,
                           cells: o._detailsSlotCells(a),
                           hovered: f
                         }, void 0, !0)
-                      ])) : (d(), h("table", Br, [
+                      ])) : (d(), h("table", Ur, [
                         F("tbody", null, [
-                          (d(!0), h(v, null, q(o._detailCells[a], (w) => (d(), h(v, {
+                          (d(!0), h(C, null, q(o._detailCells[a], (w) => (d(), h(C, {
                             key: w.kind
                           }, [
-                            (d(!0), h(v, null, q(w.cells, (b) => (d(), h(v, {
+                            (d(!0), h(C, null, q(w.cells, (b) => (d(), h(C, {
                               key: b.key
                             }, [
                               w.open ? (d(), h("tr", {
@@ -6037,7 +6039,7 @@ function Ml(e, t, s, n, i, o) {
                                   }, null, 8, xr)) : (d(), h("span", Wr, t[28] || (t[28] = [
                                     F("wbr", null, null, -1)
                                   ]))),
-                                  e.configFinal.sorts[b.cIndex] && f ? (d(), h("span", {
+                                  e.configFinal.sorts[b.cIndex] && (f || i.noHover) ? (d(), h("span", {
                                     key: 3,
                                     class: k(["sorting-icon cursor-pointer quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon", {
                                       sorted: i.currentSortIndexes[b.cIndex]
@@ -6051,7 +6053,7 @@ function Ml(e, t, s, n, i, o) {
                                     }, void 0, !0) : i.currentSortIndexes[b.cIndex] ? (d(), E(r, {
                                       key: 2,
                                       icon: i.currentSortIndexes[b.cIndex].asc ? "arrow-up-short-wide" : "arrow-down-wide-short"
-                                    }, null, 8, ["icon"])) : (d(), h(v, { key: 1 }, [
+                                    }, null, 8, ["icon"])) : (d(), h(C, { key: 1 }, [
                                       N(r, {
                                         icon: "up-long",
                                         "width-auto": ""
@@ -6101,8 +6103,8 @@ function Ml(e, t, s, n, i, o) {
                                         key: 2,
                                         class: k(["cell-inner", b.innerClass])
                                       }, [
-                                        (d(!0), h(v, null, q(b.marks, (y, P) => (d(), h(v, { key: P }, [
-                                          y.mark ? (d(), h("mark", Zr, _(y.text), 1)) : (d(), h(v, { key: 1 }, [
+                                        (d(!0), h(C, null, q(b.marks, (y, P) => (d(), h(C, { key: P }, [
+                                          y.mark ? (d(), h("mark", Zr, _(y.text), 1)) : (d(), h(C, { key: 1 }, [
                                             ie(_(y.text), 1)
                                           ], 64))
                                         ], 64))), 128))
@@ -6124,8 +6126,8 @@ function Ml(e, t, s, n, i, o) {
                                     key: 3,
                                     class: k(["cell-inner", b.innerClass])
                                   }, [
-                                    (d(!0), h(v, null, q(b.marks, (y, P) => (d(), h(v, { key: P }, [
-                                      y.mark ? (d(), h("mark", el, _(y.text), 1)) : (d(), h(v, { key: 1 }, [
+                                    (d(!0), h(C, null, q(b.marks, (y, P) => (d(), h(C, { key: P }, [
+                                      y.mark ? (d(), h("mark", el, _(y.text), 1)) : (d(), h(C, { key: 1 }, [
                                         ie(_(y.text), 1)
                                       ], 64))
                                     ], 64))), 128))
@@ -6136,7 +6138,7 @@ function Ml(e, t, s, n, i, o) {
                                 ], 10, Jr)), [
                                   [g, b.tooltip]
                                 ])
-                              ], 10, Mr)) : S("", !0)
+                              ], 10, Br)) : S("", !0)
                             ], 64))), 128))
                           ], 64))), 128))
                         ])
@@ -6162,7 +6164,7 @@ function Ml(e, t, s, n, i, o) {
           error: i.ajaxError,
           reload: e._reloadPage
         }, void 0, !0)
-      ])) : e.noRows && !e.ajaxLoading ? (d(), h(v, { key: 2 }, [
+      ])) : e.noRows && !e.ajaxLoading ? (d(), h(C, { key: 2 }, [
         e.$slots.empty && e._hasNoRowsAtAll ? (d(), h("div", il, [
           R(e.$slots, "empty", {}, void 0, !0)
         ])) : (d(), h("div", ol, [
@@ -6185,7 +6187,7 @@ function Ml(e, t, s, n, i, o) {
               o.skeleton.toggle ? (d(), h("div", hl)) : S("", !0),
               e.configFinal.select && e.configFinal.selectPosition === "pre" ? (d(), h("div", fl)) : S("", !0),
               e.$slots["row-prepend"] ? (d(), h("div", pl)) : S("", !0),
-              (d(!0), h(v, null, q(e.configFinal.headlines, (a, p) => (d(), h(v, null, [
+              (d(!0), h(C, null, q(e.configFinal.headlines, (a, p) => (d(), h(C, null, [
                 o.skeleton.columns[p] ? (d(), h("div", {
                   key: "skeleton-headline-" + p,
                   class: k(["quintable--skeleton--cell", o.headerClass[p]])
@@ -6209,14 +6211,14 @@ function Ml(e, t, s, n, i, o) {
             ])
           ]),
           F("div", Sl, [
-            (d(!0), h(v, null, q(o.skeleton.rows, (a) => (d(), h("div", {
+            (d(!0), h(C, null, q(o.skeleton.rows, (a) => (d(), h("div", {
               key: "skeleton-row-" + a,
               class: "quintable--skeleton--row quintable--table-container--table--tbody--row"
             }, [
               o.skeleton.toggle ? (d(), h("div", kl)) : S("", !0),
               e.configFinal.select && e.configFinal.selectPosition === "pre" ? (d(), h("div", Fl)) : S("", !0),
               e.$slots["row-prepend"] ? (d(), h("div", Rl)) : S("", !0),
-              (d(!0), h(v, null, q(e.configFinal.headlines, (p, f) => (d(), h(v, null, [
+              (d(!0), h(C, null, q(e.configFinal.headlines, (p, f) => (d(), h(C, null, [
                 o.skeleton.columns[f] ? (d(), h("div", {
                   key: "skeleton-cell-" + f,
                   class: k(["quintable--skeleton--cell quintable--table-container--table--tbody--row--cell", e.configFinal.columnClasses[f]])
@@ -6224,8 +6226,8 @@ function Ml(e, t, s, n, i, o) {
                   F("span", { class: "quintable--skeleton--bar" }, null, -1)
                 ]), 2)) : S("", !0)
               ], 64))), 256)),
-              e.$slots["row-append"] ? (d(), h("div", Cl)) : S("", !0),
-              e.configFinal.select && e.configFinal.selectPosition === "post" ? (d(), h("div", vl)) : S("", !0)
+              e.$slots["row-append"] ? (d(), h("div", vl)) : S("", !0),
+              e.configFinal.select && e.configFinal.selectPosition === "post" ? (d(), h("div", Cl)) : S("", !0)
             ]))), 128))
           ])
         ])) : (d(), h("div", {
@@ -6258,7 +6260,7 @@ function Ml(e, t, s, n, i, o) {
               pageSort: e.pageSort,
               setMultiSort: (a) => o.multiSort = a,
               setPageSort: (a) => e.pageSort = a
-            }, void 0, !0) : (d(), h(v, { key: 1 }, [
+            }, void 0, !0) : (d(), h(C, { key: 1 }, [
               e.configFinal.multiSortSelect ? (d(), E(l, {
                 key: 0,
                 modelValue: o.multiSort,
@@ -6295,7 +6297,7 @@ function Ml(e, t, s, n, i, o) {
                 options: e.paginationOptionsFilled,
                 setRowsPerPage: (a) => e.currentRowsPerPageProperty = a,
                 placeholder: e.configFinal.rowsPlaceholder
-              }, void 0, !0) : (d(), h(v, { key: 1 }, [
+              }, void 0, !0) : (d(), h(C, { key: 1 }, [
                 F("span", {
                   class: "d-inline-block align-middle me-2 quintable--table-footer-container--pagination-wrapper--pagination-container--rows-select--placeholder",
                   innerHTML: e.configFinal.rowsPlaceholder
@@ -6365,7 +6367,7 @@ function Ml(e, t, s, n, i, o) {
                 }, [
                   F("span", H({ class: "page-link" }, e.configFinal.accessible ? e._pageLinkA11y() : null), " ... ", 16)
                 ])) : S("", !0),
-                (d(!0), h(v, null, q(e.visiblePages, (a) => (d(), h("li", {
+                (d(!0), h(C, null, q(e.visiblePages, (a) => (d(), h("li", {
                   key: "pagination-item-" + a,
                   class: k(["page-item", { active: a === i.currentPage }]),
                   onClick: (p) => e.gotoPage(a)
@@ -6422,13 +6424,13 @@ function Ml(e, t, s, n, i, o) {
                 ], 2)) : S("", !0)
               ], 32)
             ], 10, jl)) : S("", !0),
-            e.numberOfVisibleRows ? (d(), h("span", Ul, [
+            e.numberOfVisibleRows ? (d(), h("span", Ml, [
               e.$slots["rows-info"] ? R(e.$slots, "rows-info", {
                 key: 0,
                 first: e.firstVisibleRow,
                 last: e.lastVisibleRow,
                 total: e.numberOfVisibleRows
-              }, void 0, !0) : (d(), h(v, { key: 1 }, [
+              }, void 0, !0) : (d(), h(C, { key: 1 }, [
                 ie(_(e.firstVisibleRow) + "-" + _(e.lastVisibleRow) + " " + _(e.configFinal.numberOfVisibleRowsFillerWord) + " " + _(e.numberOfVisibleRows), 1)
               ], 64))
             ])) : S("", !0)
@@ -6436,13 +6438,13 @@ function Ml(e, t, s, n, i, o) {
         ])
       ])
     ]),
-    F("div", Bl, [
+    F("div", Ul, [
       R(e.$slots, "footer", {}, void 0, !0)
     ])
   ], 4);
 }
-const Vl = /* @__PURE__ */ ht(Do, [["render", Ml], ["__scopeId", "data-v-76c48e41"]]), fa = (e, t = {}) => {
-  e.component("VueQuintable", Vl), mn(e), vn(e), gn(e), t.defaults && e.provide("vueQuintableDefaults", t.defaults), t.axios && (e.config.globalProperties.$globalVueQuintableaxios = t.axios);
+const Vl = /* @__PURE__ */ ht(Do, [["render", Bl], ["__scopeId", "data-v-540f117d"]]), fa = (e, t = {}) => {
+  e.component("VueQuintable", Vl), mn(e), Cn(e), gn(e), t.defaults && e.provide("vueQuintableDefaults", t.defaults), t.axios && (e.config.globalProperties.$globalVueQuintableaxios = t.axios);
 };
 export {
   Vl as VueQuintable,
