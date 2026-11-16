@@ -894,7 +894,7 @@
                                 <span v-else class="headline"><wbr /></span>
 
                                 <span
-                                  v-if="configFinal.sorts[rc.cIndex] && hovered"
+                                  v-if="configFinal.sorts[rc.cIndex] && (hovered || noHover)"
                                   class="sorting-icon cursor-pointer quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon"
                                   :class="{
                                     sorted: currentSortIndexes[rc.cIndex],
@@ -1762,6 +1762,11 @@ export default {
       // Part of every details row's key: a new value re-creates them (expand, collapse).
       generatedUpdatedKey: Date.now(),
       hoveredRow: null,
+      // A touch screen has no hover, so a row's details show their sort icons there all the time.
+      noHover:
+        typeof window !== "undefined" &&
+        typeof window.matchMedia === "function" &&
+        window.matchMedia("(hover: none)").matches,
       allSelectedCustom: null,
       selected: {},
       openRows: {},
@@ -3649,8 +3654,8 @@ table.generated-table td {
 }
 
 /* Faint. :where() adds no weight, so the full-opacity rules below win. A row's details render their icons only while
-   the row is hovered, so those are faint whenever they show. Child combinators: a table nested in the details keeps
-   its own setting. */
+   the row is hovered (on a touch screen always), so those are faint whenever they show. Child combinators: a table
+   nested in the details keeps its own setting. */
 :where(
     .vue-quintable-header-row:hover > th,
     .sort-icons-visible > th,

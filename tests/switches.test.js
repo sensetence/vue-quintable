@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { nextTick } from "vue";
 import { createTable, generateRows } from "./helpers";
 
@@ -445,6 +445,53 @@ describe("expandedAll at runtime", () => {
     await nextTick();
     expect({ ...w.vm.openRows }).toEqual({ 0: false, 1: false });
     expect(w.findAll(".generated-row")).toHaveLength(0);
+    w.unmount();
+  });
+});
+
+describe("sort icon of a folded column in a row's details", () => {
+  const DETAIL_ICON =
+    ".quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon";
+
+  async function details(hoverNone) {
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn((query) => ({
+        matches: hoverNone && query === "(hover: none)",
+        media: query,
+        addEventListener() {},
+        removeEventListener() {},
+      })),
+    );
+    const w = createTable({
+      mountFn: "mount",
+      config: {
+        columns: [
+          { headline: "Name" },
+          { headline: "City", sort: true, breakpoint: "all" },
+        ],
+        expandedAll: true,
+      },
+      rows: [[{ text: "Alice" }, { text: "Ulm" }]],
+    });
+    await nextTick();
+    return w;
+  }
+
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("shows on a touch screen without a hover", async () => {
+    const w = await details(true);
+    expect(w.find(DETAIL_ICON).exists()).toBe(true);
+    w.unmount();
+  });
+
+  it("shows on a pointer device only while the row is hovered", async () => {
+    const w = await details(false);
+    expect(w.find(DETAIL_ICON).exists()).toBe(false);
+    await w.find("tbody tr").trigger("mouseenter");
+    await nextTick();
+    expect(w.find(DETAIL_ICON).exists()).toBe(true);
     w.unmount();
   });
 });
