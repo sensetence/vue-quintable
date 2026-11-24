@@ -4815,7 +4815,7 @@ const Vo = ["generated", "sticky"].map((e) => ({
   },
   watch: {
     visibleRowIndexes(e, t) {
-      this.configFinal.reuseRows && this._hoverTarget && !He(e, t) && (this._hoverTarget = null, this._paintRows()), this.windowHiddenBreakpoints && this.fitLevel > 0 && (this.fitLevel = 0, this._applyFitLevel(), this.$nextTick(this._fitToContainer));
+      this.configFinal.reuseRows && this._hoverTarget && !He(e, t) && (this._hoverTarget = null, this._paintRows()), this.windowHiddenBreakpoints && this.fitLevel > 0 && e.length > 0 && (this.fitLevel = 0, this._applyFitLevel(), this.$nextTick(this._fitToContainer));
     },
     rowsFinal: {
       handler(e) {
@@ -6443,7 +6443,7 @@ function Bl(e, t, s, n, i, o) {
     ])
   ], 4);
 }
-const Vl = /* @__PURE__ */ ht(Do, [["render", Bl], ["__scopeId", "data-v-540f117d"]]), fa = (e, t = {}) => {
+const Vl = /* @__PURE__ */ ht(Do, [["render", Bl], ["__scopeId", "data-v-b4261473"]]), fa = (e, t = {}) => {
   e.component("VueQuintable", Vl), mn(e), Cn(e), gn(e), t.defaults && e.provide("vueQuintableDefaults", t.defaults), t.axios && (e.config.globalProperties.$globalVueQuintableaxios = t.axios);
 };
 export {
