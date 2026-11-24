@@ -281,6 +281,55 @@ describe("autoFit", () => {
     w.unmount();
   });
 
+  it("keeps the fit level while an ajax load runs, the new rows re-fit", async () => {
+    const ax = axiosMock();
+    const response = {
+      data: { rows: [[{ text: "A" }, { text: "B" }, { text: "C" }]], all: 1 },
+    };
+    ax.request.mockResolvedValue(response);
+    const w = createTable({
+      mountFn: "mount",
+      config: {
+        columns: [
+          { headline: "Name" },
+          { headline: "Street", breakpoint: "xxl" },
+          { headline: "City", breakpoint: "xl" },
+        ],
+        autoFit: true,
+        ajaxUrl: "http://test.local/api",
+        skeletonLoading: true,
+      },
+      propsData: { axios: ax },
+    });
+    await vi.waitFor(() => expect(w.vm.ajaxLoading).toBe(false));
+    await nextTick();
+    w.vm._onBreakpointChange(["all"]);
+    w.vm.fitLevel = 2;
+    w.vm._applyFitLevel();
+    await nextTick();
+
+    let answer;
+    ax.request.mockReturnValue(new Promise((resolve) => (answer = resolve)));
+    w.vm.loadViaAjax();
+    await nextTick();
+    await nextTick();
+    expect(w.vm.ajaxLoading).toBe(true);
+    expect(w.vm.visibleRowIndexes).toEqual([]);
+    expect(w.vm.fitLevel).toBe(2);
+    expect(w.vm.hiddenBreakpoints).toEqual(["all", "xxl", "xl"]);
+    // The skeleton's head row: the toggle and "Name".
+    const head = w.find(".quintable--skeleton--head");
+    expect(head.findAll(".quintable--skeleton--cell").length).toBe(2);
+
+    // jsdom measures 0: the re-fit finds room and stays at the reset level.
+    answer(response);
+    await vi.waitFor(() => expect(w.vm.ajaxLoading).toBe(false));
+    await nextTick();
+    expect(w.vm.fitLevel).toBe(0);
+    expect(w.vm.hiddenBreakpoints).toEqual(["all"]);
+    w.unmount();
+  });
+
   it("is off by default: the window's list stands", () => {
     const w = createTable({ config: { columns } });
     w.vm._onBreakpointChange(["lg", "xl", "xxl", "all"]);

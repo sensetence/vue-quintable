@@ -2337,8 +2337,9 @@ export default {
         this._hoverTarget = null;
         this._paintRows();
       }
-      // autoFit: new rows (page, sort, filter, search) may be narrower than the ones a fit level was raised for.
-      if (this.windowHiddenBreakpoints && this.fitLevel > 0) {
+        // autoFit: new rows (page, sort, filter, search) may be narrower than the ones a fit level was raised for. Rows
+      // cleared for a load keep the level, so the skeleton has the columns the list had; the next rows re-fit.
+      if (this.windowHiddenBreakpoints && this.fitLevel > 0 && val.length > 0) {
         this.fitLevel = 0;
         this._applyFitLevel();
         this.$nextTick(this._fitToContainer);
