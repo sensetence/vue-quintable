@@ -10,6 +10,8 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     setupFiles: ["./tests/setup.js"],
+    // mount-heavy tests take up to 2 s alone and miss the default 5 s when the machine is busy
+    testTimeout: 20000,
     exclude: ["e2e/**", "node_modules/**"],
   },
 });
