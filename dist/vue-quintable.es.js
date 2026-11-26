@@ -4421,7 +4421,8 @@ const Vo = ["generated", "sticky"].map((e) => ({
       default: !1
     },
     axios: {
-      type: Function,
+      // an axios instance is a function; a hand-made client or mock may be a plain object
+      type: [Function, Object],
       default: null
     },
     identifier: {
@@ -6449,7 +6450,7 @@ function Bl(e, t, s, n, i, o) {
     ])
   ], 4);
 }
-const Vl = /* @__PURE__ */ ht(Do, [["render", Bl], ["__scopeId", "data-v-875e41e4"]]), fa = (e, t = {}) => {
+const Vl = /* @__PURE__ */ ht(Do, [["render", Bl], ["__scopeId", "data-v-5f34bf3d"]]), fa = (e, t = {}) => {
   e.component("VueQuintable", Vl), mn(e), Cn(e), gn(e), t.defaults && e.provide("vueQuintableDefaults", t.defaults), t.axios && (e.config.globalProperties.$globalVueQuintableaxios = t.axios);
 };
 export {
