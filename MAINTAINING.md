@@ -77,7 +77,7 @@ FTP-Zugangsdaten nicht im Repo ablegen.
 
 ## Veröffentlichen (`make publish`)
 
-Macht das ganze Release: meldet bei npm an (falls nötig), `yarn test`, erhöht die Patch-Version in `package.json`, wenn die dort stehende schon auf npm ist (Minor/Major vorher von Hand setzen), baut `dist/`, committet `release: x.y.z`, setzt den Tag, pusht und veröffentlicht. Läuft auf einem normalen Host und unter WSL (dort öffnet `wslview` den Windows-Browser; ohne `BROWSER` bricht `npm login` unter WSL ab). Öffnet sich kein Browser: den angezeigten Link von Hand öffnen, **ohne** Enter zu drücken.
+Macht das ganze Release: meldet bei npm und GitHub (`gh`) an (falls nötig), `yarn test`, erhöht die Patch-Version in `package.json`, wenn die dort stehende schon auf npm ist (Minor/Major vorher von Hand setzen), baut `dist/`, committet `release: x.y.z`, setzt den Tag, pusht, veröffentlicht und legt das GitHub-Release mit automatischen Notes an (v2 nicht als „Latest“). Läuft auf einem normalen Host und unter WSL (dort öffnet `wslview` den Windows-Browser; ohne `BROWSER` bricht `npm login` unter WSL ab). Öffnet sich kein Browser: den angezeigten Link von Hand öffnen, **ohne** Enter zu drücken.
 
 | Linie | Branch   | Befehl | dist-tag |
 |-------|----------|--------|----------|

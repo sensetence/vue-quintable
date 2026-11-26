@@ -9,7 +9,7 @@ help:
 	@echo "  make pack    - Format, lint, and create production package"
 	@echo "  make start   - Format, lint, and start dev server"
 	@echo "  make dev     - Alias for start"
-	@echo "  make publish V=2|3 - Test, bump, build, commit, tag, push, log in and publish"
+	@echo "  make publish V=2|3 - Test, bump, build, commit, tag, push, publish, GitHub release"
 
 # Format code with prettier
 format:
@@ -43,11 +43,12 @@ BROWSER ?= wslview
 export BROWSER
 endif
 
-# Full release: test, bump the patch version if package.json's is already on npm, build dist/, commit "release: x.y.z", tag, push, log in, publish.
+# Full release: log in to npm and GitHub, test, bump the patch version if package.json's is already on npm, build dist/, commit "release: x.y.z", tag, push, publish, create the GitHub release.
 # V=3 publishes as latest, V=2 as v2-lts. V has to match package.json, so v2 can't become latest.
 publish:
 	@grep -q '"version": "$(V)\.' package.json || { echo "Usage: make publish V=2|3 (the major version in package.json)"; exit 1; }
 	npm whoami 2>/dev/null || npm login
+	gh auth status >/dev/null 2>&1 || gh auth login
 	yarn test
 	@set -e; \
 	name=$$(node -p "require('./package.json').name"); \
@@ -62,3 +63,4 @@ publish:
 	git rev-parse -q --verify "refs/tags/$$ver" >/dev/null || git tag "$$ver"; \
 	git push && git push origin "$$ver"
 	npm publish $(if $(filter 2,$(V)),--tag v2-lts)
+	gh release create "$$(node -p "require('./package.json').version")" --generate-notes $(if $(filter 2,$(V)),--latest=false)
