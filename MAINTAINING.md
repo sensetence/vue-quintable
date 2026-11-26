@@ -20,7 +20,7 @@ Wie man entwickelt, testet und Releases für v2 und v3 baut. Für Nutzer der Lib
 
 - Node 22 LTS (v3 braucht wegen Vite 7 mindestens Node 20.19). v2 läuft auch damit.
 - yarn 1 (classic). `npm install` ist absichtlich gesperrt (`engines.npm` + `engine-strict` in `.npmrc`).
-- Für Releases: npm-Login mit Publish-Rechten am Paket (`npm login`, Kontrolle: `npm whoami`, `npm owner ls @sensetence/vue-quintable`).
+- Für Releases: npm-Login mit Publish-Rechten am Paket (`npm login`, `make publish` meldet bei Bedarf selbst an, siehe [Veröffentlichen](#veröffentlichen-make-publish); Kontrolle: `npm whoami`, `npm owner ls @sensetence/vue-quintable`).
 - Für E2E-Tests einmalig: `npx playwright install chromium`.
 
 ```shell
@@ -75,6 +75,19 @@ Die Demo unter https://sensetence.com/vue-quintable-demo/ wird von Hand hochgela
 
 FTP-Zugangsdaten nicht im Repo ablegen.
 
+## Veröffentlichen (`make publish`)
+
+Macht das ganze Release: meldet bei npm an (falls nötig), `yarn test`, erhöht die Patch-Version in `package.json`, wenn die dort stehende schon auf npm ist (Minor/Major vorher von Hand setzen), baut `dist/`, committet `release: x.y.z`, setzt den Tag, pusht und veröffentlicht. Läuft auf einem normalen Host und unter WSL (dort öffnet `wslview` den Windows-Browser; ohne `BROWSER` bricht `npm login` unter WSL ab). Öffnet sich kein Browser: den angezeigten Link von Hand öffnen, **ohne** Enter zu drücken.
+
+| Linie | Branch   | Befehl | dist-tag |
+|-------|----------|--------|----------|
+| v3    | `v3.0.0` | `make publish V=3` | `latest` |
+| v2    | `master` | `make -f <(git show v3.0.0:Makefile) publish V=2` | `v2-lts` |
+
+- `V` ist Pflicht und muss zur Major-Version in `package.json` passen, sonst bricht der Befehl ab. So kann v2 nicht `latest` werden.
+- Das Target steht nur im Makefile von `v3.0.0`; auf `master` holt es der Befehl von dort (bash oder zsh). v2 baut `dist/` beim Veröffentlichen **nicht** neu, vorher `yarn prod` laufen lassen.
+- Es gibt keine Rückfrage, und eine veröffentlichte Versionsnummer ist verbraucht. Der Commit enthält nur `package.json` und `dist/`; andere Änderungen vorher committen.
+
 ## Release v3 (`latest`)
 
 1. Branch aktualisieren:
@@ -100,7 +113,7 @@ FTP-Zugangsdaten nicht im Repo ablegen.
    ```
 7. Veröffentlichen und kontrollieren:
    ```shell
-   npm publish
+   make publish V=3
    npm view @sensetence/vue-quintable dist-tags   # latest = 3.x.y
    ```
 
@@ -118,11 +131,11 @@ Wie v3, aber auf `master` und mit **anderem dist-tag**:
 6. Commit `release: 2.x.y`, `git tag 2.x.y`, pushen.
 7. Veröffentlichen:
    ```shell
-   npm publish --tag v2-lts
+   make -f <(git show v3.0.0:Makefile) publish V=2
    npm view @sensetence/vue-quintable dist-tags   # latest muss weiter 3.x sein!
    ```
 
-> **Wichtig:** Ohne `--tag v2-lts` wird die v2-Version `latest`. Dann bekommt jeder mit `yarn add @sensetence/vue-quintable` die Vue-2-Version.
+> **Wichtig:** `make publish V=2` setzt `--tag v2-lts` selbst. Wer `npm publish` von Hand aufruft, muss es angeben: Ohne `--tag v2-lts` wird die v2-Version `latest`. Dann bekommt jeder mit `yarn add @sensetence/vue-quintable` die Vue-2-Version.
 
 ## Fixes für beide Linien
 
