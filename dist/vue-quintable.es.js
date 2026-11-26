@@ -4919,11 +4919,12 @@ const Vo = ["generated", "sticky"].map((e) => ({
      *
      */
     query(e, t) {
-      if (this.lastQuery = t, this.configFinal.ajaxUrl) {
-        this.pageSort = !1;
-        const s = !((this.configFinal.storeState || this.configFinal.urlState) && this.storedState.query);
+      this.lastQuery = t;
+      const s = e === this._mountQuery;
+      if (this._mountQuery = void 0, this.configFinal.ajaxUrl && (this.pageSort = !1, !s)) {
+        const n = !((this.configFinal.storeState || this.configFinal.urlState) && this.storedState.query);
         clearTimeout(this.queryAjaxTimeout), this.queryAjaxTimeout = setTimeout(() => {
-          this.loadViaAjax(s, s, "QUERY");
+          this.loadViaAjax(n, n, "QUERY");
         }, this.configFinal.ajaxRequestDelay);
       }
       e.length >= this.configFinal.searchLength && this.lastSearchQueryUpdated !== e ? (this.$emit("update:search", e, "update:search"), this.lastSearchQueryUpdated = e) : this.lastSearchQueryUpdated !== null && (this.lastSearchQueryUpdated = null, this.$emit("update:search", null, "update:search")), this.pageSort && (this.currentSortIndexes = {}, this.resetSorts(), this.recomputeEssentials()), this.configFinal.storeState && (delete this.storedState.query, localStorage.setItem(
@@ -5050,7 +5051,12 @@ const Vo = ["generated", "sticky"].map((e) => ({
     let t = 0;
     for (let s = 0; s < e; s++)
       this.rowsFinal[s].selected && (this.selected[s] = !0, t++);
-    t && t === this._selectableCount() && (this.allSelectedCustom = !0), this.initialSearchTerm && (this.query = this.initialSearchTerm), this.storedState.query && (this.query = this.storedState.query), this.storedState["rows-per-page"] && (this.customRowsPerPage = this.storedState["rows-per-page"]), this.storedState["sort-indexes"] && (this.currentSortIndexes = this.storedState["sort-indexes"], this.sort(!0)), this.storedState["current-page"] && this.$nextTick(() => {
+    if (t && t === this._selectableCount() && (this.allSelectedCustom = !0), this.initialSearchTerm && (this.query = this.initialSearchTerm), this.storedState.query)
+      this.query = this.storedState.query;
+    else if (this.initialSearchTerm)
+      for (const s of ["current-page", "selected-rows"])
+        delete this.storedState[s], this.configFinal.storeState && localStorage.removeItem(`vue-quintable-${this.identifier}-${s}`);
+    this._mountQuery = this.query, this.storedState["rows-per-page"] && (this.customRowsPerPage = this.storedState["rows-per-page"]), this.storedState["sort-indexes"] && (this.currentSortIndexes = this.storedState["sort-indexes"], this.sort(!0)), this.storedState["current-page"] && this.$nextTick(() => {
       this.currentPage = this.storedState["current-page"], this._checkRestoredPage(this.currentPage);
     }), this.$nextTick(this.checkStoredSelectedRows), this.configFinal.enableRowTabIndex && document.addEventListener("keydown", this.checkKey), this.debouncedQuery = this.query, this.$watch("query", this._debounceQuery), this.configFinal.urlState && this.$watch(() => this._urlStateParams, this._writeUrlState);
   },
@@ -6443,7 +6449,7 @@ function Bl(e, t, s, n, i, o) {
     ])
   ], 4);
 }
-const Vl = /* @__PURE__ */ ht(Do, [["render", Bl], ["__scopeId", "data-v-b4261473"]]), fa = (e, t = {}) => {
+const Vl = /* @__PURE__ */ ht(Do, [["render", Bl], ["__scopeId", "data-v-875e41e4"]]), fa = (e, t = {}) => {
   e.component("VueQuintable", Vl), mn(e), Cn(e), gn(e), t.defaults && e.provide("vueQuintableDefaults", t.defaults), t.axios && (e.config.globalProperties.$globalVueQuintableaxios = t.axios);
 };
 export {
