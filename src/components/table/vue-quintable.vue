@@ -1721,7 +1721,8 @@ export default {
       default: false,
     },
     axios: {
-      type: Function,
+      // an axios instance is a function; a hand-made client or mock may be a plain object
+      type: [Function, Object],
       default: null,
     },
     identifier: {

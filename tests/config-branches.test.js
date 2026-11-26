@@ -1,6 +1,15 @@
 import { describe, it, expect, vi } from "vitest";
 import { createTable, sortConfig } from "./helpers";
 
+// these tests only read configFinal: the request must neither reach the network nor settle
+const props = {
+  axios: {
+    CancelToken: { source: () => ({ token: null, cancel() {} }) },
+    request: () => new Promise(() => {}),
+    isCancel: () => false,
+  },
+};
+
 describe("Config non-default branches", () => {
   it("hoverClass false becomes empty string", () => {
     const w = createTable({
@@ -90,6 +99,7 @@ describe("Config non-default branches", () => {
 
   it("ajaxUrl is set from config", () => {
     const w = createTable({
+      props,
       config: {
         columns: [{ headline: "A" }, { headline: "B" }],
         ajaxUrl: "http://test.local/api",
@@ -349,6 +359,7 @@ describe("Config non-default branches", () => {
   it("selectAllRows deactivated when ajaxUrl is set", () => {
     const spy = vi.spyOn(console, "warn").mockImplementation(() => {});
     const w = createTable({
+      props,
       config: {
         columns: [{ headline: "A" }, { headline: "B" }],
         select: true,
@@ -490,6 +501,7 @@ describe("Config non-default branches", () => {
 
   it("requestMethod POST is set", () => {
     const w = createTable({
+      props,
       config: {
         columns: [{ headline: "A" }, { headline: "B" }],
         ajaxUrl: "http://test.local",
@@ -501,6 +513,7 @@ describe("Config non-default branches", () => {
 
   it("requestMethod invalid falls back to GET", () => {
     const w = createTable({
+      props,
       config: {
         columns: [{ headline: "A" }, { headline: "B" }],
         ajaxUrl: "http://test.local",
@@ -512,6 +525,7 @@ describe("Config non-default branches", () => {
 
   it("ajaxRequestDelay custom is set", () => {
     const w = createTable({
+      props,
       config: {
         columns: [{ headline: "A" }, { headline: "B" }],
         ajaxUrl: "http://test.local",
