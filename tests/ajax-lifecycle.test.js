@@ -289,6 +289,104 @@ describe("AJAX loading", () => {
     expect(w.vm.currentPage).toBe(1);
     w.unmount();
   });
+
+  describe("a search term set on mount", () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+      localStorage.clear();
+    });
+    afterEach(() => {
+      vi.useRealTimers();
+      localStorage.clear();
+    });
+
+    // waits past ajaxRequestDelay, when the query watcher's own request would go out
+    const wait = () => vi.advanceTimersByTimeAsync(1000);
+
+    async function mountAndWait(props, config) {
+      const ax = makeAxiosMock();
+      const w = createTable({
+        config: {
+          columns: [{ headline: "A" }, { headline: "B" }],
+          ajaxUrl: "http://test.local/api",
+          ...config,
+        },
+        rows: [],
+        props: { axios: ax, identifier: "mount-search", ...props },
+      });
+      await wait();
+      const sent = () =>
+        ax.request.mock.calls.map(([, { params }]) => [
+          params.search,
+          params.page,
+        ]);
+      return { w, sent };
+    }
+
+    it("initialSearchTerm loads once and emits update:search once", async () => {
+      const { w, sent } = await mountAndWait({ initialSearchTerm: "hello" });
+      expect(sent()).toEqual([["hello", 1]]);
+      expect(w.emitted()["update:search"]).toEqual([
+        ["hello", "update:search"],
+      ]);
+      w.unmount();
+    });
+
+    it("every later query loads, the initial one included", async () => {
+      const { w, sent } = await mountAndWait({ initialSearchTerm: "hello" });
+      w.vm.query = "hell";
+      await wait();
+      w.vm.query = "hello";
+      await wait();
+      expect(sent()).toEqual([
+        ["hello", 1],
+        ["hell", 1],
+        ["hello", 1],
+      ]);
+      w.unmount();
+    });
+
+    it("a stored query loads once", async () => {
+      localStorage.setItem("vue-quintable-mount-search-query", "stored");
+      const { w, sent } = await mountAndWait({}, { storeState: true });
+      expect(sent()).toEqual([["stored", 1]]);
+      w.unmount();
+    });
+
+    it("initialSearchTerm without a stored query starts on page 1", async () => {
+      localStorage.setItem("vue-quintable-mount-search-current-page", "2");
+      const { w, sent } = await mountAndWait(
+        { initialSearchTerm: "hello" },
+        { storeState: true },
+      );
+      expect(sent()).toEqual([["hello", 1]]);
+      expect(w.vm.currentPage).toBe(1);
+      w.unmount();
+    });
+
+    it("initialSearchTerm without a stored query selects none of the stored rows", async () => {
+      localStorage.setItem(
+        "vue-quintable-mount-search-selected-rows",
+        JSON.stringify({ 0: true }),
+      );
+      const { w } = await mountAndWait(
+        { initialSearchTerm: "hello" },
+        { storeState: true, select: true },
+      );
+      expect(Object.values(w.vm.selected)).not.toContain(true);
+      w.unmount();
+    });
+
+    it("the next visit opens the page this one showed", async () => {
+      localStorage.setItem("vue-quintable-mount-search-current-page", "3");
+      const config = { storeState: true };
+      const first = await mountAndWait({ initialSearchTerm: "hello" }, config);
+      first.w.unmount();
+      const { w, sent } = await mountAndWait({}, config);
+      expect(sent()).toEqual([["hello", 1]]);
+      w.unmount();
+    });
+  });
 });
 
 describe("Lifecycle hooks", () => {

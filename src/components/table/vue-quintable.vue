@@ -894,7 +894,10 @@
                                 <span v-else class="headline"><wbr /></span>
 
                                 <span
-                                  v-if="configFinal.sorts[rc.cIndex] && (hovered || noHover)"
+                                  v-if="
+                                    configFinal.sorts[rc.cIndex] &&
+                                    (hovered || noHover)
+                                  "
                                   class="sorting-icon cursor-pointer quintable--table-container--table--tbody--generated-row--generated-table--generated-row-cell--sorting-icon"
                                   :class="{
                                     sorted: currentSortIndexes[rc.cIndex],
@@ -2337,7 +2340,7 @@ export default {
         this._hoverTarget = null;
         this._paintRows();
       }
-        // autoFit: new rows (page, sort, filter, search) may be narrower than the ones a fit level was raised for. Rows
+      // autoFit: new rows (page, sort, filter, search) may be narrower than the ones a fit level was raised for. Rows
       // cleared for a load keep the level, so the skeleton has the columns the list had; the next rows re-fit.
       if (this.windowHiddenBreakpoints && this.fitLevel > 0 && val.length > 0) {
         this.fitLevel = 0;
@@ -2526,17 +2529,22 @@ export default {
      */
     query(val, old) {
       this.lastQuery = old;
+      // The query created() set: the load in mounted() carries it already.
+      const loadsOnMount = val === this._mountQuery;
+      this._mountQuery = undefined;
 
       if (this.configFinal.ajaxUrl) {
         this.pageSort = false;
-        const clear = !(
-          (this.configFinal.storeState || this.configFinal.urlState) &&
-          this.storedState.query
-        );
-        clearTimeout(this.queryAjaxTimeout);
-        this.queryAjaxTimeout = setTimeout(() => {
-          this.loadViaAjax(clear, clear, "QUERY");
-        }, this.configFinal.ajaxRequestDelay);
+        if (!loadsOnMount) {
+          const clear = !(
+            (this.configFinal.storeState || this.configFinal.urlState) &&
+            this.storedState.query
+          );
+          clearTimeout(this.queryAjaxTimeout);
+          this.queryAjaxTimeout = setTimeout(() => {
+            this.loadViaAjax(clear, clear, "QUERY");
+          }, this.configFinal.ajaxRequestDelay);
+        }
       }
 
       if (
@@ -2815,7 +2823,16 @@ export default {
 
     if (this.storedState.query) {
       this.query = this.storedState.query;
+    } else if (this.initialSearchTerm) {
+      // A new search starts on the first page with nothing selected: the stored page and rows are the old result's.
+      for (const name of ["current-page", "selected-rows"]) {
+        delete this.storedState[name];
+        if (this.configFinal.storeState) {
+          localStorage.removeItem(`vue-quintable-${this.identifier}-${name}`);
+        }
+      }
     }
+    this._mountQuery = this.query;
 
     if (this.storedState["rows-per-page"]) {
       this.customRowsPerPage = this.storedState["rows-per-page"];
